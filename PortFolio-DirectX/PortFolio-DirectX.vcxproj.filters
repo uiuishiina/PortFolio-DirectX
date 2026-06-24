@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Application">
+      <UniqueIdentifier>{e2268b24-82b0-425d-8cb3-f1ad75b01d81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DebugLog">
+      <UniqueIdentifier>{6485e56b-3af6-4890-af61-8443174f4b02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="windowInterface">
+      <UniqueIdentifier>{27fab812-8011-4dee-83ff-66186470dde3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Application\EntryPoint.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Debug\DebugLogBuilder.cpp">
+      <Filter>DebugLog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Debug\DebugLogOutPut.cpp">
+      <Filter>DebugLog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Debug\DebugLogSystem.cpp">
+      <Filter>DebugLog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Debug\DebugLogThread.cpp">
+      <Filter>DebugLog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Application\Application.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\windowInterface\windowFactory.cpp">
+      <Filter>windowInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\windowInterface\WindowsWindow.cpp">
+      <Filter>windowInterface</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Debug\DebugLogBuilder.h">
+      <Filter>DebugLog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Debug\DebugLogOutPut.h">
+      <Filter>DebugLog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Debug\DebugLogSystem.h">
+      <Filter>DebugLog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Debug\DebugLogThread.h">
+      <Filter>DebugLog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Debug\LogObject.h">
+      <Filter>DebugLog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Application.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\windowInterface\windowInterface.h">
+      <Filter>windowInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\windowInterface\windowFactory.h">
+      <Filter>windowInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\windowInterface\WindowsWindow.h">
+      <Filter>windowInterface</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
