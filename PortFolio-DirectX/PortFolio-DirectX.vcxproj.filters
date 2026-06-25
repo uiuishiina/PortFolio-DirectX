@@ -22,6 +22,9 @@
     <Filter Include="windowInterface">
       <UniqueIdentifier>{27fab812-8011-4dee-83ff-66186470dde3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RendererInterface">
+      <UniqueIdentifier>{e62f3618-6520-4ca2-86d1-f20e9abdcf45}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\EntryPoint.cpp">
@@ -76,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="..\windowInterface\WindowsWindow.h">
       <Filter>windowInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\RendererInterface.h">
+      <Filter>RendererInterface</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

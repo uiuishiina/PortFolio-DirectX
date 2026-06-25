@@ -157,6 +157,7 @@
     <ClInclude Include="..\Debug\DebugLogSystem.h" />
     <ClInclude Include="..\Debug\DebugLogThread.h" />
     <ClInclude Include="..\Debug\LogObject.h" />
+    <ClInclude Include="..\RendererInterface\RendererInterface.h" />
     <ClInclude Include="..\windowInterface\windowFactory.h" />
     <ClInclude Include="..\windowInterface\windowInterface.h" />
     <ClInclude Include="..\windowInterface\WindowsWindow.h" />
