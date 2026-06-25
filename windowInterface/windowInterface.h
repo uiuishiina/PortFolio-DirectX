@@ -11,7 +11,19 @@ struct WindowSize {
 	int height{};
 
 	bool operator==(const WindowSize& athor) const {
-		return (width == athor.width && height == athor.height);
+		return width == athor.width && height == athor.height;
+	}
+
+	//@brief	=== 最小化チェック関数 ===
+	//@return	最小なら [ ture ]
+	bool is_minimized()const {
+		return width <= 0 && height <= 0;
+	}
+
+	//@brief	=== 領域サイズチェック関数 ===
+	//@return	領域があるなら []
+	bool has_area() const {
+		return width > 0 && height > 0;
 	}
 };
 
