@@ -25,6 +25,12 @@
     <Filter Include="RendererInterface">
       <UniqueIdentifier>{e62f3618-6520-4ca2-86d1-f20e9abdcf45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RendererInterface\DirectX">
+      <UniqueIdentifier>{15174017-2f55-491f-96d8-8e6b0f53ec4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RendererInterface\DirectX\AddFile">
+      <UniqueIdentifier>{189f1d84-60f3-41cf-a494-9f152b0fc05b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\EntryPoint.cpp">
@@ -50,6 +56,21 @@
     </ClCompile>
     <ClCompile Include="..\windowInterface\WindowsWindow.cpp">
       <Filter>windowInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectXRenderer.cpp">
+      <Filter>RendererInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\RendererFactory.cpp">
+      <Filter>RendererInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DXGI.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Device.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\CommandQueue.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +103,21 @@
     </ClInclude>
     <ClInclude Include="..\RendererInterface\RendererInterface.h">
       <Filter>RendererInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectXRenderer.h">
+      <Filter>RendererInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\RendererFactory.h">
+      <Filter>RendererInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DXGI.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Device.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\CommandQueue.h">
+      <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -147,6 +147,11 @@
     <ClCompile Include="..\Debug\DebugLogOutPut.cpp" />
     <ClCompile Include="..\Debug\DebugLogSystem.cpp" />
     <ClCompile Include="..\Debug\DebugLogThread.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectXRenderer.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\CommandQueue.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\Device.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DXGI.cpp" />
+    <ClCompile Include="..\RendererInterface\RendererFactory.cpp" />
     <ClCompile Include="..\windowInterface\windowFactory.cpp" />
     <ClCompile Include="..\windowInterface\WindowsWindow.cpp" />
   </ItemGroup>
@@ -157,6 +162,11 @@
     <ClInclude Include="..\Debug\DebugLogSystem.h" />
     <ClInclude Include="..\Debug\DebugLogThread.h" />
     <ClInclude Include="..\Debug\LogObject.h" />
+    <ClInclude Include="..\RendererInterface\DirectXRenderer.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\CommandQueue.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\Device.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DXGI.h" />
+    <ClInclude Include="..\RendererInterface\RendererFactory.h" />
     <ClInclude Include="..\RendererInterface\RendererInterface.h" />
     <ClInclude Include="..\windowInterface\windowFactory.h" />
     <ClInclude Include="..\windowInterface\windowInterface.h" />

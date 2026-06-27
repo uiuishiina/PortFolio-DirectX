@@ -74,6 +74,7 @@ namespace {
     wc.lpfnWndProc = static_window_proc;
     wc.lpszClassName = L"windows_window";
     wc.hInstance = hinstance_;
+    wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 
     if (!RegisterClass(&wc)) {
         return false;

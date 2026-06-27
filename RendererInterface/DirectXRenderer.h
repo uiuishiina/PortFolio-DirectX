@@ -1,12 +1,23 @@
 #pragma once
-#include"../windowInterface/windowInterface.h"
+#include"RendererInterface.h"
+#include<memory>
 
 ///====================================================================
-/// RendererInterface 基底クラス
+/// DirectXオブジェクトクラス前方宣言
 ///====================================================================
 
-//@brief	=== 描画機能インターフェースクラス ===
-class RendererInterface
+class DXGI;
+class Device;
+
+
+
+
+///====================================================================
+/// DirectXRenderer クラス
+///====================================================================
+
+//@brief	=== DirectX描画機能クラス ===
+class DirectXRenderer final : public RendererInterface
 {
 public:
 	///====================================================================
@@ -14,14 +25,14 @@ public:
 	///====================================================================
 
 	//コンストラクタ,デストラクタ
-	RendererInterface() = default;
-	virtual ~RendererInterface() = default;
+	DirectXRenderer();
+	~DirectXRenderer();
 
 	//コピー禁止,ムーブ禁止
-	RendererInterface(const RendererInterface&) = delete;
-	RendererInterface& operator=(const RendererInterface&) = delete;
-	RendererInterface(RendererInterface&&) = delete;
-	RendererInterface& operator=(RendererInterface&&) = delete;
+	DirectXRenderer(const DirectXRenderer&) = delete;
+	DirectXRenderer& operator=(const DirectXRenderer&) = delete;
+	DirectXRenderer(DirectXRenderer&&) = delete;
+	DirectXRenderer& operator=(DirectXRenderer&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数
@@ -31,25 +42,41 @@ public:
 	//@param	window	ウィンドウインターフェース
 	//@details	作成したウィンドウに描画するため引数で参照を渡す
 	//@return	作成の成否
-	virtual [[nodiscard]] bool create_renderer(windowInterface* window) = 0;
+	[[nodiscard]] bool create_renderer(windowInterface* window)override;
 
 	//@brief	=== 描画更新関数 ===
 	//@details	毎フレーム更新される想定
-	virtual void update_renderer() = 0;
+	void update_renderer()override;
 
 	//@brief	=== 描画機能終了処理関数 ===
 	//@details	描画機能破棄前最終処理(非同期処理の待機など)をするための関数
-	virtual void end_renderer() = 0;
+	void end_renderer()override;
+
 protected:
 	///====================================================================
 	/// Protected メンバー関数
 	///====================================================================
-
+	
 	//@brief	=== 描画更新前関数 ===
 	//@details	描画機能を更新する際に先に処理する必要があるものを呼び出す関数
-	virtual void begin_update_renderer() = 0;
+	void begin_update_renderer()override;
 
 	//@brief	=== 描画更新後関数 ===
 	//@details	描画機能を更新した後に処理する必要があるものを呼び出す関数
-	virtual void end_update_renderer() = 0;
+	void end_update_renderer()override;
+
+private:
+	///====================================================================
+	/// Private メンバー変数
+	///====================================================================
+
+	//@brief	== フレームカウント保存変数 ==
+	//@details	何フレーム目かを保存
+	unsigned long long int frame_count{};
+
+	//@brief	== DXGIインスタンス ==
+	std::unique_ptr<DXGI> dxgi_{};
+
+	//@brief	== Deviceインスタンス ==
+	std::unique_ptr<Device> device_{};
 };

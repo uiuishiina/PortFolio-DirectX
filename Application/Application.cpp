@@ -1,15 +1,23 @@
 
 #include"../windowInterface/windowInterface.h"
+#include"../RendererInterface/RendererInterface.h"
 
 #include"Application.h"
 
 #include"../windowInterface/windowFactory.h"
+#include"../RendererInterface/RendererFactory.h"
+
+#include"../Debug/DebugLogSystem.h"
 
 ///====================================================================
 
 //コンストラクタ,デストラクタ
-Application::Application() = default;
-Application::~Application() = default;
+Application::Application() {
+	DEBUG_LOG("Application() call");
+}
+Application::~Application() {
+	DEBUG_LOG("~Application() call");
+}
 
 ///====================================================================
 /// 初期化時関数
@@ -21,9 +29,17 @@ Application::~Application() = default;
 
 	if (!initialize_window()) {
 		is_initialize_error = true;
+		DEBUG_ERROR_LOG(" Application :: initialize_window() FAILED");
 		return false;
 	}
 
+	if (!initialize_renderer()) {
+		is_initialize_error = true;
+		DEBUG_ERROR_LOG(" Application :: initialize_renderer() FAILED");
+		return false;
+	}
+
+	DEBUG_LOG("Application :: initialize_App() SUCCESS");
 	return true;
 }
 
@@ -33,6 +49,14 @@ Application::~Application() = default;
 
 	main_window_ins = windowFactory::create_window(WindowSize(1280, 720));
 	return main_window_ins != nullptr;
+}
+
+//@brief	=== 描画機能インスタンス初期化関数 ===
+//@details	責務 [ 描画機能インスタンス初期化 ]
+[[nodiscard]] bool Application::initialize_renderer() {
+
+	main_renderer_ins = RendererFactory::create_renderer(main_window_ins.get());
+	return main_renderer_ins != nullptr;
 }
 
 ///====================================================================
@@ -53,6 +77,8 @@ void Application::run_App() {
 	while (!main_window_ins->should_close_window()) {
 
 		main_window_ins->poll_events();
+
+		main_renderer_ins->update_renderer();
 	}
 
 	//終了時処理
@@ -66,5 +92,5 @@ void Application::run_App() {
 //@brief	=== アプリケーション終了時処理関数 ===
 //@details	 [ run_App() ] の最後(アプリ終了時)に呼び出される
 void Application::end_App() {
-
+	main_renderer_ins->end_renderer();
 }

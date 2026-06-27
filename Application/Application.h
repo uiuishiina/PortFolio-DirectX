@@ -2,6 +2,7 @@
 #include<memory>
 
 class windowInterface;
+class RendererInterface;
 
 ///====================================================================
 /// Application クラス
@@ -46,13 +47,21 @@ private:
 	//@details	対応するウィンドウ
 	std::unique_ptr<windowInterface> main_window_ins{};
 
+	//@brief	== アプリケーション描画機能インスタンス ==
+	//@details	対応する描画機能
+	std::unique_ptr<RendererInterface> main_renderer_ins{};
+
 	///====================================================================
-	/// Private メンバー変数
+	/// Private メンバー関数
 	///====================================================================
 
 	//@brief	=== ウィンドウインスタンス初期化関数 ===
 	//@details	責務 [ ウィンドウインスタンス初期化 ] 
 	[[nodiscard]] bool initialize_window();
+
+	//@brief	=== 描画機能インスタンス初期化関数 ===
+	//@details	責務 [ 描画機能インスタンス初期化 ]
+	[[nodiscard]] bool initialize_renderer();
 
 	//@brief	=== アプリケーション終了時処理関数 ===
 	//@details	 [ run_App() ] の最後(アプリ終了時)に呼び出される
