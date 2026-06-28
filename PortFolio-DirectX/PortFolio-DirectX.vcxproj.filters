@@ -72,6 +72,18 @@
     <ClCompile Include="..\RendererInterface\DirectX\CommandQueue.cpp">
       <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\CommandAllocator.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\CommandList.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DescriptorHeap.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\SwapChain.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Debug\DebugLogBuilder.h">
@@ -117,6 +129,54 @@
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\CommandQueue.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12.h">
+      <Filter>RendererInterface\DirectX\AddFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_barriers.h">
+      <Filter>RendererInterface\DirectX\AddFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_check_feature_support.h">
+      <Filter>RendererInterface\DirectX\AddFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_core.h">
+      <Filter>RendererInterface\DirectX\AddFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_default.h">
+      <Filter>RendererInterface\DirectX\AddFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_pipeline_state_stream.h">
+      <Filter>RendererInterface\DirectX\AddFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_property_format_table.h">
+      <Filter>RendererInterface\DirectX\AddFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_render_pass.h">
+      <Filter>RendererInterface\DirectX\AddFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_resource_helpers.h">
+      <Filter>RendererInterface\DirectX\AddFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_root_signature.h">
+      <Filter>RendererInterface\DirectX\AddFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_state_object.h">
+      <Filter>RendererInterface\DirectX\AddFile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\CommandAllocator.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\CommandList.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DescriptorHeap.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\SwapChain.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\RenderTarget.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
   </ItemGroup>

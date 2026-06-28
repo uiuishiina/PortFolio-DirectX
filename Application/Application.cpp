@@ -76,8 +76,10 @@ void Application::run_App() {
 	//アプリケーションループ
 	while (!main_window_ins->should_close_window()) {
 
+		//	入力など取得
 		main_window_ins->poll_events();
 
+		//	描画更新
 		main_renderer_ins->update_renderer();
 	}
 

@@ -3,6 +3,10 @@
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxguid.lib")
 
+///====================================================================
+/// 初期化関数
+///====================================================================
+
 //@brief	=== Device初期化関数 ===
 //@param	adapter_	DXGIアダプターインスタンス
 //@return	初期化の成否
@@ -35,4 +39,14 @@ Microsoft::WRL::ComPtr<ID3D12Device> Device::create_device(
 		return nullptr; // デバイスの作成に失敗した場合はnullptrを返す
 	}
 	return device; // デバイスの作成に成功した場合はデバイスポインタを返す
+}
+
+///====================================================================
+/// 実行時処理関数
+///====================================================================
+
+//@brief	=== Deviceインスタンス取得関数 ===
+//@return	Deviceインスタンス
+[[nodiscard]] ID3D12Device* Device::get_device() const noexcept {
+	return device_.Get();
 }
