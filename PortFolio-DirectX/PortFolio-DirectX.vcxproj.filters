@@ -31,6 +31,9 @@
     <Filter Include="RendererInterface\DirectX\AddFile">
       <UniqueIdentifier>{189f1d84-60f3-41cf-a494-9f152b0fc05b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RendererInterface\DirectX\DirectXobject">
+      <UniqueIdentifier>{65a80dd4-a1ab-4888-926b-1b91c14a2e49}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\EntryPoint.cpp">
@@ -63,25 +66,37 @@
     <ClCompile Include="..\RendererInterface\RendererFactory.cpp">
       <Filter>RendererInterface</Filter>
     </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\DXGI.cpp">
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\CommandAllocator.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\GraphicsCommandList.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\CommandQueue.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\DescriptorHeap.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Device.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\DXGI.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Fence.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\GraphicsCommandObjectFactory.cpp">
       <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\Device.cpp">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\CommandQueue.cpp">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\CommandAllocator.cpp">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\CommandList.cpp">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\DescriptorHeap.cpp">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\SwapChain.cpp">
+    <ClCompile Include="..\RendererInterface\DirectX\StaticHeapContainer.cpp">
       <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
   </ItemGroup>
@@ -122,15 +137,6 @@
     <ClInclude Include="..\RendererInterface\RendererFactory.h">
       <Filter>RendererInterface</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\DXGI.h">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\Device.h">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\CommandQueue.h">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12.h">
       <Filter>RendererInterface\DirectX\AddFile</Filter>
     </ClInclude>
@@ -164,19 +170,37 @@
     <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_state_object.h">
       <Filter>RendererInterface\DirectX\AddFile</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\CommandAllocator.h">
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\CommandAllocator.h">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\GraphicsCommandList.h">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\CommandQueue.h">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\DescriptorHeap.h">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Device.h">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\DXGI.h">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Fence.h">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.h">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.h">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\GraphicsCommandObjectFactory.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\CommandList.h">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\DescriptorHeap.h">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\SwapChain.h">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\RenderTarget.h">
+    <ClInclude Include="..\RendererInterface\DirectX\StaticHeapContainer.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
   </ItemGroup>

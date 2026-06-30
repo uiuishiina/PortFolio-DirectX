@@ -3,8 +3,17 @@
 /// 前方宣言用
 ///====================================================================
 
-#include"DirectX/DXGI.h"
-#include"DirectX/Device.h"
+/* -- DirectXObject --*/ 
+#include"DirectX/DirectXobject/DXGI.h"
+#include"DirectX/DirectXobject/Device.h"
+#include"DirectX/DirectXobject/CommandQueue.h"
+#include"DirectX/DirectXobject/CommandAllocator.h"
+#include"DirectX/DirectXobject/GraphicsCommandList.h"
+#include"DirectX/DirectXobject/DescriptorHeap.h"
+
+/* -- 各Factory -- */
+#include"DirectX/GraphicsCommandObjectFactory.h"
+#include"DirectX/StaticHeapContainer.h"
 
 ///====================================================================
 
@@ -29,18 +38,35 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 	//	DXGIインスタンス生成
 	dxgi_ = std::make_unique<DXGI>();
-	if(FAILED(dxgi_->initialize_DXGI())) {
+	if (FAILED(dxgi_->initialize_DXGI())) {
 		DEBUG_LOG("DirectXRenderer :: create_renderer() FAILED");
 		return false;
 	}
 
 	//	Deviceインスタンス生成
 	device_ = std::make_unique<Device>();
-	if(FAILED(device_->initialize_Device(dxgi_->get_DXGI_adaptor()))) {
+	if (FAILED(device_->initialize_Device(dxgi_->get_DXGI_adaptor()))) {
 		DEBUG_LOG("DirectXRenderer :: create_renderer() FAILED");
 		return false;
 	}
 
+	//	描画用コマンドオブジェクト構造体インスタンス生成
+	graphics_command_object = std::make_unique<GraphicsCommandObject>(buffer_size);
+	if (FAILED(GraphicsCommandObjectFactory::create_GraphicsCommandObject(device_->get_device(), *graphics_command_object))) {
+		DEBUG_LOG("DirectXRenderer :: create_GraphicsCommandObject() FAILED");
+		return false;
+	}
+	
+	//	初期作成ディスクリプタヒープコンテナインスタンス生成
+	static_heap_container = std::make_unique<StaticHeapContainer>();
+	if (FAILED(static_heap_container->create_static_heap_container(device_->get_device(),
+		{
+			{D3D12_DESCRIPTOR_HEAP_TYPE_RTV,buffer_size,D3D12_DESCRIPTOR_HEAP_FLAG_NONE},//RTV
+		}
+	))) {
+		DEBUG_LOG("DirectXRenderer :: create_static_heap_container() FAILED");
+		return false;
+	}
 
 
 	DEBUG_LOG("DirectXRenderer :: create_renderer() SUCCESS");
@@ -51,9 +77,18 @@ DirectXRenderer::~DirectXRenderer() = default;
 /// 実行時処理関数群
 ///====================================================================
 
+//簡易的な負荷
+static void func() {
+	for (int i = 0; i < 100000; i++) {
+		auto j = i * i;
+	}
+}
+
 //@brief	=== 描画更新関数 ===
 //@details	毎フレーム更新される想定
 void DirectXRenderer::update_renderer() {
+
+	func();
 
 	frame_count++;
 }

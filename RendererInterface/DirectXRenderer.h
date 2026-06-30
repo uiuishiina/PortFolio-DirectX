@@ -8,9 +8,12 @@
 
 class DXGI;
 class Device;
-
-
-
+struct GraphicsCommandObject;
+class StaticHeapContainer;
+//class DesctiptorHeap;
+//class SwapChain;
+//class RenderTarget;
+//class Fence;
 
 ///====================================================================
 /// DirectXRenderer クラス
@@ -74,9 +77,21 @@ private:
 	//@details	何フレーム目かを保存
 	unsigned long long int frame_count{};
 
+	//@brief	== フレームバッファサイズ設定変数 ==
+	//@details	描画バッファリングサイズを指定
+	const unsigned int buffer_size = 2;
+
+	/* -- 描画用 -- */
+
 	//@brief	== DXGIインスタンス ==
 	std::unique_ptr<DXGI> dxgi_{};
 
 	//@brief	== Deviceインスタンス ==
 	std::unique_ptr<Device> device_{};
+
+	//@brief	== 描画用コマンドオブジェクト構造体インスタンス ==
+	std::unique_ptr<GraphicsCommandObject> graphics_command_object{};
+
+	//@brief	== 初期作成ディスクリプタヒープコンテナインスタンス ==
+	std::unique_ptr<StaticHeapContainer> static_heap_container{};
 };

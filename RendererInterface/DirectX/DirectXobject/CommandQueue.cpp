@@ -1,5 +1,5 @@
 #include"CommandQueue.h"
-#include"AddFile/d3dx12.h"
+#include"../AddFile/d3dx12.h"
 
 ///====================================================================
 /// 初期化関数

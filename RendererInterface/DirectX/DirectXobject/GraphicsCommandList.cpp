@@ -1,4 +1,4 @@
-#include"CommandList.h"
+#include"GraphicsCommandList.h"
 
 ///====================================================================
 /// 初期化関数
@@ -9,7 +9,7 @@
 //@param	type	コマンドリストタイプ
 //@param	allocator	コマンドアロケータインスタンス
 //@return	作成の成否
-[[nodiscard]] HRESULT GraphicsCommandList::create_command_list(ID3D12Device* device, D3D12_COMMAND_LIST_TYPE type,
+[[nodiscard]] HRESULT GraphicsCommandList::create_graphics_command_list(ID3D12Device* device, D3D12_COMMAND_LIST_TYPE type,
 	ID3D12CommandAllocator* allocator) {
 
 	const auto hr = device->CreateCommandList(
@@ -33,6 +33,6 @@
 
 //@brief	=== コマンドリスト取得関数 ===
 //@return	コマンドリストインスタンス
-[[nodiscard]] ID3D12GraphicsCommandList* GraphicsCommandList::get_command_list() const noexcept {
+[[nodiscard]] ID3D12GraphicsCommandList* GraphicsCommandList::get_graphics_command_list() const noexcept {
 	return command_list_.Get();
 }

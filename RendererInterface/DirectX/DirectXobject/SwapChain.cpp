@@ -9,10 +9,10 @@
 //@param	command_queue	DirectX12 コマンドキュー
 //@param	size		スワップチェーンのサイズ
 //@param	hwnd		ウィンドウハンドル
-//@param	buffer_count	Sワップチェーンのバッファ数
+//@param	buffer_size	Sワップチェーンのバッファ数
 //@return	作成の成否
 [[nodiscard]] HRESULT SwapChain::create_swapchain(IDXGIFactory6* factory,
-	ID3D12CommandQueue* command_queue, WindowSize size, HWND hwnd, UINT buffer_count) {
+	ID3D12CommandQueue* command_queue, WindowSize size, HWND hwnd, UINT buffer_size) {
 
 	//	スワップチェーンの設定
 	DXGI_SWAP_CHAIN_DESC1 swapchain_desc{};
@@ -23,7 +23,7 @@
 	swapchain_desc.SampleDesc.Count = 1;
 	swapchain_desc.SampleDesc.Quality = 0;
 	swapchain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swapchain_desc.BufferCount = buffer_count;
+	swapchain_desc.BufferCount = buffer_size;
 	swapchain_desc.Scaling = DXGI_SCALING_STRETCH;
 	swapchain_desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 	swapchain_desc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;

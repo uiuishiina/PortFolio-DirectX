@@ -2,7 +2,7 @@
 #include<dxgi1_6.h>
 #include<d3d12.h>
 #include<wrl/client.h>
-#include"../../windowInterface/windowInterface.h"
+#include"../../../windowInterface/windowInterface.h"
 
 ///====================================================================
 /// SwapChain クラス
@@ -35,10 +35,10 @@ public:
 	//@param	command_queue	DirectX12 コマンドキュー
 	//@param	size		スワップチェーンのサイズ
 	//@param	hwnd		ウィンドウハンドル
-	//@param	buffer_count	スワップチェーンのバッファ数
+	//@param	buffer_size	スワップチェーンのバッファ数
 	//@return	作成の成否
 	[[nodiscard]] HRESULT create_swapchain(IDXGIFactory6* factory,
-		ID3D12CommandQueue* command_queue,WindowSize size, HWND hwnd, UINT buffer_count);
+		ID3D12CommandQueue* command_queue,WindowSize size, HWND hwnd, UINT buffer_size);
 
 	//@brief	=== SwapChain 取得関数 ===
 	//@return	SwapChain インスタンス

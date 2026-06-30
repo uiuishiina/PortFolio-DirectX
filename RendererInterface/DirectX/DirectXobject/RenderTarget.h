@@ -13,7 +13,7 @@
 /// RenderTarget クラス
 ///====================================================================
 
-//@brief === RenderTarget クラス ===
+//@brief === レンダーターゲットクラス ===
 class RenderTarget final
 {
 public:
@@ -35,12 +35,19 @@ public:
 	/// Public メンバー関数
 	///====================================================================
 
-	
-	[[nodiscard]] bool create_render_target(IDXGISwapChain4* swapchain, ID3D12DescriptorHeap* heap, UINT descriptor_size, UINT buffer_size);
+	//@brief	=== レンダーターゲット作成関数 ===
+	//@param	swapchain	スワップチェインインスタンス
+	//@param	heap	RTVディスクリプタヒープ
+	//@return	作成の成否
+	[[nodiscard]] HRESULT create_render_target(ID3D12Device* device, IDXGISwapChain4* swapchain
+		, ID3D12DescriptorHeap* heap, UINT buffer_index);
 
 	//@brief	=== RTVハンドル取得関数 ===
+	//@return	RTV CPUハンドル
 	[[nodiscard]] D3D12_CPU_DESCRIPTOR_HANDLE get_rtv_handle() const noexcept;
 
+	//@brief	=== レンダーターゲット取得関数 ===
+	//@return	レンダーターゲットインスタンス
 	[[nodiscard]] ID3D12Resource* get_render_target() const noexcept;
 
 private:
@@ -48,6 +55,9 @@ private:
 	/// Private メンバー変数
 	///====================================================================
 
-	//@brief	== RenderTarget インスタンス ==
+	//@brief	== レンダーターゲットインスタンス ==
 	Microsoft::WRL::ComPtr<ID3D12Resource> render_target_{};
+	
+	//@brief	== レンダーターゲットディスクリプタハンドル ==
+	D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle{};
 };
