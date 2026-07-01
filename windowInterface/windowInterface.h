@@ -7,9 +7,13 @@
 //@brief	=== ウィンドウサイズ送受信用構造体 ===
 struct WindowSize {
 
+	//@brief	== ウィンドウの横幅 ==
 	int width{};
+
+	//@brief	== ウィンドウの立幅 ==
 	int height{};
 
+	//@brief	=== ウィンドウサイズ比較演算子オーバーロード ===
 	bool operator==(const WindowSize& athor) const {
 		return width == athor.width && height == athor.height;
 	}

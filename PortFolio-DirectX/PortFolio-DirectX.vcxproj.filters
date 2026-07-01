@@ -204,4 +204,9 @@
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\windowInterface\WIndowInterface.Readme.txt">
+      <Filter>windowInterface</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
