@@ -12,8 +12,13 @@
 //@brief	=== 描画用コマンドオブジェクト構造体 ===
 struct GraphicsCommandObject final {
 
+	//@brief	== CommandQueueインスタンス ==
 	std::unique_ptr<CommandQueue> queue_{};
+
+	//@breif	== CommandAllocatorインスタンス配列 ==
 	std::vector<std::unique_ptr<CommandAllocator>> allocators_{};
+
+	//@brief	== 描画用CommandListインスタンス ==
 	std::unique_ptr<GraphicsCommandList> list_{};
 
 	///====================================================================
@@ -23,6 +28,8 @@ struct GraphicsCommandObject final {
 	//@brief	=== コンストラクタ ===
 	GraphicsCommandObject() = delete;
 	GraphicsCommandObject(UINT buffer_size) {
+
+		/* -- 各インスタンス生成 -- */
 
 		queue_ = std::make_unique<CommandQueue>();
 

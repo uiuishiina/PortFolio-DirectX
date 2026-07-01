@@ -3,6 +3,8 @@
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxguid.lib")
 
+#include<cassert>
+
 ///====================================================================
 /// 初期化関数
 ///====================================================================
@@ -48,5 +50,6 @@ Microsoft::WRL::ComPtr<ID3D12Device> Device::create_device(
 //@brief	=== Deviceインスタンス取得関数 ===
 //@return	Deviceインスタンス
 [[nodiscard]] ID3D12Device* Device::get_device() const noexcept {
+	assert(device_ && "Device nullptr");
 	return device_.Get();
 }

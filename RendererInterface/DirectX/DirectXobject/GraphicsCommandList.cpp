@@ -1,5 +1,7 @@
 #include"GraphicsCommandList.h"
 
+#include<cassert>
+
 ///====================================================================
 /// 初期化関数
 ///====================================================================
@@ -34,5 +36,6 @@
 //@brief	=== コマンドリスト取得関数 ===
 //@return	コマンドリストインスタンス
 [[nodiscard]] ID3D12GraphicsCommandList* GraphicsCommandList::get_graphics_command_list() const noexcept {
+	assert(command_list_ && "コマンドリスト nullptr");
 	return command_list_.Get();
 }

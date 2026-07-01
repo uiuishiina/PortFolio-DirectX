@@ -3,6 +3,8 @@
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3d12.lib")
 
+#include<cassert>
+
 ///====================================================================
 /// 初期化関数
 ///====================================================================
@@ -75,10 +77,12 @@
 
 //@brief	=== DXGIファクトリーインスタンス取得関数 ===
 [[nodiscard]] IDXGIFactory6* DXGI::get_DXGI_factory() const noexcept {
+	assert(factory_ && "DXGIファクトリー nullptr");
 	return factory_.Get();
 }
 
 //@brief	=== DXGIアダプターインスタンス取得関数 ===
 [[nodiscard]] IDXGIAdapter1* DXGI::get_DXGI_adaptor() const noexcept {
+	assert(adapter_ && "DXGIアダプター nullptr");
 	return adapter_.Get();
 }

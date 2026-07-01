@@ -8,7 +8,7 @@
 /// SwapChain クラス
 ///====================================================================
 
-//@brief === SwapChain クラス ===
+//@brief === スワップチェーンクラス ===
 class SwapChain final
 {
 public:
@@ -40,8 +40,8 @@ public:
 	[[nodiscard]] HRESULT create_swapchain(IDXGIFactory6* factory,
 		ID3D12CommandQueue* command_queue,WindowSize size, HWND hwnd, UINT buffer_size);
 
-	//@brief	=== SwapChain 取得関数 ===
-	//@return	SwapChain インスタンス
+	//@brief	=== スワップチェーン取得関数 ===
+	//@return	スワップチェーンインスタンス
 	[[nodiscard]] IDXGISwapChain4* get_swapchain() const noexcept;
 
 private:
@@ -49,6 +49,6 @@ private:
 	/// Private メンバー変数
 	///====================================================================
 
-	//@brief	== SwapChain インスタンス ==
+	//@brief	== スワップチェーンインスタンス ==
 	Microsoft::WRL::ComPtr<IDXGISwapChain4> swapchain_{};
 };

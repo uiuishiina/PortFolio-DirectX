@@ -1,5 +1,7 @@
 #include"StaticHeapContainer.h"
 
+#include<cassert>
+
 //@brief	=== ディスクリプタヒープコンテナ作成関数 ===
 //@param	device	DirectX12 デバイス
 //@param	desc	ディスクリプタヒープ設定配列
@@ -25,4 +27,16 @@
 	}
 
 	return S_OK;
+}
+
+//@brief	=== ディスクリプタヒープ参照取得関数 ===
+//@param	type	ディスクリプターヒープタイプ
+//@return	ディスクリプターヒープポインター
+[[nodiscard]] DescriptorHeap* StaticHeapContainer::get_discriptor_heap(D3D12_DESCRIPTOR_HEAP_TYPE type) {
+
+	auto it = static_heap_map.find(type);
+	if (it == static_heap_map.end()) {
+		return nullptr;
+	}
+	return it->second.get();
 }

@@ -1,5 +1,7 @@
 #include"CommandAllocator.h"
 
+#include<cassert>
+
 ///====================================================================
 /// 初期化関数
 ///====================================================================
@@ -20,5 +22,6 @@
 //@brief	=== コマンドアロケータ取得関数 ===
 //@return	コマンドアロケータインスタンス
 [[nodiscard]] ID3D12CommandAllocator* CommandAllocator::get_command_allocator() const noexcept {
+	assert(command_allocator_ && "コマンドアロケータ nullptr");
 	return command_allocator_.Get();
 }

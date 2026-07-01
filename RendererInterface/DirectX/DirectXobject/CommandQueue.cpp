@@ -1,6 +1,8 @@
 #include"CommandQueue.h"
 #include"../AddFile/d3dx12.h"
 
+#include<cassert>
+
 ///====================================================================
 /// 初期化関数
 ///====================================================================
@@ -27,5 +29,6 @@
 //@brief	=== コマンドキュー取得関数 ===
 //@return	コマンドキューインスタンス
 [[nodiscard]] ID3D12CommandQueue* CommandQueue::get_command_queue() const noexcept {
+	assert(command_queue_ && "コマンドキュー nulptr");
 	return command_queue_.Get();
 }

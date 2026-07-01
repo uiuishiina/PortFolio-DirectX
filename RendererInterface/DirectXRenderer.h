@@ -1,6 +1,7 @@
 #pragma once
 #include"RendererInterface.h"
 #include<memory>
+#include<vector>
 
 ///====================================================================
 /// DirectXオブジェクトクラス前方宣言
@@ -10,9 +11,8 @@ class DXGI;
 class Device;
 struct GraphicsCommandObject;
 class StaticHeapContainer;
-//class DesctiptorHeap;
-//class SwapChain;
-//class RenderTarget;
+class SwapChain;
+class RenderTarget;
 //class Fence;
 
 ///====================================================================
@@ -94,4 +94,12 @@ private:
 
 	//@brief	== 初期作成ディスクリプタヒープコンテナインスタンス ==
 	std::unique_ptr<StaticHeapContainer> static_heap_container{};
+
+	//@brief	== スワップチェーンインスタンス ==
+	std::unique_ptr<SwapChain> swap_chain{};
+
+	//@brief	== 最終描画先レンダーターゲットインスタンス ==
+	std::vector<std::unique_ptr<RenderTarget>> render_targets{};
+
+	
 };

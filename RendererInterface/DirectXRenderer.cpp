@@ -10,6 +10,8 @@
 #include"DirectX/DirectXobject/CommandAllocator.h"
 #include"DirectX/DirectXobject/GraphicsCommandList.h"
 #include"DirectX/DirectXobject/DescriptorHeap.h"
+#include"DirectX/DirectXobject/SwapChain.h"
+#include"DirectX/DirectXobject/RenderTarget.h"
 
 /* -- 各Factory -- */
 #include"DirectX/GraphicsCommandObjectFactory.h"
@@ -35,6 +37,9 @@ DirectXRenderer::~DirectXRenderer() = default;
 //@details	作成したウィンドウに描画するため引数で参照を渡す
 //@return	作成の成否
 [[nodiscard]] bool DirectXRenderer::create_renderer(windowInterface* window) {
+
+	auto hwnd = (HWND)window->get_native_handle();
+	auto window_size = window->get_window_size();
 
 	//	DXGIインスタンス生成
 	dxgi_ = std::make_unique<DXGI>();
@@ -68,6 +73,26 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 
+	//	スワップチェーンインスタンス生成
+	swap_chain = std::make_unique<SwapChain>();
+	if (FAILED(swap_chain->create_swapchain(dxgi_->get_DXGI_factory(),graphics_command_object->queue_->get_command_queue(), 
+		window_size, hwnd, buffer_size))) {
+		DEBUG_LOG("DirectXRenderer :: create_swapchain() FAILED");
+		return false;
+	}
+
+	//	最終描画先レンダーターゲットインスタンス生成
+	render_targets.resize(buffer_size);
+	for (unsigned int i = 0; i < buffer_size; i++) {
+
+		auto& p = render_targets[i];
+		p = std::make_unique<RenderTarget>();
+		if (FAILED(p->create_render_target(device_->get_device(), swap_chain->get_swapchain(),
+			static_heap_container->get_discriptor_heap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV)->get_cpu_descriptor_handle(i), i))) {
+			DEBUG_LOG("DirectXRenderer :: create_swapchain() FAILED");
+			return false;
+		}
+	}
 
 	DEBUG_LOG("DirectXRenderer :: create_renderer() SUCCESS");
 	return true;

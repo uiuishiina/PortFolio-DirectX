@@ -1,10 +1,12 @@
 #include"SwapChain.h"
 
+#include<cassert>
+
 ///====================================================================
 /// 初期化関数
 ///====================================================================
 
-//@brief	=== SwapChain 作成関数 ===
+//@brief	=== スワップチェーン作成関数 ===
 //@param	factory		DirectX12 ファクトリ
 //@param	command_queue	DirectX12 コマンドキュー
 //@param	size		スワップチェーンのサイズ
@@ -49,8 +51,9 @@
 /// 実行時処理関数
 ///====================================================================
 
-//@brief	=== SwapChain 取得関数 ===
-//@return	SwapChain インスタンス
+//@brief	=== スワップチェーン取得関数 ===
+//@return	スワップチェーンインスタンス
 [[nodiscard]] IDXGISwapChain4* SwapChain::get_swapchain() const noexcept {
+	assert(swapchain_ && "スワップチェーン nullptr");
 	return swapchain_.Get();
 }

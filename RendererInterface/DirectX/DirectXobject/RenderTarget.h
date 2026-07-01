@@ -37,10 +37,10 @@ public:
 
 	//@brief	=== レンダーターゲット作成関数 ===
 	//@param	swapchain	スワップチェインインスタンス
-	//@param	heap	RTVディスクリプタヒープ
+	//@param	handle	RTVディスクリプタヒープハンドル
 	//@return	作成の成否
-	[[nodiscard]] HRESULT create_render_target(ID3D12Device* device, IDXGISwapChain4* swapchain
-		, ID3D12DescriptorHeap* heap, UINT buffer_index);
+	[[nodiscard]] HRESULT create_render_target(ID3D12Device* device, IDXGISwapChain4* swapchain, 
+		D3D12_CPU_DESCRIPTOR_HANDLE handle, UINT buffer_index);
 
 	//@brief	=== RTVハンドル取得関数 ===
 	//@return	RTV CPUハンドル

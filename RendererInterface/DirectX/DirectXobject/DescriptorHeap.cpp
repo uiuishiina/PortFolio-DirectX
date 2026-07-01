@@ -1,5 +1,7 @@
 #include"DescriptorHeap.h"
 
+#include<cassert>
+
 ///====================================================================
 /// 初期化関数
 ///====================================================================
@@ -36,6 +38,7 @@
 //@brief	=== ディスクリプタヒープ取得関数 ===
 //@return	ディスクリプタヒープインスタンス
 [[nodiscard]] ID3D12DescriptorHeap* DescriptorHeap::get_descriptor_heap() const noexcept {
+	assert(heap_ && "ディスクリプタヒープ nullptr");
 	return heap_.Get();
 }
 
@@ -43,6 +46,8 @@
 //@param	index	ディスクリプタインデックス
 //@return	CPU ディスクリプタハンドル
 [[nodiscard]] D3D12_CPU_DESCRIPTOR_HANDLE DescriptorHeap::get_cpu_descriptor_handle(UINT index) const noexcept {
+
+	assert(heap_ && "ディスクリプタヒープ nullptr");
 	D3D12_CPU_DESCRIPTOR_HANDLE handle{};
 	handle.ptr = heap_.Get()->GetCPUDescriptorHandleForHeapStart().ptr + index * descriptor_size_;
 	return handle;
@@ -52,6 +57,8 @@
 //@param	index	ディスクリプタインデックス
 //@return	GPU ディスクリプタハンドル
 [[nodiscard]] D3D12_GPU_DESCRIPTOR_HANDLE DescriptorHeap::get_gpu_descriptor_handle(UINT index) const noexcept {
+
+	assert(heap_ && "ディスクリプタヒープ nullptr");
 	D3D12_GPU_DESCRIPTOR_HANDLE handle{};
 	handle.ptr = heap_.Get()->GetGPUDescriptorHandleForHeapStart().ptr + index * descriptor_size_;
 	return handle;
