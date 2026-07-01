@@ -158,6 +158,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\GraphicsCommandObjectFactory.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\ResourceBarrierHelper.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\StaticHeapContainer.cpp" />
     <ClCompile Include="..\RendererInterface\RendererFactory.cpp" />
     <ClCompile Include="..\windowInterface\windowFactory.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Fence.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\ResourceBarrierHelper.h" />
     <ClInclude Include="..\RendererInterface\DirectX\StaticHeapContainer.h" />
     <ClInclude Include="..\RendererInterface\RendererFactory.h" />
     <ClInclude Include="..\RendererInterface\RendererInterface.h" />

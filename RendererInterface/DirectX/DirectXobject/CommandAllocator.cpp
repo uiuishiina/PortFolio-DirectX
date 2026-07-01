@@ -19,6 +19,14 @@
 /// 実行時処理関数
 ///====================================================================
 
+//@brief	=== コマンドアロケータリセット関数 ===
+void CommandAllocator::reset_command_allocator() {
+
+	assert(command_allocator_ && "コマンドアロケータ nullptr");
+	const auto hr = command_allocator_->Reset();
+	assert(SUCCEEDED(hr) && "reset_command_allocator FAILED");
+}
+
 //@brief	=== コマンドアロケータ取得関数 ===
 //@return	コマンドアロケータインスタンス
 [[nodiscard]] ID3D12CommandAllocator* CommandAllocator::get_command_allocator() const noexcept {

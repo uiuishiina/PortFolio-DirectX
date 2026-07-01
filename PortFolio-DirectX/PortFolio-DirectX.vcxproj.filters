@@ -99,6 +99,9 @@
     <ClCompile Include="..\RendererInterface\DirectX\StaticHeapContainer.cpp">
       <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\ResourceBarrierHelper.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Debug\DebugLogBuilder.h">
@@ -201,6 +204,9 @@
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\StaticHeapContainer.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\ResourceBarrierHelper.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
   </ItemGroup>

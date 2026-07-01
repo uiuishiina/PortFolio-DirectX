@@ -3,6 +3,11 @@
 #include<memory>
 #include<vector>
 
+
+
+typedef unsigned int        UINT;
+typedef unsigned __int64    UINT64;
+
 ///====================================================================
 /// DirectXオブジェクトクラス前方宣言
 ///====================================================================
@@ -13,7 +18,7 @@ struct GraphicsCommandObject;
 class StaticHeapContainer;
 class SwapChain;
 class RenderTarget;
-//class Fence;
+class Fence;
 
 ///====================================================================
 /// DirectXRenderer クラス
@@ -73,13 +78,28 @@ private:
 	/// Private メンバー変数
 	///====================================================================
 
-	//@brief	== フレームカウント保存変数 ==
-	//@details	何フレーム目かを保存
-	unsigned long long int frame_count{};
+	/* -- 設定 -- */
 
 	//@brief	== フレームバッファサイズ設定変数 ==
 	//@details	描画バッファリングサイズを指定
-	const unsigned int buffer_size = 2;
+	const UINT buffer_size = 2;
+
+	//@breif	== フレームリソースサイズ設定変数 ==
+	//@details	描画に使うフレームリソースサイズを指定
+	const UINT frame_resouse_size = 3;
+
+	//@brief	== フレームカウント保存変数 ==
+	//@details	何フレーム目かを保存
+	UINT64 frame_count{};
+
+	//@brief	== フレームリソースサイクル管理用変数 ==
+	//@details	使用するフレームリソースインデックスを保存
+	UINT64 current_frame_index{};
+
+	//@brief	== フレームバッファ別保存配列 ==
+	//@details	フレームリソース別の描画完了を確認するため待機すればいい値を保存するための配列
+	std::vector<UINT64> frame_index_value{};
+
 
 	/* -- 描画用 -- */
 
@@ -101,5 +121,14 @@ private:
 	//@brief	== 最終描画先レンダーターゲットインスタンス ==
 	std::vector<std::unique_ptr<RenderTarget>> render_targets{};
 
-	
+	//@brief	== Fenceインスタンス ==
+	std::unique_ptr<Fence> fence_{};
+
+	///====================================================================
+	/// Private メンバー関数
+	///====================================================================
+
+	//@brief	=== フレームリソース使用可能確認関数 ===
+	//@details	フレームリソースが使用可能な状態か確認する関数
+	void sync_frame_resource();
 };

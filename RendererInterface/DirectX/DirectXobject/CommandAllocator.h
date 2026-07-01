@@ -34,6 +34,9 @@ public:
 	//@return	作成の成否
 	[[nodiscard]] HRESULT create_command_allocator(ID3D12Device* device, D3D12_COMMAND_LIST_TYPE type);
 
+	//@brief	=== コマンドアロケータリセット関数 ===
+	void reset_command_allocator();
+
 	//@brief	=== コマンドアロケータ取得関数 ===
 	//@return	コマンドアロケータインスタンス
 	[[nodiscard]] ID3D12CommandAllocator* get_command_allocator() const noexcept;

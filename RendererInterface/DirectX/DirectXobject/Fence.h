@@ -2,7 +2,11 @@
 #include<d3d12.h>
 #include<wrl/client.h>
 
+///====================================================================
+/// Fence クラス
+///====================================================================
 
+//@brief	=== フェンスクラス ===
 class Fence final
 {
 public:
@@ -32,6 +36,10 @@ public:
 	//@brief	コマンドキューにフェンスをシグナル
 	//@param	command_queue	フェンスをシグナルするコマンドキュー
 	[[nodiscard]] UINT64 signal(ID3D12CommandQueue* command_queue);
+
+	//@brief	フェンスの値を待機
+	//@param	completed_value	待機するフェンスの値
+	void wait_to_completed_value(UINT64 completed_value) const noexcept;
 
 	//@brief	フェンス値の取得
 	//@return	フェンス値

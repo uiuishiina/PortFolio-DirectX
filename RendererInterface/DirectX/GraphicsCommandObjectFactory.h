@@ -27,13 +27,14 @@ struct GraphicsCommandObject final {
 
 	//@brief	=== コンストラクタ ===
 	GraphicsCommandObject() = delete;
-	GraphicsCommandObject(UINT buffer_size) {
+	GraphicsCommandObject(UINT frame_resouse_size) {
 
 		/* -- 各インスタンス生成 -- */
 
 		queue_ = std::make_unique<CommandQueue>();
 
-		allocators_.resize(buffer_size);
+		//	フレームリソースサイズ分確保
+		allocators_.resize(frame_resouse_size);
 		for (auto& allocator : allocators_)	{
 			allocator = std::make_unique<CommandAllocator>();
 		}

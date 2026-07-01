@@ -32,6 +32,15 @@
 ///====================================================================
 /// 実行時処理関数
 ///====================================================================
+ 
+//@brief	=== 描画用コマンドリストリセット関数 ===
+//@param	allocator	コマンドリストをリセットするコマンドアロケータ
+void GraphicsCommandList::reset_command_list(ID3D12CommandAllocator* allocator) {
+
+	assert(command_list_ && "コマンドリスト nullptr");
+	const auto hr = command_list_->Reset(allocator, nullptr);
+	assert(SUCCEEDED(hr) && "reset_command_list FAILED");
+}
 
 //@brief	=== コマンドリスト取得関数 ===
 //@return	コマンドリストインスタンス

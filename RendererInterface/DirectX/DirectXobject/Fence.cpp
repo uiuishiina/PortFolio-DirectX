@@ -2,6 +2,10 @@
 
 #include<cassert>
 
+///====================================================================
+/// 初期化関数
+///====================================================================
+
 //@brief	=== フェンス作成関数 ===
 //@param	device	DirectX12 デバイス
 //@return	作成の成否
@@ -21,6 +25,10 @@
 	return S_OK;
 }
 
+///====================================================================
+/// 実行時処理関数
+///====================================================================
+
 //@brief	コマンドキューにフェンスをシグナル
 //@param	command_queue	フェンスをシグナルするコマンドキュー
 [[nodiscard]] UINT64 Fence::signal(ID3D12CommandQueue* command_queue) {
@@ -28,10 +36,18 @@
 	assert(fence_ && "フェンス nullptr");
 	fence_value++;
 	const auto hr = command_queue->Signal(fence_.Get(), fence_value);
-	if (FAILED(hr)) {
-		
-	}
+	assert(SUCCEEDED(hr) && "signal FAILED");
 	return fence_value;
+}
+
+//@brief	フェンスの値を待機
+//@param	completed_value	待機するフェンスの値
+void Fence::wait_to_completed_value(UINT64 completed_value) const noexcept {
+
+	assert(fence_ && "フェンス nullptr");
+	const auto hr = fence_->SetEventOnCompletion(completed_value, wait_event);
+	assert(SUCCEEDED(hr) && "wait_to_completed_value FAILED");
+	WaitForSingleObject(wait_event, INFINITE);
 }
 
 //@brief	フェンス値の取得
