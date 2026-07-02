@@ -27,9 +27,16 @@
 
 ///====================================================================
 
+#include<chrono>
+
 #include"DirectXRenderer.h"
 
 #include"../Debug/DebugLogSystem.h"
+
+namespace {
+	const bool create_timer_flag = true;
+	const bool update_timer_flag = false;
+}
 
 ///====================================================================
 
@@ -46,9 +53,11 @@ DirectXRenderer::~DirectXRenderer() = default;
 //@return	作成の成否
 [[nodiscard]] bool DirectXRenderer::create_renderer(windowInterface* window) {
 
+	auto start = std::chrono::high_resolution_clock::now();
+
 	auto hwnd = (HWND)window->get_native_handle();
 	auto window_size = window->get_window_size();
-	frame_index_value.resize(frame_resouse_size, 0);
+	
 	frame_resources.resize(frame_resouse_size);
 
 	//	DXGIインスタンス生成
@@ -125,6 +134,12 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 
+	auto end = std::chrono::high_resolution_clock::now();
+
+	if (create_timer_flag) {
+		DEBUG_LOG("create_renderer end = ", std::to_string(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count()),"us");
+	}
+
 	DEBUG_LOG("DirectXRenderer :: create_renderer() SUCCESS");
 	return true;
 }
@@ -138,10 +153,15 @@ DirectXRenderer::~DirectXRenderer() = default;
 //@brief	=== 描画更新関数 ===
 //@details	毎フレーム更新される想定
 void DirectXRenderer::update_renderer() {
+	
+	auto start = std::chrono::high_resolution_clock::now();
 
 	/* -- 更新前処理 -- */
+
+	// 外部との連携
 	begin_update_renderer();
 
+	//	リソース待機
 	sync_frame_resource();
 
 	/* -- 描画機能更新 -- */
@@ -152,7 +172,6 @@ void DirectXRenderer::update_renderer() {
 	//	参照を保存
 	auto* queue = graphics_queue->get_command_queue();
 	auto* list = graphics_list->get_graphics_command_list();
-
 	auto* allocator = frame_resources[current_frame_index]->get_graphics_allocator();
 
 	// コマンドアロケータリセット
@@ -186,12 +205,21 @@ void DirectXRenderer::update_renderer() {
 	// コマンドキューにコマンドリストを送信
 	ID3D12CommandList* ppCommandLists[] = { list };
 	queue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+	
+	//	シグナルを送って配列に保存
+	frame_resources[current_frame_index]->set_frame_fence_value(fence_->signal(graphics_queue->get_command_queue()));
 
 	// プレゼント
 	swap_chain->get_swapchain()->Present(1, 0);
 
 	/* -- 更新後処理 -- */
 	end_update_renderer();
+
+	auto end = std::chrono::high_resolution_clock::now();
+
+	if (update_timer_flag) {
+		DEBUG_LOG("end = ", std::to_string(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count()), "us");
+	}
 }
 
 //@brief	=== 描画更新前関数 ===
@@ -205,9 +233,6 @@ void DirectXRenderer::begin_update_renderer() {
 //@details	描画機能を更新した後に処理する必要があるものを呼び出す関数
 void DirectXRenderer::end_update_renderer() {
 
-	//	シグナルを送って配列に保存
-	frame_index_value[current_frame_index] = fence_->signal(graphics_queue->get_command_queue());
-
 	//	フレームリソースサイクルを進める
 	current_frame_index = (current_frame_index + 1) % frame_resouse_size;
 }
@@ -217,8 +242,14 @@ void DirectXRenderer::end_update_renderer() {
 void DirectXRenderer::sync_frame_resource() {
 
 	//	これから使うフレームリソースが使える状態か判断
-	if (frame_index_value[current_frame_index] > fence_->get_completed_value()) {
-		fence_->wait_to_completed_value(frame_index_value[current_frame_index]);
+	auto value = frame_resources[current_frame_index]->get_frame_fence_value();
+	auto complete = fence_->get_completed_value();
+	if (value > complete) {
+
+		fence_->wait_to_completed_value(value);
+
+		//DEBUG_LOG("DirectXRenderer :: wait() : frame = " ,std::to_string(current_frame_index),
+		//	", value = ", std::to_string(value),", complete = ", std::to_string(complete));
 	}
 }
 
@@ -231,8 +262,8 @@ void DirectXRenderer::sync_frame_resource() {
 void DirectXRenderer::end_renderer() {
 
 	//	すべてのフレームリソースが使われなくなるまで待機
-	for (auto& value : frame_index_value) {
-		fence_->wait_to_completed_value(value);
+	for (auto& value : frame_resources) {
+		fence_->wait_to_completed_value(value->get_frame_fence_value());
 	}
 
 	DEBUG_LOG("DirectXRenderer :: end_renderer()");

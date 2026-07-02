@@ -99,10 +99,6 @@ private:
 	//@details	使用するフレームリソースインデックスを保存
 	UINT64 current_frame_index{};
 
-	//@brief	== フレームバッファ別保存配列 ==
-	//@details	フレームリソース別の描画完了を確認するため待機すればいい値を保存するための配列
-	std::vector<UINT64> frame_index_value{};
-
 	//@brief	== 背景色保存関数 ==
 	const float back_ground_color[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
