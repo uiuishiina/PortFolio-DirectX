@@ -18,4 +18,12 @@ public:
 	//@param	window	作成に使用するウィンドウクラス参照
 	//@return	描画機能クラスインスタンス
 	static std::unique_ptr<RendererInterface> create_renderer(windowInterface* window);
+private:
+	///====================================================================
+	/// クラス設定
+	///====================================================================
+
+	//コンストラクタ,デストラクタ
+	RendererFactory() = default;
+	~RendererFactory() = default;
 };

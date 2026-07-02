@@ -157,7 +157,9 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Fence.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.cpp" />
-    <ClCompile Include="..\RendererInterface\DirectX\GraphicsCommandObjectFactory.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\CommandObjectFactory.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\FrameResource.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\FrameResourceFactory.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\ResourceBarrierHelper.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\StaticHeapContainer.cpp" />
     <ClCompile Include="..\RendererInterface\RendererFactory.cpp" />
@@ -183,7 +185,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_resource_helpers.h" />
     <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_root_signature.h" />
     <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_state_object.h" />
-    <ClInclude Include="..\RendererInterface\DirectX\GraphicsCommandObjectFactory.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\CommandObjectFactory.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\CommandAllocator.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\GraphicsCommandList.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\CommandQueue.h" />
@@ -193,6 +195,8 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Fence.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\FrameResource.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\FrameResourceFactory.h" />
     <ClInclude Include="..\RendererInterface\DirectX\ResourceBarrierHelper.h" />
     <ClInclude Include="..\RendererInterface\DirectX\StaticHeapContainer.h" />
     <ClInclude Include="..\RendererInterface\RendererFactory.h" />

@@ -93,13 +93,19 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\GraphicsCommandObjectFactory.cpp">
+    <ClCompile Include="..\RendererInterface\DirectX\CommandObjectFactory.cpp">
       <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\StaticHeapContainer.cpp">
       <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\ResourceBarrierHelper.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\FrameResource.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\FrameResourceFactory.cpp">
       <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
   </ItemGroup>
@@ -200,13 +206,19 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.h">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\GraphicsCommandObjectFactory.h">
+    <ClInclude Include="..\RendererInterface\DirectX\CommandObjectFactory.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\StaticHeapContainer.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\ResourceBarrierHelper.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\FrameResource.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\FrameResourceFactory.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
   </ItemGroup>

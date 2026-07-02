@@ -19,4 +19,13 @@ public:
 	//@param	to		リソースの遷移先の状態
 	//@return	作成されたリソースバリア
 	static [[nodiscard]] D3D12_RESOURCE_BARRIER create_resource_barrier(ID3D12Resource* resource, D3D12_RESOURCE_STATES from, D3D12_RESOURCE_STATES to) noexcept;
+
+private:
+	///====================================================================
+	/// クラス設定
+	///====================================================================
+
+	//コンストラクタ,デストラクタ
+	ResourceBarrierHelper() = default;
+	~ResourceBarrierHelper() = default;
 };

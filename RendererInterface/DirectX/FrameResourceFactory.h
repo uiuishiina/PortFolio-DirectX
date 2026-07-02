@@ -1,30 +1,29 @@
 #pragma once
-#include"windowInterface.h"
+#include"FrameResource.h"
+#include<vector>
 #include<memory>
 
 ///====================================================================
-/// windowFactory クラス
+/// FrameResourceFactory クラス
 ///====================================================================
 
-//@brief	=== ウィンドウファクトリークラス ===
-class windowFactory final
+//@brief	=== フレームリソースファクトリークラス ===
+class FrameResourceFactory final
 {
 public:
 	///====================================================================
 	/// Public メンバー関数
 	///====================================================================
 
-	//@brief	=== ウィンドウ作成関数 ===
-	//@param	window_size	ウィンドウサイズ
-	//@return	ウィンドウインスタンス
-	static std::unique_ptr<windowInterface> create_window(WindowSize window_size);
+
+	static [[nodiscard]] HRESULT create_frame_resources(ID3D12Device* device,UINT size,std::vector<std::unique_ptr<FrameResource>>& out);
 
 private:
 	///====================================================================
 	/// クラス設定
 	///====================================================================
-	
+
 	//コンストラクタ,デストラクタ
-	windowFactory() = default;
-	~windowFactory() = default;
+	FrameResourceFactory() = default;
+	~FrameResourceFactory() = default;
 };

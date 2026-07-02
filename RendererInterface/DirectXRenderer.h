@@ -14,7 +14,10 @@ typedef unsigned __int64    UINT64;
 
 class DXGI;
 class Device;
-struct GraphicsCommandObject;
+class CommandQueue;
+class GraphicsCommandList;
+
+class FrameResource;
 class StaticHeapContainer;
 class SwapChain;
 class RenderTarget;
@@ -100,6 +103,8 @@ private:
 	//@details	フレームリソース別の描画完了を確認するため待機すればいい値を保存するための配列
 	std::vector<UINT64> frame_index_value{};
 
+	//@brief	== 背景色保存関数 ==
+	const float back_ground_color[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 	/* -- 描画用 -- */
 
@@ -109,8 +114,14 @@ private:
 	//@brief	== Deviceインスタンス ==
 	std::unique_ptr<Device> device_{};
 
-	//@brief	== 描画用コマンドオブジェクト構造体インスタンス ==
-	std::unique_ptr<GraphicsCommandObject> graphics_command_object{};
+	//@brief	== 描画用コマンドキューインスタンス ==
+	std::unique_ptr<CommandQueue> graphics_queue{};
+
+	//@brief	== 描画用コマンドリストインスタンス ==
+	std::unique_ptr<GraphicsCommandList> graphics_list{};
+
+	//@brief	== フレームリソース配列インスタンス ==
+	std::vector<std::unique_ptr<FrameResource>> frame_resources{};
 
 	//@brief	== 初期作成ディスクリプタヒープコンテナインスタンス ==
 	std::unique_ptr<StaticHeapContainer> static_heap_container{};

@@ -14,8 +14,12 @@
 #include"DirectX/DirectXobject/RenderTarget.h"
 #include"DirectX/DirectXobject/Fence.h"
 
+#include"DirectX/FrameResource.h"
+
 /* -- 各Factory -- */
-#include"DirectX/GraphicsCommandObjectFactory.h"
+#include"DirectX/CommandObjectFactory.h"
+#include"DirectX/FrameResourceFactory.h"
+
 #include"DirectX/StaticHeapContainer.h"
 
 
@@ -45,6 +49,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 	auto hwnd = (HWND)window->get_native_handle();
 	auto window_size = window->get_window_size();
 	frame_index_value.resize(frame_resouse_size, 0);
+	frame_resources.resize(frame_resouse_size);
 
 	//	DXGIインスタンス生成
 	dxgi_ = std::make_unique<DXGI>();
@@ -60,10 +65,24 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 
-	//	描画用コマンドオブジェクト構造体インスタンス生成
-	graphics_command_object = std::make_unique<GraphicsCommandObject>(frame_resouse_size);
-	if (FAILED(GraphicsCommandObjectFactory::create_GraphicsCommandObject(device_->get_device(), *graphics_command_object))) {
-		DEBUG_LOG("DirectXRenderer :: create_GraphicsCommandObject() FAILED");
+	//	描画用コマンドキューインスタンス生成
+	graphics_queue = std::make_unique<CommandQueue>();
+	if (FAILED(CommandObjectFactory::create_graphics_command_queue(device_->get_device(),*graphics_queue))) {
+		DEBUG_LOG("DirectXRenderer :: create_command_queue() FAILED");
+		return false;
+	}
+
+	//	フレームリソース生成
+	if (FAILED(FrameResourceFactory::create_frame_resources(device_->get_device(), frame_resouse_size, frame_resources))) {
+		DEBUG_LOG("DirectXRenderer :: create_frame_resources() FAILED");
+		return false;
+	}
+
+	//	描画用コマンドリストインスタンス生成
+	graphics_list = std::make_unique<GraphicsCommandList>();
+	if (FAILED(CommandObjectFactory::create_graphics_command_list(device_->get_device(), 
+		frame_resources[0]->get_graphics_allocator()->get_command_allocator(), *graphics_list))) {
+		DEBUG_LOG("DirectXRenderer :: create_command_queue() FAILED");
 		return false;
 	}
 	
@@ -80,7 +99,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 	//	スワップチェーンインスタンス生成
 	swap_chain = std::make_unique<SwapChain>();
-	if (FAILED(swap_chain->create_swapchain(dxgi_->get_DXGI_factory(),graphics_command_object->queue_->get_command_queue(), 
+	if (FAILED(swap_chain->create_swapchain(dxgi_->get_DXGI_factory(), graphics_queue->get_command_queue(),
 		window_size, hwnd, buffer_size))) {
 		DEBUG_LOG("DirectXRenderer :: create_swapchain() FAILED");
 		return false;
@@ -130,17 +149,16 @@ void DirectXRenderer::update_renderer() {
 	//	描画先のバッファインデックスを取得
 	const auto backBufferIndex = swap_chain->get_swapchain()->GetCurrentBackBufferIndex();
 
-	//	描画用コマンドオブジェクト分解取得
-	auto queue = graphics_command_object->queue_.get();
-	auto allocator = graphics_command_object->allocators_[current_frame_index].get();
-	auto list_ins = graphics_command_object->list_.get();
+	//	参照を保存
+	auto* queue = graphics_queue->get_command_queue();
+	auto* list = graphics_list->get_graphics_command_list();
+
+	auto* allocator = frame_resources[current_frame_index]->get_graphics_allocator();
 
 	// コマンドアロケータリセット
 	allocator->reset_command_allocator();
 	// コマンドリストリセット
-	list_ins->reset_command_list(allocator->get_command_allocator());
-
-	auto* list = list_ins->get_graphics_command_list();
+	graphics_list->reset_command_list(allocator->get_command_allocator());
 
 	auto target = render_targets[backBufferIndex].get();
 
@@ -155,8 +173,7 @@ void DirectXRenderer::update_renderer() {
 	list->OMSetRenderTargets(1, handles, false, nullptr);
 
 	// レンダーターゲットのクリア
-	const float clearColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
-	list->ClearRenderTargetView(handles[0], clearColor, 0, nullptr);
+	list->ClearRenderTargetView(handles[0], back_ground_color, 0, nullptr);
 
 	// リソースバリアでレンダーターゲットを RenderTarget から Present へ変更
 	auto rtToP = ResourceBarrierHelper::create_resource_barrier(target->get_render_target(),
@@ -168,7 +185,7 @@ void DirectXRenderer::update_renderer() {
 
 	// コマンドキューにコマンドリストを送信
 	ID3D12CommandList* ppCommandLists[] = { list };
-	queue->get_command_queue()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+	queue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
 	// プレゼント
 	swap_chain->get_swapchain()->Present(1, 0);
@@ -189,7 +206,7 @@ void DirectXRenderer::begin_update_renderer() {
 void DirectXRenderer::end_update_renderer() {
 
 	//	シグナルを送って配列に保存
-	frame_index_value[current_frame_index] = fence_->signal(graphics_command_object->queue_->get_command_queue());
+	frame_index_value[current_frame_index] = fence_->signal(graphics_queue->get_command_queue());
 
 	//	フレームリソースサイクルを進める
 	current_frame_index = (current_frame_index + 1) % frame_resouse_size;
