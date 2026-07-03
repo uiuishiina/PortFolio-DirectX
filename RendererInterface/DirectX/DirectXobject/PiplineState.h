@@ -1,6 +1,44 @@
 #pragma once
 #include<d3d12.h>
 #include<wrl/client.h>
+#include<vector>
+
+struct PipelineStateDesc
+{
+	// Input Layout
+	std::vector<D3D12_INPUT_ELEMENT_DESC> input_elements{};
+
+	// Shader
+	ID3DBlob* vs_hlsl{};
+	ID3DBlob* ps_hlsl{};
+	ID3DBlob* gs_hlsl{};
+	ID3DBlob* hs_hlsl{};
+	ID3DBlob* ds_hlsl{};
+
+	// State
+	D3D12_RASTERIZER_DESC    rasterizer_desc{};
+	D3D12_BLEND_DESC         blend_desc{};
+	D3D12_DEPTH_STENCIL_DESC depth_stencil_desc{};
+
+	// Primitive
+	D3D12_PRIMITIVE_TOPOLOGY_TYPE primitive_topology = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+
+	// Render Targets
+	UINT num_render_targets = 1;
+	DXGI_FORMAT rtv_formats[D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT] {
+		DXGI_FORMAT_R8G8B8A8_UNORM
+	};
+
+	DXGI_FORMAT dsv_format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+	// Multi Sampling
+	UINT sample_count = 1;
+	UINT sample_quality = 0;
+
+	// Sample Mask
+	UINT sample_mask = UINT_MAX;
+};
+
 
 ///====================================================================
 /// PiplineState クラス
@@ -30,7 +68,7 @@ public:
 
 	//@breif	=== パイプラインステート作成関数 ===
 	//@return	作成の成否
-	[[nodiscard]] HRESULT create_piplinestate();
+	[[nodiscard]] HRESULT create_piplinestate(ID3D12Device* device, PipelineStateDesc& desc);
 
 	//@brief	=== パイプラインステート取得関数 ===
 	//@return	パイプラインステートインスタンス

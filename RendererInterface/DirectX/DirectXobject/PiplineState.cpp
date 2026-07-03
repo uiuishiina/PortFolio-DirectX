@@ -1,6 +1,8 @@
 #include "PiplineState.h"
+#include"../PiplineStateHelper.h"
 
-HRESULT PiplineState::create_piplinestate()
+[[nodiscard]] HRESULT PiplineState::create_piplinestate(ID3D12Device* device, PipelineStateDesc& desc)
 {
-    return E_NOTIMPL;
+    PipelineStateDesc default_desc = PiplineStateHepler::default_pipline_desc();
+    
 }

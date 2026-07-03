@@ -123,6 +123,9 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\PiplineState.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\PiplineStateHelper.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Debug\DebugLogBuilder.h">
@@ -247,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\PiplineState.h">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\PiplineStateHelper.h">
+      <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
