@@ -34,6 +34,9 @@
     <Filter Include="RendererInterface\DirectX\DirectXobject">
       <UniqueIdentifier>{65a80dd4-a1ab-4888-926b-1b91c14a2e49}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RendererInterface\HLSLshader">
+      <UniqueIdentifier>{d28c53d0-d828-4403-a689-5daf9a29b16c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\EntryPoint.cpp">
@@ -107,6 +110,18 @@
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\FrameResourceFactory.cpp">
       <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RootSignature.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\RootSignatureDescBuilder.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\PiplineState.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -221,10 +236,36 @@
     <ClInclude Include="..\RendererInterface\DirectX\FrameResourceFactory.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.h">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RootSignature.h">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\RootSignatureDescBuilder.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\PiplineState.h">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\windowInterface\WIndowInterface.Readme.txt">
       <Filter>windowInterface</Filter>
     </Text>
+    <Text Include="..\RendererInterface\RendererInterface.Readme.txt">
+      <Filter>RendererInterface</Filter>
+    </Text>
+    <Text Include="..\RendererInterface\DirectX\DirectX.Readme.txt">
+      <Filter>RendererInterface\DirectX</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\RendererInterface\HLSLshader\NormalVertexShader.hlsl">
+      <Filter>RendererInterface\HLSLshader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\RendererInterface\HLSLshader\NormalPixelShader.hlsl">
+      <Filter>RendererInterface\HLSLshader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

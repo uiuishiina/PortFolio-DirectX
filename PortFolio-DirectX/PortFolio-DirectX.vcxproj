@@ -155,12 +155,16 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Device.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\DXGI.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Fence.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\PiplineState.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RootSignature.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\CommandObjectFactory.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\FrameResource.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\FrameResourceFactory.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\ResourceBarrierHelper.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\RootSignatureDescBuilder.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\StaticHeapContainer.cpp" />
     <ClCompile Include="..\RendererInterface\RendererFactory.cpp" />
     <ClCompile Include="..\windowInterface\windowFactory.cpp" />
@@ -193,11 +197,15 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Device.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\DXGI.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Fence.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\PiplineState.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RootSignature.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.h" />
     <ClInclude Include="..\RendererInterface\DirectX\FrameResource.h" />
     <ClInclude Include="..\RendererInterface\DirectX\FrameResourceFactory.h" />
     <ClInclude Include="..\RendererInterface\DirectX\ResourceBarrierHelper.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\RootSignatureDescBuilder.h" />
     <ClInclude Include="..\RendererInterface\DirectX\StaticHeapContainer.h" />
     <ClInclude Include="..\RendererInterface\RendererFactory.h" />
     <ClInclude Include="..\RendererInterface\RendererInterface.h" />
@@ -206,7 +214,21 @@
     <ClInclude Include="..\windowInterface\WindowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\RendererInterface\DirectX\DirectX.Readme.txt" />
+    <Text Include="..\RendererInterface\RendererInterface.Readme.txt" />
     <Text Include="..\windowInterface\WIndowInterface.Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\RendererInterface\HLSLshader\NormalPixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\RendererInterface\HLSLshader\NormalVertexShader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

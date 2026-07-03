@@ -3,7 +3,9 @@
 #include<memory>
 #include<vector>
 
-
+///====================================================================
+/// UINT互換typeof
+///====================================================================
 
 typedef unsigned int        UINT;
 typedef unsigned __int64    UINT64;
@@ -22,6 +24,7 @@ class StaticHeapContainer;
 class SwapChain;
 class RenderTarget;
 class Fence;
+class RootSignature;
 
 ///====================================================================
 /// DirectXRenderer クラス
@@ -130,6 +133,9 @@ private:
 
 	//@brief	== Fenceインスタンス ==
 	std::unique_ptr<Fence> fence_{};
+
+	//@brief	== RootSignatureインスタンス ==
+	std::unique_ptr<RootSignature> root_{};
 
 	///====================================================================
 	/// Private メンバー関数

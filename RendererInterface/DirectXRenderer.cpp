@@ -1,6 +1,6 @@
 
 ///====================================================================
-/// 前方宣言用
+/// IncludeFile 参照まとめ
 ///====================================================================
 
 /* -- DirectXObject --*/ 
@@ -13,29 +13,46 @@
 #include"DirectX/DirectXobject/SwapChain.h"
 #include"DirectX/DirectXobject/RenderTarget.h"
 #include"DirectX/DirectXobject/Fence.h"
+#include"DirectX/DirectXobject/RootSignature.h"
 
+
+/* -- DirectXObjectを利用したまとめクラス -- */
 #include"DirectX/FrameResource.h"
+#include"DirectX/StaticHeapContainer.h"
 
 /* -- 各Factory -- */
 #include"DirectX/CommandObjectFactory.h"
 #include"DirectX/FrameResourceFactory.h"
 
-#include"DirectX/StaticHeapContainer.h"
-
-
+/* -- 各ヘルパー -- */
 #include"DirectX/ResourceBarrierHelper.h"
 
-///====================================================================
+#include"DirectX/RootSignatureDescBuilder.h"
 
+/* -- その他 -- */
 #include<chrono>
-
 #include"DirectXRenderer.h"
 
 #include"../Debug/DebugLogSystem.h"
 
+///====================================================================
+/// 無名空間
+///====================================================================
+
 namespace {
-	const bool create_timer_flag = true;
+	//@brief	== 初期化時タイマー計測フラグ ==
+	const bool create_timer_flag = false;
+
+	//@brief	== 描画ループ時タイマー計測フラグ ==
 	const bool update_timer_flag = false;
+
+	//@brief	=== タイマーデバッグ表示関数 ===
+	//@param	name	出力ウィンドウに出す名前
+	//@param	after	計測したい区間の後ろ
+	//@param	before	計測したい区間の前
+	static void debug_timer(const std::string& name, std::chrono::steady_clock::time_point& after, std::chrono::steady_clock::time_point& before) {
+		DEBUG_LOG(name, std::to_string(std::chrono::duration_cast<std::chrono::microseconds>(after - before).count()), "us");
+	}
 }
 
 ///====================================================================
@@ -53,12 +70,16 @@ DirectXRenderer::~DirectXRenderer() = default;
 //@return	作成の成否
 [[nodiscard]] bool DirectXRenderer::create_renderer(windowInterface* window) {
 
+	/* ==================== 作成前処理 ==================== */
+
 	auto start = std::chrono::high_resolution_clock::now();
 
 	auto hwnd = (HWND)window->get_native_handle();
 	auto window_size = window->get_window_size();
 	
 	frame_resources.resize(frame_resouse_size);
+
+	/* ==================== 作成開始 ==================== */
 
 	//	DXGIインスタンス生成
 	dxgi_ = std::make_unique<DXGI>();
@@ -134,10 +155,21 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 
+	//	RootSignatureインスタンス生成
+	root_ = std::make_unique<RootSignature>();
+	RootSignatureDesc root_desc{};
+	RootSignatureDescBuilder::add_flags(root_desc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+	if (FAILED(root_->create_root_signature(device_->get_device(), root_desc))) {
+		DEBUG_LOG("DirectXRenderer :: create_root_signature() FAILED");
+		return false;
+	}
+
+
+
 	auto end = std::chrono::high_resolution_clock::now();
 
 	if (create_timer_flag) {
-		DEBUG_LOG("create_renderer end = ", std::to_string(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count()),"us");
+		debug_timer("create = ", end, start);
 	}
 
 	DEBUG_LOG("DirectXRenderer :: create_renderer() SUCCESS");
@@ -156,7 +188,7 @@ void DirectXRenderer::update_renderer() {
 	
 	auto start = std::chrono::high_resolution_clock::now();
 
-	/* -- 更新前処理 -- */
+	/* ==================== 更新前処理 ==================== */
 
 	// 外部との連携
 	begin_update_renderer();
@@ -164,8 +196,9 @@ void DirectXRenderer::update_renderer() {
 	//	リソース待機
 	sync_frame_resource();
 
-	/* -- 描画機能更新 -- */
+	/* ==================== 描画機能更新 ==================== */
 
+	/* - 準備 - */
 	//	描画先のバッファインデックスを取得
 	const auto backBufferIndex = swap_chain->get_swapchain()->GetCurrentBackBufferIndex();
 
@@ -173,14 +206,15 @@ void DirectXRenderer::update_renderer() {
 	auto* queue = graphics_queue->get_command_queue();
 	auto* list = graphics_list->get_graphics_command_list();
 	auto* allocator = frame_resources[current_frame_index]->get_graphics_allocator();
+	auto target = render_targets[backBufferIndex].get();
 
 	// コマンドアロケータリセット
 	allocator->reset_command_allocator();
 	// コマンドリストリセット
 	graphics_list->reset_command_list(allocator->get_command_allocator());
 
-	auto target = render_targets[backBufferIndex].get();
 
+	/* - 更新開始 - */
 	// リソースバリアでレンダーターゲットを Present から RenderTarget へ変更
 	auto pToRT = ResourceBarrierHelper::create_resource_barrier(target->get_render_target(),
 		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
@@ -209,16 +243,24 @@ void DirectXRenderer::update_renderer() {
 	//	シグナルを送って配列に保存
 	frame_resources[current_frame_index]->set_frame_fence_value(fence_->signal(graphics_queue->get_command_queue()));
 
+	auto t0 = std::chrono::high_resolution_clock::now();
+
 	// プレゼント
 	swap_chain->get_swapchain()->Present(1, 0);
 
-	/* -- 更新後処理 -- */
+	auto t1 = std::chrono::high_resolution_clock::now();
+	if (update_timer_flag) {
+		debug_timer("present = ", t1, t0);
+	}
+
+	/* ==================== 更新後処理 ==================== */
+
+	//	次フレーム移行への後処理
 	end_update_renderer();
 
 	auto end = std::chrono::high_resolution_clock::now();
-
 	if (update_timer_flag) {
-		DEBUG_LOG("end = ", std::to_string(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count()), "us");
+		debug_timer("update = ", end, start);
 	}
 }
 
@@ -246,6 +288,7 @@ void DirectXRenderer::sync_frame_resource() {
 	auto complete = fence_->get_completed_value();
 	if (value > complete) {
 
+		//	使えるまで待機
 		fence_->wait_to_completed_value(value);
 
 		//DEBUG_LOG("DirectXRenderer :: wait() : frame = " ,std::to_string(current_frame_index),
