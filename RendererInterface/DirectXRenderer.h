@@ -26,6 +26,10 @@ class RenderTarget;
 class Fence;
 class RootSignature;
 
+class PiplineState;
+
+class StaticShaderContainer;
+
 ///====================================================================
 /// DirectXRenderer クラス
 ///====================================================================
@@ -136,6 +140,12 @@ private:
 
 	//@brief	== RootSignatureインスタンス ==
 	std::unique_ptr<RootSignature> root_{};
+
+	//@brief	== NormalVertexShaderインスタンス ==
+	std::unique_ptr<StaticShaderContainer> shader_container{};
+
+	//@brief	== PiplineStateインスタンス ==
+	std::unique_ptr<PiplineState> pipline_{};
 
 	///====================================================================
 	/// Private メンバー関数

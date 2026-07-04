@@ -124,7 +124,13 @@
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\PiplineStateHelper.cpp">
-      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\HashAllocator.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\StaticShaderContainer.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -252,6 +258,12 @@
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\PiplineStateHelper.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\StaticShaderContainer.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\HashAllocator.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
   </ItemGroup>

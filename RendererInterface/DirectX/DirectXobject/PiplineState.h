@@ -8,6 +8,8 @@ struct PipelineStateDesc
 	// Input Layout
 	std::vector<D3D12_INPUT_ELEMENT_DESC> input_elements{};
 
+	ID3D12RootSignature* root_signature{};
+
 	// Shader
 	ID3DBlob* vs_hlsl{};
 	ID3DBlob* ps_hlsl{};
@@ -37,6 +39,13 @@ struct PipelineStateDesc
 
 	// Sample Mask
 	UINT sample_mask = UINT_MAX;
+
+	UINT node_mask = 0;
+
+	D3D12_PIPELINE_STATE_FLAGS flags = D3D12_PIPELINE_STATE_FLAG_NONE;
+
+
+	PipelineStateDesc();
 };
 
 

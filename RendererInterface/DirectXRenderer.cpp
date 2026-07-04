@@ -14,11 +14,13 @@
 #include"DirectX/DirectXobject/RenderTarget.h"
 #include"DirectX/DirectXobject/Fence.h"
 #include"DirectX/DirectXobject/RootSignature.h"
-
+#include"DirectX/DirectXobject/ShaderCompiler.h"
+#include"DirectX/DirectXobject/PiplineState.h"
 
 /* -- DirectXObjectを利用したまとめクラス -- */
 #include"DirectX/FrameResource.h"
 #include"DirectX/StaticHeapContainer.h"
+#include"DirectX/StaticShaderContainer.h"
 
 /* -- 各Factory -- */
 #include"DirectX/CommandObjectFactory.h"
@@ -26,6 +28,7 @@
 
 /* -- 各ヘルパー -- */
 #include"DirectX/ResourceBarrierHelper.h"
+#include"DirectX/PiplineStateHelper.h"
 
 #include"DirectX/RootSignatureDescBuilder.h"
 
@@ -164,7 +167,34 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 
+	shader_container = std::make_unique<StaticShaderContainer>();
+	if (FAILED(shader_container->compile_shader("Normal_vs", L"../RendererInterface/HLSLshader/NormalVertexShader.hlsl", "main", "vs_5_0"))) {
+		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Normal_vs");
+		return false;
+	}
+	const auto vs_hash = shader_container->get_shader_hash_key("Normal_vs");
 
+	if (FAILED(shader_container->compile_shader("Normal_ps", L"../RendererInterface/HLSLshader/NormalPixelShader.hlsl", "main", "ps_5_0"))) {
+		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Normal_ps");
+		return false;
+	}
+	
+	//	PiplineStateインスタンス生成
+	pipline_ = std::make_unique<PiplineState>();
+	PipelineStateDesc pipline_desc{};
+
+	pipline_desc.input_elements = { 
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+	};
+
+	pipline_desc.root_signature = root_->get_root_signature();
+	pipline_desc.vs_hlsl = shader_container->get_shader(vs_hash.value());
+	pipline_desc.ps_hlsl = shader_container->get_shader("Normal_ps");
+
+	if (FAILED(pipline_->create_piplinestate(device_->get_device(), pipline_desc))) {
+		DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
+		return false;
+	}
 
 	auto end = std::chrono::high_resolution_clock::now();
 
