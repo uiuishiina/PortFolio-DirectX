@@ -25,10 +25,13 @@ class SwapChain;
 class RenderTarget;
 class Fence;
 class RootSignature;
-
 class PiplineState;
 
 class StaticShaderContainer;
+
+namespace polygon {
+	class Polygon;
+}
 
 ///====================================================================
 /// DirectXRenderer クラス
@@ -90,6 +93,9 @@ private:
 
 	/* -- 設定 -- */
 
+	//@brief	== ウィンドウサイズ保存変数 ==
+	WindowSize window_size{};
+
 	//@brief	== フレームバッファサイズ設定変数 ==
 	//@details	描画バッファリングサイズを指定
 	const UINT buffer_size = 2;
@@ -141,11 +147,14 @@ private:
 	//@brief	== RootSignatureインスタンス ==
 	std::unique_ptr<RootSignature> root_{};
 
-	//@brief	== NormalVertexShaderインスタンス ==
+	//@brief	== シェーダーコンテナインスタンス ==
 	std::unique_ptr<StaticShaderContainer> shader_container{};
 
 	//@brief	== PiplineStateインスタンス ==
 	std::unique_ptr<PiplineState> pipline_{};
+
+	//@brief	== ポリゴンインスタンス ==
+	std::unique_ptr<polygon::Polygon> polygon_{};
 
 	///====================================================================
 	/// Private メンバー関数

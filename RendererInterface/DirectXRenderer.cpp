@@ -16,6 +16,7 @@
 #include"DirectX/DirectXobject/RootSignature.h"
 #include"DirectX/DirectXobject/ShaderCompiler.h"
 #include"DirectX/DirectXobject/PiplineState.h"
+#include"DirectX/DirectXobject/Polygon.h"
 
 /* -- DirectXObjectを利用したまとめクラス -- */
 #include"DirectX/FrameResource.h"
@@ -78,7 +79,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 	auto start = std::chrono::high_resolution_clock::now();
 
 	auto hwnd = (HWND)window->get_native_handle();
-	auto window_size = window->get_window_size();
+	window_size = window->get_window_size();
 	
 	frame_resources.resize(frame_resouse_size);
 
@@ -167,6 +168,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 
+	//	シェーダーコンテナインスタンス生成&登録
 	shader_container = std::make_unique<StaticShaderContainer>();
 	if (FAILED(shader_container->compile_shader("Normal_vs", L"../RendererInterface/HLSLshader/NormalVertexShader.hlsl", "main", "vs_5_0"))) {
 		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Normal_vs");
@@ -183,16 +185,44 @@ DirectXRenderer::~DirectXRenderer() = default;
 	pipline_ = std::make_unique<PiplineState>();
 	PipelineStateDesc pipline_desc{};
 
+	//	頂点入力設定
 	pipline_desc.input_elements = { 
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 	};
 
+	//	必要なインスタンス設定
 	pipline_desc.root_signature = root_->get_root_signature();
 	pipline_desc.vs_hlsl = shader_container->get_shader(vs_hash.value());
 	pipline_desc.ps_hlsl = shader_container->get_shader("Normal_ps");
 
+	pipline_desc.rasterizer_desc.FillMode = D3D12_FILL_MODE_SOLID;	//	D3D12_FILL_MODE_WIREFRAME
+	pipline_desc.blend_desc = PiplineStateHepler::get_enable_blend();
+	
 	if (FAILED(pipline_->create_piplinestate(device_->get_device(), pipline_desc))) {
 		DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
+		return false;
+	}
+
+	//	ポリゴンインスタンス生成
+	polygon_ = std::make_unique<polygon::Polygon>();
+
+	//	頂点情報作成
+	struct normal_polygon {
+		float pos_[3]{};
+		float color_[4]{};
+	};
+	polygon::PolygonDesc<normal_polygon> polygon_desc{};
+	polygon_desc.vertex_data = {
+		{{-0.5f,-0.5f,0},{ 1.0f, 0.0f, 0.0f, 1.0f}},
+		{{	  0, 0.5f,0},{ 0.0f, 1.0f, 0.0f, 1.0f}},
+		{{ 0.5f,-0.5f,0},{ 0.0f, 0.0f, 1.0f, 1.0f}}
+	};
+	polygon_desc.index_data = {
+		0,1,2
+	};
+	if (FAILED(polygon_->create_polygon(device_->get_device(), polygon_desc))) {
+		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
 
@@ -243,7 +273,6 @@ void DirectXRenderer::update_renderer() {
 	// コマンドリストリセット
 	graphics_list->reset_command_list(allocator->get_command_allocator());
 
-
 	/* - 更新開始 - */
 	// リソースバリアでレンダーターゲットを Present から RenderTarget へ変更
 	auto pToRT = ResourceBarrierHelper::create_resource_barrier(target->get_render_target(),
@@ -257,6 +286,32 @@ void DirectXRenderer::update_renderer() {
 
 	// レンダーターゲットのクリア
 	list->ClearRenderTargetView(handles[0], back_ground_color, 0, nullptr);
+
+
+	// パイプラインステートとルートシグネチャの設定
+	list->SetGraphicsRootSignature(root_->get_root_signature());
+	list->SetPipelineState(pipline_->get_pipline_state());
+
+	// ビューポート設定
+	D3D12_VIEWPORT viewport{};
+	viewport.TopLeftX = 0.0f;
+	viewport.TopLeftY = 0.0f;
+	viewport.Width = static_cast<float>(window_size.width);
+	viewport.Height = static_cast<float>(window_size.height);
+	viewport.MinDepth = 0.0f;
+	viewport.MaxDepth = 1.0f;
+	list->RSSetViewports(1, &viewport);
+
+	// シザー矩形設定
+	D3D12_RECT scissorRect{};
+	scissorRect.left = 0;
+	scissorRect.top = 0;
+	scissorRect.right = window_size.width;
+	scissorRect.bottom = window_size.height;
+	list->RSSetScissorRects(1, &scissorRect);
+
+	// ポリゴンの描画
+	polygon_->draw_polygon(list);
 
 	// リソースバリアでレンダーターゲットを RenderTarget から Present へ変更
 	auto rtToP = ResourceBarrierHelper::create_resource_barrier(target->get_render_target(),

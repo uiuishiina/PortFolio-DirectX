@@ -132,6 +132,9 @@
     <ClCompile Include="..\RendererInterface\DirectX\StaticShaderContainer.cpp">
       <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Polygon.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Debug\DebugLogBuilder.h">
@@ -265,6 +268,9 @@
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\HashAllocator.h">
       <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Polygon.h">
+      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,8 +1,11 @@
 #include "PiplineState.h"
 #include"../PiplineStateHelper.h"
 
+#include<cassert>
+
 PipelineStateDesc::PipelineStateDesc() {
 
+    //  デフォルトで埋める
     rasterizer_desc = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
     blend_desc = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
     depth_stencil_desc = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
@@ -12,13 +15,13 @@ PipelineStateDesc::PipelineStateDesc() {
 {
     D3D12_GRAPHICS_PIPELINE_STATE_DESC pipeline_desc{};
 
-    // Input Layout
+    // インプットレイアウト配列設定
     pipeline_desc.InputLayout = { desc.input_elements.data(), static_cast<UINT>(desc.input_elements.size()) };
 
-    // Root Signature
+    // ルートシグネチャー参照設定
     pipeline_desc.pRootSignature = desc.root_signature;
 
-    // Shader
+    // 各種シェーダー参照設定
     if (desc.vs_hlsl) {
         pipeline_desc.VS = { desc.vs_hlsl->GetBufferPointer(),desc.vs_hlsl->GetBufferSize() };
     }
@@ -39,31 +42,32 @@ PipelineStateDesc::PipelineStateDesc() {
         pipeline_desc.DS = { desc.ds_hlsl->GetBufferPointer(),desc.ds_hlsl->GetBufferSize() };
     }
 
-    // State
+    // 各種構造体設定
     pipeline_desc.RasterizerState = desc.rasterizer_desc;
     pipeline_desc.BlendState = desc.blend_desc;
     pipeline_desc.DepthStencilState = desc.depth_stencil_desc;
 
-    // Primitive
+    // トポロジー設定
     pipeline_desc.PrimitiveTopologyType = desc.primitive_topology;
 
-    // Render Target
+    // レンダーターゲット設定
     pipeline_desc.NumRenderTargets = desc.num_render_targets;
     for (UINT i = 0; i < desc.num_render_targets; ++i) {
         pipeline_desc.RTVFormats[i] = desc.rtv_formats[i];
     }
 
+    //  デプスステート設定
     pipeline_desc.DSVFormat = desc.dsv_format;
 
-    // Multi Sampling
+    // 各種サンプラー設定
     pipeline_desc.SampleDesc.Count = desc.sample_count;
     pipeline_desc.SampleDesc.Quality = desc.sample_quality;
 
-    // Sample Mask
+    // 各種マスク設定
     pipeline_desc.SampleMask = desc.sample_mask;
-
-    // Misc
     pipeline_desc.NodeMask = desc.node_mask;
+
+    //  パイプラインステートフラグ設定
     pipeline_desc.Flags = desc.flags;
     
     const auto hr = device->CreateGraphicsPipelineState(&pipeline_desc, IID_PPV_ARGS(&pipline_state));
@@ -71,4 +75,11 @@ PipelineStateDesc::PipelineStateDesc() {
         return hr;
     }
     return S_OK;
+}
+
+//@brief	=== パイプラインステート取得関数 ===
+//@return	パイプラインステートインスタンス
+[[nodiscard]] ID3D12PipelineState* PiplineState::get_pipline_state()const noexcept {
+    assert(pipline_state && "パイプラインステート nullptr");
+    return pipline_state.Get();
 }

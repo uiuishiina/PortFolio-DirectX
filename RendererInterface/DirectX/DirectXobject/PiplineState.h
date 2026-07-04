@@ -3,51 +3,61 @@
 #include<wrl/client.h>
 #include<vector>
 
+///====================================================================
+/// PipelineStateDesc 構造体
+///====================================================================
+
+//@breif	=== パイプラインステート設定構造体 ===
 struct PipelineStateDesc
 {
-	// Input Layout
+	//@brief	== インプットレイアウト配列 ==
 	std::vector<D3D12_INPUT_ELEMENT_DESC> input_elements{};
 
+	//@brief	== ルートシグネチャー参照 ==
 	ID3D12RootSignature* root_signature{};
 
-	// Shader
+	//	各種シェーダー参照
 	ID3DBlob* vs_hlsl{};
 	ID3DBlob* ps_hlsl{};
 	ID3DBlob* gs_hlsl{};
 	ID3DBlob* hs_hlsl{};
 	ID3DBlob* ds_hlsl{};
 
-	// State
+	// 各種構造体設定
 	D3D12_RASTERIZER_DESC    rasterizer_desc{};
 	D3D12_BLEND_DESC         blend_desc{};
 	D3D12_DEPTH_STENCIL_DESC depth_stencil_desc{};
 
-	// Primitive
+	//@brief	== トポロジー設定 ==
 	D3D12_PRIMITIVE_TOPOLOGY_TYPE primitive_topology = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
-	// Render Targets
+	// レンダーターゲット設定
 	UINT num_render_targets = 1;
 	DXGI_FORMAT rtv_formats[D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT] {
 		DXGI_FORMAT_R8G8B8A8_UNORM
 	};
 
+	//@brief	== デプスステート設定 ==
 	DXGI_FORMAT dsv_format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
-	// Multi Sampling
+	// 各種サンプラー設定
 	UINT sample_count = 1;
 	UINT sample_quality = 0;
 
-	// Sample Mask
+	// 各種マスク設定
 	UINT sample_mask = UINT_MAX;
-
 	UINT node_mask = 0;
 
+	//@brief	== パイプラインステートフラグ設定 ==
 	D3D12_PIPELINE_STATE_FLAGS flags = D3D12_PIPELINE_STATE_FLAG_NONE;
 
-
+	///====================================================================
+	/// 構造体設定
+	///====================================================================
+	
+	//コンストラクタ
 	PipelineStateDesc();
 };
-
 
 ///====================================================================
 /// PiplineState クラス
