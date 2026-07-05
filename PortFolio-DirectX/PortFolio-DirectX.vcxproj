@@ -169,6 +169,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\ResourceBarrierHelper.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\RootSignatureDescBuilder.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\StaticHeapContainer.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\StaticPiplineStateContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\StaticShaderContainer.cpp" />
     <ClCompile Include="..\RendererInterface\RendererFactory.cpp" />
     <ClCompile Include="..\windowInterface\windowFactory.cpp" />
@@ -214,6 +215,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\ResourceBarrierHelper.h" />
     <ClInclude Include="..\RendererInterface\DirectX\RootSignatureDescBuilder.h" />
     <ClInclude Include="..\RendererInterface\DirectX\StaticHeapContainer.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\StaticPiplineStateContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\StaticShaderContainer.h" />
     <ClInclude Include="..\RendererInterface\RendererFactory.h" />
     <ClInclude Include="..\RendererInterface\RendererInterface.h" />

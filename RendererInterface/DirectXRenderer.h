@@ -28,6 +28,7 @@ class RootSignature;
 class PiplineState;
 
 class StaticShaderContainer;
+class StaticPiplineStateContainer;
 
 namespace polygon {
 	class Polygon;
@@ -150,8 +151,10 @@ private:
 	//@brief	== シェーダーコンテナインスタンス ==
 	std::unique_ptr<StaticShaderContainer> shader_container{};
 
-	//@brief	== PiplineStateインスタンス ==
-	std::unique_ptr<PiplineState> pipline_{};
+	//@brief	== パイプラインステートコンテナインスタンス ==
+	std::unique_ptr<StaticPiplineStateContainer> pipline_container{};
+
+	UINT normal_pipline{};
 
 	//@brief	== ポリゴンインスタンス ==
 	std::unique_ptr<polygon::Polygon> polygon_{};

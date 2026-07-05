@@ -22,6 +22,7 @@
 #include"DirectX/FrameResource.h"
 #include"DirectX/StaticHeapContainer.h"
 #include"DirectX/StaticShaderContainer.h"
+#include"DirectX/StaticPiplineStateContainer.h"
 
 /* -- 各Factory -- */
 #include"DirectX/CommandObjectFactory.h"
@@ -182,7 +183,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 	}
 	
 	//	PiplineStateインスタンス生成
-	pipline_ = std::make_unique<PiplineState>();
+	pipline_container = std::make_unique<StaticPiplineStateContainer>();
 	PipelineStateDesc pipline_desc{};
 
 	//	頂点入力設定
@@ -196,13 +197,15 @@ DirectXRenderer::~DirectXRenderer() = default;
 	pipline_desc.vs_hlsl = shader_container->get_shader(vs_hash.value());
 	pipline_desc.ps_hlsl = shader_container->get_shader("Normal_ps");
 
-	pipline_desc.rasterizer_desc.FillMode = D3D12_FILL_MODE_SOLID;	//	D3D12_FILL_MODE_WIREFRAME
+	pipline_desc.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
 	pipline_desc.blend_desc = PiplineStateHepler::get_enable_blend();
 	
-	if (FAILED(pipline_->create_piplinestate(device_->get_device(), pipline_desc))) {
+	if (FAILED(pipline_container->create_pipline_state("Normal_pipline", device_->get_device(), pipline_desc))) {
 		DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
 		return false;
 	}
+
+	normal_pipline = pipline_container->get_pipline_state_hash_key("Normal_pipline").value();
 
 	//	ポリゴンインスタンス生成
 	polygon_ = std::make_unique<polygon::Polygon>();
@@ -214,9 +217,9 @@ DirectXRenderer::~DirectXRenderer() = default;
 	};
 	polygon::PolygonDesc<normal_polygon> polygon_desc{};
 	polygon_desc.vertex_data = {
-		{{-0.5f,-0.5f,0},{ 1.0f, 0.0f, 0.0f, 1.0f}},
-		{{	  0, 0.5f,0},{ 0.0f, 1.0f, 0.0f, 1.0f}},
-		{{ 0.5f,-0.5f,0},{ 0.0f, 0.0f, 1.0f, 1.0f}}
+		{{-0.5f,-0.5f, 0.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},
+		{{ 0.0f, 0.5f, 0.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},
+		{{ 0.5f,-0.5f, 0.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}}
 	};
 	polygon_desc.index_data = {
 		0,1,2
@@ -290,7 +293,7 @@ void DirectXRenderer::update_renderer() {
 
 	// パイプラインステートとルートシグネチャの設定
 	list->SetGraphicsRootSignature(root_->get_root_signature());
-	list->SetPipelineState(pipline_->get_pipline_state());
+	list->SetPipelineState(pipline_container->get_pipline_state(normal_pipline));
 
 	// ビューポート設定
 	D3D12_VIEWPORT viewport{};

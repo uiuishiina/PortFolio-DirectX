@@ -135,6 +135,9 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Polygon.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\StaticPiplineStateContainer.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Debug\DebugLogBuilder.h">
@@ -271,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Polygon.h">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\StaticPiplineStateContainer.h">
+      <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
