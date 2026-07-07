@@ -37,6 +37,9 @@
     <Filter Include="RendererInterface\HLSLshader">
       <UniqueIdentifier>{d28c53d0-d828-4403-a689-5daf9a29b16c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RendererInterface\DirectX\Container">
+      <UniqueIdentifier>{b3e3bd7a-e014-4e1e-96ef-9b9999efa98b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\EntryPoint.cpp">
@@ -99,9 +102,6 @@
     <ClCompile Include="..\RendererInterface\DirectX\CommandObjectFactory.cpp">
       <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\StaticHeapContainer.cpp">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\ResourceBarrierHelper.cpp">
       <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
@@ -129,14 +129,20 @@
     <ClCompile Include="..\RendererInterface\DirectX\HashAllocator.cpp">
       <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\StaticShaderContainer.cpp">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Polygon.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\StaticPiplineStateContainer.cpp">
-      <Filter>RendererInterface\DirectX</Filter>
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticHeapContainer.cpp">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticPiplineStateContainer.cpp">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticRootSignatureContainer.cpp">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.cpp">
+      <Filter>RendererInterface\DirectX\Container</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -239,9 +245,6 @@
     <ClInclude Include="..\RendererInterface\DirectX\CommandObjectFactory.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\StaticHeapContainer.h">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\ResourceBarrierHelper.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
@@ -266,17 +269,23 @@
     <ClInclude Include="..\RendererInterface\DirectX\PiplineStateHelper.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\StaticShaderContainer.h">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\HashAllocator.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Polygon.h">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\StaticPiplineStateContainer.h">
-      <Filter>RendererInterface\DirectX</Filter>
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticHeapContainer.h">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticPiplineStateContainer.h">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticRootSignatureContainer.h">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.h">
+      <Filter>RendererInterface\DirectX\Container</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

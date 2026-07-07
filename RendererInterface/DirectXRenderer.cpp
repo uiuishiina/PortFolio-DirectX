@@ -20,9 +20,10 @@
 
 /* -- DirectXObjectを利用したまとめクラス -- */
 #include"DirectX/FrameResource.h"
-#include"DirectX/StaticHeapContainer.h"
-#include"DirectX/StaticShaderContainer.h"
-#include"DirectX/StaticPiplineStateContainer.h"
+#include"DirectX/Container/StaticHeapContainer.h"
+#include"DirectX/Container/StaticShaderContainer.h"
+#include"DirectX/Container/StaticRootSignatureContainer.h"
+#include"DirectX/Container/StaticPiplineStateContainer.h"
 
 /* -- 各Factory -- */
 #include"DirectX/CommandObjectFactory.h"
@@ -161,10 +162,10 @@ DirectXRenderer::~DirectXRenderer() = default;
 	}
 
 	//	RootSignatureインスタンス生成
-	root_ = std::make_unique<RootSignature>();
+	root_signature_container = std::make_unique<StaticRootSignatureContainer>();
 	RootSignatureDesc root_desc{};
 	RootSignatureDescBuilder::add_flags(root_desc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
-	if (FAILED(root_->create_root_signature(device_->get_device(), root_desc))) {
+	if (FAILED(root_signature_container->create_root_signature("Normal_root",device_->get_device(), root_desc))) {
 		DEBUG_LOG("DirectXRenderer :: create_root_signature() FAILED");
 		return false;
 	}
@@ -193,13 +194,13 @@ DirectXRenderer::~DirectXRenderer() = default;
 	};
 
 	//	必要なインスタンス設定
-	pipline_desc.root_signature = root_->get_root_signature();
+	pipline_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
 	pipline_desc.vs_hlsl = shader_container->get_shader(vs_hash.value());
 	pipline_desc.ps_hlsl = shader_container->get_shader("Normal_ps");
 
 	pipline_desc.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
 	pipline_desc.blend_desc = PiplineStateHepler::get_enable_blend();
-	
+		
 	if (FAILED(pipline_container->create_pipline_state("Normal_pipline", device_->get_device(), pipline_desc))) {
 		DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
 		return false;
@@ -292,7 +293,7 @@ void DirectXRenderer::update_renderer() {
 
 
 	// パイプラインステートとルートシグネチャの設定
-	list->SetGraphicsRootSignature(root_->get_root_signature());
+	list->SetGraphicsRootSignature(root_signature_container->get_root_signature("Normal_root"));
 	list->SetPipelineState(pipline_container->get_pipline_state(normal_pipline));
 
 	// ビューポート設定

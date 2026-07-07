@@ -38,7 +38,7 @@ struct PipelineStateDesc
 	};
 
 	//@brief	== デプスステート設定 ==
-	DXGI_FORMAT dsv_format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	DXGI_FORMAT dsv_format = DXGI_FORMAT_UNKNOWN;
 
 	// 各種サンプラー設定
 	UINT sample_count = 1;
@@ -86,6 +86,8 @@ public:
 	///====================================================================
 
 	//@breif	=== パイプラインステート作成関数 ===
+	//@param	device	DirectX12 デバイス
+	//@param	desc	パイプラインステート設定
 	//@return	作成の成否
 	[[nodiscard]] HRESULT create_piplinestate(ID3D12Device* device, PipelineStateDesc& desc);
 

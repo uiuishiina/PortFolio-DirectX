@@ -148,6 +148,10 @@
     <ClCompile Include="..\Debug\DebugLogSystem.cpp" />
     <ClCompile Include="..\Debug\DebugLogThread.cpp" />
     <ClCompile Include="..\RendererInterface\DirectXRenderer.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticHeapContainer.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticPiplineStateContainer.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticRootSignatureContainer.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\CommandAllocator.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\GraphicsCommandList.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\CommandQueue.cpp" />
@@ -168,9 +172,6 @@
     <ClCompile Include="..\RendererInterface\DirectX\PiplineStateHelper.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\ResourceBarrierHelper.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\RootSignatureDescBuilder.cpp" />
-    <ClCompile Include="..\RendererInterface\DirectX\StaticHeapContainer.cpp" />
-    <ClCompile Include="..\RendererInterface\DirectX\StaticPiplineStateContainer.cpp" />
-    <ClCompile Include="..\RendererInterface\DirectX\StaticShaderContainer.cpp" />
     <ClCompile Include="..\RendererInterface\RendererFactory.cpp" />
     <ClCompile Include="..\windowInterface\windowFactory.cpp" />
     <ClCompile Include="..\windowInterface\WindowsWindow.cpp" />
@@ -195,6 +196,10 @@
     <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_root_signature.h" />
     <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_state_object.h" />
     <ClInclude Include="..\RendererInterface\DirectX\CommandObjectFactory.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticHeapContainer.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticPiplineStateContainer.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticRootSignatureContainer.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\CommandAllocator.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\GraphicsCommandList.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\CommandQueue.h" />
@@ -214,9 +219,6 @@
     <ClInclude Include="..\RendererInterface\DirectX\PiplineStateHelper.h" />
     <ClInclude Include="..\RendererInterface\DirectX\ResourceBarrierHelper.h" />
     <ClInclude Include="..\RendererInterface\DirectX\RootSignatureDescBuilder.h" />
-    <ClInclude Include="..\RendererInterface\DirectX\StaticHeapContainer.h" />
-    <ClInclude Include="..\RendererInterface\DirectX\StaticPiplineStateContainer.h" />
-    <ClInclude Include="..\RendererInterface\DirectX\StaticShaderContainer.h" />
     <ClInclude Include="..\RendererInterface\RendererFactory.h" />
     <ClInclude Include="..\RendererInterface\RendererInterface.h" />
     <ClInclude Include="..\windowInterface\windowFactory.h" />

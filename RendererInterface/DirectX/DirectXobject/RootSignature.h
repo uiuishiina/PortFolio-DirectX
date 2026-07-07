@@ -48,6 +48,7 @@ public:
 
 	//@brief	=== ルートシグネチャ作成関数 ===
 	//@param	device	DirectX12 デバイス
+	//@param	desc	ルートシグネチャー設定
 	//@return	作成の成否
 	[[nodiscard]] HRESULT create_root_signature(ID3D12Device* device, RootSignatureDesc& desc);
 
