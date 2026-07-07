@@ -40,6 +40,9 @@
     <Filter Include="RendererInterface\DirectX\Container">
       <UniqueIdentifier>{b3e3bd7a-e014-4e1e-96ef-9b9999efa98b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RendererInterface\DirectX\Factory&amp;Builder&amp;Helper">
+      <UniqueIdentifier>{e9b569a0-7f8c-4c69-a9a8-962e42980867}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\EntryPoint.cpp">
@@ -99,16 +102,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\CommandObjectFactory.cpp">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\ResourceBarrierHelper.cpp">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\FrameResource.cpp">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\FrameResourceFactory.cpp">
       <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.cpp">
@@ -117,14 +111,8 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RootSignature.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\RootSignatureDescBuilder.cpp">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\PiplineState.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
-    </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\PiplineStateHelper.cpp">
-      <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\HashAllocator.cpp">
       <Filter>RendererInterface\DirectX</Filter>
@@ -143,6 +131,21 @@
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.cpp">
       <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\CommandObjectFactory.cpp">
+      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\FrameResourceFactory.cpp">
+      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PiplineStateHelper.cpp">
+      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceBarrierHelper.cpp">
+      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\RootSignatureDescBuilder.cpp">
+      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -242,16 +245,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.h">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\CommandObjectFactory.h">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\ResourceBarrierHelper.h">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\FrameResource.h">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\FrameResourceFactory.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.h">
@@ -260,14 +254,8 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RootSignature.h">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\RootSignatureDescBuilder.h">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\PiplineState.h">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\PiplineStateHelper.h">
-      <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\HashAllocator.h">
       <Filter>RendererInterface\DirectX</Filter>
@@ -286,6 +274,21 @@
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.h">
       <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\CommandObjectFactory.h">
+      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\FrameResourceFactory.h">
+      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PiplineStateHelper.h">
+      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceBarrierHelper.h">
+      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\RootSignatureDescBuilder.h">
+      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

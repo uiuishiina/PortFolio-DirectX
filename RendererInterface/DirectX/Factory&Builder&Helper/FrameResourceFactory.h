@@ -1,22 +1,22 @@
 #pragma once
-#include"DirectXobject/PiplineState.h"
-#include"AddFile/d3dx12.h"
+#include"../FrameResource.h"
+#include<vector>
+#include<memory>
 
 ///====================================================================
-/// PiplineStateHepler クラス
+/// FrameResourceFactory クラス
 ///====================================================================
 
-//@brief	=== パイプラインステートヘルパークラス ===
-class PiplineStateHepler final
+//@brief	=== フレームリソースファクトリークラス ===
+class FrameResourceFactory final
 {
 public:
 	///====================================================================
 	/// Public メンバー関数
 	///====================================================================
 
-	//@brief	=== ブレンド有効化設定作成関数 ===
-	//@return	ブレンド有効化設定
-	static [[nodiscard]] D3D12_BLEND_DESC get_enable_blend();
+
+	static [[nodiscard]] HRESULT create_frame_resources(ID3D12Device* device,UINT size,std::vector<std::unique_ptr<FrameResource>>& out);
 
 private:
 	///====================================================================
@@ -24,6 +24,6 @@ private:
 	///====================================================================
 
 	//コンストラクタ,デストラクタ
-	PiplineStateHepler() = default;
-	~PiplineStateHepler() = default;
+	FrameResourceFactory() = default;
+	~FrameResourceFactory() = default;
 };

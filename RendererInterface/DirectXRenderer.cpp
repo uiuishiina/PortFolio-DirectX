@@ -26,14 +26,14 @@
 #include"DirectX/Container/StaticPiplineStateContainer.h"
 
 /* -- 各Factory -- */
-#include"DirectX/CommandObjectFactory.h"
-#include"DirectX/FrameResourceFactory.h"
+#include"DirectX/Factory&Builder&Helper/CommandObjectFactory.h"
+#include"DirectX/Factory&Builder&Helper/FrameResourceFactory.h"
 
 /* -- 各ヘルパー -- */
-#include"DirectX/ResourceBarrierHelper.h"
-#include"DirectX/PiplineStateHelper.h"
+#include"DirectX/Factory&Builder&Helper/ResourceBarrierHelper.h"
+#include"DirectX/Factory&Builder&Helper/PiplineStateHelper.h"
 
-#include"DirectX/RootSignatureDescBuilder.h"
+#include"DirectX/Factory&Builder&Helper/RootSignatureDescBuilder.h"
 
 /* -- その他 -- */
 #include<chrono>

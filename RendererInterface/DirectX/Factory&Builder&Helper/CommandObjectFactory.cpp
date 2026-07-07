@@ -1,5 +1,5 @@
 #include"CommandObjectFactory.h"
-#include"DirectXobject/Device.h"
+#include"../DirectXobject/Device.h"
 
 
 //@brief	=== 描画用コマンドキュー作成関数 ===

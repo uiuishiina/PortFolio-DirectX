@@ -1,6 +1,6 @@
 #include"FrameResource.h"
 
-#include"CommandObjectFactory.h"
+#include"Factory&Builder&Helper/CommandObjectFactory.h"
 
 ///====================================================================
 /// 初期化時間数

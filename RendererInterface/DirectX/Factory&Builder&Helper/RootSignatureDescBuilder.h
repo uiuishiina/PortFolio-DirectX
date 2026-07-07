@@ -1,5 +1,5 @@
 #pragma once
-#include"DirectXobject/RootSignature.h"
+#include"../DirectXobject/RootSignature.h"
 
 ///====================================================================
 /// RootSignatureDescBuilder クラス

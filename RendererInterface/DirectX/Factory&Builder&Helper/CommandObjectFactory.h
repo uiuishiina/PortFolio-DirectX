@@ -1,7 +1,7 @@
 #pragma once
-#include"DirectXobject/CommandQueue.h"
-#include"DirectXobject/CommandAllocator.h"
-#include"DirectXobject/GraphicsCommandList.h"
+#include"../DirectXobject/CommandQueue.h"
+#include"../DirectXobject/CommandAllocator.h"
+#include"../DirectXobject/GraphicsCommandList.h"
 #include<memory>
 #include<vector>
 
