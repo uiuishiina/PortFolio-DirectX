@@ -198,7 +198,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 	pipline_desc.vs_hlsl = shader_container->get_shader(vs_hash.value());
 	pipline_desc.ps_hlsl = shader_container->get_shader("Normal_ps");
 
-	pipline_desc.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
+	pipline_desc.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(2);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
 	pipline_desc.blend_desc = PiplineStateHepler::get_enable_blend();
 		
 	if (FAILED(pipline_container->create_pipline_state("Normal_pipline", device_->get_device(), pipline_desc))) {
@@ -210,7 +210,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 	//	ポリゴンインスタンス生成
 	polygon_ = std::make_unique<polygon::Polygon>();
-
+	
 	//	頂点情報作成
 	struct normal_polygon {
 		float pos_[3]{};
@@ -291,11 +291,6 @@ void DirectXRenderer::update_renderer() {
 	// レンダーターゲットのクリア
 	list->ClearRenderTargetView(handles[0], back_ground_color, 0, nullptr);
 
-
-	// パイプラインステートとルートシグネチャの設定
-	list->SetGraphicsRootSignature(root_signature_container->get_root_signature("Normal_root"));
-	list->SetPipelineState(pipline_container->get_pipline_state(normal_pipline));
-
 	// ビューポート設定
 	D3D12_VIEWPORT viewport{};
 	viewport.TopLeftX = 0.0f;
@@ -313,6 +308,10 @@ void DirectXRenderer::update_renderer() {
 	scissorRect.right = window_size.width;
 	scissorRect.bottom = window_size.height;
 	list->RSSetScissorRects(1, &scissorRect);
+
+	// パイプラインステートとルートシグネチャの設定
+	list->SetGraphicsRootSignature(root_signature_container->get_root_signature("Normal_root"));
+	list->SetPipelineState(pipline_container->get_pipline_state(normal_pipline));
 
 	// ポリゴンの描画
 	polygon_->draw_polygon(list);

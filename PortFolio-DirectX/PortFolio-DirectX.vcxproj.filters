@@ -290,6 +290,9 @@
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\RootSignatureDescBuilder.h">
       <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
     </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\RenderPath.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\windowInterface\WIndowInterface.Readme.txt">
