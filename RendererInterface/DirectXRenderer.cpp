@@ -16,7 +16,7 @@
 #include"DirectX/DirectXobject/RootSignature.h"
 #include"DirectX/DirectXobject/ShaderCompiler.h"
 #include"DirectX/DirectXobject/PiplineState.h"
-#include"DirectX/DirectXobject/Polygon.h"
+#include"DirectX/DirectXobject/Mesh.h"
 
 /* -- DirectXObjectを利用したまとめクラス -- */
 #include"DirectX/FrameResource.h"
@@ -209,14 +209,14 @@ DirectXRenderer::~DirectXRenderer() = default;
 	normal_pipline = pipline_container->get_pipline_state_hash_key("Normal_pipline").value();
 
 	//	ポリゴンインスタンス生成
-	polygon_ = std::make_unique<polygon::Polygon>();
+	polygon_ = std::make_unique<render::mesh::Mesh>();
 	
 	//	頂点情報作成
 	struct normal_polygon {
 		float pos_[3]{};
 		float color_[4]{};
 	};
-	polygon::PolygonDesc<normal_polygon> polygon_desc{};
+	render::mesh::MeshDesc<normal_polygon> polygon_desc{};
 	polygon_desc.vertex_data = {
 		{{-0.5f,-0.5f, 0.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},
 		{{ 0.0f, 0.5f, 0.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},
@@ -225,7 +225,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 	polygon_desc.index_data = {
 		0,1,2
 	};
-	if (FAILED(polygon_->create_polygon(device_->get_device(), polygon_desc))) {
+	if (FAILED(polygon_->create_mesh(device_->get_device(), polygon_desc))) {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
@@ -314,7 +314,7 @@ void DirectXRenderer::update_renderer() {
 	list->SetPipelineState(pipline_container->get_pipline_state(normal_pipline));
 
 	// ポリゴンの描画
-	polygon_->draw_polygon(list);
+	polygon_->draw_mesh(list);
 
 	// リソースバリアでレンダーターゲットを RenderTarget から Present へ変更
 	auto rtToP = ResourceBarrierHelper::create_resource_barrier(target->get_render_target(),

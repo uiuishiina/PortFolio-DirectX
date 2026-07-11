@@ -1,4 +1,4 @@
-#include"Polygon.h"
+#include"Mesh.h"
 #include"../AddFile/d3dx12.h"
 
 ///====================================================================
@@ -7,7 +7,7 @@
 
 //@breif	=== ポリゴン描画関数 ===
 //@param	list	描画用コマンドリスト参照
-void polygon::Polygon::draw_polygon(ID3D12GraphicsCommandList* list) const noexcept {
+void render::mesh::Mesh::draw_mesh(ID3D12GraphicsCommandList* list) const noexcept {
 
 	list->IASetVertexBuffers(0, 1, &vertex_buffer_view);
 	list->IASetIndexBuffer(&index_buffer_view);
@@ -25,7 +25,7 @@ void polygon::Polygon::draw_polygon(ID3D12GraphicsCommandList* list) const noexc
 //@param	device	DirectX12 デバイス
 //@param	T_memory_size	データ型サイズ
 //@return	作成の成否
-[[nodiscard]] HRESULT polygon::Polygon::create_vertex_buffer(ID3D12Device* device, UINT T_buffer_size, UINT T_memory_size) {
+[[nodiscard]] HRESULT render::mesh::Mesh::create_vertex_buffer(ID3D12Device* device, UINT T_buffer_size, UINT T_memory_size) {
 
 	const auto heap_propeties =CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 	const auto resource_desc = CD3DX12_RESOURCE_DESC::Buffer(T_buffer_size);
@@ -52,7 +52,7 @@ void polygon::Polygon::draw_polygon(ID3D12GraphicsCommandList* list) const noexc
 //@param	device	DirectX12 デバイス
 //@param	T_data_size	データ配列サイズ
 //@return	作成の成否
-[[nodiscard]] HRESULT  polygon::Polygon::create_index_buffer(ID3D12Device* device, UINT T_data_size, DXGI_FORMAT format) {
+[[nodiscard]] HRESULT  render::mesh::Mesh::create_index_buffer(ID3D12Device* device, UINT T_data_size, DXGI_FORMAT format) {
 
 	const auto heap_propeties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 	const auto resource_desc = CD3DX12_RESOURCE_DESC::Buffer(T_data_size);

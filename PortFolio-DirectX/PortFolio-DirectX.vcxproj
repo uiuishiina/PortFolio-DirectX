@@ -160,7 +160,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\DXGI.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Fence.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\PiplineState.cpp" />
-    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Polygon.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Mesh.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RootSignature.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.cpp" />
@@ -207,7 +207,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\DXGI.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Fence.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\PiplineState.h" />
-    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Polygon.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Mesh.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RootSignature.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.h" />
@@ -219,7 +219,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\RootSignatureDescBuilder.h" />
     <ClInclude Include="..\RendererInterface\DirectX\FrameResource.h" />
     <ClInclude Include="..\RendererInterface\DirectX\HashAllocator.h" />
-    <ClInclude Include="..\RendererInterface\DirectX\RenderPath.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DrawState.h" />
     <ClInclude Include="..\RendererInterface\RendererFactory.h" />
     <ClInclude Include="..\RendererInterface\RendererInterface.h" />
     <ClInclude Include="..\windowInterface\windowFactory.h" />

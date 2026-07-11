@@ -31,8 +31,10 @@ class StaticShaderContainer;
 class StaticRootSignatureContainer;
 class StaticPiplineStateContainer;
 
-namespace polygon {
-	class Polygon;
+namespace render {
+	namespace mesh {
+		class Mesh;
+	}
 }
 
 ///====================================================================
@@ -158,7 +160,7 @@ private:
 	UINT normal_pipline{};
 
 	//@brief	== ポリゴンインスタンス ==
-	std::unique_ptr<polygon::Polygon> polygon_{};
+	std::unique_ptr<render::mesh::Mesh> polygon_{};
 	
 	///====================================================================
 	/// Private メンバー関数

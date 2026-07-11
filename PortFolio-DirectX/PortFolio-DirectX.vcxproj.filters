@@ -117,7 +117,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\HashAllocator.cpp">
       <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Polygon.cpp">
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Mesh.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticHeapContainer.cpp">
@@ -260,7 +260,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\HashAllocator.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Polygon.h">
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Mesh.h">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticHeapContainer.h">
@@ -290,7 +290,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\RootSignatureDescBuilder.h">
       <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\RenderPath.h">
+    <ClInclude Include="..\RendererInterface\DirectX\DrawState.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
