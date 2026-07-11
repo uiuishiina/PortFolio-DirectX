@@ -198,7 +198,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 	pipline_desc.vs_hlsl = shader_container->get_shader(vs_hash.value());
 	pipline_desc.ps_hlsl = shader_container->get_shader("Normal_ps");
 
-	pipline_desc.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(2);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
+	pipline_desc.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
 	pipline_desc.blend_desc = PiplineStateHepler::get_enable_blend();
 		
 	if (FAILED(pipline_container->create_pipline_state("Normal_pipline", device_->get_device(), pipline_desc))) {

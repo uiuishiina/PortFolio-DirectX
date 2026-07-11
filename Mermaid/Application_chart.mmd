@@ -1,0 +1,21 @@
+flowchart TD
+    subgraph Application初期化
+    AppStart[Application開始] --> A([コンストラクタ])
+    A --> initialize_App(Application初期化処理)
+    initialize_App --> create_window{"create_window()<br>ウィンドウ作成"}
+    create_window -- 作成成功 --> create_renderer{"create_renderer()<br>描画機能作成"}
+    create_window -- 作成失敗 --> FailedEnd[失敗を返す]
+    create_renderer -- 作成成功 --> SuccessEnd[成功を返す]
+    create_renderer -- 作成失敗 --> FailedEnd
+    end
+
+    subgraph Application実行
+    SuccessEnd --> run_App(Applicaiton実行)
+    run_App --> pull_event{"pull_event()<br>ウィンドウの状態を取得"}
+    pull_event --> update_renderer("update_renderer()<br>描画機能更新処理")
+    update_renderer --> pull_event
+    pull_event -- ウィンドウが破棄されるなら --> end_app("end_app()<br>Applicaiton終了処理")
+    end_app --> RendererEnd["end_renderer()<br>描画機能終了"]
+    RendererEnd --> B([デストラクタ])
+    B --> AppEnd[Applicaiton終了]
+    end
