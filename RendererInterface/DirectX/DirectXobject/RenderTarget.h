@@ -1,7 +1,5 @@
 #pragma once
-#include<dxgi1_6.h>
-#include<d3d12.h>
-#include<wrl/client.h>
+#include"TextureResouce.h"
 
 /*
 
@@ -14,7 +12,7 @@
 ///====================================================================
 
 //@brief === レンダーターゲットクラス ===
-class RenderTarget final
+class RenderTarget final: public TextureResouce
 {
 public:
 	///====================================================================
@@ -46,17 +44,11 @@ public:
 	//@return	RTV CPUハンドル
 	[[nodiscard]] D3D12_CPU_DESCRIPTOR_HANDLE get_rtv_handle() const noexcept;
 
-	//@brief	=== レンダーターゲット取得関数 ===
-	//@return	レンダーターゲットインスタンス
-	[[nodiscard]] ID3D12Resource* get_render_target() const noexcept;
-
+	
 private:
 	///====================================================================
 	/// Private メンバー変数
 	///====================================================================
-
-	//@brief	== レンダーターゲットインスタンス ==
-	Microsoft::WRL::ComPtr<ID3D12Resource> render_target_{};
 	
 	//@brief	== レンダーターゲットディスクリプタハンドル ==
 	D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle{};

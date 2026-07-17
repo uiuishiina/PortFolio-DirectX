@@ -24,13 +24,13 @@
 #include"DirectX/Container/StaticShaderContainer.h"
 #include"DirectX/Container/StaticRootSignatureContainer.h"
 #include"DirectX/Container/StaticPiplineStateContainer.h"
+#include"DirectX/DrawState.h"
 
 /* -- 各Factory -- */
 #include"DirectX/Factory&Builder&Helper/CommandObjectFactory.h"
 #include"DirectX/Factory&Builder&Helper/FrameResourceFactory.h"
 
 /* -- 各ヘルパー -- */
-#include"DirectX/Factory&Builder&Helper/ResourceBarrierHelper.h"
 #include"DirectX/Factory&Builder&Helper/PiplineStateHelper.h"
 
 #include"DirectX/Factory&Builder&Helper/RootSignatureDescBuilder.h"
@@ -230,6 +230,34 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 
+	NormalState_ = std::make_unique<render::state::Drawstate>();
+	render::state::DrawStateDesc draw_state_desc{};
+	draw_state_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
+	draw_state_desc.pipline_state = pipline_container->get_pipline_state(normal_pipline);
+
+	// ビューポート設定
+	D3D12_VIEWPORT viewport{};
+	viewport.TopLeftX = 0.0f;
+	viewport.TopLeftY = 0.0f;
+	viewport.Width = static_cast<float>(window_size.width);
+	viewport.Height = static_cast<float>(window_size.height);
+	viewport.MinDepth = 0.0f;
+	viewport.MaxDepth = 1.0f;
+	draw_state_desc.viewport_ = viewport;
+
+	// シザー矩形設定
+	D3D12_RECT scissorRect{};
+	scissorRect.left = 0;
+	scissorRect.top = 0;
+	scissorRect.right = window_size.width;
+	scissorRect.bottom = window_size.height;
+	draw_state_desc.rect_ = scissorRect;
+	if (!NormalState_->creaate_draw_state(draw_state_desc)) {
+		DEBUG_LOG("DirectXRenderer :: creaate_draw_state() FAILED");
+		return false;
+	}
+
+
 	auto end = std::chrono::high_resolution_clock::now();
 
 	if (create_timer_flag) {
@@ -278,11 +306,7 @@ void DirectXRenderer::update_renderer() {
 	graphics_list->reset_command_list(allocator->get_command_allocator());
 
 	/* - 更新開始 - */
-	// リソースバリアでレンダーターゲットを Present から RenderTarget へ変更
-	auto pToRT = ResourceBarrierHelper::create_resource_barrier(target->get_render_target(),
-		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
-
-	list->ResourceBarrier(1, &pToRT);
+	target->barrier_transition(list, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	// レンダーターゲットの設定
 	D3D12_CPU_DESCRIPTOR_HANDLE handles[] = { target->get_rtv_handle() };
@@ -291,36 +315,14 @@ void DirectXRenderer::update_renderer() {
 	// レンダーターゲットのクリア
 	list->ClearRenderTargetView(handles[0], back_ground_color, 0, nullptr);
 
-	// ビューポート設定
-	D3D12_VIEWPORT viewport{};
-	viewport.TopLeftX = 0.0f;
-	viewport.TopLeftY = 0.0f;
-	viewport.Width = static_cast<float>(window_size.width);
-	viewport.Height = static_cast<float>(window_size.height);
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
-	list->RSSetViewports(1, &viewport);
-
-	// シザー矩形設定
-	D3D12_RECT scissorRect{};
-	scissorRect.left = 0;
-	scissorRect.top = 0;
-	scissorRect.right = window_size.width;
-	scissorRect.bottom = window_size.height;
-	list->RSSetScissorRects(1, &scissorRect);
-
-	// パイプラインステートとルートシグネチャの設定
-	list->SetGraphicsRootSignature(root_signature_container->get_root_signature("Normal_root"));
-	list->SetPipelineState(pipline_container->get_pipline_state(normal_pipline));
+	//	
+	NormalState_->set_draw_state(list);
 
 	// ポリゴンの描画
 	polygon_->draw_mesh(list);
 
-	// リソースバリアでレンダーターゲットを RenderTarget から Present へ変更
-	auto rtToP = ResourceBarrierHelper::create_resource_barrier(target->get_render_target(),
-		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
-	list->ResourceBarrier(1, &rtToP);
-
+	target->barrier_transition(list, D3D12_RESOURCE_STATE_PRESENT);
+	
 	// コマンドリストをクローズ
 	list->Close();
 

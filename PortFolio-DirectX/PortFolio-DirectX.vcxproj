@@ -165,6 +165,8 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RootSignature.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\TextureResouce.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DrawState.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\CommandObjectFactory.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\FrameResourceFactory.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PiplineStateHelper.cpp" />
@@ -212,6 +214,8 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RootSignature.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\TextureResouce.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DrawRenderTargets.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\CommandObjectFactory.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\FrameResourceFactory.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PiplineStateHelper.h" />

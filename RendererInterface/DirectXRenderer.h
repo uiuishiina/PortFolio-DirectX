@@ -35,6 +35,9 @@ namespace render {
 	namespace mesh {
 		class Mesh;
 	}
+	namespace state {
+		class Drawstate;
+	}
 }
 
 ///====================================================================
@@ -161,6 +164,8 @@ private:
 
 	//@brief	== ポリゴンインスタンス ==
 	std::unique_ptr<render::mesh::Mesh> polygon_{};
+
+	std::unique_ptr<render::state::Drawstate> NormalState_{};
 	
 	///====================================================================
 	/// Private メンバー関数
