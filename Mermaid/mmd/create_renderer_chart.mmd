@@ -1,0 +1,11 @@
+flowchart TD
+    Start("create_renderer()開始") --> A([rendererInterfaceインスタンス作成])
+    A --> Branch{OSによって分岐}
+    Branch -- Windowsなら --> windows{{DirectXRenerer作成}}
+    Branch -- macOSなら --> macOS{{"mac用描画機能作成(未実装)"}}
+    Branch -- Linuxなら --> LinuxOS{{"Linuxmac用描画機能作成(未実装)"}}
+    windows --> Check{正常に作成できたか}
+    macOS --> Check
+    LinuxOS --> Check
+    Check -- 正常なら --> SuccessEnd([成功を返す])
+    Check -- 失敗なら --> FailedEnd([失敗を返す])

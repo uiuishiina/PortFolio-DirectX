@@ -1,0 +1,11 @@
+flowchart TD
+    Start("create_window()開始") --> A([windowInterfaceインスタンス作成])
+    A --> Branch{OSによって分岐}
+    Branch -- Windowsなら --> windows{{WindowsWindow作成}}
+    Branch -- macOSなら --> macOS{{"macOS作成(未実装)"}}
+    Branch -- Linuxなら --> LinuxOS{{"Linuxは特殊かつ調べきれてないので割愛(未実装)"}}
+    windows --> Check{正常に作成できたか}
+    macOS --> Check
+    LinuxOS --> Check
+    Check -- 正常なら --> SuccessEnd([成功を返す])
+    Check -- 失敗なら --> FailedEnd([失敗を返す])

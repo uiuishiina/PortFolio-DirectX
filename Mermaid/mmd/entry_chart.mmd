@@ -1,0 +1,13 @@
+flowchart LR
+    subgraph group 性別
+    A(A) == 未設定 ==> B("あいうえお()<br>かきくけこ")
+    B --> A
+    A --> C{何かの条件}
+    C -- 男なら --> B
+end
+
+    subgraph group 年齢
+    D{成人済みか} -- 成人済みなら --> E{{アカウント作成}}
+    D -- 未成年なら --> F[(ブロック処理)]
+    F --> A
+    end
