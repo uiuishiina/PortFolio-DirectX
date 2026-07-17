@@ -299,11 +299,14 @@
     <ClInclude Include="..\RendererInterface\DirectX\DrawState.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\DrawRenderTargets.h">
+    <ClInclude Include="..\RendererInterface\DirectX\DrawRenderTargetState.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\TextureResouce.h">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DrawResouces.h">
+      <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

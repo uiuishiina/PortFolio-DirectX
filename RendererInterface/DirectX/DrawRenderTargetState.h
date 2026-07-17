@@ -1,5 +1,5 @@
 #pragma once
-#include<d3d12.h>
+#include"DrawResouces.h"
 #include<vector>
 #include<functional>
 
@@ -39,13 +39,12 @@ namespace render {
 			/// Public メンバー関数
 			///====================================================================
 			
+			void add_render_target(TextureResouce* target);
+
+			void set_targets(DrawResouces& resouces);
 
 		private:
-			///====================================================================
-			/// Private メンバー関数
-			///====================================================================
-
-			std::vector<ID3D12Resource*> render_targets{};
+			std::vector<TextureResouce*> render_targets{};
 		};
 	}
 }

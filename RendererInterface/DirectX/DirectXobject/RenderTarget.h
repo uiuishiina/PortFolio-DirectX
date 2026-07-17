@@ -44,7 +44,6 @@ public:
 	//@return	RTV CPUハンドル
 	[[nodiscard]] D3D12_CPU_DESCRIPTOR_HANDLE get_rtv_handle() const noexcept;
 
-	
 private:
 	///====================================================================
 	/// Private メンバー変数
