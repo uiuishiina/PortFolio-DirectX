@@ -1,26 +1,26 @@
- flowchart TD
-    subgraph group 初期化フロー
-    initialize_renderer([初期化開始]) --> A([各オブジェクトクラス作成])
-    A --> B{正常に作成できたか}
-    B -- 作成成功 --> update_renderer{描画開始}
-    B -- 作成失敗 --> End(プログラム終了)
-    end 
+graph LR
+    accTitle: 描画パス構想図
+    accDescr: 描画パスの構想をまとめて見やすく、想像しやすくしたもの
+    
+    subgraph USePass[パス描画]
+        direction TD
+        subgraph Begin ["Begin()"]
+            SetTarget["RenderTarges設定"]
+            B@{ shape: braces, label: "OMSetRenderTargetsのみ" }
+            SetDrawState["DrawState設定"]
+        end
 
-    subgraph group 描画フロー
-    update_renderer --> C(["begin_update_renderer()<br>外部との連携"])
-    C --> D(["sync_frame_resource()<br>使用できるまで待機"])
-    D --> E([描画更新])
-    E --> F(["end_update_renderer()<br>フレーム移行処理"])
+        
+        subgraph ExecuteCommands [描画コマンド配列実行]
+            C["ResouceBarrier遷移を<br>ここで行う"]
+            D["RenderTargetのClearも<br>ここで行う"]
+            E["DrawCallもここで行う"]
+        end
+
+        subgraph　End ["End()"]
+            F@{ shape: braces, label: "実装するか不明<br>するならここで最後のBarrier遷移" }
+        end
     end
 
-flowchart LR
-    subgraph group 描画更新内部フロー
-    start(["sync_frame_resource()<br>終了"]) --> H([BackBuffer取得])
-    H --> J([コマンド系オブジェクトリセット処理])
-    J --> K([各描画Pass設定])
-    K --> L([Passに設定されたObject描画])
-    L -- Passを全部描画するまでループ --> K
-    L -- Passを全部描画したなら --> N([ListをClose])
-    N --> M([Queueに送信してFenceにSignal])
-    M --> O([スワップチェーンプレゼント])
-    end
+    Begin --> ExecuteCommands
+    ExecuteCommands --> End
