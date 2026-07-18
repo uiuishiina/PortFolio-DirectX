@@ -10,7 +10,7 @@ void  TextureResouce::barrier_transition(ID3D12GraphicsCommandList* list, D3D12_
         return;
     }
     auto barrier = ResourceBarrierHelper::create_resource_barrier(resouce_.Get(),
-        D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+        current_state, next_state);
     list->ResourceBarrier(1, &barrier);
     current_state = next_state;
 }

@@ -200,6 +200,8 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 	pipline_desc.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
 	pipline_desc.blend_desc = PiplineStateHepler::get_enable_blend();
+	pipline_desc.depth_stencil_desc.DepthEnable = FALSE;
+	pipline_desc.depth_stencil_desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
 		
 	if (FAILED(pipline_container->create_pipline_state("Normal_pipline", device_->get_device(), pipline_desc))) {
 		DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
@@ -402,3 +404,4 @@ void DirectXRenderer::end_renderer() {
 	DEBUG_LOG("DirectXRenderer :: end_renderer()");
 	DEBUG_LOG("DirectXRenderer :: frame_count = ", frame_count);
 }
+

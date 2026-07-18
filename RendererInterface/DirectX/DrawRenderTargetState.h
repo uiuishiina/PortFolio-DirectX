@@ -17,7 +17,7 @@ namespace render {
 		/// DrawRenderTargets クラス
 		///====================================================================
 
-		//@brief	=== 描画パス用レンダーターゲット管理クラス ===
+		//@brief	=== 描画パス用レンダーターゲット設定クラス ===
 		class DrawRenderTargetState final
 		{
 		public:
