@@ -1,7 +1,7 @@
 #pragma once
 #include"DrawResouces.h"
 #include<vector>
-#include<functional>
+#include<optional>
 
 ///====================================================================
 /// 描画名前空間
@@ -39,12 +39,28 @@ namespace render {
 			/// Public メンバー関数
 			///====================================================================
 			
-			void add_render_target(TextureResouce* target);
+			//@brief	=== 描画先設定追加関数 ===
+			//@param	slot	追加するターゲットの種類
+			void add_render_target_slot(RenderTargetSlot slot);
 
-			void set_targets(DrawResouces& resouces);
+			//@brief	=== デプスバッファ設定関数 ===
+			//@param	slot	設定するDSVの種類
+			void set_depth(DepthSlot slot);
+
+			//@brief	=== 描画パス実行時レンダーターゲットバインド関数 ==
+			//@param	resouce	描画リソース
+			void apply(resouces::DrawResouces& resouce);
 
 		private:
-			std::vector<TextureResouce*> render_targets{};
+			///====================================================================
+			/// Private メンバー変数
+			///====================================================================
+
+			//@brief	== 追加するレンダーターゲットの設定 ==
+			std::vector<RenderTargetSlot> render_targets_slot{};
+
+			//@brief	== 追加するDSVの設定 ==
+			std::optional<DepthSlot> depth_slot{};
 		};
 	}
 }

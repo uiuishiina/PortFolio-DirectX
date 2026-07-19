@@ -37,6 +37,10 @@ namespace render {
 	}
 	namespace state {
 		class Drawstate;
+		class DrawRenderTargetState;	
+	}
+	namespace command {
+		class DrawCommands;
 	}
 }
 
@@ -166,6 +170,8 @@ private:
 	std::unique_ptr<render::mesh::Mesh> polygon_{};
 
 	std::unique_ptr<render::state::Drawstate> NormalState_{};
+	std::unique_ptr<render::state::DrawRenderTargetState> NormalTargetState_{};
+	std::unique_ptr<render::command::DrawCommands> NormalCommands_{};
 	
 	///====================================================================
 	/// Private メンバー関数

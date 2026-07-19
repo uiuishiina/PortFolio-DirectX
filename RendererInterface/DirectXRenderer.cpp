@@ -24,7 +24,10 @@
 #include"DirectX/Container/StaticShaderContainer.h"
 #include"DirectX/Container/StaticRootSignatureContainer.h"
 #include"DirectX/Container/StaticPiplineStateContainer.h"
+#include"DirectX/DrawResouces.h"
 #include"DirectX/DrawState.h"
+#include"DirectX/DrawRenderTargetState.h"
+#include"DirectX/DrawCommands.h"
 
 /* -- 各Factory -- */
 #include"DirectX/Factory&Builder&Helper/CommandObjectFactory.h"
@@ -232,6 +235,8 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 
+
+
 	NormalState_ = std::make_unique<render::state::Drawstate>();
 	render::state::DrawStateDesc draw_state_desc{};
 	draw_state_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
@@ -259,6 +264,30 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 
+	NormalTargetState_ = std::make_unique<render::state::DrawRenderTargetState>();
+	NormalTargetState_->add_render_target_slot(render::RenderTargetSlot::BackBuffer);
+
+	NormalCommands_ = std::make_unique<render::command::DrawCommands>();
+	NormalCommands_->set_begin_command(
+		[&](render::resouces::DrawResouces& resouce) {
+			auto* target = resouce.get_target(render::RenderTargetSlot::BackBuffer);
+			target->barrier_transition(resouce.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
+			resouce.graphics_list->ClearRenderTargetView(target->get_rtv_handle(), back_ground_color, 0, nullptr);
+		}
+	);
+	NormalCommands_->add_apply_command(
+		[&](render::resouces::DrawResouces& resouce) {
+			polygon_->draw_mesh(graphics_list->get_graphics_command_list());
+		}
+	);
+
+	NormalCommands_->set_end_command(
+		[](render::resouces::DrawResouces& resouce) {
+			auto* target = resouce.get_target(render::RenderTargetSlot::BackBuffer);
+			target->barrier_transition(resouce.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
+			
+		}
+	);
 
 	auto end = std::chrono::high_resolution_clock::now();
 
@@ -296,41 +325,34 @@ void DirectXRenderer::update_renderer() {
 	//	描画先のバッファインデックスを取得
 	const auto backBufferIndex = swap_chain->get_swapchain()->GetCurrentBackBufferIndex();
 
-	//	参照を保存
-	auto* queue = graphics_queue->get_command_queue();
-	auto* list = graphics_list->get_graphics_command_list();
-	auto* allocator = frame_resources[current_frame_index]->get_graphics_allocator();
-	auto target = render_targets[backBufferIndex].get();
+	auto allocator = frame_resources[current_frame_index]->get_graphics_allocator();
 
 	// コマンドアロケータリセット
 	allocator->reset_command_allocator();
 	// コマンドリストリセット
 	graphics_list->reset_command_list(allocator->get_command_allocator());
 
+	render::resouces::DrawResouces resouces{};
+	resouces.graphics_list = graphics_list->get_graphics_command_list();
+	resouces.frame_resouce = frame_resources[current_frame_index].get();
+	resouces.static_heap_container = static_heap_container.get();
+	resouces.render_targets[render::resouces::to_index(render::RenderTargetSlot::BackBuffer)] = render_targets[backBufferIndex].get();
+
 	/* - 更新開始 - */
-	target->barrier_transition(list, D3D12_RESOURCE_STATE_RENDER_TARGET);
+	NormalCommands_->begin(resouces);
 
-	// レンダーターゲットの設定
-	D3D12_CPU_DESCRIPTOR_HANDLE handles[] = { target->get_rtv_handle() };
-	list->OMSetRenderTargets(1, handles, false, nullptr);
+	NormalTargetState_->apply(resouces);
+	NormalState_->apply(resouces);
+	NormalCommands_->apply(resouces);
 
-	// レンダーターゲットのクリア
-	list->ClearRenderTargetView(handles[0], back_ground_color, 0, nullptr);
-
-	//	
-	NormalState_->set_draw_state(list);
-
-	// ポリゴンの描画
-	polygon_->draw_mesh(list);
-
-	target->barrier_transition(list, D3D12_RESOURCE_STATE_PRESENT);
+	NormalCommands_->end(resouces);
 	
 	// コマンドリストをクローズ
-	list->Close();
+	graphics_list->get_graphics_command_list()->Close();
 
 	// コマンドキューにコマンドリストを送信
-	ID3D12CommandList* ppCommandLists[] = { list };
-	queue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+	ID3D12CommandList* ppCommandLists[] = { graphics_list->get_graphics_command_list()};
+	graphics_queue->get_command_queue()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 	
 	//	シグナルを送って配列に保存
 	frame_resources[current_frame_index]->set_frame_fence_value(fence_->signal(graphics_queue->get_command_queue()));

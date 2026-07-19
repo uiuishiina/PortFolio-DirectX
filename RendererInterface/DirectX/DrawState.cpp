@@ -1,9 +1,15 @@
 #include "DrawState.h"
 
+using namespace render::state;
+
+///====================================================================
+/// 初期化関数
+///====================================================================
+
 //@breif	=== 描画設定作成関数 ===
 //@param	desc	描画設定補助構造体
 //@return	作成の成否
-[[nodiscard]] bool render::state::Drawstate::creaate_draw_state(DrawStateDesc& desc)
+[[nodiscard]] bool Drawstate::creaate_draw_state(DrawStateDesc& desc)
 {
     if (!desc.root_signature || !desc.pipline_state) {
         return false;
@@ -16,9 +22,15 @@
     return true;
 }
 
-//@brief	=== 描画設定セット関数 ===
-//@param	list	描画用コマンドリスト
-void render::state::Drawstate::set_draw_state(ID3D12GraphicsCommandList* list) {
+///====================================================================
+/// 実行時処理関数
+///====================================================================
+
+//@brief	=== 描画パス実行時バインド関数 ===
+//@param	resouce	描画リソース
+void Drawstate::apply(resouces::DrawResouces& resouce) {
+
+    auto* list = resouce.graphics_list;
 
     list->RSSetViewports(1, &viewport_);
     list->RSSetScissorRects(1, &rect_);

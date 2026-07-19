@@ -1,5 +1,5 @@
 #pragma once
-#include<d3d12.h>
+#include"DrawResouces.h"
 #include<vector>
 #include<functional>
 
@@ -61,17 +61,15 @@ namespace render {
 			//@return	作成の成否
 			[[nodiscard]] bool creaate_draw_state(DrawStateDesc& desc);
 
-			//@brief	=== 描画設定セット関数 ===
-			//@param	list	描画用コマンドリスト
-			void set_draw_state(ID3D12GraphicsCommandList* list);
+			//@brief	=== 描画パス実行時バインド関数 ===
+			//@param	resouce	描画リソース
+			void apply(resouces::DrawResouces& resouce);
 
 		private:
 			///====================================================================
 			/// Private メンバー関数
 			///====================================================================
 			
-			std::vector<ID3D12Resource*> render_targets{};
-
 			ID3D12RootSignature* root_signature{};
 
 			ID3D12PipelineState* pipline_state{};

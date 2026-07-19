@@ -153,6 +153,12 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\TextureResouce.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DrawRenderTargetState.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DrawCommands.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Debug\DebugLogBuilder.h">
@@ -306,6 +312,9 @@
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DrawResouces.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DrawCommands.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
