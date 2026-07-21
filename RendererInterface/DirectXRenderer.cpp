@@ -236,7 +236,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 	}
 
 
-
+	//	DrawState作成
 	NormalState_ = std::make_unique<render::state::Drawstate>();
 	render::state::DrawStateDesc draw_state_desc{};
 	draw_state_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
@@ -264,9 +264,12 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 
+	//	DrawTargetState作成
 	NormalTargetState_ = std::make_unique<render::state::DrawRenderTargetState>();
+	//	BackBufferを追加
 	NormalTargetState_->add_render_target_slot(render::RenderTargetSlot::BackBuffer);
 
+	//	DrawCommands作成
 	NormalCommands_ = std::make_unique<render::command::DrawCommands>();
 	NormalCommands_->set_begin_command(
 		[&](render::resouces::DrawResouces& resouce) {
@@ -339,6 +342,8 @@ void DirectXRenderer::update_renderer() {
 	resouces.render_targets[render::resouces::to_index(render::RenderTargetSlot::BackBuffer)] = render_targets[backBufferIndex].get();
 
 	/* - 更新開始 - */
+
+	//	ここをまとめてDrawStateにする予定
 	NormalCommands_->begin(resouces);
 
 	NormalTargetState_->apply(resouces);

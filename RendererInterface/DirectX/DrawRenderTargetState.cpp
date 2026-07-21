@@ -26,12 +26,12 @@ void DrawRenderTargetState::set_depth(DepthSlot slot) {
 void DrawRenderTargetState::apply(resouces::DrawResouces& resouce) {
 
 	std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> handles_{};
-	D3D12_CPU_DESCRIPTOR_HANDLE dsv_{};
-
+	
 	for (auto& p : render_targets_slot) {
 		handles_.push_back(resouce.get_target(p)->get_rtv_handle());
 	}
 	if (depth_slot.has_value()) {
+		D3D12_CPU_DESCRIPTOR_HANDLE dsv_{};
 		resouce.graphics_list->OMSetRenderTargets(1, handles_.data(), false, &dsv_);
 	}
 	else {

@@ -4,14 +4,22 @@
 #include"DirectXobject/RenderTarget.h"
 #include<array>
 
+///====================================================================
+/// 描画名前空間
+///====================================================================
+
 namespace render {
+
+	//	描画先を配列で分けるため作成
+
+	//	イメージ
+	///	|バックバッファ用インデックス|GBuffer用インデックス|...
 
 	enum class RenderTargetSlot : uint32_t {
 		BackBuffer,
-
+		GBuffer,
 		Count
 	};
-	inline constexpr size_t RenderTargetCount = static_cast<size_t>(RenderTargetSlot::Count);
 
 	enum class DepthSlot : uint32_t {
 		MainDepth,
@@ -19,6 +27,10 @@ namespace render {
 		Count
 	};
 
+	///====================================================================
+	/// 描画リソース名前空間
+	///====================================================================
+	
 	namespace resouces {
 
 		template<class Enum>
@@ -35,8 +47,7 @@ namespace render {
 
 			StaticHeapContainer* static_heap_container{};
 
-			std::array<RenderTarget*, RenderTargetCount> render_targets{};
-
+			std::array<RenderTarget*, to_index(RenderTargetSlot::Count)> render_targets{};
 
 			RenderTarget* get_target(RenderTargetSlot slot) const	{
 				return render_targets[to_index(slot)];
