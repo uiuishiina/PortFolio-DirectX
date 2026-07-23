@@ -336,5 +336,11 @@
     <FxCompile Include="..\RendererInterface\HLSLshader\NormalPixelShader.hlsl">
       <Filter>RendererInterface\HLSLshader</Filter>
     </FxCompile>
+    <FxCompile Include="..\RendererInterface\HLSLshader\ColorVertexShader.hlsl">
+      <Filter>RendererInterface\HLSLshader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\RendererInterface\HLSLshader\ColorPixelShader.hlsl">
+      <Filter>RendererInterface\HLSLshader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -185,6 +185,15 @@ DirectXRenderer::~DirectXRenderer() = default;
 		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Normal_ps");
 		return false;
 	}
+
+	if (FAILED(shader_container->compile_shader("Color_vs", L"../RendererInterface/HLSLshader/ColorVertexShader.hlsl", "main", "vs_5_0"))) {
+		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Color_vs");
+		return false;
+	}
+	if (FAILED(shader_container->compile_shader("Color_ps", L"../RendererInterface/HLSLshader/ColorPixelShader.hlsl", "main", "ps_5_0"))) {
+		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Color_ps");
+		return false;
+	}
 	
 	//	PiplineStateインスタンス生成
 	pipline_container = std::make_unique<StaticPiplineStateContainer>();
@@ -198,8 +207,8 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 	//	必要なインスタンス設定
 	pipline_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
-	pipline_desc.vs_hlsl = shader_container->get_shader(vs_hash.value());
-	pipline_desc.ps_hlsl = shader_container->get_shader("Normal_ps");
+	pipline_desc.vs_hlsl = shader_container->get_shader("Color_vs");
+	pipline_desc.ps_hlsl = shader_container->get_shader("Color_ps");
 
 	pipline_desc.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
 	pipline_desc.blend_desc = PiplineStateHepler::get_enable_blend();
@@ -217,20 +226,34 @@ DirectXRenderer::~DirectXRenderer() = default;
 	polygon_ = std::make_unique<render::mesh::Mesh>();
 	
 	//	頂点情報作成
-	struct normal_polygon {
+	struct color_polygon {
 		float pos_[3]{};
 		float color_[4]{};
 	};
-	render::mesh::MeshDesc<normal_polygon> polygon_desc{};
-	polygon_desc.vertex_data = {
+	struct normal_polygon {
+		float pos_[3]{};
+	};
+	render::mesh::MeshDesc<color_polygon> color_desc{};
+	color_desc.vertex_data = {
 		{{-0.5f,-0.5f, 0.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},
 		{{ 0.0f, 0.5f, 0.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},
 		{{ 0.5f,-0.5f, 0.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}}
 	};
+	color_desc.index_data = {
+		0,1,2
+	};
+
+	render::mesh::MeshDesc<normal_polygon> polygon_desc{};
+	polygon_desc.vertex_data = {
+		{-0.5f,-0.5f, 0.0f},
+		{ 0.0f, 0.5f, 0.0f},
+		{ 0.5f,-0.5f, 0.0f}
+	};
 	polygon_desc.index_data = {
 		0,1,2
 	};
-	if (FAILED(polygon_->create_mesh(device_->get_device(), polygon_desc))) {
+
+	if (FAILED(polygon_->create_mesh(device_->get_device(), color_desc))) {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
