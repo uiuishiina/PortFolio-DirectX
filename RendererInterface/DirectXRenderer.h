@@ -168,10 +168,15 @@ private:
 
 	//@brief	== ポリゴンインスタンス ==
 	std::unique_ptr<render::mesh::Mesh> polygon_{};
+	std::unique_ptr<render::mesh::Mesh> Color_polygon_{};
 
 	std::unique_ptr<render::state::Drawstate> NormalState_{};
 	std::unique_ptr<render::state::DrawRenderTargetState> NormalTargetState_{};
 	std::unique_ptr<render::command::DrawCommands> NormalCommands_{};
+
+	std::unique_ptr<render::state::Drawstate> Color_State_{};
+	std::unique_ptr<render::state::DrawRenderTargetState> Color_TargetState_{};
+	std::unique_ptr<render::command::DrawCommands> Color_Commands_{};
 	
 	///====================================================================
 	/// Private メンバー関数

@@ -195,125 +195,215 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 	
-	//	PiplineStateインスタンス生成
-	pipline_container = std::make_unique<StaticPiplineStateContainer>();
-	PipelineStateDesc pipline_desc{};
+	/* -- NormalPass作成 -- */
 
-	//	頂点入力設定
-	pipline_desc.input_elements = { 
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-	};
+	{
+		//	PiplineStateインスタンス生成
+		pipline_container = std::make_unique<StaticPiplineStateContainer>();
+		PipelineStateDesc pipline_desc{};
 
-	//	必要なインスタンス設定
-	pipline_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
-	pipline_desc.vs_hlsl = shader_container->get_shader("Color_vs");
-	pipline_desc.ps_hlsl = shader_container->get_shader("Color_ps");
+		//	頂点入力設定
+		pipline_desc.input_elements = {
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		};
 
-	pipline_desc.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
-	pipline_desc.blend_desc = PiplineStateHepler::get_enable_blend();
-	pipline_desc.depth_stencil_desc.DepthEnable = FALSE;
-	pipline_desc.depth_stencil_desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+		//	必要なインスタンス設定
+		pipline_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
+		pipline_desc.vs_hlsl = shader_container->get_shader("Normal_vs");
+		pipline_desc.ps_hlsl = shader_container->get_shader("Normal_ps");
+
+		pipline_desc.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
+		pipline_desc.blend_desc = PiplineStateHepler::get_enable_blend();
+		pipline_desc.depth_stencil_desc.DepthEnable = FALSE;
+		pipline_desc.depth_stencil_desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+
+		if (FAILED(pipline_container->create_pipline_state("Normal_pipline", device_->get_device(), pipline_desc))) {
+			DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
+			return false;
+		}
+
+		normal_pipline = pipline_container->get_pipline_state_hash_key("Normal_pipline").value();
+
+		//	ポリゴンインスタンス生成
+		polygon_ = std::make_unique<render::mesh::Mesh>();
+
+		//	頂点情報作成
 		
-	if (FAILED(pipline_container->create_pipline_state("Normal_pipline", device_->get_device(), pipline_desc))) {
-		DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
-		return false;
+		struct normal_polygon {
+			float pos_[3]{};
+		};
+		render::mesh::MeshDesc<normal_polygon> polygon_desc{};
+		polygon_desc.vertex_data = {
+			{-0.5f,-1.0f, 0.0f},
+			{ 0.0f, 0.0f, 0.0f},
+			{ 0.5f,-1.0f, 0.0f}
+		};
+		polygon_desc.index_data = {
+			0,1,2
+		};
+		if (FAILED(polygon_->create_mesh(device_->get_device(), polygon_desc))) {
+			DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
+			return false;
+		}
+
+		//	DrawState作成
+		NormalState_ = std::make_unique<render::state::Drawstate>();
+		render::state::DrawStateDesc draw_state_desc{};
+		draw_state_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
+		draw_state_desc.pipline_state = pipline_container->get_pipline_state(normal_pipline);
+
+		// ビューポート設定
+		D3D12_VIEWPORT viewport{};
+		viewport.TopLeftX = 0.0f;
+		viewport.TopLeftY = 0.0f;
+		viewport.Width = static_cast<float>(window_size.width);
+		viewport.Height = static_cast<float>(window_size.height);
+		viewport.MinDepth = 0.0f;
+		viewport.MaxDepth = 1.0f;
+		draw_state_desc.viewport_ = viewport;
+
+		// シザー矩形設定
+		D3D12_RECT scissorRect{};
+		scissorRect.left = 0;
+		scissorRect.top = 0;
+		scissorRect.right = window_size.width;
+		scissorRect.bottom = window_size.height;
+		draw_state_desc.rect_ = scissorRect;
+		if (!NormalState_->creaate_draw_state(draw_state_desc)) {
+			DEBUG_LOG("DirectXRenderer :: creaate_draw_state() FAILED");
+			return false;
+		}
+
+		//	DrawTargetState作成
+		NormalTargetState_ = std::make_unique<render::state::DrawRenderTargetState>();
+		//	BackBufferを追加
+		NormalTargetState_->add_render_target_slot(render::RenderTargetSlot::BackBuffer);
+
+		//	DrawCommands作成
+		NormalCommands_ = std::make_unique<render::command::DrawCommands>();
+		NormalCommands_->set_begin_command(
+			[&](render::resouces::DrawResouces& resouce) {
+				auto* target = resouce.get_target(render::RenderTargetSlot::BackBuffer);
+				target->barrier_transition(resouce.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
+			}
+		);
+		NormalCommands_->add_apply_command(
+			[&](render::resouces::DrawResouces& resouce) {
+				polygon_->draw_mesh(graphics_list->get_graphics_command_list());
+			}
+		);
+
+		NormalCommands_->set_end_command(
+			[](render::resouces::DrawResouces& resouce) {
+				auto* target = resouce.get_target(render::RenderTargetSlot::BackBuffer);
+				target->barrier_transition(resouce.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
+
+			}
+		);
 	}
 
-	normal_pipline = pipline_container->get_pipline_state_hash_key("Normal_pipline").value();
+	/* -- ColorPass作成 -- */
+	{
 
-	//	ポリゴンインスタンス生成
-	polygon_ = std::make_unique<render::mesh::Mesh>();
-	
-	//	頂点情報作成
-	struct color_polygon {
-		float pos_[3]{};
-		float color_[4]{};
-	};
-	struct normal_polygon {
-		float pos_[3]{};
-	};
-	render::mesh::MeshDesc<color_polygon> color_desc{};
-	color_desc.vertex_data = {
-		{{-0.5f,-0.5f, 0.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},
-		{{ 0.0f, 0.5f, 0.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},
-		{{ 0.5f,-0.5f, 0.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}}
-	};
-	color_desc.index_data = {
-		0,1,2
-	};
+		//	PiplineStateインスタンス生成
+		PipelineStateDesc color_pipline{};
 
-	render::mesh::MeshDesc<normal_polygon> polygon_desc{};
-	polygon_desc.vertex_data = {
-		{-0.5f,-0.5f, 0.0f},
-		{ 0.0f, 0.5f, 0.0f},
-		{ 0.5f,-0.5f, 0.0f}
-	};
-	polygon_desc.index_data = {
-		0,1,2
-	};
+		//	頂点入力設定
+		color_pipline.input_elements = {
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		};
 
-	if (FAILED(polygon_->create_mesh(device_->get_device(), color_desc))) {
-		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
-		return false;
+		//	必要なインスタンス設定
+		color_pipline.root_signature = root_signature_container->get_root_signature("Normal_root");
+		color_pipline.vs_hlsl = shader_container->get_shader("Color_vs");
+		color_pipline.ps_hlsl = shader_container->get_shader("Color_ps");
+
+		color_pipline.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
+		color_pipline.blend_desc = PiplineStateHepler::get_enable_blend();
+		color_pipline.depth_stencil_desc.DepthEnable = FALSE;
+		color_pipline.depth_stencil_desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+
+		if (FAILED(pipline_container->create_pipline_state("Color_pipline", device_->get_device(), color_pipline))) {
+			DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
+			return false;
+		}
+
+		//	ポリゴンインスタンス生成
+		Color_polygon_ = std::make_unique<render::mesh::Mesh>();
+
+		struct color_polygon {
+			float pos_[3]{};
+			float color_[4]{};
+		};
+		render::mesh::MeshDesc<color_polygon> color_mesh{};
+		color_mesh.vertex_data = {
+			{{ 0.5f, 1.0f, 0.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//右
+			{{ 0.0f, 0.0f, 0.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//真ん中
+			{{-0.5f, 1.0f, 0.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}}	//左
+		};
+		color_mesh.index_data = {
+			0,1,2
+		};
+		if (FAILED(Color_polygon_->create_mesh(device_->get_device(), color_mesh))) {
+			DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
+			return false;
+		}
+
+		//	DrawState作成
+		Color_State_ = std::make_unique<render::state::Drawstate>();
+		render::state::DrawStateDesc draw_state_desc{};
+		draw_state_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
+		draw_state_desc.pipline_state = pipline_container->get_pipline_state("Color_pipline");
+
+		// ビューポート設定
+		D3D12_VIEWPORT viewport{};
+		viewport.TopLeftX = 0.0f;
+		viewport.TopLeftY = 0.0f;
+		viewport.Width = static_cast<float>(window_size.width);
+		viewport.Height = static_cast<float>(window_size.height);
+		viewport.MinDepth = 0.0f;
+		viewport.MaxDepth = 1.0f;
+		draw_state_desc.viewport_ = viewport;
+
+		// シザー矩形設定
+		D3D12_RECT scissorRect{};
+		scissorRect.left = 0;
+		scissorRect.top = 0;
+		scissorRect.right = window_size.width;
+		scissorRect.bottom = window_size.height;
+		draw_state_desc.rect_ = scissorRect;
+		if (!Color_State_->creaate_draw_state(draw_state_desc)) {
+			DEBUG_LOG("DirectXRenderer :: creaate_draw_state() FAILED");
+			return false;
+		}
+
+		//	DrawTargetState作成
+		Color_TargetState_ = std::make_unique<render::state::DrawRenderTargetState>();
+		//	BackBufferを追加
+		Color_TargetState_->add_render_target_slot(render::RenderTargetSlot::BackBuffer);
+
+		//	DrawCommands作成
+		Color_Commands_ = std::make_unique<render::command::DrawCommands>();
+		Color_Commands_->set_begin_command(
+			[&](render::resouces::DrawResouces& resouce) {
+				auto* target = resouce.get_target(render::RenderTargetSlot::BackBuffer);
+				target->barrier_transition(resouce.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
+			}
+		);
+		Color_Commands_->add_apply_command(
+			[&](render::resouces::DrawResouces& resouce) {
+				Color_polygon_->draw_mesh(graphics_list->get_graphics_command_list());
+			}
+		);
+
+		Color_Commands_->set_end_command(
+			[](render::resouces::DrawResouces& resouce) {
+				auto* target = resouce.get_target(render::RenderTargetSlot::BackBuffer);
+				target->barrier_transition(resouce.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
+			}
+		);
 	}
-
-
-	//	DrawState作成
-	NormalState_ = std::make_unique<render::state::Drawstate>();
-	render::state::DrawStateDesc draw_state_desc{};
-	draw_state_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
-	draw_state_desc.pipline_state = pipline_container->get_pipline_state(normal_pipline);
-
-	// ビューポート設定
-	D3D12_VIEWPORT viewport{};
-	viewport.TopLeftX = 0.0f;
-	viewport.TopLeftY = 0.0f;
-	viewport.Width = static_cast<float>(window_size.width);
-	viewport.Height = static_cast<float>(window_size.height);
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
-	draw_state_desc.viewport_ = viewport;
-
-	// シザー矩形設定
-	D3D12_RECT scissorRect{};
-	scissorRect.left = 0;
-	scissorRect.top = 0;
-	scissorRect.right = window_size.width;
-	scissorRect.bottom = window_size.height;
-	draw_state_desc.rect_ = scissorRect;
-	if (!NormalState_->creaate_draw_state(draw_state_desc)) {
-		DEBUG_LOG("DirectXRenderer :: creaate_draw_state() FAILED");
-		return false;
-	}
-
-	//	DrawTargetState作成
-	NormalTargetState_ = std::make_unique<render::state::DrawRenderTargetState>();
-	//	BackBufferを追加
-	NormalTargetState_->add_render_target_slot(render::RenderTargetSlot::BackBuffer);
-
-	//	DrawCommands作成
-	NormalCommands_ = std::make_unique<render::command::DrawCommands>();
-	NormalCommands_->set_begin_command(
-		[&](render::resouces::DrawResouces& resouce) {
-			auto* target = resouce.get_target(render::RenderTargetSlot::BackBuffer);
-			target->barrier_transition(resouce.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
-			resouce.graphics_list->ClearRenderTargetView(target->get_rtv_handle(), back_ground_color, 0, nullptr);
-		}
-	);
-	NormalCommands_->add_apply_command(
-		[&](render::resouces::DrawResouces& resouce) {
-			polygon_->draw_mesh(graphics_list->get_graphics_command_list());
-		}
-	);
-
-	NormalCommands_->set_end_command(
-		[](render::resouces::DrawResouces& resouce) {
-			auto* target = resouce.get_target(render::RenderTargetSlot::BackBuffer);
-			target->barrier_transition(resouce.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
-			
-		}
-	);
 
 	auto end = std::chrono::high_resolution_clock::now();
 
@@ -367,14 +457,27 @@ void DirectXRenderer::update_renderer() {
 	/* - 更新開始 - */
 
 	//	ここをまとめてDrawStateにする予定
-	NormalCommands_->begin(resouces);
+	{
+		NormalCommands_->begin(resouces);
 
-	NormalTargetState_->apply(resouces);
-	NormalState_->apply(resouces);
-	NormalCommands_->apply(resouces);
+		NormalTargetState_->apply(resouces);
+		NormalState_->apply(resouces);
+		NormalCommands_->apply(resouces);
 
-	NormalCommands_->end(resouces);
+		NormalCommands_->end(resouces);
+	}
 	
+
+	{
+		Color_Commands_->begin(resouces);
+
+		Color_TargetState_->apply(resouces);
+		Color_State_->apply(resouces);
+		Color_Commands_->apply(resouces);
+
+		Color_Commands_->end(resouces);
+	}
+
 	// コマンドリストをクローズ
 	graphics_list->get_graphics_command_list()->Close();
 
