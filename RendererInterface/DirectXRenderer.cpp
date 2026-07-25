@@ -338,6 +338,8 @@ DirectXRenderer::~DirectXRenderer() = default;
 			[&](render::resouces::DrawResouces& resouce) {
 				auto* target = resouce.get_target(render::RenderTargetSlot::BackBuffer);
 				target->barrier_transition(resouce.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
+				resouce.graphics_list->ClearRenderTargetView(target->get_rtv_handle(), back_ground_color, 0, nullptr);
+
 			}
 		);
 		NormalCommands_->add_apply_command(

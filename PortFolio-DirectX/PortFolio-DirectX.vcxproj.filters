@@ -168,6 +168,9 @@
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawPass.cpp">
       <Filter>RendererInterface\DirectX\DrawPass</Filter>
     </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticContainerBase.cpp">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Debug\DebugLogBuilder.h">
@@ -334,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawPass.h">
       <Filter>RendererInterface\DirectX\DrawPass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticContainerBase.h">
+      <Filter>RendererInterface\DirectX\Container</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

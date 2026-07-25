@@ -1,4 +1,5 @@
 #pragma once
+#include"../DrawPass/DrawPass.h"
 #include"NonMovable.h"
 #include<unordered_map>
 #include<memory>
@@ -29,7 +30,9 @@ private:
 	/// Private メンバー変数
 	///====================================================================
 	
-	
+	//@brief	== 描画パス保存マップ ===
+	//@details	作成できた描画パスを保存するmap
+	std::unordered_map<UINT, std::unique_ptr<render::pass::DrawPass>> pass_map{};
 
 	//@brief	== ハッシュアロケーターインスタンス ==
 	//@details	シェーダーハッシュキー登録クラス
