@@ -25,9 +25,7 @@
 #include"DirectX/Container/StaticRootSignatureContainer.h"
 #include"DirectX/Container/StaticPiplineStateContainer.h"
 #include"DirectX/DrawResouces.h"
-#include"DirectX/DrawState.h"
-#include"DirectX/DrawRenderTargetState.h"
-#include"DirectX/DrawCommands.h"
+#include"DirectX/DrawPass/DrawPass.h"
 
 /* -- 各Factory -- */
 #include"DirectX/Factory&Builder&Helper/CommandObjectFactory.h"
@@ -194,57 +192,112 @@ DirectXRenderer::~DirectXRenderer() = default;
 		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Color_ps");
 		return false;
 	}
+
+
+	/* ==================== PiplineState作成 ==================== */
+
+	pipline_container = std::make_unique<StaticPiplineStateContainer>();
+	PipelineStateDesc pipline_desc{};
+
+	//	頂点入力設定
+	pipline_desc.input_elements = {
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+	};
+
+	//	必要なインスタンス設定
+	pipline_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
+	pipline_desc.vs_hlsl = shader_container->get_shader("Normal_vs");
+	pipline_desc.ps_hlsl = shader_container->get_shader("Normal_ps");
+
+	pipline_desc.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
+	pipline_desc.blend_desc = PiplineStateHepler::get_enable_blend();
+	pipline_desc.depth_stencil_desc.DepthEnable = FALSE;
+	pipline_desc.depth_stencil_desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+
+	if (FAILED(pipline_container->create_pipline_state("Normal_pipline", device_->get_device(), pipline_desc))) {
+		DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
+		return false;
+	}
+
+	normal_pipline = pipline_container->get_pipline_state_hash_key("Normal_pipline").value();
+
+
+	//	PiplineStateインスタンス生成
+	PipelineStateDesc color_pipline{};
+
+	//	頂点入力設定
+	color_pipline.input_elements = {
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+	};
+
+	//	必要なインスタンス設定
+	color_pipline.root_signature = root_signature_container->get_root_signature("Normal_root");
+	color_pipline.vs_hlsl = shader_container->get_shader("Color_vs");
+	color_pipline.ps_hlsl = shader_container->get_shader("Color_ps");
+
+	color_pipline.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
+	color_pipline.blend_desc = PiplineStateHepler::get_enable_blend();
+	color_pipline.depth_stencil_desc.DepthEnable = FALSE;
+	color_pipline.depth_stencil_desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+
+	if (FAILED(pipline_container->create_pipline_state("Color_pipline", device_->get_device(), color_pipline))) {
+		DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
+		return false;
+	}
 	
+	/* ==================== Mesh作成 ==================== */
+
+	//	ポリゴンインスタンス生成
+	polygon_ = std::make_unique<render::mesh::Mesh>();
+
+	//	頂点情報作成
+
+	struct normal_polygon {
+		float pos_[3]{};
+	};
+	render::mesh::MeshDesc<normal_polygon> polygon_desc{};
+	polygon_desc.vertex_data = {
+		{-0.5f,-1.0f, 0.0f},
+		{ 0.0f, 0.0f, 0.0f},
+		{ 0.5f,-1.0f, 0.0f}
+	};
+	polygon_desc.index_data = {
+		0,1,2
+	};
+	if (FAILED(polygon_->create_mesh(device_->get_device(), polygon_desc))) {
+		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
+		return false;
+	}
+
+	//	ポリゴンインスタンス生成
+	Color_polygon_ = std::make_unique<render::mesh::Mesh>();
+
+	struct color_polygon {
+		float pos_[3]{};
+		float color_[4]{};
+	};
+	render::mesh::MeshDesc<color_polygon> color_mesh{};
+	color_mesh.vertex_data = {
+		{{ 0.5f, 1.0f, 0.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//右
+		{{ 0.0f, 0.0f, 0.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//真ん中
+		{{-0.5f, 1.0f, 0.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}}	//左
+	};
+	color_mesh.index_data = {
+		0,1,2
+	};
+	if (FAILED(Color_polygon_->create_mesh(device_->get_device(), color_mesh))) {
+		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
+		return false;
+	}
+
+
+	/* ==================== DrawPass作成 ==================== */
+
 	/* -- NormalPass作成 -- */
 
 	{
-		//	PiplineStateインスタンス生成
-		pipline_container = std::make_unique<StaticPiplineStateContainer>();
-		PipelineStateDesc pipline_desc{};
-
-		//	頂点入力設定
-		pipline_desc.input_elements = {
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-		};
-
-		//	必要なインスタンス設定
-		pipline_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
-		pipline_desc.vs_hlsl = shader_container->get_shader("Normal_vs");
-		pipline_desc.ps_hlsl = shader_container->get_shader("Normal_ps");
-
-		pipline_desc.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
-		pipline_desc.blend_desc = PiplineStateHepler::get_enable_blend();
-		pipline_desc.depth_stencil_desc.DepthEnable = FALSE;
-		pipline_desc.depth_stencil_desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
-
-		if (FAILED(pipline_container->create_pipline_state("Normal_pipline", device_->get_device(), pipline_desc))) {
-			DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
-			return false;
-		}
-
-		normal_pipline = pipline_container->get_pipline_state_hash_key("Normal_pipline").value();
-
-		//	ポリゴンインスタンス生成
-		polygon_ = std::make_unique<render::mesh::Mesh>();
-
-		//	頂点情報作成
-		
-		struct normal_polygon {
-			float pos_[3]{};
-		};
-		render::mesh::MeshDesc<normal_polygon> polygon_desc{};
-		polygon_desc.vertex_data = {
-			{-0.5f,-1.0f, 0.0f},
-			{ 0.0f, 0.0f, 0.0f},
-			{ 0.5f,-1.0f, 0.0f}
-		};
-		polygon_desc.index_data = {
-			0,1,2
-		};
-		if (FAILED(polygon_->create_mesh(device_->get_device(), polygon_desc))) {
-			DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
-			return false;
-		}
+		NormalPass_ = std::make_unique<render::pass::DrawPass>();
 
 		//	DrawState作成
 		NormalState_ = std::make_unique<render::state::Drawstate>();
@@ -300,55 +353,17 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 			}
 		);
+
+		if (!NormalPass_->initialize_pass(NormalState_.get(), NormalTargetState_.get(), NormalCommands_.get())) {
+			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
+			return false;
+		}
 	}
 
 	/* -- ColorPass作成 -- */
 	{
 
-		//	PiplineStateインスタンス生成
-		PipelineStateDesc color_pipline{};
-
-		//	頂点入力設定
-		color_pipline.input_elements = {
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-		};
-
-		//	必要なインスタンス設定
-		color_pipline.root_signature = root_signature_container->get_root_signature("Normal_root");
-		color_pipline.vs_hlsl = shader_container->get_shader("Color_vs");
-		color_pipline.ps_hlsl = shader_container->get_shader("Color_ps");
-
-		color_pipline.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
-		color_pipline.blend_desc = PiplineStateHepler::get_enable_blend();
-		color_pipline.depth_stencil_desc.DepthEnable = FALSE;
-		color_pipline.depth_stencil_desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
-
-		if (FAILED(pipline_container->create_pipline_state("Color_pipline", device_->get_device(), color_pipline))) {
-			DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
-			return false;
-		}
-
-		//	ポリゴンインスタンス生成
-		Color_polygon_ = std::make_unique<render::mesh::Mesh>();
-
-		struct color_polygon {
-			float pos_[3]{};
-			float color_[4]{};
-		};
-		render::mesh::MeshDesc<color_polygon> color_mesh{};
-		color_mesh.vertex_data = {
-			{{ 0.5f, 1.0f, 0.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//右
-			{{ 0.0f, 0.0f, 0.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//真ん中
-			{{-0.5f, 1.0f, 0.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}}	//左
-		};
-		color_mesh.index_data = {
-			0,1,2
-		};
-		if (FAILED(Color_polygon_->create_mesh(device_->get_device(), color_mesh))) {
-			DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
-			return false;
-		}
+		Color_Pass_ = std::make_unique<render::pass::DrawPass>();
 
 		//	DrawState作成
 		Color_State_ = std::make_unique<render::state::Drawstate>();
@@ -403,6 +418,11 @@ DirectXRenderer::~DirectXRenderer() = default;
 				target->barrier_transition(resouce.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
 			}
 		);
+
+		if (!Color_Pass_->initialize_pass(Color_State_.get(), Color_TargetState_.get(), Color_Commands_.get())) {
+			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
+			return false;
+		}
 	}
 
 	auto end = std::chrono::high_resolution_clock::now();
@@ -419,7 +439,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 /// 実行時処理関数群
 ///====================================================================
 
-/* -- 描画制御 -- */
+/* ==================== 描画制御 ==================== */
 
 //@brief	=== 描画更新関数 ===
 //@details	毎フレーム更新される想定
@@ -454,29 +474,12 @@ void DirectXRenderer::update_renderer() {
 	resouces.static_heap_container = static_heap_container.get();
 	resouces.render_targets[render::resouces::to_index(render::RenderTargetSlot::BackBuffer)] = render_targets[backBufferIndex].get();
 
-	/* - 更新開始 - */
+	/* ==================== 描画パス実行 ==================== */
 
-	//	ここをまとめてDrawStateにする予定
-	{
-		NormalCommands_->begin(resouces);
+	NormalPass_->apply(resouces);
+	Color_Pass_->apply(resouces);
 
-		NormalTargetState_->apply(resouces);
-		NormalState_->apply(resouces);
-		NormalCommands_->apply(resouces);
-
-		NormalCommands_->end(resouces);
-	}
-	
-
-	{
-		Color_Commands_->begin(resouces);
-
-		Color_TargetState_->apply(resouces);
-		Color_State_->apply(resouces);
-		Color_Commands_->apply(resouces);
-
-		Color_Commands_->end(resouces);
-	}
+	/* ==================== 描画パス終了 ==================== */
 
 	// コマンドリストをクローズ
 	graphics_list->get_graphics_command_list()->Close();
@@ -509,12 +512,16 @@ void DirectXRenderer::update_renderer() {
 	}
 }
 
+/* ==================== 描画前制御 ==================== */
+
 //@brief	=== 描画更新前関数 ===
 //@details	描画機能を更新する際に先に処理する必要があるものを呼び出す関数
 void DirectXRenderer::begin_update_renderer() {
 
 	frame_count++;
 }
+
+/* ==================== 描画後制御 ==================== */
 
 //@brief	=== 描画更新後関数 ===
 //@details	描画機能を更新した後に処理する必要があるものを呼び出す関数
@@ -523,6 +530,8 @@ void DirectXRenderer::end_update_renderer() {
 	//	フレームリソースサイクルを進める
 	current_frame_index = (current_frame_index + 1) % frame_resouse_size;
 }
+
+/* ==================== 描画待機制御 ==================== */
 
 //@brief == = フレームリソース使用可能確認関数 == =
 //@details	フレームリソースが使用可能な状態か確認する関数

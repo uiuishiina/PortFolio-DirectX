@@ -30,4 +30,5 @@ public:
 	NonMovableBase& operator=(const NonMovableBase&) = delete;
 	NonMovableBase(NonMovableBase&&) = delete;
 	NonMovableBase& operator=(NonMovableBase&&) = delete;
+
 };

@@ -1,8 +1,8 @@
 #pragma once
-#include"DrawResouces.h"
+#include"../DrawResouces.h"
 #include"NonMovable.h"
 #include<vector>
-#include<optional>
+#include<functional>
 
 ///====================================================================
 /// 描画名前空間
@@ -12,14 +12,31 @@ namespace render {
 	///====================================================================
 	/// 描画設定名前空間
 	///====================================================================
-	namespace state{
+
+	namespace state {
 
 		///====================================================================
-		/// DrawRenderTargets クラス
+		/// DrawStateDesc 構造体
 		///====================================================================
 
-		//@brief	=== 描画パス用レンダーターゲット設定クラス ===
-		class DrawRenderTargetState final : public NonMovableBase
+		//@brief	=== 描画設定補助構造体 ===
+		struct DrawStateDesc {
+
+			ID3D12RootSignature* root_signature{};
+
+			ID3D12PipelineState* pipline_state{};
+
+			D3D12_VIEWPORT viewport_{};
+
+			D3D12_RECT	rect_{};
+		};
+
+		///====================================================================
+		/// Drawstate クラス
+		///====================================================================
+
+		//@brief	=== 描画設定クラス ===
+		class Drawstate final : public NonMovableBase
 		{
 		public:
 			///====================================================================
@@ -27,35 +44,34 @@ namespace render {
 			///====================================================================
 
 			//コンストラクタ,デストラクタ
-			DrawRenderTargetState() = default;
-			~DrawRenderTargetState() = default;
+			Drawstate() = default;
+			~Drawstate() = default;
 
 			///====================================================================
 			/// Public メンバー関数
 			///====================================================================
-			
-			//@brief	=== 描画先設定追加関数 ===
-			//@param	slot	追加するターゲットの種類
-			void add_render_target_slot(RenderTargetSlot slot);
 
-			//@brief	=== デプスバッファ設定関数 ===
-			//@param	slot	設定するDSVの種類
-			void set_depth(DepthSlot slot);
+			//@breif	=== 描画設定作成関数 ===
+			//@param	desc	描画設定補助構造体
+			//@return	作成の成否
+			[[nodiscard]] bool creaate_draw_state(DrawStateDesc& desc);
 
-			//@brief	=== 描画パス実行時レンダーターゲットバインド関数 ==
+			//@brief	=== 描画パス実行時バインド関数 ===
 			//@param	resouce	描画リソース
 			void apply(resouces::DrawResouces& resouce);
 
 		private:
 			///====================================================================
-			/// Private メンバー変数
+			/// Private メンバー関数
 			///====================================================================
+			
+			ID3D12RootSignature* root_signature{};
 
-			//@brief	== 追加するレンダーターゲットの設定 ==
-			std::vector<RenderTargetSlot> render_targets_slot{};
+			ID3D12PipelineState* pipline_state{};
 
-			//@brief	== 追加するDSVの設定 ==
-			std::optional<DepthSlot> depth_slot{};
+			D3D12_VIEWPORT viewport_{};
+
+			D3D12_RECT	rect_{};
 		};
 	}
 }
