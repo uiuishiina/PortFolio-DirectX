@@ -1,5 +1,6 @@
 #pragma once
 #include"DirectXobject/CommandAllocator.h"
+#include"NonMovable.h"
 #include<memory>
 
 ///====================================================================
@@ -7,7 +8,7 @@
 ///====================================================================
 
 //@brief	=== フレームリソースクラス ===
-class FrameResource final
+class FrameResource final : public NonMovableBase
 {
 public:
 	///====================================================================

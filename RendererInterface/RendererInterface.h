@@ -1,12 +1,13 @@
 #pragma once
 #include"../windowInterface/windowInterface.h"
+#include"NonMovable.h"
 
 ///====================================================================
 /// RendererInterface 基底クラス
 ///====================================================================
 
 //@brief	=== 描画機能インターフェースクラス ===
-class RendererInterface
+class RendererInterface : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -16,12 +17,6 @@ public:
 	//コンストラクタ,デストラクタ
 	RendererInterface() = default;
 	virtual ~RendererInterface() = default;
-
-	//コピー禁止,ムーブ禁止
-	RendererInterface(const RendererInterface&) = delete;
-	RendererInterface& operator=(const RendererInterface&) = delete;
-	RendererInterface(RendererInterface&&) = delete;
-	RendererInterface& operator=(RendererInterface&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

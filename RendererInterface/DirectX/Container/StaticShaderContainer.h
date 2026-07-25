@@ -1,5 +1,6 @@
 #pragma once
 #include"../DirectXobject/ShaderCompiler.h"
+#include"NonMovable.h"
 #include<unordered_map>
 #include<memory>
 #include<optional>
@@ -15,7 +16,7 @@ class HashAllocator;
 ///====================================================================
 
 //@breif	=== シェーダーコンテナクラス ===
-class StaticShaderContainer final
+class StaticShaderContainer final : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -25,12 +26,6 @@ public:
 	//コンストラクタ,デストラクタ
 	StaticShaderContainer();
 	~StaticShaderContainer();
-
-	//コピー禁止,ムーブ禁止
-	StaticShaderContainer(const StaticShaderContainer&) = delete;
-	StaticShaderContainer& operator=(const StaticShaderContainer&) = delete;
-	StaticShaderContainer(StaticShaderContainer&&) = delete;
-	StaticShaderContainer& operator=(StaticShaderContainer&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

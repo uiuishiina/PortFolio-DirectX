@@ -1,4 +1,5 @@
 #pragma once
+#include"NonMovable.h"
 #include<d3d12.h>
 #include<wrl/client.h>
 #include<vector>
@@ -64,7 +65,7 @@ struct PipelineStateDesc
 ///====================================================================
 
 //@brief	=== パイプラインステートクラス ===
-class PiplineState final
+class PiplineState final : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -74,12 +75,6 @@ public:
 	//コンストラクタ,デストラクタ
 	PiplineState() = default;
 	~PiplineState() = default;
-
-	//コピー禁止,ムーブ禁止
-	PiplineState(const PiplineState&) = delete;
-	PiplineState& operator=(const PiplineState&) = delete;
-	PiplineState(PiplineState&&) = delete;
-	PiplineState& operator=(PiplineState&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

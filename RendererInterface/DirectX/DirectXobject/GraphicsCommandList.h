@@ -1,4 +1,5 @@
 #pragma once
+#include"NonMovable.h"
 #include<d3d12.h>
 #include<wrl/client.h>
 
@@ -7,7 +8,7 @@
 ///====================================================================
 
 //@brief	=== 描画用コマンドリストクラス ===
-class GraphicsCommandList final
+class GraphicsCommandList final : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -17,12 +18,6 @@ public:
 	//	コンストラクタ,デストラクタ
 	GraphicsCommandList() = default;
 	~GraphicsCommandList() = default;
-
-	//	コピー禁止,ムーブ禁止
-	GraphicsCommandList(const GraphicsCommandList&) = delete;
-	GraphicsCommandList& operator=(const GraphicsCommandList&) = delete;
-	GraphicsCommandList(GraphicsCommandList&&) = delete;
-	GraphicsCommandList& operator=(GraphicsCommandList&&) = delete;
 
 	///====================================================================
 	/// Private メンバー関数

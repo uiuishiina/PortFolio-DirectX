@@ -1,5 +1,6 @@
 #pragma once
 #include"../DirectXobject/PiplineState.h"
+#include"NonMovable.h"
 #include<string>
 #include<unordered_map>
 #include<memory>
@@ -16,7 +17,7 @@ class HashAllocator;
 ///====================================================================
 
 //@brief	=== パイプラインステートコンテナクラス ===
-class StaticPiplineStateContainer final
+class StaticPiplineStateContainer final : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -26,12 +27,6 @@ public:
 	//コンストラクタ,デストラクタ
 	StaticPiplineStateContainer();
 	~StaticPiplineStateContainer();
-
-	//コピー禁止,ムーブ禁止
-	StaticPiplineStateContainer(const StaticPiplineStateContainer&) = delete;
-	StaticPiplineStateContainer& operator=(const StaticPiplineStateContainer&) = delete;
-	StaticPiplineStateContainer(StaticPiplineStateContainer&&) = delete;
-	StaticPiplineStateContainer& operator=(StaticPiplineStateContainer&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

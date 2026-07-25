@@ -1,5 +1,6 @@
 #pragma once
 #include"DrawResouces.h"
+#include"NonMovable.h"
 #include<functional>
 #include<vector>
 
@@ -19,7 +20,7 @@ namespace render {
 		/// DrawCommands クラス
 		///====================================================================
 
-		class DrawCommands final
+		class DrawCommands final : public NonMovableBase
 		{
 		public:
 			///====================================================================
@@ -29,12 +30,6 @@ namespace render {
 			//コンストラクタ,デストラクタ
 			DrawCommands() = default;
 			~DrawCommands() = default;
-
-			//コピー禁止,ムーブ禁止
-			DrawCommands(const DrawCommands&) = delete;
-			DrawCommands& operator=(const DrawCommands&) = delete;
-			DrawCommands(DrawCommands&&) = delete;
-			DrawCommands& operator=(DrawCommands&&) = delete;
 
 			///====================================================================
 			/// Public メンバー関数

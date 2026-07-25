@@ -60,12 +60,6 @@ public:
 	DirectXRenderer();
 	~DirectXRenderer();
 
-	//コピー禁止,ムーブ禁止
-	DirectXRenderer(const DirectXRenderer&) = delete;
-	DirectXRenderer& operator=(const DirectXRenderer&) = delete;
-	DirectXRenderer(DirectXRenderer&&) = delete;
-	DirectXRenderer& operator=(DirectXRenderer&&) = delete;
-
 	///====================================================================
 	/// Public メンバー関数
 	///====================================================================

@@ -1,4 +1,5 @@
 #pragma once
+#include"NonMovable.h"
 #include<d3d12.h>
 #include<wrl/client.h>
 
@@ -7,7 +8,7 @@
 ///====================================================================
 
 //@brief	=== ディスクリプタヒープクラス ===
-class DescriptorHeap final
+class DescriptorHeap final : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -17,12 +18,6 @@ public:
 	//コンストラクタ,デストラクタ
 	DescriptorHeap() = default;
 	~DescriptorHeap() = default;
-
-	//コピー禁止,ムーブ禁止
-	DescriptorHeap(const DescriptorHeap&) = delete;
-	DescriptorHeap& operator=(const DescriptorHeap&) = delete;
-	DescriptorHeap(DescriptorHeap&&) = delete;
-	DescriptorHeap& operator=(DescriptorHeap&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

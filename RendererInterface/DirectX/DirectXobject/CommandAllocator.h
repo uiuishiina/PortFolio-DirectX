@@ -1,4 +1,5 @@
 #pragma once
+#include"NonMovable.h"
 #include<d3d12.h>
 #include<wrl/client.h>
 
@@ -7,7 +8,7 @@
 ///====================================================================
 
 //@brief	=== コマンドアロケータクラス ===
-class CommandAllocator final
+class CommandAllocator final : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -17,12 +18,6 @@ public:
 	//コンストラクタ,デストラクタ
 	CommandAllocator() = default;
 	~CommandAllocator() = default;
-
-	//コピー禁止,ムーブ禁止
-	CommandAllocator(const CommandAllocator&) = delete;
-	CommandAllocator& operator=(const CommandAllocator&) = delete;
-	CommandAllocator(CommandAllocator&&) = delete;
-	CommandAllocator& operator=(CommandAllocator&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

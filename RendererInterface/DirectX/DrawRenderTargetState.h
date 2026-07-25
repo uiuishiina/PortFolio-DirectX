@@ -1,5 +1,6 @@
 #pragma once
 #include"DrawResouces.h"
+#include"NonMovable.h"
 #include<vector>
 #include<optional>
 
@@ -18,7 +19,7 @@ namespace render {
 		///====================================================================
 
 		//@brief	=== 描画パス用レンダーターゲット設定クラス ===
-		class DrawRenderTargetState final
+		class DrawRenderTargetState final : public NonMovableBase
 		{
 		public:
 			///====================================================================
@@ -28,12 +29,6 @@ namespace render {
 			//コンストラクタ,デストラクタ
 			DrawRenderTargetState() = default;
 			~DrawRenderTargetState() = default;
-
-			//コピー禁止,ムーブ禁止
-			DrawRenderTargetState(const DrawRenderTargetState&) = delete;
-			DrawRenderTargetState& operator=(const DrawRenderTargetState&) = delete;
-			DrawRenderTargetState(DrawRenderTargetState&&) = delete;
-			DrawRenderTargetState& operator=(DrawRenderTargetState&&) = delete;
 
 			///====================================================================
 			/// Public メンバー関数

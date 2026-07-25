@@ -1,5 +1,6 @@
 #pragma once
 #include"../DirectXobject/DescriptorHeap.h"
+#include"NonMovable.h"
 #include<unordered_map>
 #include<memory>
 #include<vector>
@@ -26,7 +27,7 @@ struct DescriptorHeapDesc
 ///====================================================================
 
 //@brief	=== 初期作成ディスクリプタヒープコンテナクラス ===
-class StaticHeapContainer final
+class StaticHeapContainer final : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -36,12 +37,6 @@ public:
 	//コンストラクタ,デストラクタ
 	StaticHeapContainer() = default;
 	~StaticHeapContainer() = default;
-
-	//コピー禁止,ムーブ禁止
-	StaticHeapContainer(const StaticHeapContainer&) = delete;
-	StaticHeapContainer& operator=(const StaticHeapContainer&) = delete;
-	StaticHeapContainer(StaticHeapContainer&&) = delete;
-	StaticHeapContainer& operator=(StaticHeapContainer&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

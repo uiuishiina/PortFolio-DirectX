@@ -1,4 +1,5 @@
 #pragma once
+#include"NonMovable.h"
 #include<dxgi1_6.h>
 #include<d3d12.h>
 #include<wrl/client.h>
@@ -8,7 +9,7 @@
 ///====================================================================
 
 //@brief	=== 描画リソース基底クラス ===
-class TextureResouce
+class TextureResouce : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -18,12 +19,6 @@ public:
 	//コンストラクタ,デストラクタ
 	TextureResouce() = default;
 	virtual ~TextureResouce() = default;
-
-	//コピー禁止,ムーブ禁止
-	TextureResouce(const TextureResouce&) = delete;
-	TextureResouce& operator=(const TextureResouce&) = delete;
-	TextureResouce(TextureResouce&&) = delete;
-	TextureResouce& operator=(TextureResouce&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

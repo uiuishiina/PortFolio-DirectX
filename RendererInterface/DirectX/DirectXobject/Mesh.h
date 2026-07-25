@@ -1,4 +1,5 @@
 #pragma once
+#include"NonMovable.h"
 #include<d3d12.h>
 #include<wrl/client.h>
 #include<vector>
@@ -37,7 +38,7 @@ namespace render {
 		///====================================================================
 
 		//@brief	=== メッシュクラス ===
-		class Mesh final
+		class Mesh final : public NonMovableBase
 		{
 		public:
 			///====================================================================
@@ -47,12 +48,6 @@ namespace render {
 			//コンストラクタ,デストラクタ
 			Mesh() = default;
 			~Mesh() = default;
-
-			//コピー禁止,ムーブ禁止
-			Mesh(const Mesh&) = delete;
-			Mesh& operator=(const Mesh&) = delete;
-			Mesh(Mesh&&) = delete;
-			Mesh& operator=(Mesh&&) = delete;
 
 			///====================================================================
 			/// Public メンバー関数

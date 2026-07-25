@@ -1,4 +1,5 @@
 #pragma once
+#include"NonMovable.h"
 #include<d3d12.h>
 #include<wrl/client.h>
 #include<vector>
@@ -25,7 +26,7 @@ struct RootSignatureDesc
 ///====================================================================
 
 //@brief	=== ルートシグネチャクラス ===
-class RootSignature final
+class RootSignature final :public NonMovableBase
 {
 public:
 	///====================================================================
@@ -35,12 +36,6 @@ public:
 	//コンストラクタ,デストラクタ
 	RootSignature() = default;
 	~RootSignature() = default;
-
-	//コピー禁止,ムーブ禁止
-	RootSignature(const RootSignature&) = delete;
-	RootSignature& operator=(const RootSignature&) = delete;
-	RootSignature(RootSignature&&) = delete;
-	RootSignature& operator=(RootSignature&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

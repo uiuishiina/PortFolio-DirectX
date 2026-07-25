@@ -1,4 +1,5 @@
 #pragma once
+#include"NonMovable.h"
 #include<unordered_map>
 #include<string>
 #include<optional>
@@ -14,7 +15,7 @@ typedef unsigned int UINT;
 ///====================================================================
 
 //@brief	=== ハッシュキー割り当てクラス ===
-class HashAllocator final
+class HashAllocator final : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -24,12 +25,6 @@ public:
 	//コンストラクタ,デストラクタ
 	HashAllocator() = default;
 	~HashAllocator() = default;
-
-	//コピー禁止,ムーブ禁止
-	HashAllocator(const HashAllocator&) = delete;
-	HashAllocator& operator=(const HashAllocator&) = delete;
-	HashAllocator(HashAllocator&&) = delete;
-	HashAllocator& operator=(HashAllocator&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

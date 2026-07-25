@@ -1,5 +1,6 @@
 #pragma once
 #include"DrawResouces.h"
+#include"NonMovable.h"
 #include<vector>
 #include<functional>
 
@@ -35,7 +36,7 @@ namespace render {
 		///====================================================================
 
 		//@brief	=== 描画設定クラス ===
-		class Drawstate final
+		class Drawstate final : public NonMovableBase
 		{
 		public:
 			///====================================================================
@@ -45,12 +46,6 @@ namespace render {
 			//コンストラクタ,デストラクタ
 			Drawstate() = default;
 			~Drawstate() = default;
-
-			//コピー禁止,ムーブ禁止
-			Drawstate(const Drawstate&) = delete;
-			Drawstate& operator=(const Drawstate&) = delete;
-			Drawstate(Drawstate&&) = delete;
-			Drawstate& operator=(Drawstate&&) = delete;
 
 			///====================================================================
 			/// Public メンバー関数

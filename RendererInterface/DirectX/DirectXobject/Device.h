@@ -1,4 +1,5 @@
 #pragma once
+#include"NonMovable.h"
 #include<dxgi1_6.h>
 #include<d3d12.h>
 #include<wrl/client.h>
@@ -8,7 +9,7 @@
 ///====================================================================
 
 //@brief	=== DirectX Device ===
-class Device final
+class Device final :public NonMovableBase
 {
 public:
 	///====================================================================
@@ -18,12 +19,6 @@ public:
 	//コンストラクタ,デストラクタ
 	Device() = default;
 	~Device() = default;
-
-	//コピー禁止,ムーブ禁止
-	Device(const Device&) = delete;
-	Device& operator=(const Device&) = delete;
-	Device(Device&&) = delete;
-	Device& operator=(Device&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

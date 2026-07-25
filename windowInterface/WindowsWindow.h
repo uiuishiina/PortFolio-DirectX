@@ -28,12 +28,6 @@ public:
 	//コンストラクタ,デストラクタ
 	WindowsWindow() = default;
 	~WindowsWindow() = default;
-	
-	//コピー禁止,ムーブ禁止
-	WindowsWindow(const WindowsWindow&) = delete;
-	WindowsWindow& operator=(const WindowsWindow&) = delete;
-	WindowsWindow(WindowsWindow&&) = delete;
-	WindowsWindow& operator=(WindowsWindow&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

@@ -43,6 +43,9 @@
     <Filter Include="RendererInterface\DirectX\Factory&amp;Builder&amp;Helper">
       <UniqueIdentifier>{e9b569a0-7f8c-4c69-a9a8-962e42980867}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{35d5563b-5920-4afd-b915-5e9fb91c719a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\EntryPoint.cpp">
@@ -316,6 +319,9 @@
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DrawCommands.h">
       <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utility\NonMovable.h">
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

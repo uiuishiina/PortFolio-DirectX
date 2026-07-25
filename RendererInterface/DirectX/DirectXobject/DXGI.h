@@ -1,4 +1,5 @@
 #pragma once
+#include"NonMovable.h"
 #include<dxgi1_6.h>
 #include<d3d12.h>
 #include<wrl/client.h>
@@ -8,7 +9,7 @@
 ///====================================================================
 
 //@brief	=== DirectX Graphics Interface ===
-class DXGI final
+class DXGI final : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -19,12 +20,6 @@ public:
 	DXGI() = default;
 	~DXGI() = default;
 	
-	//コピー禁止,ムーブ禁止
-	DXGI(const DXGI&) = delete;
-	DXGI& operator=(const DXGI&) = delete;
-	DXGI(DXGI&&) = delete;
-	DXGI& operator=(DXGI&&) = delete;
-
 	///====================================================================
 	/// Public メンバー関数
 	///====================================================================

@@ -1,4 +1,5 @@
 #pragma once
+#include"NonMovable.h"
 
 ///====================================================================
 /// WindowSize構造体
@@ -36,7 +37,7 @@ struct WindowSize {
 ///====================================================================
 
 //@brief	=== ウィンドウインターフェースクラス ===
-class windowInterface
+class windowInterface : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -46,11 +47,6 @@ public:
 	//コンストラクタ,デストラクタ
 	windowInterface() = default;
 	virtual ~windowInterface() = default;
-	//コピー禁止,ムーブ禁止
-	windowInterface(const windowInterface&) = delete;
-	windowInterface& operator=(const windowInterface&) = delete;
-	windowInterface(windowInterface&&) = delete;
-	windowInterface& operator=(windowInterface&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

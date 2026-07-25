@@ -112,6 +112,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Utility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -230,6 +231,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\DrawState.h" />
     <ClInclude Include="..\RendererInterface\RendererFactory.h" />
     <ClInclude Include="..\RendererInterface\RendererInterface.h" />
+    <ClInclude Include="..\Utility\NonMovable.h" />
     <ClInclude Include="..\windowInterface\windowFactory.h" />
     <ClInclude Include="..\windowInterface\windowInterface.h" />
     <ClInclude Include="..\windowInterface\WindowsWindow.h" />

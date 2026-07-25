@@ -1,5 +1,6 @@
 #pragma once
 #include"../DirectXobject/RootSignature.h"
+#include"NonMovable.h"
 #include<string>
 #include<unordered_map>
 #include<memory>
@@ -16,7 +17,7 @@ class HashAllocator;
 ///====================================================================
 
 //@brief	=== 初期作成ルートシグネチャーコンテナクラス ===
-class StaticRootSignatureContainer final
+class StaticRootSignatureContainer final : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -26,12 +27,6 @@ public:
 	//コンストラクタ,デストラクタ
 	StaticRootSignatureContainer();
 	~StaticRootSignatureContainer();
-
-	//コピー禁止,ムーブ禁止
-	StaticRootSignatureContainer(const StaticRootSignatureContainer&) = delete;
-	StaticRootSignatureContainer& operator=(const StaticRootSignatureContainer&) = delete;
-	StaticRootSignatureContainer(StaticRootSignatureContainer&&) = delete;
-	StaticRootSignatureContainer& operator=(StaticRootSignatureContainer&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

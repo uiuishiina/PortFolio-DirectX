@@ -1,4 +1,5 @@
 #pragma once
+#include"NonMovable.h"
 #include<d3d12.h>
 #include<wrl/client.h>
 
@@ -7,7 +8,7 @@
 ///====================================================================
 
 //@brief	=== DirectX12 コマンドキュークラス ===
-class CommandQueue final
+class CommandQueue final : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -17,12 +18,6 @@ public:
 	//コンストラクタ,デストラクタ
 	CommandQueue() = default;
 	~CommandQueue() = default;
-
-	//コピー禁止,ムーブ禁止
-	CommandQueue(const CommandQueue&) = delete;
-	CommandQueue& operator=(const CommandQueue&) = delete;
-	CommandQueue(CommandQueue&&) = delete;
-	CommandQueue& operator=(CommandQueue&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

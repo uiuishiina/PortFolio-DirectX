@@ -1,15 +1,17 @@
 #pragma once
+#include"NonMovable.h"
+#include"../../../windowInterface/windowInterface.h"
 #include<dxgi1_6.h>
 #include<d3d12.h>
 #include<wrl/client.h>
-#include"../../../windowInterface/windowInterface.h"
+
 
 ///====================================================================
 /// SwapChain クラス
 ///====================================================================
 
 //@brief === スワップチェーンクラス ===
-class SwapChain final
+class SwapChain final : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -19,12 +21,6 @@ public:
 	//コンストラクタ,デストラクタ
 	SwapChain() = default;
 	~SwapChain() = default;
-
-	//コピー禁止,ムーブ禁止
-	SwapChain(const SwapChain&) = delete;
-	SwapChain& operator=(const SwapChain&) = delete;
-	SwapChain(SwapChain&&) = delete;
-	SwapChain& operator=(SwapChain&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

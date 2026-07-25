@@ -1,4 +1,5 @@
 #pragma once
+#include"NonMovable.h"
 #include<d3d12.h>
 #include<wrl/client.h>
 #include<string>
@@ -8,7 +9,7 @@
 ///====================================================================
 
 //@brief	=== シェーダーコンパイラークラス ===
-class ShaderCompiler final
+class ShaderCompiler final : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -18,12 +19,6 @@ public:
 	//コンストラクタ,デストラクタ
 	ShaderCompiler() = default;
 	~ShaderCompiler() = default;
-
-	//コピー禁止,ムーブ禁止
-	ShaderCompiler(const ShaderCompiler&) = delete;
-	ShaderCompiler& operator=(const ShaderCompiler&) = delete;
-	ShaderCompiler(ShaderCompiler&&) = delete;
-	ShaderCompiler& operator=(ShaderCompiler&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数

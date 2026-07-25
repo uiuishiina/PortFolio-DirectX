@@ -1,4 +1,5 @@
 #pragma once
+#include"NonMovable.h"
 #include<d3d12.h>
 #include<wrl/client.h>
 
@@ -7,7 +8,7 @@
 ///====================================================================
 
 //@brief	=== フェンスクラス ===
-class Fence final
+class Fence final : public NonMovableBase
 {
 public:
 	///====================================================================
@@ -17,12 +18,6 @@ public:
 	//コンストラクタ,デストラクタ
 	Fence() = default;
 	~Fence() = default;
-
-	//コピー禁止,ムーブ禁止
-	Fence(const Fence&) = delete;
-	Fence& operator=(const Fence&) = delete;
-	Fence(Fence&&) = delete;
-	Fence& operator=(Fence&&) = delete;
 
 	///====================================================================
 	/// Public メンバー関数
