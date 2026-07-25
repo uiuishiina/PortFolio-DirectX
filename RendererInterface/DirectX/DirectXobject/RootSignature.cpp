@@ -1,16 +1,17 @@
 #include"RootSignature.h"
-
 #include"../../../Debug/DebugLogSystem.h"
 #include<cassert>
 
+using namespace render::dx12::object;
+
 ///====================================================================
-/// 初期化時処理関数
+/// 初期化関数
 ///====================================================================
 
 //@brief	=== ルートシグネチャ作成関数 ===
 //@param	device	DirectX12 デバイス
 //@return	作成の成否
-[[nodiscard]] HRESULT RootSignature::create_root_signature(ID3D12Device* device, RootSignatureDesc& desc) {
+[[nodiscard]] HRESULT RootSignature::create_root_signature(ID3D12Device* device, desc::RootSignatureDesc& desc) {
 
 	//	ルートシグネチャの設定
 	D3D12_ROOT_SIGNATURE_DESC root_desc{};

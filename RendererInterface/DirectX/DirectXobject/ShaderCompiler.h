@@ -5,42 +5,65 @@
 #include<string>
 
 ///====================================================================
-/// ShaderCompiler クラス
+/// 描画名前空間
 ///====================================================================
 
-//@brief	=== シェーダーコンパイラークラス ===
-class ShaderCompiler final : public NonMovableBase
-{
-public:
-	///====================================================================
-	/// クラス設定
-	///====================================================================
-
-	//コンストラクタ,デストラクタ
-	ShaderCompiler() = default;
-	~ShaderCompiler() = default;
+namespace render {
 
 	///====================================================================
-	/// Public メンバー関数
+	/// DirectX名前空間
 	///====================================================================
 
-	//@brief	=== HLSLシェーダーコンパイル関数 ===
-	//@param	path	HLSLシェーダーのファイル位置を示すpath
-	//@param	entry_point_name	HLSLシェーダーのエントリーポイントの名前
-	//@param	target_profile	HLSLシェーダーのターゲットプロファイル(バージョン)
-	//@return	コンパイルの成否
-	[[nodiscard]] HRESULT compile_shader(const std::wstring& path, const std::string& entry_point_name, const std::string& target_profile);
+	namespace dx12 {
 
-	//@brief	=== HLSLシェーダー取得関数 ===
-	//@return	HLSLシェーダーインスタンス
-	[[nodiscard]] ID3DBlob* get_shader()const noexcept;
+		///====================================================================
+		/// DX12オブジェクトラッパークラス名前空間
+		///====================================================================
 
-private:
-	///====================================================================
-	/// Private メンバー変数
-	///====================================================================
-	
-	//@brief	== HLSLシェーダーインスタンス ==
-	//@details	コンパイルしたシェーダー
-	Microsoft::WRL::ComPtr<ID3DBlob> shader_blob;
+		namespace object {
+
+
+			///====================================================================
+			/// ShaderCompiler クラス
+			///====================================================================
+
+			//@brief	=== シェーダーコンパイラークラス ===
+			class ShaderCompiler final : public NonMovableBase
+			{
+			public:
+				///====================================================================
+				/// クラス設定
+				///====================================================================
+
+				//コンストラクタ,デストラクタ
+				ShaderCompiler() = default;
+				~ShaderCompiler() = default;
+
+				///====================================================================
+				/// Public メンバー関数
+				///====================================================================
+
+				//@brief	=== HLSLシェーダーコンパイル関数 ===
+				//@param	path	HLSLシェーダーのファイル位置を示すpath
+				//@param	entry_point_name	HLSLシェーダーのエントリーポイントの名前
+				//@param	target_profile	HLSLシェーダーのターゲットプロファイル(バージョン)
+				//@return	コンパイルの成否
+				[[nodiscard]] HRESULT compile_shader(const std::wstring& path, const std::string& entry_point_name, const std::string& target_profile);
+
+				//@brief	=== HLSLシェーダー取得関数 ===
+				//@return	HLSLシェーダーインスタンス
+				[[nodiscard]] ID3DBlob* get_shader()const noexcept;
+
+			private:
+				///====================================================================
+				/// Private メンバー変数
+				///====================================================================
+
+				//@brief	== HLSLシェーダーインスタンス ==
+				//@details	コンパイルしたシェーダー
+				Microsoft::WRL::ComPtr<ID3DBlob> shader_blob;
+
+			};
+		};
+	};
 };

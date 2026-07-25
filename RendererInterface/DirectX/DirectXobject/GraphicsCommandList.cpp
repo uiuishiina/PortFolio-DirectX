@@ -1,6 +1,7 @@
 #include"GraphicsCommandList.h"
-
 #include<cassert>
+
+using namespace render::dx12::object;
 
 ///====================================================================
 /// 初期化関数

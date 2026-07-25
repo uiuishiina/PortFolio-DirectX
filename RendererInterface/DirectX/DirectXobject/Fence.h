@@ -4,57 +4,79 @@
 #include<wrl/client.h>
 
 ///====================================================================
-/// Fence クラス
+/// 描画名前空間
 ///====================================================================
 
-//@brief	=== フェンスクラス ===
-class Fence final : public NonMovableBase
-{
-public:
-	///====================================================================
-	/// クラス設定
-	///====================================================================
-
-	//コンストラクタ,デストラクタ
-	Fence() = default;
-	~Fence() = default;
+namespace render {
 
 	///====================================================================
-	/// Public メンバー関数
+	/// DirectX名前空間
 	///====================================================================
 
-	//@brief	=== フェンス作成関数 ===
-	//@param	device	DirectX12 デバイス
-	//@return	作成の成否
-	[[nodiscard]] HRESULT create_fence(ID3D12Device* device);
+	namespace dx12 {
 
-	//@brief	コマンドキューにフェンスをシグナル
-	//@param	command_queue	フェンスをシグナルするコマンドキュー
-	[[nodiscard]] UINT64 signal(ID3D12CommandQueue* command_queue);
+		///====================================================================
+		/// DX12オブジェクトラッパークラス名前空間
+		///====================================================================
 
-	//@brief	フェンスの値を待機
-	//@param	completed_value	待機するフェンスの値
-	void wait_to_completed_value(UINT64 completed_value) const noexcept;
+		namespace object {
 
-	//@brief	フェンス値の取得
-	//@return	フェンス値
-	[[nodiscard]] UINT64 get_completed_value() const noexcept;
+			///====================================================================
+			/// Fence クラス
+			///====================================================================
 
-	//@brief	=== フェンス取得関数 ===
-	//@return	フェンスインスタンス
-	[[nodiscard]] ID3D12Fence* get_fence()const noexcept;
+			//@brief	=== フェンスクラス ===
+			class Fence final : public NonMovableBase
+			{
+			public:
+				///====================================================================
+				/// クラス設定
+				///====================================================================
 
-private:
-	///====================================================================
-	/// メンバー変数
-	///====================================================================
+				//コンストラクタ,デストラクタ
+				Fence() = default;
+				~Fence() = default;
 
-	//@brief	== フェンスインスタンス ==
-	Microsoft::WRL::ComPtr<ID3D12Fence> fence_{};
+				///====================================================================
+				/// Public メンバー関数
+				///====================================================================
 
-	//@brief	== フェンスイベント ==
-	HANDLE wait_event{};
+				//@brief	=== フェンス作成関数 ===
+				//@param	device	DirectX12 デバイス
+				//@return	作成の成否
+				[[nodiscard]] HRESULT create_fence(ID3D12Device* device);
 
-	//@brief	== フェンスの値 ==
-	UINT64 fence_value{};
+				//@brief	コマンドキューにフェンスをシグナル
+				//@param	command_queue	フェンスをシグナルするコマンドキュー
+				[[nodiscard]] UINT64 signal(ID3D12CommandQueue* command_queue);
+
+				//@brief	フェンスの値を待機
+				//@param	completed_value	待機するフェンスの値
+				void wait_to_completed_value(UINT64 completed_value) const noexcept;
+
+				//@brief	フェンス値の取得
+				//@return	フェンス値
+				[[nodiscard]] UINT64 get_completed_value() const noexcept;
+
+				//@brief	=== フェンス取得関数 ===
+				//@return	フェンスインスタンス
+				[[nodiscard]] ID3D12Fence* get_fence()const noexcept;
+
+			private:
+				///====================================================================
+				/// メンバー変数
+				///====================================================================
+
+				//@brief	== フェンスインスタンス ==
+				Microsoft::WRL::ComPtr<ID3D12Fence> fence_{};
+
+				//@brief	== フェンスイベント ==
+				HANDLE wait_event{};
+
+				//@brief	== フェンスの値 ==
+				UINT64 fence_value{};
+
+			};
+		};
+	};
 };

@@ -1,5 +1,10 @@
 #include"PiplineStateHelper.h"
 
+using namespace render::dx12::helper;
+
+///====================================================================
+/// 初期化関数
+///====================================================================
 
 [[nodiscard]] D3D12_BLEND_DESC PiplineStateHepler::get_enable_blend() {
 	

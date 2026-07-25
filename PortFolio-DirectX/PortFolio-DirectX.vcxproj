@@ -161,7 +161,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Device.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\DXGI.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Fence.cpp" />
-    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\PiplineState.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\PipelineState.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Mesh.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RootSignature.cpp" />
@@ -204,6 +204,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_state_object.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticContainerBase.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticDrawPassContainer.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticDrawStateContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticHeapContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticPiplineStateContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticRootSignatureContainer.h" />
@@ -215,7 +216,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Device.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\DXGI.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Fence.h" />
-    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\PiplineState.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\PipelineState.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Mesh.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RootSignature.h" />

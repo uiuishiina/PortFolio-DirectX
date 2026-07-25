@@ -1,9 +1,14 @@
-#include "PiplineState.h"
+#include "PipelineState.h"
 #include"../Factory&Builder&Helper/PiplineStateHelper.h"
-
 #include<cassert>
 
-PipelineStateDesc::PipelineStateDesc() {
+using namespace render::dx12::object;
+
+///====================================================================
+/// 初期化関数
+///====================================================================
+
+render::dx12::desc::PipelineStateDesc::PipelineStateDesc() {
 
     //  デフォルトで埋める
     rasterizer_desc = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
@@ -11,7 +16,7 @@ PipelineStateDesc::PipelineStateDesc() {
     depth_stencil_desc = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 }
 
-[[nodiscard]] HRESULT PiplineState::create_piplinestate(ID3D12Device* device, PipelineStateDesc& desc)
+[[nodiscard]] HRESULT PipelineState::create_piplinestate(ID3D12Device* device, desc::PipelineStateDesc& desc)
 {
     D3D12_GRAPHICS_PIPELINE_STATE_DESC pipeline_desc{};
 
@@ -77,9 +82,13 @@ PipelineStateDesc::PipelineStateDesc() {
     return S_OK;
 }
 
+///====================================================================
+/// 実行時処理関数
+///====================================================================
+
 //@brief	=== パイプラインステート取得関数 ===
 //@return	パイプラインステートインスタンス
-[[nodiscard]] ID3D12PipelineState* PiplineState::get_pipline_state()const noexcept {
+[[nodiscard]] ID3D12PipelineState* PipelineState::get_pipline_state()const noexcept {
     assert(pipline_state && "パイプラインステート nullptr");
     return pipline_state.Get();
 }

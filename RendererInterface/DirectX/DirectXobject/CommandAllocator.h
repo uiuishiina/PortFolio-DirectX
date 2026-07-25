@@ -4,43 +4,65 @@
 #include<wrl/client.h>
 
 ///====================================================================
-/// CommandAllocator クラス
+/// 描画名前空間
 ///====================================================================
 
-//@brief	=== コマンドアロケータクラス ===
-class CommandAllocator final : public NonMovableBase
-{
-public:
-	///====================================================================
-	/// クラス設定
-	///====================================================================
-
-	//コンストラクタ,デストラクタ
-	CommandAllocator() = default;
-	~CommandAllocator() = default;
+namespace render {
 
 	///====================================================================
-	/// Public メンバー関数
+	/// DirectX名前空間
 	///====================================================================
 
-	//@brief	=== コマンドアロケータ作成関数 ===
-	//@param	device	DirectX12 デバイス
-	//@param	type	コマンドリストタイプ
-	//@return	作成の成否
-	[[nodiscard]] HRESULT create_command_allocator(ID3D12Device* device, D3D12_COMMAND_LIST_TYPE type);
+	namespace dx12 {
 
-	//@brief	=== コマンドアロケータリセット関数 ===
-	void reset_command_allocator();
+		///====================================================================
+		/// DX12オブジェクトラッパークラス名前空間
+		///====================================================================
 
-	//@brief	=== コマンドアロケータ取得関数 ===
-	//@return	コマンドアロケータインスタンス
-	[[nodiscard]] ID3D12CommandAllocator* get_command_allocator() const noexcept;
+		namespace object {
 
-private:
-	///====================================================================
-	/// Private メンバー変数
-	///====================================================================
-		
-	//@brief	== コマンドアロケータインスタンス ==
-	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> command_allocator_{};
+			///====================================================================
+			/// CommandAllocator クラス
+			///====================================================================
+
+			//@brief	=== コマンドアロケータクラス ===
+			class CommandAllocator final : public NonMovableBase
+			{
+			public:
+				///====================================================================
+				/// クラス設定
+				///====================================================================
+
+				//コンストラクタ,デストラクタ
+				CommandAllocator() = default;
+				~CommandAllocator() = default;
+
+				///====================================================================
+				/// Public メンバー関数
+				///====================================================================
+
+				//@brief	=== コマンドアロケータ作成関数 ===
+				//@param	device	DirectX12 デバイス
+				//@param	type	コマンドリストタイプ
+				//@return	作成の成否
+				[[nodiscard]] HRESULT create_command_allocator(ID3D12Device* device, D3D12_COMMAND_LIST_TYPE type);
+
+				//@brief	=== コマンドアロケータリセット関数 ===
+				void reset_command_allocator();
+
+				//@brief	=== コマンドアロケータ取得関数 ===
+				//@return	コマンドアロケータインスタンス
+				[[nodiscard]] ID3D12CommandAllocator* get_command_allocator() const noexcept;
+
+			private:
+				///====================================================================
+				/// Private メンバー変数
+				///====================================================================
+
+				//@brief	== コマンドアロケータインスタンス ==
+				Microsoft::WRL::ComPtr<ID3D12CommandAllocator> command_allocator_{};
+
+			};
+		};
+	};
 };

@@ -6,43 +6,65 @@
 #include<vector>
 
 ///====================================================================
-/// CommandObjectFactoryクラス
+/// 描画名前空間
 ///====================================================================
 
-//@brief	=== コマンドオブジェクトファクトリー ===
-class CommandObjectFactory final
-{
-public:
+namespace render {
+
 	///====================================================================
-	/// Public メンバー関数
+	/// DirectX名前空間
 	///====================================================================
 
-	//@brief	=== 描画用コマンドキュー作成関数 ===
-	//@param	device	DirectX12 デバイス
-	//@param	outout	受け渡すインスタンス
-	//@return	作成の成否
-	static [[nodiscard]] HRESULT create_graphics_command_queue(ID3D12Device* device, CommandQueue& out);
+	namespace dx12 {
 
-	//@brief	=== 描画用コマンドアロケーター作成関数 ===
-	//@param	device	DirectX12 デバイス
-	//@param	outout	受け渡すインスタンス
-	//@return	作成の成否
-	static [[nodiscard]] HRESULT create_graphics_command_allocator(ID3D12Device* device,CommandAllocator& out);
-	
-	//@brief	=== 描画用コマンドリスト作成関数 ===
-	//@param	device	DirectX12 デバイス
-	//@param	allocator	作成に利用する描画用アロケーター
-	//@param	outout	受け渡すインスタンス
-	//@return	作成の成否
-	static [[nodiscard]] HRESULT create_graphics_command_list(ID3D12Device* device,
-		ID3D12CommandAllocator* allocator, GraphicsCommandList& out);
+		///====================================================================
+		/// Factory名前空間
+		///====================================================================
 
-private:
-	///====================================================================
-	/// クラス設定
-	///====================================================================
+		namespace factory {
 
-	//コンストラクタ,デストラクタ
-	CommandObjectFactory() = default;
-	~CommandObjectFactory() = default;
+			///====================================================================
+			/// CommandObjectFactoryクラス
+			///====================================================================
+
+			//@brief	=== コマンドオブジェクトファクトリー ===
+			class CommandObjectFactory final
+			{
+			public:
+				///====================================================================
+				/// Public メンバー関数
+				///====================================================================
+
+				//@brief	=== 描画用コマンドキュー作成関数 ===
+				//@param	device	DirectX12 デバイス
+				//@param	out	受け渡すインスタンス
+				//@return	作成の成否
+				static [[nodiscard]] HRESULT create_graphics_command_queue(ID3D12Device* device, object::CommandQueue& out);
+
+				//@brief	=== 描画用コマンドアロケーター作成関数 ===
+				//@param	device	DirectX12 デバイス
+				//@param	out	受け渡すインスタンス
+				//@return	作成の成否
+				static [[nodiscard]] HRESULT create_graphics_command_allocator(ID3D12Device* device, object::CommandAllocator& out);
+
+				//@brief	=== 描画用コマンドリスト作成関数 ===
+				//@param	device	DirectX12 デバイス
+				//@param	allocator	作成に利用する描画用アロケーター
+				//@param	out	受け渡すインスタンス
+				//@return	作成の成否
+				static [[nodiscard]] HRESULT create_graphics_command_list(ID3D12Device* device,
+					ID3D12CommandAllocator* allocator, object::GraphicsCommandList& out);
+
+			private:
+				///====================================================================
+				/// クラス設定
+				///====================================================================
+
+				//コンストラクタ,デストラクタ
+				CommandObjectFactory() = default;
+				~CommandObjectFactory() = default;
+
+			};
+		};
+	};
 };

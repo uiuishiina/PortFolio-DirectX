@@ -1,6 +1,11 @@
 #include"StaticHeapContainer.h"
-
 #include<cassert>
+
+using namespace render::dx12::container;
+
+///====================================================================
+/// 初期化関数
+///====================================================================
 
 //@brief	=== ディスクリプタヒープコンテナ作成関数 ===
 //@param	device	DirectX12 デバイス
@@ -15,7 +20,7 @@
 
 	//	設定分作成
 	for (auto& value : desc) {
-		auto heap = std::make_unique<DescriptorHeap>();
+		auto heap = std::make_unique<object::DescriptorHeap>();
 
 		auto [type, num, flag] = value;
 		const auto hr = heap->create_descriptor_heap(device, type, num, flag);
@@ -29,11 +34,16 @@
 	return S_OK;
 }
 
+///====================================================================
+/// 実行時処理関数
+///====================================================================
+
 //@brief	=== ディスクリプタヒープ参照取得関数 ===
 //@param	type	ディスクリプターヒープタイプ
 //@return	ディスクリプターヒープポインター
-[[nodiscard]] DescriptorHeap* StaticHeapContainer::get_discriptor_heap(D3D12_DESCRIPTOR_HEAP_TYPE type) {
+[[nodiscard]] render::dx12::object::DescriptorHeap* StaticHeapContainer::get_discriptor_heap(D3D12_DESCRIPTOR_HEAP_TYPE type) {
 
+	//	マップ探索
 	auto it = static_heap_map.find(type);
 	if (it == static_heap_map.end()) {
 		return nullptr;

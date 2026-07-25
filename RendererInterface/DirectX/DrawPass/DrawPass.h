@@ -10,55 +10,62 @@
 namespace render {
 
 	///====================================================================
-	/// 描画パス名前空間
+	/// DirectX名前空間
 	///====================================================================
 	
-	namespace pass {
+	namespace dx12 {
 
 		///====================================================================
-		/// DrawPass クラス
+		/// 描画パス名前空間
 		///====================================================================
 
-		//@brief	=== 描画パスクラス ===
-		class DrawPass final : public NonMovableBase
-		{
-		public:
-			///====================================================================
-			/// クラス設定
-			///====================================================================
-
-			DrawPass() = default;
-			~DrawPass() = default;
+		namespace pass {
 
 			///====================================================================
-			/// Public メンバー関数
-			///====================================================================
-			
-			//@brief	=== 描画パス初期化関数 ===
-			//@param	state	描画設定クラス参照
-			//@param	target	描画先設定クラス参照
-			//@param	command	描画コマンド設定クラス参照
-			//@return	作成の成否
-			bool initialize_pass(state::Drawstate* state, state::DrawRenderTargetState* target, command::DrawCommands* command);
-
-			//@brief	=== 描画パス実行関数 ===
-			//@param	resouce	描画リソース
-			void apply(render::resouces::DrawResouces& resouce);
-
-		private:
-			///====================================================================
-			/// Private メンバー変数
+			/// DrawPass クラス
 			///====================================================================
 
-			//@brief	== 描画設定クラス参照 ==
-			state::Drawstate* draw_state{};
+			//@brief	=== 描画パスクラス ===
+			class DrawPass final : public NonMovableBase
+			{
+			public:
+				///====================================================================
+				/// クラス設定
+				///====================================================================
 
-			//@brief	== 描画先設定クラス参照 ==
-			state::DrawRenderTargetState* draw_target{};
+				DrawPass() = default;
+				~DrawPass() = default;
 
-			//@brief	== 描画コマンド設定クラス参照 ==
-			command::DrawCommands* draw_commands{};
+				///====================================================================
+				/// Public メンバー関数
+				///====================================================================
 
+				//@brief	=== 描画パス初期化関数 ===
+				//@param	state	描画設定クラス参照
+				//@param	target	描画先設定クラス参照
+				//@param	command	描画コマンド設定クラス参照
+				//@return	作成の成否
+				[[nodiscard]] bool initialize_pass(state::Drawstate* state, state::DrawRenderTargetState* target, command::DrawCommands* command);
+
+				//@brief	=== 描画パス実行関数 ===
+				//@param	resouce	描画リソース
+				void apply(resouces::DrawResouces& resouce);
+
+			private:
+				///====================================================================
+				/// Private メンバー変数
+				///====================================================================
+
+				//@brief	== 描画設定クラス参照 ==
+				state::Drawstate* draw_state{};
+
+				//@brief	== 描画先設定クラス参照 ==
+				state::DrawRenderTargetState* draw_target{};
+
+				//@brief	== 描画コマンド設定クラス参照 ==
+				command::DrawCommands* draw_commands{};
+
+			};
 		};
-	}
-}
+	};
+};

@@ -5,38 +5,61 @@
 #include<wrl/client.h>
 
 ///====================================================================
-/// TextureResouce 基底クラス
+/// 描画名前空間
 ///====================================================================
 
-//@brief	=== 描画リソース基底クラス ===
-class TextureResouce : public NonMovableBase
-{
-public:
-	///====================================================================
-	/// クラス設定
-	///====================================================================
-
-	//コンストラクタ,デストラクタ
-	TextureResouce() = default;
-	virtual ~TextureResouce() = default;
+namespace render {
 
 	///====================================================================
-	/// Public メンバー関数
+	/// DirectX名前空間
 	///====================================================================
-	
-	//@brief	=== リソースバリア遷移関数 ===
-	//@param	list	描画用コマンドリスト
-	//@param	next_state	遷移先バリアステート
-	void  barrier_transition(ID3D12GraphicsCommandList* list, D3D12_RESOURCE_STATES next_state);
 
-	//@breif	=== リソースインスタンス取得関数 ===
-	//@return	リソースインスタンス
-	[[nodiscard]] ID3D12Resource* get_resouce()const noexcept;
-protected:
+	namespace dx12 {
 
-	//@brief	== リソースインスタンス ==
-	Microsoft::WRL::ComPtr<ID3D12Resource> resouce_{};
+		///====================================================================
+		/// DX12オブジェクトラッパークラス名前空間
+		///====================================================================
 
-	//@brief	== リソースステート ==
-	D3D12_RESOURCE_STATES current_state = D3D12_RESOURCE_STATE_PRESENT;
+		namespace object {
+
+
+			///====================================================================
+			/// TextureResouce 基底クラス
+			///====================================================================
+
+			//@brief	=== 描画リソース基底クラス ===
+			class TextureResouce : public NonMovableBase
+			{
+			public:
+				///====================================================================
+				/// クラス設定
+				///====================================================================
+
+				//コンストラクタ,デストラクタ
+				TextureResouce() = default;
+				virtual ~TextureResouce() = default;
+
+				///====================================================================
+				/// Public メンバー関数
+				///====================================================================
+
+				//@brief	=== リソースバリア遷移関数 ===
+				//@param	list	描画用コマンドリスト
+				//@param	next_state	遷移先バリアステート
+				void  barrier_transition(ID3D12GraphicsCommandList* list, D3D12_RESOURCE_STATES next_state);
+
+				//@breif	=== リソースインスタンス取得関数 ===
+				//@return	リソースインスタンス
+				[[nodiscard]] ID3D12Resource* get_resouce()const noexcept;
+			protected:
+
+				//@brief	== リソースインスタンス ==
+				Microsoft::WRL::ComPtr<ID3D12Resource> resouce_{};
+
+				//@brief	== リソースステート ==
+				D3D12_RESOURCE_STATES current_state = D3D12_RESOURCE_STATE_PRESENT;
+
+			};
+		};
+	};
 };

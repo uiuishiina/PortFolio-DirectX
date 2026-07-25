@@ -1,5 +1,7 @@
 #include"RootSignatureDescBuilder.h"
 
+using namespace render::dx12::builder;
+
 ///====================================================================
 /// 追加関数群
 ///====================================================================
@@ -11,7 +13,7 @@
 //@param	shaderRegister	シェーダーレジスター(r0など)
 //@param	registerSpace	レジスタースペース
 //@param	visibility	参照可能シェーダー設定フラグ
-void RootSignatureDescBuilder::add_CBV(RootSignatureDesc& desc, UINT base_shader_register,
+void RootSignatureDescBuilder::add_CBV(desc::RootSignatureDesc& desc, UINT base_shader_register,
 	UINT register_space, D3D12_SHADER_VISIBILITY visibility) {
 
 	D3D12_ROOT_PARAMETER root{};
@@ -30,6 +32,6 @@ void RootSignatureDescBuilder::add_CBV(RootSignatureDesc& desc, UINT base_shader
 //@brief	=== パイプラインステートフラグ追加関数　===
 //@param	desc 設定を追加するインスタンス参照
 //@param	flags パイプラインステートフラグ
-void RootSignatureDescBuilder::add_flags(RootSignatureDesc& desc, D3D12_ROOT_SIGNATURE_FLAGS flags) {
+void RootSignatureDescBuilder::add_flags(desc::RootSignatureDesc& desc, D3D12_ROOT_SIGNATURE_FLAGS flags) {
 	desc.flags_ = flags;
 }

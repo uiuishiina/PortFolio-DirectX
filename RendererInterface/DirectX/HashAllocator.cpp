@@ -2,7 +2,7 @@
 
 //@brief	=== ハッシュキー取得関数 ===
 //@param	key	登録するキーネーム
-//@param	登録したキー...登録済みなら登録してあるキーを返す
+//@return	登録したキー...登録済みなら登録してあるキーを返す
 [[nodiscard]] UINT HashAllocator::allocate_hash(const std::string& key)
 {
     //  登録済みか確認

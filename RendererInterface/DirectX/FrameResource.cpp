@@ -1,6 +1,7 @@
 #include"FrameResource.h"
-
 #include"Factory&Builder&Helper/CommandObjectFactory.h"
+
+using namespace render::dx12::resouces;
 
 ///====================================================================
 /// 初期化時間数
@@ -11,9 +12,9 @@
 //@return	作成の成否
 [[nodiscard]] HRESULT FrameResource::create_frame_resource(ID3D12Device* device) {
 
-    auto allocator = std::make_unique<CommandAllocator>();
+    auto allocator = std::make_unique<object::CommandAllocator>();
 
-    auto hr = CommandObjectFactory::create_graphics_command_allocator(device, *allocator);
+    auto hr = factory::CommandObjectFactory::create_graphics_command_allocator(device, *allocator);
     if (FAILED(hr)) {
         return hr;
     }
@@ -42,6 +43,6 @@ void FrameResource::set_frame_fence_value(const UINT64& value) {
 
 //@brief	===	描画用コマンドアロケータークラス参照取得関数 ===
 //@return	コマンドアロケータークラスインスタンス
-[[nodiscard]] CommandAllocator* FrameResource::get_graphics_allocator()const noexcept {
+[[nodiscard]] render::dx12::object::CommandAllocator* FrameResource::get_graphics_allocator()const noexcept {
 	return graphics_allocator.get();
 }

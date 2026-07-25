@@ -1,7 +1,8 @@
 #include"CommandQueue.h"
 #include"../AddFile/d3dx12.h"
-
 #include<cassert>
+
+using namespace render::dx12::object;
 
 ///====================================================================
 /// 初期化関数

@@ -14,38 +14,46 @@ typedef unsigned __int64    UINT64;
 /// DirectXオブジェクトクラス前方宣言
 ///====================================================================
 
-class DXGI;
-class Device;
-class CommandQueue;
-class GraphicsCommandList;
-
-class FrameResource;
-class StaticHeapContainer;
-class SwapChain;
-class RenderTarget;
-class Fence;
-class RootSignature;
-class PiplineState;
-
-class StaticShaderContainer;
-class StaticRootSignatureContainer;
-class StaticPiplineStateContainer;
-
 namespace render {
-	namespace mesh {
-		class Mesh;
-	}
-	namespace state {
-		class Drawstate;
-		class DrawRenderTargetState;	
-	}
-	namespace command {
-		class DrawCommands;
-	}
-	namespace pass {
-		class DrawPass;
-	}
-}
+
+	namespace dx12 {
+
+		namespace object {
+			class DXGI;
+			class Device;
+			class CommandQueue;
+			class GraphicsCommandList;
+
+			class SwapChain;
+			class RenderTarget;
+			class Fence;
+			class RootSignature;
+			class PipelineState;
+		};
+		namespace container {
+			class StaticHeapContainer;
+			class StaticShaderContainer;
+			class StaticRootSignatureContainer;
+			class StaticPiplineStateContainer;
+		};
+		namespace resouces {
+			class FrameResource;
+		};
+		namespace mesh {
+			class Mesh;
+		};
+		namespace state {
+			class Drawstate;
+			class DrawRenderTargetState;
+		};
+		namespace command {
+			class DrawCommands;
+		};
+		namespace pass {
+			class DrawPass;
+		};
+	};
+};
 
 ///====================================================================
 /// DirectXRenderer クラス
@@ -126,59 +134,59 @@ private:
 	/* -- 描画用 -- */
 
 	//@brief	== DXGIインスタンス ==
-	std::unique_ptr<DXGI> dxgi_{};
+	std::unique_ptr<render::dx12::object::DXGI> dxgi_{};
 
 	//@brief	== Deviceインスタンス ==
-	std::unique_ptr<Device> device_{};
+	std::unique_ptr<render::dx12::object::Device> device_{};
 
 	//@brief	== 描画用コマンドキューインスタンス ==
-	std::unique_ptr<CommandQueue> graphics_queue{};
+	std::unique_ptr<render::dx12::object::CommandQueue> graphics_queue{};
 
 	//@brief	== 描画用コマンドリストインスタンス ==
-	std::unique_ptr<GraphicsCommandList> graphics_list{};
+	std::unique_ptr<render::dx12::object::GraphicsCommandList> graphics_list{};
 
 	//@brief	== フレームリソース配列インスタンス ==
-	std::vector<std::unique_ptr<FrameResource>> frame_resources{};
+	std::vector<std::unique_ptr<render::dx12::resouces::FrameResource>> frame_resources{};
 
 	//@brief	== 初期作成ディスクリプタヒープコンテナインスタンス ==
-	std::unique_ptr<StaticHeapContainer> static_heap_container{};
+	std::unique_ptr<render::dx12::container::StaticHeapContainer> static_heap_container{};
 
 	//@brief	== スワップチェーンインスタンス ==
-	std::unique_ptr<SwapChain> swap_chain{};
+	std::unique_ptr<render::dx12::object::SwapChain> swap_chain{};
 
 	//@brief	== 最終描画先レンダーターゲットインスタンス ==
-	std::vector<std::unique_ptr<RenderTarget>> render_targets{};
+	std::vector<std::unique_ptr<render::dx12::object::RenderTarget>> render_targets{};
 
 	//@brief	== Fenceインスタンス ==
-	std::unique_ptr<Fence> fence_{};
+	std::unique_ptr<render::dx12::object::Fence> fence_{};
 
 	//@brief	== シェーダーコンテナインスタンス ==
-	std::unique_ptr<StaticShaderContainer> shader_container{};
+	std::unique_ptr<render::dx12::container::StaticShaderContainer> shader_container{};
 
 	//@brief	== ルートシグネチャーコンテナインスタンス ==
-	std::unique_ptr<StaticRootSignatureContainer> root_signature_container{};
+	std::unique_ptr<render::dx12::container::StaticRootSignatureContainer> root_signature_container{};
 
 	//@brief	== パイプラインステートコンテナインスタンス ==
-	std::unique_ptr<StaticPiplineStateContainer> pipline_container{};
+	std::unique_ptr<render::dx12::container::StaticPiplineStateContainer> pipline_container{};
 
 	UINT normal_pipline{};
 
 	//@brief	== ポリゴンインスタンス ==
-	std::unique_ptr<render::mesh::Mesh> polygon_{};
-	std::unique_ptr<render::mesh::Mesh> Color_polygon_{};
+	std::unique_ptr<render::dx12::mesh::Mesh> polygon_{};
+	std::unique_ptr<render::dx12::mesh::Mesh> Color_polygon_{};
 
-	std::unique_ptr<render::pass::DrawPass> NormalPass_{};
-	std::unique_ptr<render::pass::DrawPass> Color_Pass_{};
+	std::unique_ptr<render::dx12::pass::DrawPass> NormalPass_{};
+	std::unique_ptr<render::dx12::pass::DrawPass> Color_Pass_{};
 
 
-	std::unique_ptr<render::state::Drawstate> NormalState_{};
-	std::unique_ptr<render::state::DrawRenderTargetState> NormalTargetState_{};
-	std::unique_ptr<render::command::DrawCommands> NormalCommands_{};
+	std::unique_ptr<render::dx12::state::Drawstate> NormalState_{};
+	std::unique_ptr<render::dx12::state::DrawRenderTargetState> NormalTargetState_{};
+	std::unique_ptr<render::dx12::command::DrawCommands> NormalCommands_{};
 
 	
-	std::unique_ptr<render::state::Drawstate> Color_State_{};
-	std::unique_ptr<render::state::DrawRenderTargetState> Color_TargetState_{};
-	std::unique_ptr<render::command::DrawCommands> Color_Commands_{};
+	std::unique_ptr<render::dx12::state::Drawstate> Color_State_{};
+	std::unique_ptr<render::dx12::state::DrawRenderTargetState> Color_TargetState_{};
+	std::unique_ptr<render::dx12::command::DrawCommands> Color_Commands_{};
 	
 	///====================================================================
 	/// Private メンバー関数

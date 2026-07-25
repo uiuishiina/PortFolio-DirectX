@@ -1,6 +1,6 @@
 #include "DrawState.h"
 
-using namespace render::state;
+using namespace render::dx12::state;
 
 ///====================================================================
 /// 初期化関数

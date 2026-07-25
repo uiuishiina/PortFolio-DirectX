@@ -1,5 +1,7 @@
 #include "DrawPass.h"
 
+using namespace render::dx12::pass;
+
 ///====================================================================
 /// 初期化間数
 ///====================================================================
@@ -9,7 +11,7 @@
 //@param	target	描画先設定クラス参照
 //@param	command	描画コマンド設定クラス参照
 //@return	作成の成否
-bool render::pass::DrawPass::initialize_pass(state::Drawstate* state, state::DrawRenderTargetState* target, command::DrawCommands* command) {
+[[nodiscard]] bool DrawPass::initialize_pass(state::Drawstate* state, state::DrawRenderTargetState* target, command::DrawCommands* command) {
 
 	//	すべてNullptrではないか確認
 	if (state == nullptr || target == nullptr || command == nullptr) {
@@ -31,7 +33,7 @@ bool render::pass::DrawPass::initialize_pass(state::Drawstate* state, state::Dra
 
 //@brief	=== 描画パス実行関数 ===
 //@param	resouce	描画リソース
-void render::pass::DrawPass::apply(render::resouces::DrawResouces& resouce)
+void DrawPass::apply(resouces::DrawResouces& resouce)
 {
 	//	描画パス開始
 	draw_commands->begin(resouce);

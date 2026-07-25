@@ -10,52 +10,60 @@
 namespace render {
 
 	///====================================================================
-	/// 描画設定名前空間
+	/// DirectX名前空間
 	///====================================================================
-	namespace state{
+
+	namespace dx12 {
 
 		///====================================================================
-		/// DrawRenderTargets クラス
+		/// 描画設定名前空間
 		///====================================================================
 
-		//@brief	=== 描画パス用レンダーターゲット設定クラス ===
-		class DrawRenderTargetState final : public NonMovableBase
-		{
-		public:
-			///====================================================================
-			/// クラス設定
-			///====================================================================
-
-			//コンストラクタ,デストラクタ
-			DrawRenderTargetState() = default;
-			~DrawRenderTargetState() = default;
+		namespace state {
 
 			///====================================================================
-			/// Public メンバー関数
-			///====================================================================
-			
-			//@brief	=== 描画先設定追加関数 ===
-			//@param	slot	追加するターゲットの種類
-			void add_render_target_slot(RenderTargetSlot slot);
-
-			//@brief	=== デプスバッファ設定関数 ===
-			//@param	slot	設定するDSVの種類
-			void set_depth(DepthSlot slot);
-
-			//@brief	=== 描画パス実行時レンダーターゲットバインド関数 ==
-			//@param	resouce	描画リソース
-			void apply(resouces::DrawResouces& resouce);
-
-		private:
-			///====================================================================
-			/// Private メンバー変数
+			/// DrawRenderTargets クラス
 			///====================================================================
 
-			//@brief	== 追加するレンダーターゲットの設定 ==
-			std::vector<RenderTargetSlot> render_targets_slot{};
+			//@brief	=== 描画パス用レンダーターゲット設定クラス ===
+			class DrawRenderTargetState final : public NonMovableBase
+			{
+			public:
+				///====================================================================
+				/// クラス設定
+				///====================================================================
 
-			//@brief	== 追加するDSVの設定 ==
-			std::optional<DepthSlot> depth_slot{};
+				//コンストラクタ,デストラクタ
+				DrawRenderTargetState() = default;
+				~DrawRenderTargetState() = default;
+
+				///====================================================================
+				/// Public メンバー関数
+				///====================================================================
+
+				//@brief	=== 描画先設定追加関数 ===
+				//@param	slot	追加するターゲットの種類
+				void add_render_target_slot(RenderTargetSlot slot);
+
+				//@brief	=== デプスバッファ設定関数 ===
+				//@param	slot	設定するDSVの種類
+				void set_depth(DepthSlot slot);
+
+				//@brief	=== 描画パス実行時レンダーターゲットバインド関数 ==
+				//@param	resouce	描画リソース
+				void apply(resouces::DrawResouces& resouce);
+
+			private:
+				///====================================================================
+				/// Private メンバー変数
+				///====================================================================
+
+				//@brief	== 追加するレンダーターゲットの設定 ==
+				std::vector<RenderTargetSlot> render_targets_slot{};
+
+				//@brief	== 追加するDSVの設定 ==
+				std::optional<DepthSlot> depth_slot{};
+			};
 		};
-	}
-}
+	};
+};

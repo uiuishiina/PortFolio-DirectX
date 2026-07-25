@@ -2,42 +2,64 @@
 #include"../DirectXobject/RootSignature.h"
 
 ///====================================================================
-/// RootSignatureDescBuilder クラス
+/// 描画名前空間
 ///====================================================================
 
-//@brief	=== ルートシグネチャー設定作成クラス ===
-class RootSignatureDescBuilder final
-{
-public:
+namespace render {
+
 	///====================================================================
-	/// Public メンバー関数
+	/// DirectX名前空間
 	///====================================================================
 
-	/* -- ルートパラメーター追加関数群 -- */
+	namespace dx12 {
 
-	//@brief	=== CBV設定追加関数 ===
-	//@param	desc	設定を追加するインスタンス参照
-	//@param	shaderRegister	シェーダーレジスター(r0など)
-	//@param	registerSpace	レジスタースペース
-	//@param	visibility	参照可能シェーダー設定フラグ
-	static void add_CBV(RootSignatureDesc& desc, UINT shaderRegister,
-		UINT registerSpace = 0, D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY_ALL);
+		///====================================================================
+		/// Builder名前空間
+		///====================================================================
 
-	/* -- サンプラー追加関数群 -- */
+		namespace builder {
 
-	/* -- パイプラインステートフラグ追加関数 -- */
+			///====================================================================
+			/// RootSignatureDescBuilder クラス
+			///====================================================================
 
-	//@brief	=== パイプラインステートフラグ追加関数　===
-	//@param	desc 設定を追加するインスタンス参照
-	//@param	flags パイプラインステートフラグ
-	static void add_flags(RootSignatureDesc& desc, D3D12_ROOT_SIGNATURE_FLAGS flags);
+			//@brief	=== ルートシグネチャー設定作成クラス ===
+			class RootSignatureDescBuilder final
+			{
+			public:
+				///====================================================================
+				/// Public メンバー関数
+				///====================================================================
 
-private:
-	///====================================================================
-	/// クラス設定
-	///====================================================================
+				/* -- ルートパラメーター追加関数群 -- */
 
-	//コンストラクタ,デストラクタ
-	RootSignatureDescBuilder() = default;
-	~RootSignatureDescBuilder() = default;
+				//@brief	=== CBV設定追加関数 ===
+				//@param	desc	設定を追加するインスタンス参照
+				//@param	shaderRegister	シェーダーレジスター(r0など)
+				//@param	registerSpace	レジスタースペース
+				//@param	visibility	参照可能シェーダー設定フラグ
+				static void add_CBV(desc::RootSignatureDesc& desc, UINT shaderRegister,
+					UINT registerSpace = 0, D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY_ALL);
+
+				/* -- サンプラー追加関数群 -- */
+
+				/* -- パイプラインステートフラグ追加関数 -- */
+
+				//@brief	=== パイプラインステートフラグ追加関数　===
+				//@param	desc 設定を追加するインスタンス参照
+				//@param	flags パイプラインステートフラグ
+				static void add_flags(desc::RootSignatureDesc& desc, D3D12_ROOT_SIGNATURE_FLAGS flags);
+
+			private:
+				///====================================================================
+				/// クラス設定
+				///====================================================================
+
+				//コンストラクタ,デストラクタ
+				RootSignatureDescBuilder() = default;
+				~RootSignatureDescBuilder() = default;
+
+			};
+		};
+	};
 };

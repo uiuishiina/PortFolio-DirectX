@@ -117,7 +117,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RootSignature.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\PiplineState.cpp">
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\PipelineState.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\HashAllocator.cpp">
@@ -278,7 +278,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RootSignature.h">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\PiplineState.h">
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\PipelineState.h">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\HashAllocator.h">
@@ -339,6 +339,9 @@
       <Filter>RendererInterface\DirectX\DrawPass</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticContainerBase.h">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticDrawStateContainer.h">
       <Filter>RendererInterface\DirectX\Container</Filter>
     </ClInclude>
   </ItemGroup>
