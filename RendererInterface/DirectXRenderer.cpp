@@ -24,6 +24,9 @@
 #include"DirectX/Container/StaticShaderContainer.h"
 #include"DirectX/Container/StaticRootSignatureContainer.h"
 #include"DirectX/Container/StaticPiplineStateContainer.h"
+#include"DirectX/Container/StaticDrawStateContainer.h"
+#include"DirectX/Container/StaticRenderTargetStateContainer.h"
+
 #include"DirectX/DrawResouces.h"
 #include"DirectX/DrawPass/DrawPass.h"
 
@@ -94,6 +97,16 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 	/* ==================== 作成開始 ==================== */
 
+	//	コンテナ各種インスタンス生成
+	{
+		static_heap_container = std::make_unique<container::StaticHeapContainer>();
+		shader_container = std::make_unique<container::StaticShaderContainer>();
+		root_signature_container = std::make_unique<container::StaticRootSignatureContainer>();
+		pipline_container = std::make_unique<container::StaticPiplineStateContainer>();
+		static_draw_state_container = std::make_unique<container::StaticDrawStateContainer>();
+		static_render_target_state_container = std::make_unique<container::StaticRenderTargetStateContainer>();
+	}
+
 	//	DXGIインスタンス生成
 	dxgi_ = std::make_unique<object::DXGI>();
 	if (FAILED(dxgi_->initialize_DXGI())) {
@@ -130,7 +143,6 @@ DirectXRenderer::~DirectXRenderer() = default;
 	}
 	
 	//	初期作成ディスクリプタヒープコンテナインスタンス生成
-	static_heap_container = std::make_unique<container::StaticHeapContainer>();
 	if (FAILED(static_heap_container->create_static_heap_container(device_->get_device(),
 		{
 			{D3D12_DESCRIPTOR_HEAP_TYPE_RTV,buffer_size,D3D12_DESCRIPTOR_HEAP_FLAG_NONE},//RTV
@@ -169,7 +181,6 @@ DirectXRenderer::~DirectXRenderer() = default;
 	}
 
 	//	RootSignatureインスタンス生成
-	root_signature_container = std::make_unique<container::StaticRootSignatureContainer>();
 	desc::RootSignatureDesc root_desc{};
 	builder::RootSignatureDescBuilder::add_flags(root_desc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 	if (FAILED(root_signature_container->create_root_signature("Normal_root",device_->get_device(), root_desc))) {
@@ -178,7 +189,6 @@ DirectXRenderer::~DirectXRenderer() = default;
 	}
 
 	//	シェーダーコンテナインスタンス生成&登録
-	shader_container = std::make_unique<container::StaticShaderContainer>();
 	if (FAILED(shader_container->compile_shader("Normal_vs", L"../RendererInterface/HLSLshader/NormalVertexShader.hlsl", "main", "vs_5_0"))) {
 		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Normal_vs");
 		return false;
@@ -202,7 +212,6 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 	/* ==================== PiplineState作成 ==================== */
 
-	pipline_container = std::make_unique<container::StaticPiplineStateContainer>();
 	desc::PipelineStateDesc pipline_desc{};
 
 	//	頂点入力設定
@@ -304,10 +313,9 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 	{
 		NormalPass_ = std::make_unique<pass::DrawPass>();
-
+		
 		//	DrawState作成
-		NormalState_ = std::make_unique<state::Drawstate>();
-		state::DrawStateDesc draw_state_desc{};
+		desc::DrawStateDesc draw_state_desc{};
 		draw_state_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
 		draw_state_desc.pipline_state = pipline_container->get_pipline_state(normal_pipline);
 
@@ -328,15 +336,21 @@ DirectXRenderer::~DirectXRenderer() = default;
 		scissorRect.right = window_size.width;
 		scissorRect.bottom = window_size.height;
 		draw_state_desc.rect_ = scissorRect;
-		if (!NormalState_->creaate_draw_state(draw_state_desc)) {
+		if (!static_draw_state_container->create_draw_state("Normal_State", draw_state_desc)) {
 			DEBUG_LOG("DirectXRenderer :: creaate_draw_state() FAILED");
 			return false;
 		}
 
 		//	DrawTargetState作成
-		NormalTargetState_ = std::make_unique<state::DrawRenderTargetState>();
 		//	BackBufferを追加
-		NormalTargetState_->add_render_target_slot(RenderTargetSlot::BackBuffer);
+		if (!static_render_target_state_container->create_render_target_state("NormalTarget", 
+			{
+						RenderTargetSlot::BackBuffer
+			}
+			)) {
+			DEBUG_LOG("DirectXRenderer :: create_render_target_state() FAILED");
+			return false;
+		}
 
 		//	DrawCommands作成
 		NormalCommands_ = std::make_unique<command::DrawCommands>();
@@ -345,7 +359,6 @@ DirectXRenderer::~DirectXRenderer() = default;
 				auto* target = resouce.get_target(RenderTargetSlot::BackBuffer);
 				target->barrier_transition(resouce.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
 				resouce.graphics_list->ClearRenderTargetView(target->get_rtv_handle(), back_ground_color, 0, nullptr);
-
 			}
 		);
 		NormalCommands_->add_apply_command(
@@ -362,7 +375,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 			}
 		);
 
-		if (!NormalPass_->initialize_pass(NormalState_.get(), NormalTargetState_.get(), NormalCommands_.get())) {
+		if (!NormalPass_->initialize_pass(static_draw_state_container->get_draw_state("Normal_State"), static_render_target_state_container->get_draw_state("NormalTarget"), NormalCommands_.get())) {
 			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
 			return false;
 		}
@@ -374,8 +387,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 		Color_Pass_ = std::make_unique<pass::DrawPass>();
 
 		//	DrawState作成
-		Color_State_ = std::make_unique<state::Drawstate>();
-		state::DrawStateDesc draw_state_desc{};
+		desc::DrawStateDesc draw_state_desc{};
 		draw_state_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
 		draw_state_desc.pipline_state = pipline_container->get_pipline_state("Color_pipline");
 
@@ -396,15 +408,10 @@ DirectXRenderer::~DirectXRenderer() = default;
 		scissorRect.right = window_size.width;
 		scissorRect.bottom = window_size.height;
 		draw_state_desc.rect_ = scissorRect;
-		if (!Color_State_->creaate_draw_state(draw_state_desc)) {
+		if (!static_draw_state_container->create_draw_state("Color_State", draw_state_desc)) {
 			DEBUG_LOG("DirectXRenderer :: creaate_draw_state() FAILED");
 			return false;
 		}
-
-		//	DrawTargetState作成
-		Color_TargetState_ = std::make_unique<state::DrawRenderTargetState>();
-		//	BackBufferを追加
-		Color_TargetState_->add_render_target_slot(RenderTargetSlot::BackBuffer);
 
 		//	DrawCommands作成
 		Color_Commands_ = std::make_unique<command::DrawCommands>();
@@ -427,7 +434,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 			}
 		);
 
-		if (!Color_Pass_->initialize_pass(Color_State_.get(), Color_TargetState_.get(), Color_Commands_.get())) {
+		if (!Color_Pass_->initialize_pass(static_draw_state_container->get_draw_state("Color_State"), static_render_target_state_container->get_draw_state("NormalTarget"), Color_Commands_.get())) {
 			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
 			return false;
 		}

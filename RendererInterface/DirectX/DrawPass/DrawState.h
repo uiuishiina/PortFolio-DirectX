@@ -16,10 +16,10 @@ namespace render {
 	namespace dx12 {
 
 		///====================================================================
-		/// 描画設定名前空間
+		/// DX12オブジェクト設定名前空間
 		///====================================================================
 
-		namespace state {
+		namespace desc {
 
 			///====================================================================
 			/// DrawStateDesc 構造体
@@ -36,6 +36,13 @@ namespace render {
 
 				D3D12_RECT	rect_{};
 			};
+		};
+
+		///====================================================================
+		/// 描画設定名前空間
+		///====================================================================
+
+		namespace state {
 
 			///====================================================================
 			/// Drawstate クラス
@@ -60,7 +67,7 @@ namespace render {
 				//@breif	=== 描画設定作成関数 ===
 				//@param	desc	描画設定補助構造体
 				//@return	作成の成否
-				[[nodiscard]] bool creaate_draw_state(DrawStateDesc& desc);
+				[[nodiscard]] bool creaate_draw_state(desc::DrawStateDesc& desc);
 
 				//@brief	=== 描画パス実行時バインド関数 ===
 				//@param	resouce	描画リソース
@@ -71,13 +78,18 @@ namespace render {
 				/// Private メンバー関数
 				///====================================================================
 
+				//@brief	== ルートシグネチャー参照 ==
 				ID3D12RootSignature* root_signature{};
 
-				ID3D12PipelineState* pipline_state{};
+				//@brief	== パイプラインステート参照 ==
+				ID3D12PipelineState* pipeline_state{};
 
+				//@brief	== ビューポート ==
 				D3D12_VIEWPORT viewport_{};
 
+				//@brief	== シーザー短形 ==
 				D3D12_RECT	rect_{};
+
 			};
 		};
 	};

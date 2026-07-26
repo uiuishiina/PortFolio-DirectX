@@ -26,6 +26,7 @@ namespace render {
 			/// DrawCommands クラス
 			///====================================================================
 
+			//@brief	=== 描画パス実行時コマンド ===
 			class DrawCommands final : public NonMovableBase
 			{
 			public:

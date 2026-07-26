@@ -53,12 +53,12 @@ namespace render {
 
 				//@brief	=== シェーダー取得関数 ===
 				//@param	key	シェーダーと紐づけたキー
-				//@return	シェーダーインスタンス
+				//@return	シェーダー参照
 				[[nodiscard]] ID3DBlob* get_shader(UINT key)const noexcept;
 
 				//@brief	=== シェーダー取得関数オーバーロード ===
 				//@param	key_name	シェーダーと紐づけたキーの名前
-				//@return	シェーダーインスタンス
+				//@return	シェーダー参照
 				[[nodiscard]] ID3DBlob* get_shader(const std::string& key_name)const noexcept;
 
 			private:

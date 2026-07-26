@@ -37,7 +37,7 @@ using namespace render::dx12::container;
 
 //@brief	=== シェーダー取得関数 ===
 //@param	key	シェーダーと紐づけたキー
-//@return	シェーダーインスタンス
+//@return	シェーダー参照
 [[nodiscard]] ID3DBlob* StaticShaderContainer::get_shader(UINT key)const noexcept {
 
     const auto it = shader_map.find(key);
@@ -49,7 +49,7 @@ using namespace render::dx12::container;
 
 //@brief	=== シェーダー取得関数オーバーロード ===
 //@param	key_name	シェーダーと紐づけたキーの名前
-//@return	シェーダーインスタンス
+//@return	シェーダー参照
 [[nodiscard]] ID3DBlob* StaticShaderContainer::get_shader(const std::string& key_name)const noexcept {
 
     //  キーを取得

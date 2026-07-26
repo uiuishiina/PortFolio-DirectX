@@ -9,13 +9,13 @@ using namespace render::dx12::state;
 //@breif	=== 描画設定作成関数 ===
 //@param	desc	描画設定補助構造体
 //@return	作成の成否
-[[nodiscard]] bool Drawstate::creaate_draw_state(DrawStateDesc& desc)
+[[nodiscard]] bool Drawstate::creaate_draw_state(desc::DrawStateDesc& desc)
 {
     if (!desc.root_signature || !desc.pipline_state) {
         return false;
     }
     root_signature = desc.root_signature;
-    pipline_state = desc.pipline_state;
+    pipeline_state = desc.pipline_state;
     viewport_ = desc.viewport_;
     rect_ = desc.rect_;
 
@@ -36,5 +36,5 @@ void Drawstate::apply(resouces::DrawResouces& resouce) {
     list->RSSetScissorRects(1, &rect_);
 
     list->SetGraphicsRootSignature(root_signature);
-    list->SetPipelineState(pipline_state);
+    list->SetPipelineState(pipeline_state);
 }

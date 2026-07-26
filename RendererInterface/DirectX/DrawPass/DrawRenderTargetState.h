@@ -25,7 +25,7 @@ namespace render {
 			/// DrawRenderTargets クラス
 			///====================================================================
 
-			//@brief	=== 描画パス用レンダーターゲット設定クラス ===
+			//@brief	=== 描画パス用レンダーターゲット設定 ===
 			class DrawRenderTargetState final : public NonMovableBase
 			{
 			public:
@@ -63,6 +63,7 @@ namespace render {
 
 				//@brief	== 追加するDSVの設定 ==
 				std::optional<DepthSlot> depth_slot{};
+
 			};
 		};
 	};

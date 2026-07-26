@@ -150,8 +150,10 @@
     <ClCompile Include="..\Debug\DebugLogThread.cpp" />
     <ClCompile Include="..\RendererInterface\DirectXRenderer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticContainerBase.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawStateContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticHeapContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticPiplineStateContainer.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticRenderTargetStateContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticRootSignatureContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\CommandAllocator.cpp" />
@@ -207,6 +209,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticDrawStateContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticHeapContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticPiplineStateContainer.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticRenderTargetStateContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticRootSignatureContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\CommandAllocator.h" />

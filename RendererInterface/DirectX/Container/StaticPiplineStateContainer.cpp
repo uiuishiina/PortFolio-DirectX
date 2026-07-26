@@ -38,7 +38,7 @@ using namespace render::dx12::container;
 
 //@brief	=== パイプラインステート取得関数 ===
 //@param	key	パイプラインステートと紐づけたキー
-//@return	パイプラインステートインスタンス
+//@return	パイプラインステート参照
 [[nodiscard]] ID3D12PipelineState* StaticPiplineStateContainer::get_pipline_state(UINT key)const noexcept {
 
     const auto it = pipline_map.find(key);
@@ -50,7 +50,7 @@ using namespace render::dx12::container;
 
 //@brief	=== パイプラインステート取得関数オーバーロード ===
 //@param	key_name	パイプラインステートと紐づけたキーの名前
-//@return	パイプラインステートインスタンス
+//@return	パイプラインステート参照
 [[nodiscard]] ID3D12PipelineState* StaticPiplineStateContainer::get_pipline_state(const std::string& key_name)const noexcept {
 
     //  キーを取得

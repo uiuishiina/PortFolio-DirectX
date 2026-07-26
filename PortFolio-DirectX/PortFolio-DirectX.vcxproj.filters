@@ -171,6 +171,12 @@
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticContainerBase.cpp">
       <Filter>RendererInterface\DirectX\Container</Filter>
     </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawStateContainer.cpp">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticRenderTargetStateContainer.cpp">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Debug\DebugLogBuilder.h">
@@ -342,6 +348,9 @@
       <Filter>RendererInterface\DirectX\Container</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticDrawStateContainer.h">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticRenderTargetStateContainer.h">
       <Filter>RendererInterface\DirectX\Container</Filter>
     </ClInclude>
   </ItemGroup>

@@ -53,12 +53,12 @@ namespace render {
 
 				//@brief	=== ルートシグネチャー取得関数 ===
 				//@param	key	ルートシグネチャーと紐づけたキー
-				//@return	ルートシグネチャーインスタンス
+				//@return	ルートシグネチャー参照
 				[[nodiscard]] ID3D12RootSignature* get_root_signature(UINT key)const noexcept;
 
 				//@brief	=== ルートシグネチャー取得関数オーバーロード ===
 				//@param	key_name	ルートシグネチャーと紐づけたキーの名前
-				//@return	ルートシグネチャーインスタンス
+				//@return	ルートシグネチャー参照
 				[[nodiscard]] ID3D12RootSignature* get_root_signature(const std::string& key_name)const noexcept;
 
 			private:

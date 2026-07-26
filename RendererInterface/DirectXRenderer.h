@@ -35,6 +35,9 @@ namespace render {
 			class StaticShaderContainer;
 			class StaticRootSignatureContainer;
 			class StaticPiplineStateContainer;
+
+			class StaticDrawStateContainer;
+			class StaticRenderTargetStateContainer;
 		};
 		namespace resouces {
 			class FrameResource;
@@ -43,7 +46,6 @@ namespace render {
 			class Mesh;
 		};
 		namespace state {
-			class Drawstate;
 			class DrawRenderTargetState;
 		};
 		namespace command {
@@ -148,9 +150,6 @@ private:
 	//@brief	== フレームリソース配列インスタンス ==
 	std::vector<std::unique_ptr<render::dx12::resouces::FrameResource>> frame_resources{};
 
-	//@brief	== 初期作成ディスクリプタヒープコンテナインスタンス ==
-	std::unique_ptr<render::dx12::container::StaticHeapContainer> static_heap_container{};
-
 	//@brief	== スワップチェーンインスタンス ==
 	std::unique_ptr<render::dx12::object::SwapChain> swap_chain{};
 
@@ -159,6 +158,13 @@ private:
 
 	//@brief	== Fenceインスタンス ==
 	std::unique_ptr<render::dx12::object::Fence> fence_{};
+
+	UINT normal_pipline{};
+
+	/* -- コンテナ各種 -- */
+
+	//@brief	== 初期作成ディスクリプタヒープコンテナインスタンス ==
+	std::unique_ptr<render::dx12::container::StaticHeapContainer> static_heap_container{};
 
 	//@brief	== シェーダーコンテナインスタンス ==
 	std::unique_ptr<render::dx12::container::StaticShaderContainer> shader_container{};
@@ -169,7 +175,13 @@ private:
 	//@brief	== パイプラインステートコンテナインスタンス ==
 	std::unique_ptr<render::dx12::container::StaticPiplineStateContainer> pipline_container{};
 
-	UINT normal_pipline{};
+	//@brief	== 描画設定コンテナインスタンス ==
+	std::unique_ptr<render::dx12::container::StaticDrawStateContainer> static_draw_state_container{};
+
+	//@brief	== 描画パス用レンダーターゲット設定コンテナインスタンス ==
+	std::unique_ptr<render::dx12::container::StaticRenderTargetStateContainer> static_render_target_state_container{};
+
+
 
 	//@brief	== ポリゴンインスタンス ==
 	std::unique_ptr<render::dx12::mesh::Mesh> polygon_{};
@@ -178,14 +190,8 @@ private:
 	std::unique_ptr<render::dx12::pass::DrawPass> NormalPass_{};
 	std::unique_ptr<render::dx12::pass::DrawPass> Color_Pass_{};
 
-
-	std::unique_ptr<render::dx12::state::Drawstate> NormalState_{};
-	std::unique_ptr<render::dx12::state::DrawRenderTargetState> NormalTargetState_{};
 	std::unique_ptr<render::dx12::command::DrawCommands> NormalCommands_{};
 
-	
-	std::unique_ptr<render::dx12::state::Drawstate> Color_State_{};
-	std::unique_ptr<render::dx12::state::DrawRenderTargetState> Color_TargetState_{};
 	std::unique_ptr<render::dx12::command::DrawCommands> Color_Commands_{};
 	
 	///====================================================================

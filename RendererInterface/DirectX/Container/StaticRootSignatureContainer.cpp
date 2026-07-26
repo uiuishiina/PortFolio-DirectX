@@ -36,7 +36,7 @@ using namespace render::dx12::container;
 
 //@brief	=== ルートシグネチャー取得関数 ===
 //@param	key	ルートシグネチャー紐づけたキー
-//@return	ルートシグネチャーインスタンス
+//@return	ルートシグネチャー参照
 [[nodiscard]] ID3D12RootSignature* StaticRootSignatureContainer::get_root_signature(UINT key)const noexcept {
 
     const auto it = root_map.find(key);
@@ -48,7 +48,7 @@ using namespace render::dx12::container;
 
 //@brief	=== ルートシグネチャー取得関数オーバーロード ===
 //@param	key_name	ルートシグネチャー紐づけたキーの名前
-//@return	ルートシグネチャーインスタンス
+//@return	ルートシグネチャー参照
 [[nodiscard]] ID3D12RootSignature* StaticRootSignatureContainer::get_root_signature(const std::string& key_name)const noexcept {
 
     //  キーを取得
