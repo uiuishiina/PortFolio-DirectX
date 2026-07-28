@@ -8,8 +8,8 @@ using namespace render::dx12::object;
 ///====================================================================
 
 //@brief	=== コンストラクタ ===
-//@details	基底クラスの引数付きコンストラクタを呼び出し
-RenderTarget::RenderTarget() : TextureResource(D3D12_RESOURCE_STATE_RENDER_TARGET) {};
+//@details	基底クラスの引数付きコンストラクタを呼び出し,バックバッファから取得したものは最初Presentになっている
+RenderTarget::RenderTarget() : TextureResource(D3D12_RESOURCE_STATE_PRESENT) {};
 
 //@brief	=== レンダーターゲット作成関数 ===
 //@param	swapchain	スワップチェインインスタンス

@@ -165,6 +165,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Device.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\DXGI.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Fence.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\IndexBuffer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\PipelineState.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Mesh.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\TextureResource.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\VertexBuffer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawCommands.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawPass.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawRenderTargetState.cpp" />
@@ -180,6 +182,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\FrameResourceFactory.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PiplineStateHelper.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceBarrierHelper.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceCreateDescHelper.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\RootSignatureDescBuilder.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\FrameResource.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\HashAllocator.cpp" />
@@ -223,6 +226,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Device.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\DXGI.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Fence.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\IndexBuffer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\PipelineState.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Mesh.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.h" />
@@ -230,6 +234,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\TextureResource.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\VertexBuffer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawCommands.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawPass.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawRenderTargetState.h" />
@@ -239,6 +244,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\FrameResourceFactory.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PiplineStateHelper.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceBarrierHelper.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceCreateDescHelper.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\RootSignatureDescBuilder.h" />
     <ClInclude Include="..\RendererInterface\DirectX\FrameResource.h" />
     <ClInclude Include="..\RendererInterface\DirectX\HashAllocator.h" />

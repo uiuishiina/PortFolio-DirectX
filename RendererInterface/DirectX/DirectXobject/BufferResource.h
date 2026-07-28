@@ -60,7 +60,7 @@ namespace render {
 				//@param	data	コピーするVector配列参照
 				//@return	コピーの成否
 				template<class T>
-				[[nodiscard]]HRESULT copy_buffer(const std::vector<T>& data) {
+				[[nodiscard]] HRESULT copy_buffer(const std::vector<T>& data) {
 					return copy_buffer(data.data(), data.size() * sizeof(T));
 				}
 

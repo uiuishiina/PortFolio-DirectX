@@ -186,6 +186,15 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\BufferResource.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\VertexBuffer.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceCreateDescHelper.cpp">
+      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\IndexBuffer.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Debug\DebugLogBuilder.h">
@@ -366,6 +375,15 @@
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\BufferResource.h">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\VertexBuffer.h">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceCreateDescHelper.h">
+      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\IndexBuffer.h">
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClInclude>
   </ItemGroup>
