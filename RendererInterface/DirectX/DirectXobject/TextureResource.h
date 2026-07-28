@@ -56,7 +56,7 @@ namespace render {
 				///====================================================================
 
 				//@brief	== リソースステート ==
-				D3D12_RESOURCE_STATES current_state = D3D12_RESOURCE_STATE_PRESENT;
+				D3D12_RESOURCE_STATES current_state{};
 
 			};
 		};
