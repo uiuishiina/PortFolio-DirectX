@@ -27,7 +27,7 @@ using namespace render::dx12::object;
 		return hr;
 	}
 
-	return S_OK;
+	return hr;
 }
 
 //@brief	=== DXGIファクトリー作成関数 ===
@@ -77,13 +77,15 @@ using namespace render::dx12::object;
 ///	実行時処理関数
 ///====================================================================
 
-//@brief	=== DXGIファクトリーインスタンス取得関数 ===
+//@brief	=== DXGIファクトリー取得関数 ===
+//@return	DXGIファクトリー参照
 [[nodiscard]] IDXGIFactory6* DXGI::get_DXGI_factory() const noexcept {
 	assert(factory_ && "DXGIファクトリー nullptr");
 	return factory_.Get();
 }
 
-//@brief	=== DXGIアダプターインスタンス取得関数 ===
+//@brief	=== DXGIアダプター取得関数 ===
+//@return	DXGIアダプター参照
 [[nodiscard]] IDXGIAdapter1* DXGI::get_DXGI_adaptor() const noexcept {
 	assert(adapter_ && "DXGIアダプター nullptr");
 	return adapter_.Get();

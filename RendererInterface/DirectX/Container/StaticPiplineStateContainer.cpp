@@ -31,7 +31,7 @@ using namespace render::dx12::container;
     //  mapに登録
     auto new_hash = allocate_hash(key_name);
     pipline_map.emplace(new_hash, std::move(pipline));
-    return S_OK;
+    return hr;
 }
 
 /* ==================== 取得関数 ==================== */

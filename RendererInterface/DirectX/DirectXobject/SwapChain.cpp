@@ -34,18 +34,13 @@ using namespace render::dx12::object;
 
 	//	スワップチェーンの作成
 	Microsoft::WRL::ComPtr<IDXGISwapChain1> swapchain1{};
-	auto hr = factory->CreateSwapChainForHwnd(command_queue, hwnd, &swapchain_desc, nullptr, nullptr, &swapchain1);
+	const auto hr = factory->CreateSwapChainForHwnd(command_queue, hwnd, &swapchain_desc, nullptr, nullptr, &swapchain1);
 	if (FAILED(hr)) {
 		return hr;
 	}
 
 	//	スワップチェーンをIDXGISwapChain4にキャスト
-	hr = swapchain1.As(&swapchain_);
-	if (FAILED(hr)) {
-		return hr;
-	}
-
-	return S_OK;
+	return swapchain1.As(&swapchain_);
 }
 
 ///====================================================================
@@ -53,7 +48,7 @@ using namespace render::dx12::object;
 ///====================================================================
 
 //@brief	=== スワップチェーン取得関数 ===
-//@return	スワップチェーンインスタンス
+//@return	スワップチェーン参照
 [[nodiscard]] IDXGISwapChain4* SwapChain::get_swapchain() const noexcept {
 	assert(swapchain_ && "スワップチェーン nullptr");
 	return swapchain_.Get();

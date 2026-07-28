@@ -48,7 +48,7 @@ namespace render {
 				[[nodiscard]] HRESULT create_command_queue(ID3D12Device* device, D3D12_COMMAND_LIST_TYPE type);
 
 				//@brief	=== コマンドキュー取得関数 ===
-				//@return	コマンドキューインスタンス
+				//@return	コマンドキュー参照
 				[[nodiscard]] ID3D12CommandQueue* get_command_queue() const noexcept;
 
 			private:

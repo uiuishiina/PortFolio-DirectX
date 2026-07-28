@@ -54,7 +54,7 @@ namespace render {
 					ID3D12CommandQueue* command_queue, WindowSize size, HWND hwnd, UINT buffer_size);
 
 				//@brief	=== スワップチェーン取得関数 ===
-				//@return	スワップチェーンインスタンス
+				//@return	スワップチェーン参照
 				[[nodiscard]] IDXGISwapChain4* get_swapchain() const noexcept;
 
 			private:

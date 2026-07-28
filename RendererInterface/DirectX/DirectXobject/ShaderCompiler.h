@@ -51,7 +51,7 @@ namespace render {
 				[[nodiscard]] HRESULT compile_shader(const std::wstring& path, const std::string& entry_point_name, const std::string& target_profile);
 
 				//@brief	=== HLSLシェーダー取得関数 ===
-				//@return	HLSLシェーダーインスタンス
+				//@return	HLSLシェーダー参照
 				[[nodiscard]] ID3DBlob* get_shader()const noexcept;
 
 			private:

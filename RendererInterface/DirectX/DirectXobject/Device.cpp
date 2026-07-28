@@ -12,7 +12,7 @@ using namespace render::dx12::object;
 ///====================================================================
 
 //@brief	=== Device初期化関数 ===
-//@param	adapter_	DXGIアダプターインスタンス
+//@param	adapter_	DXGIアダプター参照
 //@return	初期化の成否
 [[nodiscard]] HRESULT Device::initialize_Device(IDXGIAdapter1* adapter_) {
 
@@ -26,7 +26,7 @@ using namespace render::dx12::object;
 }
 
 //@brief	=== Device作成関数 ===
-//@param	adapter_	DXGIアダプターインスタンス
+//@param	adapter_	DXGIアダプター参照
 //@param	featureLevel	D3D機能レベル
 //@return	Deviceインスタンス
 Microsoft::WRL::ComPtr<ID3D12Device> Device::create_device(
@@ -49,8 +49,8 @@ Microsoft::WRL::ComPtr<ID3D12Device> Device::create_device(
 /// 実行時処理関数
 ///====================================================================
 
-//@brief	=== Deviceインスタンス取得関数 ===
-//@return	Deviceインスタンス
+//@brief	=== Device取得関数 ===
+//@return	Device参照
 [[nodiscard]] ID3D12Device* Device::get_device() const noexcept {
 	assert(device_ && "Device nullptr");
 	return device_.Get();

@@ -1,5 +1,5 @@
 #pragma once
-#include"TextureResouce.h"
+#include"TextureResource.h"
 
 ///====================================================================
 /// 描画名前空間
@@ -24,7 +24,7 @@ namespace render {
 			///====================================================================
 
 			//@brief === レンダーターゲットクラス ===
-			class RenderTarget final : public TextureResouce
+			class RenderTarget final : public TextureResource
 			{
 			public:
 				///====================================================================
@@ -32,7 +32,7 @@ namespace render {
 				///====================================================================
 
 				//コンストラクタ,デストラクタ
-				RenderTarget() = default;
+				RenderTarget();
 				~RenderTarget() = default;
 
 				///====================================================================

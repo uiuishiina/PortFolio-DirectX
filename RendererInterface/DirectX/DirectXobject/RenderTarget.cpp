@@ -7,6 +7,10 @@ using namespace render::dx12::object;
 /// 初期化関数
 ///====================================================================
 
+//@brief	=== コンストラクタ ===
+//@details	基底クラスの引数付きコンストラクタを呼び出し
+RenderTarget::RenderTarget() : TextureResource(D3D12_RESOURCE_STATE_RENDER_TARGET) {};
+
 //@brief	=== レンダーターゲット作成関数 ===
 //@param	swapchain	スワップチェインインスタンス
 //@param	handle	RTVディスクリプタヒープハンドル
@@ -17,7 +21,7 @@ using namespace render::dx12::object;
 	rtv_handle = handle;
 
 	//	スワップチェーンからバックバッファを取得し、レンダーターゲットとして保存
-	const auto hr = swapchain->GetBuffer(buffer_index, IID_PPV_ARGS(&resouce_));
+	const auto hr = swapchain->GetBuffer(buffer_index, IID_PPV_ARGS(&resource_));
 	if (FAILED(hr)) {
 		return hr;
 	}
@@ -26,9 +30,9 @@ using namespace render::dx12::object;
 	D3D12_RENDER_TARGET_VIEW_DESC rtv_desc{};
 	rtv_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	rtv_desc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
-	device->CreateRenderTargetView(resouce_.Get(), &rtv_desc, rtv_handle);
+	device->CreateRenderTargetView(resource_.Get(), &rtv_desc, rtv_handle);
 
-	return S_OK;
+	return hr;
 }
 
 ///====================================================================
@@ -38,6 +42,6 @@ using namespace render::dx12::object;
 //@brief	=== RTVハンドル取得関数 ===
 //@return	RTV_CPUハンドル
 [[nodiscard]] D3D12_CPU_DESCRIPTOR_HANDLE RenderTarget::get_rtv_handle() const noexcept {
-	assert(resouce_ && "レンダーターゲット nullptr");
+	assert(resource_ && "レンダーターゲット nullptr");
 	return rtv_handle;
 }

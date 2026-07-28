@@ -33,7 +33,7 @@ using namespace render::dx12::pass;
 
 //@brief	=== 描画パス実行関数 ===
 //@param	resouce	描画リソース
-void DrawPass::apply(resouces::DrawResouces& resouce)
+void DrawPass::apply(resources::DrawResources& resouce)
 {
 	//	描画パス開始
 	draw_commands->begin(resouce);

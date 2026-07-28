@@ -355,22 +355,22 @@ DirectXRenderer::~DirectXRenderer() = default;
 		//	DrawCommands作成
 		NormalCommands_ = std::make_unique<command::DrawCommands>();
 		NormalCommands_->set_begin_command(
-			[&](resouces::DrawResouces& resouce) {
-				auto* target = resouce.get_target(RenderTargetSlot::BackBuffer);
-				target->barrier_transition(resouce.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
-				resouce.graphics_list->ClearRenderTargetView(target->get_rtv_handle(), back_ground_color, 0, nullptr);
+			[&](resources::DrawResources& resource) {
+				auto* target = resource.get_target(RenderTargetSlot::BackBuffer);
+				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
+				resource.graphics_list->ClearRenderTargetView(target->get_rtv_handle(), back_ground_color, 0, nullptr);
 			}
 		);
 		NormalCommands_->add_apply_command(
-			[&](resouces::DrawResouces& resouce) {
+			[&](resources::DrawResources& resource) {
 				polygon_->draw_mesh(graphics_list->get_graphics_command_list());
 			}
 		);
 
 		NormalCommands_->set_end_command(
-			[](resouces::DrawResouces& resouce) {
-				auto* target = resouce.get_target(RenderTargetSlot::BackBuffer);
-				target->barrier_transition(resouce.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
+			[](resources::DrawResources& resource) {
+				auto* target = resource.get_target(RenderTargetSlot::BackBuffer);
+				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
 
 			}
 		);
@@ -416,21 +416,21 @@ DirectXRenderer::~DirectXRenderer() = default;
 		//	DrawCommands作成
 		Color_Commands_ = std::make_unique<command::DrawCommands>();
 		Color_Commands_->set_begin_command(
-			[&](resouces::DrawResouces& resouce) {
-				auto* target = resouce.get_target(RenderTargetSlot::BackBuffer);
-				target->barrier_transition(resouce.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
+			[&](resources::DrawResources& resource) {
+				auto* target = resource.get_target(RenderTargetSlot::BackBuffer);
+				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
 			}
 		);
 		Color_Commands_->add_apply_command(
-			[&](resouces::DrawResouces& resouce) {
+			[&](resources::DrawResources& resource) {
 				Color_polygon_->draw_mesh(graphics_list->get_graphics_command_list());
 			}
 		);
 
 		Color_Commands_->set_end_command(
-			[](resouces::DrawResouces& resouce) {
-				auto* target = resouce.get_target(RenderTargetSlot::BackBuffer);
-				target->barrier_transition(resouce.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
+			[](resources::DrawResources& resource) {
+				auto* target = resource.get_target(RenderTargetSlot::BackBuffer);
+				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
 			}
 		);
 
@@ -483,16 +483,16 @@ void DirectXRenderer::update_renderer() {
 	// コマンドリストリセット
 	graphics_list->reset_command_list(allocator->get_command_allocator());
 
-	resouces::DrawResouces resouces{};
-	resouces.graphics_list = graphics_list->get_graphics_command_list();
-	resouces.frame_resouce = frame_resources[current_frame_index].get();
-	resouces.static_heap_container = static_heap_container.get();
-	resouces.render_targets[resouces::to_index(RenderTargetSlot::BackBuffer)] = render_targets[backBufferIndex].get();
+	resources::DrawResources resources{};
+	resources.graphics_list = graphics_list->get_graphics_command_list();
+	resources.frame_resource = frame_resources[current_frame_index].get();
+	resources.static_heap_container = static_heap_container.get();
+	resources.render_targets[resources::to_index(RenderTargetSlot::BackBuffer)] = render_targets[backBufferIndex].get();
 
 	/* ==================== 描画パス実行 ==================== */
 
-	NormalPass_->apply(resouces);
-	Color_Pass_->apply(resouces);
+	NormalPass_->apply(resources);
+	Color_Pass_->apply(resources);
 
 	/* ==================== 描画パス終了 ==================== */
 

@@ -29,7 +29,7 @@ using namespace render::dx12::object;
 
 	//	ディスクリプタヒープのメモリサイズを取得
 	descriptor_size_ = device->GetDescriptorHandleIncrementSize(type);
-	return S_OK;
+	return hr;
 }
 
 ///====================================================================
@@ -37,7 +37,7 @@ using namespace render::dx12::object;
 ///====================================================================
 
 //@brief	=== ディスクリプタヒープ取得関数 ===
-//@return	ディスクリプタヒープインスタンス
+//@return	ディスクリプタヒープ参照
 [[nodiscard]] ID3D12DescriptorHeap* DescriptorHeap::get_descriptor_heap() const noexcept {
 	assert(heap_ && "ディスクリプタヒープ nullptr");
 	return heap_.Get();

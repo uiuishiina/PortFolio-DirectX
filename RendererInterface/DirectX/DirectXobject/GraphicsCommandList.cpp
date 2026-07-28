@@ -10,7 +10,7 @@ using namespace render::dx12::object;
 //@brief	=== コマンドリスト作成関数 ===
 //@param	device	DirectX12 デバイス
 //@param	type	コマンドリストタイプ
-//@param	allocator	コマンドアロケータインスタンス
+//@param	allocator	コマンドアロケータ参照
 //@return	作成の成否
 [[nodiscard]] HRESULT GraphicsCommandList::create_graphics_command_list(ID3D12Device* device, D3D12_COMMAND_LIST_TYPE type,
 	ID3D12CommandAllocator* allocator) {
@@ -27,7 +27,7 @@ using namespace render::dx12::object;
 	}
 
 	command_list_->Close(); // コマンドリストは作成後にクローズする必要がある
-	return S_OK;
+	return hr;
 }
 
 ///====================================================================
@@ -35,7 +35,7 @@ using namespace render::dx12::object;
 ///====================================================================
  
 //@brief	=== 描画用コマンドリストリセット関数 ===
-//@param	allocator	コマンドリストをリセットするコマンドアロケータ
+//@param	allocator	コマンドリストをリセットするコマンドアロケータ参照
 void GraphicsCommandList::reset_command_list(ID3D12CommandAllocator* allocator) {
 
 	assert(command_list_ && "コマンドリスト nullptr");
@@ -44,7 +44,7 @@ void GraphicsCommandList::reset_command_list(ID3D12CommandAllocator* allocator) 
 }
 
 //@brief	=== コマンドリスト取得関数 ===
-//@return	コマンドリストインスタンス
+//@return	コマンドリスト参照
 [[nodiscard]] ID3D12GraphicsCommandList* GraphicsCommandList::get_graphics_command_list() const noexcept {
 	assert(command_list_ && "コマンドリスト nullptr");
 	return command_list_.Get();

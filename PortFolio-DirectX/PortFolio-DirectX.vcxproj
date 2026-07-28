@@ -156,7 +156,9 @@
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticRenderTargetStateContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticRootSignatureContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\BufferResource.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\CommandAllocator.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\GPUResource.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\GraphicsCommandList.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\CommandQueue.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\DescriptorHeap.cpp" />
@@ -169,7 +171,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RootSignature.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.cpp" />
-    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\TextureResouce.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\TextureResource.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawCommands.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawPass.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawRenderTargetState.cpp" />
@@ -212,7 +214,9 @@
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticRenderTargetStateContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticRootSignatureContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\BufferResource.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\CommandAllocator.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\GPUResource.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\GraphicsCommandList.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\CommandQueue.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\DescriptorHeap.h" />
@@ -225,7 +229,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RootSignature.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.h" />
-    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\TextureResouce.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\TextureResource.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawCommands.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawPass.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawRenderTargetState.h" />

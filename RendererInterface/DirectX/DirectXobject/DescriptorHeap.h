@@ -51,7 +51,7 @@ namespace render {
 					UINT num_descriptors, D3D12_DESCRIPTOR_HEAP_FLAGS flags);
 
 				//@brief	=== ディスクリプタヒープ取得関数 ===
-				//@return	ディスクリプタヒープインスタンス
+				//@return	ディスクリプタヒープ参照
 				[[nodiscard]] ID3D12DescriptorHeap* get_descriptor_heap() const noexcept;
 
 				//@brief	=== CPU ディスクリプタハンドル取得関数 ===

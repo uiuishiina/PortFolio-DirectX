@@ -32,7 +32,7 @@ using namespace render::dx12::container;
     //  mapに登録
     auto new_hash = allocate_hash(key_name);
     shader_map.emplace(new_hash, std::move(shader));
-    return S_OK;
+    return hr;
 }
 
 //@brief	=== シェーダー取得関数 ===

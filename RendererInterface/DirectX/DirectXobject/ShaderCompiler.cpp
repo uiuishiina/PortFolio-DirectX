@@ -31,9 +31,8 @@ using namespace render::dx12::object;
 		if (error_blob) {
 			DEBUG_ERROR_LOG(static_cast<const char*>(error_blob.Get()->GetBufferPointer()));
 		}
-		return hr;
 	}
-	return S_OK;
+	return hr;
 }
 
 ///====================================================================
@@ -41,7 +40,7 @@ using namespace render::dx12::object;
 ///====================================================================
 
 //@brief	=== HLSLシェーダー取得関数 ===
-//@return	HLSLシェーダーインスタンス
+//@return	HLSLシェーダー参照
 [[nodiscard]] ID3DBlob* ShaderCompiler::get_shader()const noexcept {
 	assert(shader_blob && "シェーダー nullptr");
 	return shader_blob.Get();

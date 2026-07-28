@@ -59,7 +59,7 @@ void Fence::wait_to_completed_value(UINT64 completed_value) const noexcept {
 }
 
 //@brief	=== フェンス取得関数 ===
-//@return	フェンスインスタンス
+//@return	フェンス参照
 [[nodiscard]] ID3D12Fence* Fence::get_fence()const noexcept {
 	assert(fence_ && "フェンス nullptr");
 	return fence_.Get();

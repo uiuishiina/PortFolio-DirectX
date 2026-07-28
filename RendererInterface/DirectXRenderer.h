@@ -39,7 +39,7 @@ namespace render {
 			class StaticDrawStateContainer;
 			class StaticRenderTargetStateContainer;
 		};
-		namespace resouces {
+		namespace resources {
 			class FrameResource;
 		};
 		namespace mesh {
@@ -148,7 +148,7 @@ private:
 	std::unique_ptr<render::dx12::object::GraphicsCommandList> graphics_list{};
 
 	//@brief	== フレームリソース配列インスタンス ==
-	std::vector<std::unique_ptr<render::dx12::resouces::FrameResource>> frame_resources{};
+	std::vector<std::unique_ptr<render::dx12::resources::FrameResource>> frame_resources{};
 
 	//@brief	== スワップチェーンインスタンス ==
 	std::unique_ptr<render::dx12::object::SwapChain> swap_chain{};

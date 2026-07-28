@@ -29,7 +29,7 @@ void CommandAllocator::reset_command_allocator() {
 }
 
 //@brief	=== コマンドアロケータ取得関数 ===
-//@return	コマンドアロケータインスタンス
+//@return	コマンドアロケータ参照
 [[nodiscard]] ID3D12CommandAllocator* CommandAllocator::get_command_allocator() const noexcept {
 	assert(command_allocator_ && "コマンドアロケータ nullptr");
 	return command_allocator_.Get();

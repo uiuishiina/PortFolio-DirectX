@@ -25,7 +25,7 @@ namespace render {
 			/// DrawRenderTargets クラス
 			///====================================================================
 
-			//@brief	=== 描画パス用レンダーターゲット設定 ===
+			//@brief	=== 描画パス用レンダーターゲット設定クラス ===
 			class DrawRenderTargetState final : public NonMovableBase
 			{
 			public:
@@ -51,7 +51,7 @@ namespace render {
 
 				//@brief	=== 描画パス実行時レンダーターゲットバインド関数 ==
 				//@param	resouce	描画リソース
-				void apply(resouces::DrawResouces& resouce);
+				void apply(resources::DrawResources& resouce);
 
 			private:
 				///====================================================================

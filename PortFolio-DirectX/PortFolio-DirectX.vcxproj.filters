@@ -49,6 +49,9 @@
     <Filter Include="RendererInterface\DirectX\DrawPass">
       <UniqueIdentifier>{a0d872a9-135d-4783-91e8-4eec4ae15136}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RendererInterface\DirectX\DirectXobject\GPUResource">
+      <UniqueIdentifier>{226a48f7-633a-49f1-8dcb-81b2826c9cdf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\EntryPoint.cpp">
@@ -123,9 +126,6 @@
     <ClCompile Include="..\RendererInterface\DirectX\HashAllocator.cpp">
       <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Mesh.cpp">
-      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
-    </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticHeapContainer.cpp">
       <Filter>RendererInterface\DirectX\Container</Filter>
     </ClCompile>
@@ -153,9 +153,6 @@
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\RootSignatureDescBuilder.cpp">
       <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
     </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\TextureResouce.cpp">
-      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
-    </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawCommands.cpp">
       <Filter>RendererInterface\DirectX\DrawPass</Filter>
     </ClCompile>
@@ -176,6 +173,18 @@
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticRenderTargetStateContainer.cpp">
       <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Mesh.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\TextureResource.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\GPUResource.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\BufferResource.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -290,9 +299,6 @@
     <ClInclude Include="..\RendererInterface\DirectX\HashAllocator.h">
       <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Mesh.h">
-      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
-    </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticHeapContainer.h">
       <Filter>RendererInterface\DirectX\Container</Filter>
     </ClInclude>
@@ -319,9 +325,6 @@
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\RootSignatureDescBuilder.h">
       <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\TextureResouce.h">
-      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClInclude>
     <ClInclude Include="..\Utility\NonMovable.h">
       <Filter>Utility</Filter>
@@ -352,6 +355,18 @@
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticRenderTargetStateContainer.h">
       <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Mesh.h">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\GPUResource.h">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\TextureResource.h">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\BufferResource.h">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

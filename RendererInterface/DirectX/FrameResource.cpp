@@ -1,7 +1,7 @@
 #include"FrameResource.h"
 #include"Factory&Builder&Helper/CommandObjectFactory.h"
 
-using namespace render::dx12::resouces;
+using namespace render::dx12::resources;
 
 ///====================================================================
 /// 初期化時間数
@@ -21,7 +21,7 @@ using namespace render::dx12::resouces;
 
     graphics_allocator = std::move(allocator);
 
-	return S_OK;
+	return hr;
 }
 
 
@@ -41,8 +41,8 @@ void FrameResource::set_frame_fence_value(const UINT64& value) {
     return frame_fence_value;
 }
 
-//@brief	===	描画用コマンドアロケータークラス参照取得関数 ===
-//@return	コマンドアロケータークラスインスタンス
+//@brief	===	描画用コマンドアロケータークラス取得関数 ===
+//@return	コマンドアロケータークラス参照
 [[nodiscard]] render::dx12::object::CommandAllocator* FrameResource::get_graphics_allocator()const noexcept {
 	return graphics_allocator.get();
 }

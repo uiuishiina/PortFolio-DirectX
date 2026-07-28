@@ -19,7 +19,7 @@ namespace render {
 		/// 描画リソース名前空間
 		///====================================================================
 
-		namespace resouces {
+		namespace resources {
 
 			///====================================================================
 			/// FrameResouse クラス
@@ -60,8 +60,8 @@ namespace render {
 				//@return	フレームフェンス保存変数の値
 				[[nodiscard]] UINT64 get_frame_fence_value()const noexcept;
 
-				//@brief	===	描画用コマンドアロケータークラス参照取得関数 ===
-				//@return	コマンドアロケータークラスインスタンス
+				//@brief	===	描画用コマンドアロケータークラス取得関数 ===
+				//@return	コマンドアロケータークラス参照
 				[[nodiscard]] object::CommandAllocator* get_graphics_allocator()const noexcept;
 
 			private:

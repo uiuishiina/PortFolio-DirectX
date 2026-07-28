@@ -43,7 +43,7 @@ using namespace render::dx12::object;
 	if (FAILED(hr)) {
 		return hr;
 	}
-	return S_OK;
+	return hr;
 }
 
 ///====================================================================
@@ -51,7 +51,7 @@ using namespace render::dx12::object;
 ///====================================================================
 
 //@brief	=== ルートシグネチャ取得関数 ===
-//@return	ルートシグネチャインスタンス
+//@return	ルートシグネチャ参照
 [[nodiscard]] ID3D12RootSignature* RootSignature::get_root_signature() const noexcept {
 	assert(root_signature && "ルートシグネチャ nullptr");
 	return root_signature.Get();

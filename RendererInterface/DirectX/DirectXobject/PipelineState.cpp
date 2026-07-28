@@ -5,9 +5,10 @@
 using namespace render::dx12::object;
 
 ///====================================================================
-/// 初期化関数
+/// PipelineStateDesc 構造体
 ///====================================================================
 
+//@brief    === コンストラクタ ===
 render::dx12::desc::PipelineStateDesc::PipelineStateDesc() {
 
     //  デフォルトで埋める
@@ -16,6 +17,14 @@ render::dx12::desc::PipelineStateDesc::PipelineStateDesc() {
     depth_stencil_desc = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 }
 
+///====================================================================
+/// 初期化関数
+///====================================================================
+
+//@breif	=== パイプラインステート作成関数 ===
+//@param	device	DirectX12 デバイス
+//@param	desc	パイプラインステート設定
+//@return	作成の成否
 [[nodiscard]] HRESULT PipelineState::create_piplinestate(ID3D12Device* device, desc::PipelineStateDesc& desc)
 {
     D3D12_GRAPHICS_PIPELINE_STATE_DESC pipeline_desc{};
@@ -75,11 +84,7 @@ render::dx12::desc::PipelineStateDesc::PipelineStateDesc() {
     //  パイプラインステートフラグ設定
     pipeline_desc.Flags = desc.flags;
     
-    const auto hr = device->CreateGraphicsPipelineState(&pipeline_desc, IID_PPV_ARGS(&pipline_state));
-    if (FAILED(hr)) {
-        return hr;
-    }
-    return S_OK;
+    return device->CreateGraphicsPipelineState(&pipeline_desc, IID_PPV_ARGS(&pipline_state));
 }
 
 ///====================================================================
@@ -87,7 +92,7 @@ render::dx12::desc::PipelineStateDesc::PipelineStateDesc() {
 ///====================================================================
 
 //@brief	=== パイプラインステート取得関数 ===
-//@return	パイプラインステートインスタンス
+//@return	パイプラインステート参照
 [[nodiscard]] ID3D12PipelineState* PipelineState::get_pipline_state()const noexcept {
     assert(pipline_state && "パイプラインステート nullptr");
     return pipline_state.Get();

@@ -26,7 +26,7 @@ namespace render {
 			/// DrawCommands クラス
 			///====================================================================
 
-			//@brief	=== 描画パス実行時コマンド ===
+			//@brief	=== 描画パス実行時コマンドクラス ===
 			class DrawCommands final : public NonMovableBase
 			{
 			public:
@@ -46,29 +46,29 @@ namespace render {
 
 				//@param	=== Beginコマンド設定関数 ===
 				//@param	func	設定するコマンド
-				void set_begin_command(const std::function<void(resouces::DrawResouces&)>& func);
+				void set_begin_command(const std::function<void(resources::DrawResources&)>& func);
 
 				//@brief	=== 描画コマンド追加関数 ===
 				//@param	func	追加するコマンド
-				void add_apply_command(const std::function<void(resouces::DrawResouces&)>& func);
+				void add_apply_command(const std::function<void(resources::DrawResources&)>& func);
 
 				//@param	=== Endコマンド設定関数 ===
 				//@param	func	設定するコマンド
-				void set_end_command(const std::function<void(resouces::DrawResouces&)>& func);
+				void set_end_command(const std::function<void(resources::DrawResources&)>& func);
 
 				/* -- 実行関数 -- */
 
 				//@brief	=== 描画パス実行時Beginコマンド実行関数 ===
 				//@param	resouce	描画リソース
-				void begin(resouces::DrawResouces& resouce);
+				void begin(resources::DrawResources& resouce);
 
 				//@brief	=== 描画パス実行時描画コマンド実行関数 ===
 				//@param	resouce	描画リソース
-				void apply(resouces::DrawResouces& resouce);
+				void apply(resources::DrawResources& resouce);
 
 				//@brief	=== 描画パス実行時Endコマンド実行関数 ===
 				//@param	resouce	描画リソース
-				void end(resouces::DrawResouces& resouce);
+				void end(resources::DrawResources& resouce);
 
 			private:
 				///====================================================================
@@ -76,13 +76,13 @@ namespace render {
 				///====================================================================
 
 				//@brief	== 描画パス開始時コマンド ==
-				std::function<void(resouces::DrawResouces& resouce)> begin_command{};
+				std::function<void(resources::DrawResources& resouce)> begin_command{};
 
 				//@brief	== 描画コマンド保存配列 ==
-				std::vector<std::function<void(resouces::DrawResouces& resouce)>> apply_commands{};
+				std::vector<std::function<void(resources::DrawResources& resouce)>> apply_commands{};
 
 				//@brief	== 描画パス終了時コマンド ==
-				std::function<void(resouces::DrawResouces& resouce)> end_command{};
+				std::function<void(resources::DrawResources& resouce)> end_command{};
 
 			};
 		};

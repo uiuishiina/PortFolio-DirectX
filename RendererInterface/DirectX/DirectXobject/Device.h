@@ -43,12 +43,12 @@ namespace render {
 				///====================================================================
 
 				//@brief	=== Device初期化関数 ===
-				//@param	adapter_	DXGIアダプターインスタンス
+				//@param	adapter_	DXGIアダプター参照
 				//@return	初期化の成否
 				[[nodiscard]] HRESULT initialize_Device(IDXGIAdapter1* adapter_);
 
-				//@brief	=== Deviceインスタンス取得関数 ===
-				//@return	Deviceインスタンス
+				//@brief	=== Device取得関数 ===
+				//@return	Device参照
 				[[nodiscard]] ID3D12Device* get_device() const noexcept;
 
 			private:
@@ -74,7 +74,7 @@ namespace render {
 				///====================================================================
 
 				//@brief	=== Device作成関数 ===
-				//@param	adapter_	DXGIアダプターインスタンス
+				//@param	adapter_	DXGIアダプター参照
 				//@param	featureLevel	D3D機能レベル
 				//@return	Deviceインスタンス
 				Microsoft::WRL::ComPtr<ID3D12Device> create_device(IDXGIAdapter1* adapter_, D3D_FEATURE_LEVEL featureLevel);

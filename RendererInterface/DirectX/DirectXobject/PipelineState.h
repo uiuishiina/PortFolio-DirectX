@@ -113,7 +113,7 @@ namespace render {
 				[[nodiscard]] HRESULT create_piplinestate(ID3D12Device* device, desc::PipelineStateDesc& desc);
 
 				//@brief	=== パイプラインステート取得関数 ===
-				//@return	パイプラインステートインスタンス
+				//@return	パイプラインステート参照
 				[[nodiscard]] ID3D12PipelineState* get_pipline_state()const noexcept;
 
 			private:

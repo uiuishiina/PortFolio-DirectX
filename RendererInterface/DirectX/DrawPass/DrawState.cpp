@@ -28,7 +28,7 @@ using namespace render::dx12::state;
 
 //@brief	=== 描画パス実行時バインド関数 ===
 //@param	resouce	描画リソース
-void Drawstate::apply(resouces::DrawResouces& resouce) {
+void Drawstate::apply(resources::DrawResources& resouce) {
 
     auto* list = resouce.graphics_list;
 

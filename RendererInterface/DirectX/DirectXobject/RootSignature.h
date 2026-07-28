@@ -73,7 +73,7 @@ namespace render {
 				[[nodiscard]] HRESULT create_root_signature(ID3D12Device* device, desc::RootSignatureDesc& desc);
 
 				//@brief	=== ルートシグネチャ取得関数 ===
-				//@return	ルートシグネチャインスタンス
+				//@return	ルートシグネチャ参照
 				[[nodiscard]] ID3D12RootSignature* get_root_signature() const noexcept;
 
 			private:

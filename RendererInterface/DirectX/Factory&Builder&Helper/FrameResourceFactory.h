@@ -38,7 +38,7 @@ namespace render {
 				//@param	size	フレームリソースサイズ
 				//@param	out	受け渡すインスタンス
 				//@return	作成の成否
-				static [[nodiscard]] HRESULT create_frame_resources(ID3D12Device* device, UINT size, std::vector<std::unique_ptr<resouces::FrameResource>>& out);
+				static [[nodiscard]] HRESULT create_frame_resources(ID3D12Device* device, UINT size, std::vector<std::unique_ptr<resources::FrameResource>>& out);
 
 			private:
 				///====================================================================

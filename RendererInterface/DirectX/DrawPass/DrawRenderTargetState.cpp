@@ -23,7 +23,7 @@ void DrawRenderTargetState::set_depth(DepthSlot slot) {
 ///====================================================================
 
 //@brief	=== 描画パス実行時レンダーターゲットバインド関数 ==
-void DrawRenderTargetState::apply(resouces::DrawResouces& resouce) {
+void DrawRenderTargetState::apply(resources::DrawResources& resouce) {
 
 	std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> handles_{};
 	

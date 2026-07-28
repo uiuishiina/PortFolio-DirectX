@@ -59,7 +59,7 @@ namespace render {
 				[[nodiscard]] UINT64 get_completed_value() const noexcept;
 
 				//@brief	=== フェンス取得関数 ===
-				//@return	フェンスインスタンス
+				//@return	フェンス参照
 				[[nodiscard]] ID3D12Fence* get_fence()const noexcept;
 
 			private:

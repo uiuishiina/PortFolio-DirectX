@@ -28,7 +28,7 @@ using namespace render::dx12::object;
 ///====================================================================
 
 //@brief	=== コマンドキュー取得関数 ===
-//@return	コマンドキューインスタンス
+//@return	コマンドキュー参照
 [[nodiscard]] ID3D12CommandQueue* CommandQueue::get_command_queue() const noexcept {
 	assert(command_queue_ && "コマンドキュー nulptr");
 	return command_queue_.Get();

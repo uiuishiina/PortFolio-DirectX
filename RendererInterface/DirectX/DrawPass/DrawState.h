@@ -71,7 +71,7 @@ namespace render {
 
 				//@brief	=== 描画パス実行時バインド関数 ===
 				//@param	resouce	描画リソース
-				void apply(resouces::DrawResouces& resouce);
+				void apply(resources::DrawResources& resouce);
 
 			private:
 				///====================================================================

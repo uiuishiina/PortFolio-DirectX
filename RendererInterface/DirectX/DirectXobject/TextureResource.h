@@ -1,8 +1,5 @@
 #pragma once
-#include"NonMovable.h"
-#include<dxgi1_6.h>
-#include<d3d12.h>
-#include<wrl/client.h>
+#include"GPUResource.h"
 
 ///====================================================================
 /// 描画名前空間
@@ -22,22 +19,27 @@ namespace render {
 
 		namespace object {
 
-
 			///====================================================================
 			/// TextureResouce 基底クラス
 			///====================================================================
 
 			//@brief	=== 描画リソース基底クラス ===
-			class TextureResouce : public NonMovableBase
+			class TextureResource : public GPUResourceBase
 			{
 			public:
 				///====================================================================
 				/// クラス設定
 				///====================================================================
 
-				//コンストラクタ,デストラクタ
-				TextureResouce() = default;
-				virtual ~TextureResouce() = default;
+				//コンストラクタ削除
+				TextureResource() = delete;
+
+				//@brief	=== 引数付きコンストラクタ ===
+				//@param	state	初期設定リソースステート
+				TextureResource(D3D12_RESOURCE_STATES state);
+
+				//デストラクタ
+				virtual ~TextureResource() = default;
 
 				///====================================================================
 				/// Public メンバー関数
@@ -48,13 +50,10 @@ namespace render {
 				//@param	next_state	遷移先バリアステート
 				void  barrier_transition(ID3D12GraphicsCommandList* list, D3D12_RESOURCE_STATES next_state);
 
-				//@breif	=== リソースインスタンス取得関数 ===
-				//@return	リソースインスタンス
-				[[nodiscard]] ID3D12Resource* get_resouce()const noexcept;
 			protected:
-
-				//@brief	== リソースインスタンス ==
-				Microsoft::WRL::ComPtr<ID3D12Resource> resouce_{};
+				///====================================================================
+				/// Protected メンバー変数
+				///====================================================================
 
 				//@brief	== リソースステート ==
 				D3D12_RESOURCE_STATES current_state = D3D12_RESOURCE_STATE_PRESENT;

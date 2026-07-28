@@ -46,10 +46,12 @@ namespace render {
 				//@return	初期化の成否
 				[[nodiscard]] HRESULT initialize_DXGI();
 
-				//@brief	=== DXGIファクトリーインスタンス取得関数 ===
+				//@brief	=== DXGIファクトリー取得関数 ===
+				//@return	DXGIファクトリー参照
 				[[nodiscard]] IDXGIFactory6* get_DXGI_factory() const noexcept;
 
-				//@brief	=== DXGIアダプターインスタンス取得関数 ===
+				//@brief	=== DXGIアダプター取得関数 ===
+				//@return	DXGIアダプター参照
 				[[nodiscard]] IDXGIAdapter1* get_DXGI_adaptor() const noexcept;
 
 			private:

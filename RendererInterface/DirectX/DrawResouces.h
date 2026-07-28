@@ -37,7 +37,7 @@ namespace render {
 		/// 描画リソース名前空間
 		///====================================================================
 
-		namespace resouces {
+		namespace resources {
 
 			template<class Enum>
 			constexpr size_t to_index(Enum e) noexcept {
@@ -45,19 +45,31 @@ namespace render {
 			}
 
 			//そのフレームで使う描画リソースを保存する構造体
-			struct DrawResouces {
 
+			///====================================================================
+			/// DrawResources クラス
+			///====================================================================
+
+			//@brief	=== 描画リソース構造体 ===
+			struct DrawResources {
+
+				//@brief	== 描画用コマンドリスト参照 ==
 				ID3D12GraphicsCommandList* graphics_list{};
 
-				FrameResource* frame_resouce{};
+				//@brief	== フレームリソースクラス ==
+				FrameResource* frame_resource{};
 
+				//@brief	== ディスクリプタヒープコンテナクラス
 				container::StaticHeapContainer* static_heap_container{};
 
+				//@brief	== 描画先参照保存配列 ==
 				std::array<object::RenderTarget*, to_index(RenderTargetSlot::Count)> render_targets{};
 
+				//@brief	=== 描画先参照取得補助関数 ===
 				object::RenderTarget* get_target(RenderTargetSlot slot) const {
 					return render_targets[to_index(slot)];
 				}
+
 			};
 		};
 	};
