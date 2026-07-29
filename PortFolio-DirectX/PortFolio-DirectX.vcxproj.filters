@@ -144,7 +144,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\FrameResourceFactory.cpp">
       <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
     </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PiplineStateHelper.cpp">
+    <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PipelineStateHelper.cpp">
       <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceBarrierHelper.cpp">
@@ -193,6 +193,9 @@
       <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\IndexBuffer.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\DepthBuffer.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClCompile>
   </ItemGroup>
@@ -326,7 +329,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\FrameResourceFactory.h">
       <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PiplineStateHelper.h">
+    <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PipelineStateHelper.h">
       <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceBarrierHelper.h">
@@ -384,6 +387,9 @@
       <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\IndexBuffer.h">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\DepthBuffer.h">
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClInclude>
   </ItemGroup>

@@ -12,6 +12,7 @@
 #include"DirectX/DirectXobject/DescriptorHeap.h"
 #include"DirectX/DirectXobject/SwapChain.h"
 #include"DirectX/DirectXobject/RenderTarget.h"
+#include"DirectX/DirectXobject/DepthBuffer.h"
 #include"DirectX/DirectXobject/Fence.h"
 #include"DirectX/DirectXobject/RootSignature.h"
 #include"DirectX/DirectXobject/ShaderCompiler.h"
@@ -35,7 +36,7 @@
 #include"DirectX/Factory&Builder&Helper/FrameResourceFactory.h"
 
 /* -- 各ヘルパー -- */
-#include"DirectX/Factory&Builder&Helper/PiplineStateHelper.h"
+#include"DirectX/Factory&Builder&Helper/PipelineStateHelper.h"
 
 #include"DirectX/Factory&Builder&Helper/RootSignatureDescBuilder.h"
 
@@ -61,6 +62,9 @@ namespace {
 
 	//@brief	== 描画ループ時タイマー計測フラグ ==
 	const bool update_timer_flag = false;
+
+	//@brief	== フレームリソースインデックス確認フラグ ==
+	const bool frame_index_flag = false;
 
 	//@brief	=== タイマーデバッグ表示関数 ===
 	//@param	name	出力ウィンドウに出す名前
@@ -121,31 +125,35 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 
+	//キャッシュ
+	auto deviceP = device_->get_device();
+
 	//	描画用コマンドキューインスタンス生成
 	graphics_queue = std::make_unique<object::CommandQueue>();
-	if (FAILED(factory::CommandObjectFactory::create_graphics_command_queue(device_->get_device(),*graphics_queue))) {
+	if (FAILED(factory::CommandObjectFactory::create_graphics_command_queue(deviceP,*graphics_queue))) {
 		DEBUG_LOG("DirectXRenderer :: create_command_queue() FAILED");
 		return false;
 	}
 
 	//	フレームリソース生成
-	if (FAILED(factory::FrameResourceFactory::create_frame_resources(device_->get_device(), frame_resouse_size, frame_resources))) {
+	if (FAILED(factory::FrameResourceFactory::create_frame_resources(deviceP, frame_resouse_size, frame_resources))) {
 		DEBUG_LOG("DirectXRenderer :: create_frame_resources() FAILED");
 		return false;
 	}
 
 	//	描画用コマンドリストインスタンス生成
 	graphics_list = std::make_unique<object::GraphicsCommandList>();
-	if (FAILED(factory::CommandObjectFactory::create_graphics_command_list(device_->get_device(),
+	if (FAILED(factory::CommandObjectFactory::create_graphics_command_list(deviceP,
 		frame_resources[0]->get_graphics_allocator()->get_command_allocator(), *graphics_list))) {
 		DEBUG_LOG("DirectXRenderer :: create_command_queue() FAILED");
 		return false;
 	}
 	
 	//	初期作成ディスクリプタヒープコンテナインスタンス生成
-	if (FAILED(static_heap_container->create_static_heap_container(device_->get_device(),
+	if (FAILED(static_heap_container->create_static_heap_container(deviceP,
 		{
-			{D3D12_DESCRIPTOR_HEAP_TYPE_RTV,buffer_size,D3D12_DESCRIPTOR_HEAP_FLAG_NONE},//RTV
+			{D3D12_DESCRIPTOR_HEAP_TYPE_RTV,buffer_size,D3D12_DESCRIPTOR_HEAP_FLAG_NONE},	//RTV
+			{D3D12_DESCRIPTOR_HEAP_TYPE_DSV,1,D3D12_DESCRIPTOR_HEAP_FLAG_NONE},				//DSV
 		}
 	))) {
 		DEBUG_LOG("DirectXRenderer :: create_static_heap_container() FAILED");
@@ -166,16 +174,27 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 		auto& p = render_targets[i];
 		p = std::make_unique<object::RenderTarget>();
-		if (FAILED(p->create_render_target(device_->get_device(), swap_chain->get_swapchain(),
+		if (FAILED(p->create_render_target(deviceP, swap_chain->get_swapchain(),
 			static_heap_container->get_discriptor_heap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV)->get_cpu_descriptor_handle(i), i))) {
 			DEBUG_LOG("DirectXRenderer :: create_swapchain() FAILED");
 			return false;
 		}
 	}
 
+	depth_buffer = std::make_unique<object::DepthBuffer>();
+
+	desc::DepthBufferDesc depth_desc{};
+	depth_desc.width = window_size.width;
+	depth_desc.height = window_size.height;
+
+	if (FAILED(depth_buffer->create_depth_buffer(deviceP, static_heap_container->get_discriptor_heap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV)->get_cpu_descriptor_handle(0), depth_desc))) {
+		DEBUG_LOG("DirectXRenderer :: create_depth_buffer() FAILED");
+		return false;
+	}
+
 	//	Fenceインスタンス生成
 	fence_ = std::make_unique<object::Fence>();
-	if (FAILED(fence_->create_fence(device_->get_device()))) {
+	if (FAILED(fence_->create_fence(deviceP))) {
 		DEBUG_LOG("DirectXRenderer :: create_fence() FAILED");
 		return false;
 	}
@@ -183,7 +202,8 @@ DirectXRenderer::~DirectXRenderer() = default;
 	//	RootSignatureインスタンス生成
 	desc::RootSignatureDesc root_desc{};
 	builder::RootSignatureDescBuilder::add_flags(root_desc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
-	if (FAILED(root_signature_container->create_root_signature("Normal_root",device_->get_device(), root_desc))) {
+
+	if (FAILED(root_signature_container->create_root_signature("Normal_root", deviceP, root_desc))) {
 		DEBUG_LOG("DirectXRenderer :: create_root_signature() FAILED");
 		return false;
 	}
@@ -225,11 +245,13 @@ DirectXRenderer::~DirectXRenderer() = default;
 	pipline_desc.ps_hlsl = shader_container->get_shader("Normal_ps");
 
 	pipline_desc.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
-	pipline_desc.blend_desc = helper::PiplineStateHepler::get_enable_blend();
-	pipline_desc.depth_stencil_desc.DepthEnable = FALSE;
-	pipline_desc.depth_stencil_desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+	pipline_desc.blend_desc = helper::PipelineStateHelper::get_enable_blend();
+	pipline_desc.depth_stencil_desc = helper::PipelineStateHelper::get_enable_depth();
 
-	if (FAILED(pipline_container->create_pipline_state("Normal_pipline", device_->get_device(), pipline_desc))) {
+	//フォーマット指定
+	pipline_desc.dsv_format = depth_desc.format;
+
+	if (FAILED(pipline_container->create_pipline_state("Normal_pipline", deviceP, pipline_desc))) {
 		DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
 		return false;
 	}
@@ -252,11 +274,12 @@ DirectXRenderer::~DirectXRenderer() = default;
 	color_pipline.ps_hlsl = shader_container->get_shader("Color_ps");
 
 	color_pipline.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
-	color_pipline.blend_desc = helper::PiplineStateHepler::get_enable_blend();
-	color_pipline.depth_stencil_desc.DepthEnable = FALSE;
-	color_pipline.depth_stencil_desc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+	color_pipline.blend_desc = helper::PipelineStateHelper::get_enable_blend();
+	pipline_desc.depth_stencil_desc = helper::PipelineStateHelper::get_enable_depth();
+	//フォーマット指定
+	color_pipline.dsv_format = depth_desc.format;
 
-	if (FAILED(pipline_container->create_pipline_state("Color_pipline", device_->get_device(), color_pipline))) {
+	if (FAILED(pipline_container->create_pipline_state("Color_pipline", deviceP, color_pipline))) {
 		DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
 		return false;
 	}
@@ -274,13 +297,13 @@ DirectXRenderer::~DirectXRenderer() = default;
 	mesh::MeshDesc<normal_polygon> polygon_desc{};
 	polygon_desc.vertex_data = {
 		{-0.5f,-1.0f, 0.0f},
-		{ 0.0f, 0.0f, 0.0f},
+		{ 0.0f, 1.0f, 0.0f},
 		{ 0.5f,-1.0f, 0.0f}
 	};
 	polygon_desc.index_data = {
 		0,1,2
 	};
-	if (FAILED(polygon_->create_mesh(device_->get_device(), polygon_desc))) {
+	if (FAILED(polygon_->create_mesh(deviceP, polygon_desc))) {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
@@ -294,14 +317,14 @@ DirectXRenderer::~DirectXRenderer() = default;
 	};
 	mesh::MeshDesc<color_polygon> color_mesh{};
 	color_mesh.vertex_data = {
-		{{ 0.5f, 1.0f, 0.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//右
-		{{ 0.0f, 0.0f, 0.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//真ん中
-		{{-0.5f, 1.0f, 0.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}}	//左
+		{{ 0.5f, 1.0f, 0.5f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//右
+		{{ 0.0f, 0.0f, 0.5f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//真ん中
+		{{-0.5f, 1.0f, 0.5f},{ 0.0f, 0.0f, 1.0f, 1.0f}}	//左
 	};
 	color_mesh.index_data = {
 		0,1,2
 	};
-	if (FAILED(Color_polygon_->create_mesh(device_->get_device(), color_mesh))) {
+	if (FAILED(Color_polygon_->create_mesh(deviceP, color_mesh))) {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
@@ -336,6 +359,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 		scissorRect.right = window_size.width;
 		scissorRect.bottom = window_size.height;
 		draw_state_desc.rect_ = scissorRect;
+
 		if (!static_draw_state_container->create_draw_state("Normal_State", draw_state_desc)) {
 			DEBUG_LOG("DirectXRenderer :: creaate_draw_state() FAILED");
 			return false;
@@ -346,8 +370,8 @@ DirectXRenderer::~DirectXRenderer() = default;
 		if (!static_render_target_state_container->create_render_target_state("NormalTarget", 
 			{
 						RenderTargetSlot::BackBuffer
-			}
-			)) {
+			}, 
+			DepthSlot::MainDepth )) {
 			DEBUG_LOG("DirectXRenderer :: create_render_target_state() FAILED");
 			return false;
 		}
@@ -356,9 +380,12 @@ DirectXRenderer::~DirectXRenderer() = default;
 		NormalCommands_ = std::make_unique<command::DrawCommands>();
 		NormalCommands_->set_begin_command(
 			[&](resources::DrawResources& resource) {
-				auto* target = resource.get_target(RenderTargetSlot::BackBuffer);
+				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
 				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
 				resource.graphics_list->ClearRenderTargetView(target->get_rtv_handle(), back_ground_color, 0, nullptr);
+
+				auto* depth = resource.get_depth_target(DepthSlot::MainDepth);
+				resource.graphics_list->ClearDepthStencilView(depth->get_dsv_handle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 			}
 		);
 		NormalCommands_->add_apply_command(
@@ -369,9 +396,8 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 		NormalCommands_->set_end_command(
 			[](resources::DrawResources& resource) {
-				auto* target = resource.get_target(RenderTargetSlot::BackBuffer);
+				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
 				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
-
 			}
 		);
 
@@ -408,6 +434,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 		scissorRect.right = window_size.width;
 		scissorRect.bottom = window_size.height;
 		draw_state_desc.rect_ = scissorRect;
+
 		if (!static_draw_state_container->create_draw_state("Color_State", draw_state_desc)) {
 			DEBUG_LOG("DirectXRenderer :: creaate_draw_state() FAILED");
 			return false;
@@ -417,7 +444,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 		Color_Commands_ = std::make_unique<command::DrawCommands>();
 		Color_Commands_->set_begin_command(
 			[&](resources::DrawResources& resource) {
-				auto* target = resource.get_target(RenderTargetSlot::BackBuffer);
+				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
 				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
 			}
 		);
@@ -429,7 +456,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 		Color_Commands_->set_end_command(
 			[](resources::DrawResources& resource) {
-				auto* target = resource.get_target(RenderTargetSlot::BackBuffer);
+				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
 				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
 			}
 		);
@@ -483,11 +510,13 @@ void DirectXRenderer::update_renderer() {
 	// コマンドリストリセット
 	graphics_list->reset_command_list(allocator->get_command_allocator());
 
+	//	描画リソースセット
 	resources::DrawResources resources{};
 	resources.graphics_list = graphics_list->get_graphics_command_list();
 	resources.frame_resource = frame_resources[current_frame_index].get();
 	resources.static_heap_container = static_heap_container.get();
 	resources.render_targets[resources::to_index(RenderTargetSlot::BackBuffer)] = render_targets[backBufferIndex].get();
+	resources.depth_targets[resources::to_index(DepthSlot::MainDepth)] = depth_buffer.get();
 
 	/* ==================== 描画パス実行 ==================== */
 
@@ -527,6 +556,8 @@ void DirectXRenderer::update_renderer() {
 	}
 }
 
+
+
 /* ==================== 描画前制御 ==================== */
 
 //@brief	=== 描画更新前関数 ===
@@ -535,6 +566,8 @@ void DirectXRenderer::begin_update_renderer() {
 
 	frame_count++;
 }
+
+
 
 /* ==================== 描画後制御 ==================== */
 
@@ -545,6 +578,8 @@ void DirectXRenderer::end_update_renderer() {
 	//	フレームリソースサイクルを進める
 	current_frame_index = (current_frame_index + 1) % frame_resouse_size;
 }
+
+
 
 /* ==================== 描画待機制御 ==================== */
 
@@ -560,8 +595,10 @@ void DirectXRenderer::sync_frame_resource() {
 		//	使えるまで待機
 		fence_->wait_to_completed_value(value);
 
-		//DEBUG_LOG("DirectXRenderer :: wait() : frame = " ,std::to_string(current_frame_index),
-		//	", value = ", std::to_string(value),", complete = ", std::to_string(complete));
+		if (frame_index_flag) {
+			DEBUG_LOG("DirectXRenderer :: wait() : frame = ", std::to_string(current_frame_index),
+				", value = ", std::to_string(value), ", complete = ", std::to_string(complete));
+		}	
 	}
 }
 

@@ -28,11 +28,11 @@ void DrawRenderTargetState::apply(resources::DrawResources& resouce) {
 	std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> handles_{};
 	
 	for (auto& p : render_targets_slot) {
-		handles_.push_back(resouce.get_target(p)->get_rtv_handle());
+		handles_.push_back(resouce.get_render_target(p)->get_rtv_handle());
 	}
 	if (depth_slot.has_value()) {
-		D3D12_CPU_DESCRIPTOR_HANDLE dsv_{};
-		resouce.graphics_list->OMSetRenderTargets(1, handles_.data(), false, &dsv_);
+		const auto dsv_ = resouce.get_depth_target(depth_slot.value())->get_dsv_handle();
+		resouce.graphics_list->OMSetRenderTargets(1, handles_.data(), false,&dsv_);
 	}
 	else {
 		resouce.graphics_list->OMSetRenderTargets(1, handles_.data(), false, nullptr);

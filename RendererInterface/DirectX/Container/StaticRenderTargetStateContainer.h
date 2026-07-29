@@ -49,7 +49,7 @@ namespace render {
 				//@param	key_name	登録するキーの名前
 				//@param	slots	登録するターゲットの種類配列
 				//@return	作成の成否
-				[[nodiscard]] bool create_render_target_state(const std::string& key_name, const std::vector<RenderTargetSlot>& slots);
+				[[nodiscard]] bool create_render_target_state(const std::string& key_name, const std::vector<RenderTargetSlot>& render_target_slots, std::optional<DepthSlot> depth_slot = std::nullopt);
 
 				//@brief	=== 描画パス用レンダーターゲット設定取得関数 ===
 				//@param	key	描画パス用レンダーターゲット設定と紐づけたキー

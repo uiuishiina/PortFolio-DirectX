@@ -10,7 +10,7 @@ using namespace render::dx12::container;
 //@param	key_name	登録するキーの名前
 //@param	slots	登録するターゲットの種類配列
 //@return	作成の成否
-[[nodiscard]] bool StaticRenderTargetStateContainer::create_render_target_state(const std::string& key_name, const std::vector<RenderTargetSlot>& slots) {
+[[nodiscard]] bool StaticRenderTargetStateContainer::create_render_target_state(const std::string& key_name, const std::vector<RenderTargetSlot>& render_target_slots, std::optional<DepthSlot> depth_slot) {
 
     //  登録済みか確認
     auto hash = get_hash_key(key_name);
@@ -20,8 +20,12 @@ using namespace render::dx12::container;
 
     //  レンダーターゲット設定
     auto state = std::make_unique<state::DrawRenderTargetState>();
-    for (auto& p : slots) {
+    for (auto& p : render_target_slots) {
         state->add_render_target_slot(p);
+    }
+
+    if (depth_slot.has_value()) {
+        state->set_depth(depth_slot.value());
     }
 
     //  mapに登録

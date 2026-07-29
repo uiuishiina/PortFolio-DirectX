@@ -26,10 +26,12 @@ namespace render {
 
 			class SwapChain;
 			class RenderTarget;
+			class DepthBuffer;
 			class Fence;
 			class RootSignature;
 			class PipelineState;
 		};
+
 		namespace container {
 			class StaticHeapContainer;
 			class StaticShaderContainer;
@@ -39,18 +41,23 @@ namespace render {
 			class StaticDrawStateContainer;
 			class StaticRenderTargetStateContainer;
 		};
+
 		namespace resources {
 			class FrameResource;
 		};
+
 		namespace mesh {
 			class Mesh;
 		};
+
 		namespace state {
 			class DrawRenderTargetState;
 		};
+
 		namespace command {
 			class DrawCommands;
 		};
+
 		namespace pass {
 			class DrawPass;
 		};
@@ -120,7 +127,7 @@ private:
 
 	//@breif	== フレームリソースサイズ設定変数 ==
 	//@details	描画に使うフレームリソースサイズを指定
-	const UINT frame_resouse_size = 3;
+	const UINT frame_resouse_size = 2;
 
 	//@brief	== フレームカウント保存変数 ==
 	//@details	何フレーム目かを保存
@@ -156,6 +163,9 @@ private:
 	//@brief	== 最終描画先レンダーターゲットインスタンス ==
 	std::vector<std::unique_ptr<render::dx12::object::RenderTarget>> render_targets{};
 
+	//@brief	== デプスバッファインスタンス ==
+	std::unique_ptr<render::dx12::object::DepthBuffer> depth_buffer{};
+
 	//@brief	== Fenceインスタンス ==
 	std::unique_ptr<render::dx12::object::Fence> fence_{};
 
@@ -180,7 +190,6 @@ private:
 
 	//@brief	== 描画パス用レンダーターゲット設定コンテナインスタンス ==
 	std::unique_ptr<render::dx12::container::StaticRenderTargetStateContainer> static_render_target_state_container{};
-
 
 
 	//@brief	== ポリゴンインスタンス ==

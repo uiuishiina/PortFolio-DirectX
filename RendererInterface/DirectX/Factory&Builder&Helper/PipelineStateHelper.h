@@ -25,7 +25,7 @@ namespace render {
 			///====================================================================
 
 			//@brief	=== パイプラインステートヘルパークラス ===
-			class PiplineStateHepler final
+			class PipelineStateHelper final
 			{
 			public:
 				///====================================================================
@@ -36,14 +36,18 @@ namespace render {
 				//@return	ブレンド有効化設定
 				static [[nodiscard]] D3D12_BLEND_DESC get_enable_blend();
 
+				//@brief	=== デプス有効化設定作成関数 ===
+				//@return	デプス有効化設定
+				static [[nodiscard]] D3D12_DEPTH_STENCIL_DESC get_enable_depth();
+
 			private:
 				///====================================================================
 				/// クラス設定
 				///====================================================================
 
 				//コンストラクタ,デストラクタ
-				PiplineStateHepler() = default;
-				~PiplineStateHepler() = default;
+				PipelineStateHelper() = default;
+				~PipelineStateHelper() = default;
 
 			};
 		};

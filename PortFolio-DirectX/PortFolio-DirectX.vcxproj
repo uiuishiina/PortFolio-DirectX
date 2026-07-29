@@ -158,6 +158,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\BufferResource.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\CommandAllocator.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\DepthBuffer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\GPUResource.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\GraphicsCommandList.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\CommandQueue.cpp" />
@@ -180,7 +181,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawState.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\CommandObjectFactory.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\FrameResourceFactory.cpp" />
-    <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PiplineStateHelper.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PipelineStateHelper.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceBarrierHelper.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceCreateDescHelper.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\RootSignatureDescBuilder.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\BufferResource.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\CommandAllocator.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\DepthBuffer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\GPUResource.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\GraphicsCommandList.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\CommandQueue.h" />
@@ -242,7 +244,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\DrawResouces.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\CommandObjectFactory.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\FrameResourceFactory.h" />
-    <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PiplineStateHelper.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PipelineStateHelper.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceBarrierHelper.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceCreateDescHelper.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\RootSignatureDescBuilder.h" />
