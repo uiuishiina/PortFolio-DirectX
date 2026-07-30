@@ -26,6 +26,7 @@ namespace render {
 
 			class SwapChain;
 			class RenderTarget;
+			class BackBuffer;
 			class DepthBuffer;
 			class Fence;
 			class RootSignature;
@@ -160,8 +161,8 @@ private:
 	//@brief	== スワップチェーンインスタンス ==
 	std::unique_ptr<render::dx12::object::SwapChain> swap_chain{};
 
-	//@brief	== 最終描画先レンダーターゲットインスタンス ==
-	std::vector<std::unique_ptr<render::dx12::object::RenderTarget>> render_targets{};
+	//@brief	== バックバッファ配列インスタンス ==
+	std::vector<std::unique_ptr<render::dx12::object::BackBuffer>> back_buffers{};
 
 	//@brief	== デプスバッファインスタンス ==
 	std::unique_ptr<render::dx12::object::DepthBuffer> depth_buffer{};

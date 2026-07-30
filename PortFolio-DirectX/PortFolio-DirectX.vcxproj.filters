@@ -105,9 +105,6 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\Fence.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.cpp">
-      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
-    </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClCompile>
@@ -196,6 +193,12 @@
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\DepthBuffer.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\BackBuffer.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClCompile>
   </ItemGroup>
@@ -288,9 +291,6 @@
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\Fence.h">
-      <Filter>RendererInterface\DirectX\DirectXobject</Filter>
-    </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.h">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.h">
@@ -390,6 +390,12 @@
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\DepthBuffer.h">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\RenderTarget.h">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\BackBuffer.h">
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClInclude>
   </ItemGroup>

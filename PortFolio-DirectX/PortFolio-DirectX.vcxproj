@@ -156,6 +156,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticRenderTargetStateContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticRootSignatureContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\BackBuffer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\BufferResource.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\CommandAllocator.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\DepthBuffer.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticRenderTargetStateContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticRootSignatureContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\BackBuffer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\BufferResource.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\CommandAllocator.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\DepthBuffer.h" />

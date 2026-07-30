@@ -1,5 +1,5 @@
 #pragma once
-#include"TextureResource.h"
+#include"RenderTarget.h"
 
 ///====================================================================
 /// 描画名前空間
@@ -20,36 +20,30 @@ namespace render {
 		namespace object {
 
 			///====================================================================
-			/// RenderTarget 基底クラス
+			/// BackBuffer 派生クラス
 			///====================================================================
 
-			//@brief === レンダーターゲット基底クラス ===
-			class RenderTarget : public TextureResource
+			//@brief	=== バックバッファ派生クラス ===
+			class BackBuffer final : public RenderTarget
 			{
 			public:
 				///====================================================================
 				/// クラス設定
 				///====================================================================
 
-				//コンストラクタ,デストラクタ
-				RenderTarget();
-				virtual ~RenderTarget() = default;
+				BackBuffer() = default;
+				~BackBuffer() = default;
 
 				///====================================================================
 				/// Public メンバー関数
 				///====================================================================
 
-				//@brief	=== RTVハンドル取得関数 ===
-				//@return	RTV CPUハンドル
-				[[nodiscard]] D3D12_CPU_DESCRIPTOR_HANDLE get_rtv_handle() const noexcept;
-
-			protected:
-				///====================================================================
-				/// protected メンバー変数
-				///====================================================================
-
-				//@brief	== レンダーターゲットディスクリプタハンドル ==
-				D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle{};
+				//@brief	=== バックバッファ作成関数 ===
+				//@param	swapchain	スワップチェインインスタンス
+				//@param	handle	RTVディスクリプタヒープハンドル
+				//@return	作成の成否
+				[[nodiscard]] HRESULT create_back_buffer(ID3D12Device* device, IDXGISwapChain4* swapchain,
+					D3D12_CPU_DESCRIPTOR_HANDLE handle, UINT buffer_index);
 
 			};
 		};

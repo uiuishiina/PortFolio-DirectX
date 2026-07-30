@@ -12,6 +12,7 @@
 #include"DirectX/DirectXobject/DescriptorHeap.h"
 #include"DirectX/DirectXobject/SwapChain.h"
 #include"DirectX/DirectXobject/RenderTarget.h"
+#include"DirectX/DirectXobject/BackBuffer.h"
 #include"DirectX/DirectXobject/DepthBuffer.h"
 #include"DirectX/DirectXobject/Fence.h"
 #include"DirectX/DirectXobject/RootSignature.h"
@@ -168,21 +169,23 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 
-	//	最終描画先レンダーターゲットインスタンス生成
-	render_targets.resize(buffer_size);
+	//	バックバッファ配列インスタンス生成
+	back_buffers.resize(buffer_size);
 	for (unsigned int i = 0; i < buffer_size; i++) {
 
-		auto& p = render_targets[i];
-		p = std::make_unique<object::RenderTarget>();
-		if (FAILED(p->create_render_target(deviceP, swap_chain->get_swapchain(),
+		auto& p = back_buffers[i];
+		p = std::make_unique<object::BackBuffer>();
+		if (FAILED(p->create_back_buffer(deviceP, swap_chain->get_swapchain(),
 			static_heap_container->get_discriptor_heap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV)->get_cpu_descriptor_handle(i), i))) {
-			DEBUG_LOG("DirectXRenderer :: create_swapchain() FAILED");
+			DEBUG_LOG("DirectXRenderer :: create_back_buffer() FAILED");
 			return false;
 		}
 	}
 
+	//	デプスバッファインスタンス生成
 	depth_buffer = std::make_unique<object::DepthBuffer>();
 
+	//	ウィンドウのサイズ分のバッファを指定
 	desc::DepthBufferDesc depth_desc{};
 	depth_desc.width = window_size.width;
 	depth_desc.height = window_size.height;
@@ -296,9 +299,9 @@ DirectXRenderer::~DirectXRenderer() = default;
 	};
 	mesh::MeshDesc<normal_polygon> polygon_desc{};
 	polygon_desc.vertex_data = {
-		{-0.5f,-1.0f, 0.0f},
-		{ 0.0f, 1.0f, 0.0f},
-		{ 0.5f,-1.0f, 0.0f}
+		{-0.5f,-1.0f, 0.5f},
+		{ 0.0f, 1.0f, 0.5f},
+		{ 0.5f,-1.0f, 0.5f}
 	};
 	polygon_desc.index_data = {
 		0,1,2
@@ -317,9 +320,9 @@ DirectXRenderer::~DirectXRenderer() = default;
 	};
 	mesh::MeshDesc<color_polygon> color_mesh{};
 	color_mesh.vertex_data = {
-		{{ 0.5f, 1.0f, 0.5f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//右
-		{{ 0.0f, 0.0f, 0.5f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//真ん中
-		{{-0.5f, 1.0f, 0.5f},{ 0.0f, 0.0f, 1.0f, 1.0f}}	//左
+		{{ 0.5f, 1.0f, 0.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//右
+		{{ 0.0f, 0.0f, 0.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//真ん中
+		{{-0.5f, 1.0f, 0.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}}	//左
 	};
 	color_mesh.index_data = {
 		0,1,2
@@ -365,7 +368,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 			return false;
 		}
 
-		//	DrawTargetState作成
+		//	DrawRenderTargetState作成
 		//	BackBufferを追加
 		if (!static_render_target_state_container->create_render_target_state("NormalTarget", 
 			{
@@ -515,7 +518,7 @@ void DirectXRenderer::update_renderer() {
 	resources.graphics_list = graphics_list->get_graphics_command_list();
 	resources.frame_resource = frame_resources[current_frame_index].get();
 	resources.static_heap_container = static_heap_container.get();
-	resources.render_targets[resources::to_index(RenderTargetSlot::BackBuffer)] = render_targets[backBufferIndex].get();
+	resources.render_targets[resources::to_index(RenderTargetSlot::BackBuffer)] = back_buffers[backBufferIndex].get();
 	resources.depth_targets[resources::to_index(DepthSlot::MainDepth)] = depth_buffer.get();
 
 	/* ==================== 描画パス実行 ==================== */
