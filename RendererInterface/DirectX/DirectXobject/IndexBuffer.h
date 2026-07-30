@@ -24,7 +24,7 @@ namespace render {
 			///====================================================================
 
 			//@brief	=== インデックスバッファ派生クラス ===
-			class IndexBuffer final : public BufferResource
+			class IndexBuffer final : public StaticBufferResource
 			{
 			public:
 				///====================================================================

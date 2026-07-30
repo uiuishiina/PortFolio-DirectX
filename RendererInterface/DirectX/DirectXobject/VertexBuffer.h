@@ -24,7 +24,7 @@ namespace render {
 			///====================================================================
 
 			//@brief	=== 頂点バッファ派生クラス ===
-			class VertexBuffer final : public BufferResource
+			class VertexBuffer final : public StaticBufferResource
 			{
 			public:
 				///====================================================================

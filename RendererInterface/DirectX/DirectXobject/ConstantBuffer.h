@@ -1,5 +1,5 @@
 #pragma once
-#include"GPUResource.h"
+#include"UploadBufferResource.h"
 #include<vector>
 
 ///====================================================================
@@ -21,11 +21,11 @@ namespace render {
 		namespace object {
 
 			///====================================================================
-			/// BufferResource 基底クラス
+			/// ConstantBuffer 派生クラス
 			///====================================================================
 
-			//@brief	=== 描画バッファリソースクラス ===
-			class StaticBufferResource : public GPUResourceBase
+			//@brief	=== コンスタントバッファ派生クラス ===
+			class ConstantBuffer final : public UploadBufferResource
 			{
 			public:
 				///====================================================================
@@ -33,32 +33,20 @@ namespace render {
 				///====================================================================
 
 				//コンストラクタ,デストラクタ
-				StaticBufferResource() = default;
-				virtual ~StaticBufferResource() = default;
+				ConstantBuffer() = default;
+				~ConstantBuffer() = default;
 
-			protected:
+
 				///====================================================================
-				/// Protected メンバー関数
+				/// Public メンバー関数
 				///====================================================================
 
-				//@brief	=== バッファリソースコピー関数 ===
-				//@details	Map後、メモリにコピーしてUnmapする関数
-				//@param	src	コピーするデータの先頭ポインター
-				//@param	size	コピーするメモリサイズ
-				//@return	コピーの成否
-				[[nodiscard]] HRESULT copy_buffer(const void* src, size_t size);
+			private:
+				///====================================================================
+				/// Private メンバー関数
+				///====================================================================
 
-				//@brief	=== バッファリソースコピー関数オーバーロード ===
-				//@param	data	コピーするVector配列参照
-				//@return	コピーの成否
-				template<class T>
-				[[nodiscard]] HRESULT copy_buffer(const std::vector<T>& data) {
-					return copy_buffer(data.data(), data.size() * sizeof(T));
-				}
 
-				//@brief	=== GPUアドレス取得関数 ===
-				//@return	GPUアドレス
-				[[nodiscard]] D3D12_GPU_VIRTUAL_ADDRESS get_GPU_address() const noexcept;
 
 			};
 		};

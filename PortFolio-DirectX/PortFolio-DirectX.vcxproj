@@ -175,6 +175,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\TextureResource.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\UploadBufferResource.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\VertexBuffer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawCommands.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawPass.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\BackBuffer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\BufferResource.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\CommandAllocator.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\ConstantBuffer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\DepthBuffer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\GPUResource.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\GraphicsCommandList.h" />
@@ -238,6 +240,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\TextureResource.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\UploadBufferResource.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\VertexBuffer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawCommands.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawPass.h" />
