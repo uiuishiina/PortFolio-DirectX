@@ -1,4 +1,4 @@
-#include "BufferResource.h"
+#include "StaticBufferResource.h"
 
 using namespace render::dx12::object;
 

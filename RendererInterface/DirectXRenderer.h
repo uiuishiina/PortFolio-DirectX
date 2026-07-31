@@ -28,6 +28,7 @@ namespace render {
 			class RenderTarget;
 			class BackBuffer;
 			class DepthBuffer;
+			class ConstantBuffer;
 			class Fence;
 			class RootSignature;
 			class PipelineState;

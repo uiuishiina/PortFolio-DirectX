@@ -1,5 +1,6 @@
 #pragma once
 #include"UploadBufferResource.h"
+#include"ResourceUtility.h"
 #include<vector>
 
 ///====================================================================
@@ -36,17 +37,28 @@ namespace render {
 				ConstantBuffer() = default;
 				~ConstantBuffer() = default;
 
-
 				///====================================================================
 				/// Public メンバー関数
 				///====================================================================
 
+				//@brief	=== コンスタントバッファ作成関数 ===
+				//@param	device	DirectX12 デバイス
+				//@param	handles	CBVディスクリプタヒープハンドル構造体
+				//@param	src		コピーするデータの先頭ポインター
+				//@param	size	コピーするメモリサイズ
+				//@return	作成の成否
+				[[nodiscard]] HRESULT create_constant_buffer(ID3D12Device* device, utility::Descripter_Handles& handles, size_t size);
+
+				//@brief	=== CBVハンドル取得関数 ===
+				[[nodiscard]] D3D12_GPU_DESCRIPTOR_HANDLE get_cbv_handle()const noexcept;
+
 			private:
 				///====================================================================
-				/// Private メンバー関数
+				/// Private メンバー変数
 				///====================================================================
 
-
+				//@brief	== コンスタントバッファディスクリプターハンドル ==
+				D3D12_GPU_DESCRIPTOR_HANDLE cbv_handle{};
 
 			};
 		};

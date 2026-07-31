@@ -20,7 +20,11 @@ namespace render {
 
 		namespace object {
 
+			///====================================================================
+			/// UploadBufferResource 基底クラス
+			///====================================================================
 
+			//@brief	=== 描画バッファリソース更新可能クラス ===
 			class UploadBufferResource : public GPUResourceBase
 			{
 			public:
@@ -51,6 +55,8 @@ namespace render {
 				void unmap_buffer();
 
 				//@brief	=== データUpload関数 ===
+				//@param	src		コピーするデータの先頭ポインター
+				//@param	size	コピーするメモリサイズ
 				void Upload(const void* src, size_t size);
 
 				//@brief === データUpload関数オーバーロード ===

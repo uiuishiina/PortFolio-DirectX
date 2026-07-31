@@ -21,10 +21,10 @@ namespace render {
 		namespace object {
 
 			///====================================================================
-			/// BufferResource 基底クラス
+			/// StaticBufferResource 基底クラス
 			///====================================================================
 
-			//@brief	=== 描画バッファリソースクラス ===
+			//@brief	=== 初期作成描画バッファリソースクラス ===
 			class StaticBufferResource : public GPUResourceBase
 			{
 			public:

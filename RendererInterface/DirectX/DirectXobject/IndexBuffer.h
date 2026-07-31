@@ -1,5 +1,5 @@
 #pragma once
-#include"BufferResource.h"
+#include"StaticBufferResource.h"
 
 ///====================================================================
 /// 描画名前空間

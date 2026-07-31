@@ -180,7 +180,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\GPUResource.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\BufferResource.cpp">
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\StaticBufferResource.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\VertexBuffer.cpp">
@@ -202,6 +202,9 @@
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\UploadBufferResource.cpp">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\ConstantBuffer.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClCompile>
   </ItemGroup>
@@ -380,7 +383,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\TextureResource.h">
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\BufferResource.h">
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\StaticBufferResource.h">
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\VertexBuffer.h">
@@ -405,6 +408,9 @@
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\UploadBufferResource.h">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\ResourceUtility.h">
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClInclude>
   </ItemGroup>
