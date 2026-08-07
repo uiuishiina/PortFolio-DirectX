@@ -3,7 +3,6 @@
 #include"../Factory&Builder&Helper/ResourceBarrierHelper.h"
 #include<cassert>
 
-
 using namespace render::dx12::object;
 
 ///====================================================================
@@ -52,28 +51,29 @@ using namespace render::dx12::object;
 [[nodiscard]] HRESULT StaticBufferResource::create_buffers(ID3D12Device* device,
 	Microsoft::WRL::ComPtr<ID3D12Resource>& upload_resource, const desc::StaticBufferCreateDesc& desc) {
 
-	//	デフォルト作成
+	//	デフォルト作成( DefaultBuffer )
 	desc::ResourceCreateDesc create_desc{};
 
 	create_desc.heap_properties = helper::ResourceCreateDescHelper::get_heap_properties(D3D12_HEAP_TYPE_DEFAULT);
 	create_desc.heap_flags = D3D12_HEAP_FLAG_NONE;
 	create_desc.resource_desc = desc.resource_desc;
-	create_desc.initial_state = D3D12_RESOURCE_STATE_COMMON;
+	create_desc.initial_state = D3D12_RESOURCE_STATE_COMMON;	//	BufferはCommon
 
 	auto hr = create_committed_resource(device, create_desc);
 	if (FAILED(hr)) {
 		return hr;
 	}
 
-	//	書き込み用作成
+	//	書き込み用作成( UploadBuffer )
 	create_desc.heap_properties = helper::ResourceCreateDescHelper::get_heap_properties(D3D12_HEAP_TYPE_UPLOAD);
-	create_desc.initial_state = D3D12_RESOURCE_STATE_GENERIC_READ;
+	create_desc.initial_state = D3D12_RESOURCE_STATE_GENERIC_READ;	//	コピーするために読み取り専用にしておく
 
 	hr = create_committed_resource(device, create_desc, upload_resource);
 	if (FAILED(hr)) {
 		return hr;
 	}
 
+	//	そのまま返していいのだが、見た目の統一のためこのような形に
 	return hr;
 }
 
@@ -108,7 +108,7 @@ using namespace render::dx12::object;
 		0,					//コピー先メモリオフセット
 		upload_resource,	//コピー元
 		0,					//コピー元メモリオフセット
-		data.size_);			//コピーするメモリサイズ
+		data.size_);		//コピーするメモリサイズ
 
 	return hr;
 }
@@ -119,7 +119,6 @@ using namespace render::dx12::object;
 //@param	next_state	遷移先バリアステート
 void StaticBufferResource::barrier_transition(ID3D12GraphicsCommandList* list, D3D12_RESOURCE_STATES current_state, D3D12_RESOURCE_STATES next_state) {
 
-	auto barrier = helper::ResourceBarrierHelper::create_resource_barrier(resource_.Get(),
-		current_state, next_state);
+	auto barrier = helper::ResourceBarrierHelper::create_resource_barrier(resource_.Get(), current_state, next_state);
 	list->ResourceBarrier(1, &barrier);
 }

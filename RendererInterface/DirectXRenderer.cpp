@@ -289,13 +289,14 @@ DirectXRenderer::~DirectXRenderer() = default;
 	
 	/* ==================== Mesh作成 ==================== */
 
+	//	StaticBufferResourceクラスで作成するDefaultリソース等を作成
+
 	auto allocator = frame_resources[current_frame_index]->get_graphics_allocator();
 
-	// コマンドアロケータリセット
 	allocator->reset_command_allocator();
-	// コマンドリストリセット
 	graphics_list->reset_command_list(allocator->get_command_allocator());
 
+	//Normal用Uploadリソース作成
 	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_normal_resource;
 	upload_normal_resource.resize(2);
 
@@ -321,6 +322,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 
+	//Color用UPloadリソース作成
 	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_color_resource;
 	upload_color_resource.resize(2);
 
@@ -345,16 +347,15 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 
-	// コマンドリストをクローズ
 	graphics_list->get_graphics_command_list()->Close();
 
-	// コマンドキューにコマンドリストを送信
 	ID3D12CommandList* ppCommandLists[] = { graphics_list->get_graphics_command_list() };
 	graphics_queue->get_command_queue()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
-	//	シグナルを送って配列に保存
 	frame_resources[current_frame_index]->set_frame_fence_value(fence_->signal(graphics_queue->get_command_queue()));
 
+
+	//	Uploadリソースのライフタイムが切れる前に作成できている必要があるためここで [ wait ]
 	sync_frame_resource();
 
 	/* ==================== DrawPass作成 ==================== */

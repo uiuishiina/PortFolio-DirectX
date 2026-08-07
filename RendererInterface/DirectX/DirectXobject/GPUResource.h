@@ -92,6 +92,7 @@ namespace render {
 				[[nodiscard]] HRESULT create_committed_resource(ID3D12Device* device, const desc::ResourceCreateDesc& desc);
 
 				//@brief	=== リソース作成オーバーロード関数 ===
+				//@details	追加でリソースが必要な場合に [メンバー変数以外] のリソースを作成できる関数
 				//@param	device		DirectX12 デバイス
 				//@param	desc		GPUリソース設定構造体
 				//@param	resource	作成するリソース先参照

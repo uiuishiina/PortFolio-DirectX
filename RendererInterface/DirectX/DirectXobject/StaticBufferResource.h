@@ -100,14 +100,15 @@ namespace render {
 				[[nodiscard]] HRESULT create_static_buffer(ID3D12Device* device, ID3D12GraphicsCommandList* list,
 					Microsoft::WRL::ComPtr<ID3D12Resource>& upload_resource, const desc::StaticBufferCreateDesc& desc);
 
-				//@brief	=== 設定構造体作成仮想関数 ===
+				//@brief	=== 設定構造体作成純粋仮想関数 ===
+				//@details	作成するリソースに必要な設定構造体を派生クラス先で作成できるように
 				//@param	data	初期設定データ構造体に設定する先頭ポインター
 				//@param	size	初期設定データ構造体に設定するメモリサイズ
 				//@return	作成した構造体
 				virtual [[nodiscard]] desc::StaticBufferCreateDesc create_static_buffer_desc(const void* data, UINT64 size) = 0;
 
-				//@brief	=== 設定構造体作成仮想関数 ===
-				//@param	data	初期設定データ構造体に設定する先頭ポインター
+				//@brief	=== 設定構造体作成オーバーロード関数 ===
+				//@param	data	初期設定データ構造体に設定するデータ配列
 				//@return	作成した構造体
 				template<typename T>
 				[[nodiscard]] desc::StaticBufferCreateDesc create_static_buffer_desc(const std::vector<T>& data);
@@ -146,8 +147,13 @@ namespace render {
 
 			};
 
+			//@brief	=== 設定構造体作成オーバーロード関数 ===
+			//@param	data	初期設定データ構造体に設定するデータ配列
+			//@return	作成した構造体
 			template<typename T>
 			[[nodiscard]] desc::StaticBufferCreateDesc StaticBufferResource::create_static_buffer_desc(const std::vector<T>& data) {
+
+				//	仮想関数に渡せるようにデータをまとめる
 				return create_static_buffer_desc(data.data(), static_cast<UINT64>(data.size() * sizeof(T)));
 			}
 		};

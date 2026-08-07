@@ -76,7 +76,10 @@ namespace render {
 				//@brief	== 頂点バッファビュー ==
 				D3D12_VERTEX_BUFFER_VIEW	vertex_buffer_view{};
 
+				//@brief	== バッファデータ全体のメモリサイズ保存変数 ==
 				UINT buffer_size{};
+
+				//@brief	== バッファデータのクラス型のメモリサイズ保存変数 ==
 				UINT class_size{};
 
 			};
@@ -91,17 +94,16 @@ namespace render {
 			[[nodiscard]] HRESULT VertexBuffer::create_vertex_buffer(ID3D12Device* device, ID3D12GraphicsCommandList* list, 
 				Microsoft::WRL::ComPtr<ID3D12Resource>& upload_resource, const std::vector<T>& buffer_data) {
 
+				//	サイズを取得
 				class_size = sizeof(T);
 				buffer_size = static_cast<UINT>(buffer_data.size() * class_size);
 				
+				//	リソース設定作成
 				const auto desc = create_static_buffer_desc(buffer_data.data(), buffer_size);
 
-				const auto hr = create_static_buffer(device, list, upload_resource, desc);
-				if (FAILED(hr)) {
-					return hr;
-				}
+				//	リソース作成
+				return create_static_buffer(device, list, upload_resource, desc);
 
-				return hr;
 			};
 		};
 	};

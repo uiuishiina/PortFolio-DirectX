@@ -24,6 +24,7 @@ using namespace render::dx12::object;
 }
 
 //@brief	=== リソース作成オーバーロード関数 ===
+//@details	追加でリソースが必要な場合に [メンバー変数以外] のリソースを作成できる関数
 //@param	device		DirectX12 デバイス
 //@param	desc		GPUリソース設定構造体
 //@param	resource	作成するリソース先参照
@@ -47,20 +48,20 @@ using namespace render::dx12::object;
 //@brief	=== リソース取得関数 ===
 //@return	リソース参照
 [[nodiscard]] ID3D12Resource* GPUResourceBase::get_resource()const noexcept {
-	(resource_ && "GPUリソース nullptr");
+	assert(resource_ && "GPUリソース nullptr");
 	return resource_.Get();
 }
 
 //@brief	=== リソース設定取得関数 ===
 //@return	リソース設定
 [[nodiscard]] D3D12_RESOURCE_DESC GPUResourceBase::get_desc() const noexcept {
-	(resource_ && "GPUリソース nullptr");
+	assert(resource_ && "GPUリソース nullptr");
 	return resource_->GetDesc();
 }
 
 //@brief	=== GPUアドレス取得関数 ===
 //@return	GPUアドレス
 [[nodiscard]] D3D12_GPU_VIRTUAL_ADDRESS GPUResourceBase::get_GPU_address() const noexcept {
-	(resource_ && "GPUリソース nullptr");
+	assert(resource_ && "GPUリソース nullptr");
 	return resource_->GetGPUVirtualAddress();
 }

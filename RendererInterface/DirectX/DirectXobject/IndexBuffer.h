@@ -74,8 +74,10 @@ namespace render {
 				//@brief	== インデックスバッファビュー ==
 				D3D12_INDEX_BUFFER_VIEW	index_buffer_view{};
 
+				//@brief	== バッファデータ全体のメモリサイズ保存変数 ==
 				UINT buffer_size{};
 
+				//@brief	== インデックスバッファビューのフォーマット保存変数
 				DXGI_FORMAT format_{};
 
 				///====================================================================
@@ -95,21 +97,20 @@ namespace render {
 			[[nodiscard]] HRESULT IndexBuffer::create_index_buffer(ID3D12Device* device, ID3D12GraphicsCommandList* list,
 				Microsoft::WRL::ComPtr<ID3D12Resource>& upload_resource, const std::vector<T>& buffer_data) {
 
+				//	サイズとフォーマットを取得
 				buffer_size = static_cast<UINT>(buffer_data.size() * sizeof(T));
 				format_ = get_index_format<T>();;
 				
+				//	リソース設定作成
 				const auto desc = create_static_buffer_desc(buffer_data.data(), buffer_size);
 
-				const auto hr = create_static_buffer(device, list, upload_resource, desc);
-				if (FAILED(hr)) {
-					return hr;
-				}
-
-				return hr;
+				//	リソース作成
+				return create_static_buffer(device, list, upload_resource, desc);
+				
 			};
 
 			//@brief	=== インデックスバッファ用フォーマット取得関数 ===
-			//@details	データ型から変換した、フォーマットを返す関数
+			//@details	データ型から変換した、フォーマットを返す関数()
 			//@return	インデックスフォーマット
 			template<typename T>
 			constexpr DXGI_FORMAT IndexBuffer::get_index_format() {
