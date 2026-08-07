@@ -8,19 +8,29 @@ using namespace render::dx12::object;
 /// 初期化処理
 ///====================================================================
 
-//@brief	=== 頂点バッファ用GPUリソース設定作成 ===
-//@param	T_buffer_size	頂点バッファメモリサイズ
-//@return	作成した頂点バッファ用GPUリソース設定
-[[nodiscard]] render::dx12::desc::ResourceCreateDesc VertexBuffer::create_vertex_buffer_desc(UINT T_buffer_size) {
+//@brief	=== 設定構造体作成仮想関数 ===
+//@param	data	初期設定データ構造体に設定する先頭ポインター
+//@param	size	初期設定データ構造体に設定するメモリサイズ
+//@return	作成した構造体
+[[nodiscard]] render::dx12::desc::StaticBufferCreateDesc VertexBuffer::create_static_buffer_desc(const void* data, UINT64 size) {
 
-	desc::ResourceCreateDesc desc{};
-
-	desc.heap_properties = helper::ResourceCreateDescHelper::get_heap_properties(D3D12_HEAP_TYPE_UPLOAD);
-	desc.heap_flags = D3D12_HEAP_FLAG_NONE;
-	desc.resource_desc = helper::ResourceCreateDescHelper::get_buffer_desc(T_buffer_size);
-	desc.initial_state = D3D12_RESOURCE_STATE_GENERIC_READ;
-
+	render::dx12::desc::StaticBufferCreateDesc desc{};
+	desc.resource_desc = helper::ResourceCreateDescHelper::get_buffer_desc(size);
+	desc.initial_data = utility::InitialBufferData(data, size);
+	desc.final_state = D3D12_RESOURCE_STATE_GENERIC_READ;
 	return desc;
+}
+
+//@brief	=== 派生先別リソース作成仮想関数 ===
+//@details	基底クラスではS_OKを返す
+//@return	作成の成否
+[[nodiscard]] HRESULT VertexBuffer::create_resource_object() {
+
+	vertex_buffer_view.BufferLocation = get_GPU_address();
+	vertex_buffer_view.StrideInBytes = class_size;
+	vertex_buffer_view.SizeInBytes = buffer_size;
+
+	return S_OK;
 }
 
 ///====================================================================

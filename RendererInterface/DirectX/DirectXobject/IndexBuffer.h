@@ -43,11 +43,28 @@ namespace render {
 				//@param	buffer_data	インデックスバッファに書き込むデータ型配列
 				//@return	作成の成否
 				template<typename T>
-				[[nodiscard]] HRESULT create_index_buffer(ID3D12Device* device, const std::vector<T>& buffer_data);
+				[[nodiscard]] HRESULT create_index_buffer(ID3D12Device* device, ID3D12GraphicsCommandList* list,
+					Microsoft::WRL::ComPtr<ID3D12Resource>& upload_resource, const std::vector<T>& buffer_data);
 
 				//@brief	=== インデックスバッファビュー取得関数 ===
 				//@return	インデックスバッファビュー参照
 				[[nodiscard]] const D3D12_INDEX_BUFFER_VIEW* get_buffer_view()const noexcept;
+
+			protected:
+				///====================================================================
+				/// Protected メンバー関数
+				///====================================================================
+
+				//@brief	=== 設定構造体作成仮想関数 ===
+				//@param	data	初期設定データ構造体に設定する先頭ポインター
+				//@param	size	初期設定データ構造体に設定するメモリサイズ
+				//@return	作成した構造体
+				[[nodiscard]] desc::StaticBufferCreateDesc create_static_buffer_desc(const void* data, UINT64 size) override;
+
+				//@brief	=== 派生先別リソース作成仮想関数 ===
+				//@details	基底クラスではS_OKを返す
+				//@return	作成の成否
+				[[nodiscard]] HRESULT create_resource_object() override;
 
 			private:
 				///====================================================================
@@ -57,14 +74,13 @@ namespace render {
 				//@brief	== インデックスバッファビュー ==
 				D3D12_INDEX_BUFFER_VIEW	index_buffer_view{};
 
+				UINT buffer_size{};
+
+				DXGI_FORMAT format_{};
+
 				///====================================================================
 				/// Private メンバー関数
 				///====================================================================
-
-				//@brief	=== インデックスバッファ用GPUリソース設定作成 ===
-				//@param	T_buffer_size	インデックスバッファメモリサイズ
-				//@return	作成したインデックスバッファ用GPUリソース設定
-				[[nodiscard]] desc::ResourceCreateDesc create_index_buffer_desc(UINT T_buffer_size);
 
 				//@brief	=== インデックスバッファ用フォーマット取得関数 ===
 				template<typename T>
@@ -76,24 +92,18 @@ namespace render {
 			//@param	buffer_data	インデックスバッファに書き込むデータ型配列
 			//@return	作成の成否
 			template<typename T>
-			[[nodiscard]] HRESULT IndexBuffer::create_index_buffer(ID3D12Device* device, const std::vector<T>& buffer_data) {
+			[[nodiscard]] HRESULT IndexBuffer::create_index_buffer(ID3D12Device* device, ID3D12GraphicsCommandList* list,
+				Microsoft::WRL::ComPtr<ID3D12Resource>& upload_resource, const std::vector<T>& buffer_data) {
 
-				const UINT buffer_size = static_cast<UINT>(buffer_data.size() * sizeof(T));
-				const auto desc = create_index_buffer_desc(buffer_size);
+				buffer_size = static_cast<UINT>(buffer_data.size() * sizeof(T));
+				format_ = get_index_format<T>();;
+				
+				const auto desc = create_static_buffer_desc(buffer_data.data(), buffer_size);
 
-				auto hr = create_committed_resource(device, desc);
+				const auto hr = create_static_buffer(device, list, upload_resource, desc);
 				if (FAILED(hr)) {
 					return hr;
 				}
-
-				hr = copy_buffer(buffer_data);
-				if (FAILED(hr)) {
-					return hr;
-				}
-
-				index_buffer_view.BufferLocation = resource_->GetGPUVirtualAddress();
-				index_buffer_view.SizeInBytes = buffer_size;
-				index_buffer_view.Format = get_index_format<T>();
 
 				return hr;
 			};

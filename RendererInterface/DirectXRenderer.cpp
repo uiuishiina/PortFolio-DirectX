@@ -289,6 +289,16 @@ DirectXRenderer::~DirectXRenderer() = default;
 	
 	/* ==================== Mesh作成 ==================== */
 
+	auto allocator = frame_resources[current_frame_index]->get_graphics_allocator();
+
+	// コマンドアロケータリセット
+	allocator->reset_command_allocator();
+	// コマンドリストリセット
+	graphics_list->reset_command_list(allocator->get_command_allocator());
+
+	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_normal_resource;
+	upload_normal_resource.resize(2);
+
 	//	ポリゴンインスタンス生成
 	polygon_ = std::make_unique<mesh::Mesh>();
 
@@ -306,10 +316,13 @@ DirectXRenderer::~DirectXRenderer() = default;
 	polygon_desc.index_data = {
 		0,1,2
 	};
-	if (FAILED(polygon_->create_mesh(deviceP, polygon_desc))) {
+	if (FAILED(polygon_->create_mesh(deviceP, graphics_list->get_graphics_command_list(), upload_normal_resource, polygon_desc))) {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
+
+	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_color_resource;
+	upload_color_resource.resize(2);
 
 	//	ポリゴンインスタンス生成
 	Color_polygon_ = std::make_unique<mesh::Mesh>();
@@ -327,11 +340,22 @@ DirectXRenderer::~DirectXRenderer() = default;
 	color_mesh.index_data = {
 		0,1,2
 	};
-	if (FAILED(Color_polygon_->create_mesh(deviceP, color_mesh))) {
+	if (FAILED(Color_polygon_->create_mesh(deviceP, graphics_list->get_graphics_command_list(), upload_color_resource, color_mesh))) {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
 
+	// コマンドリストをクローズ
+	graphics_list->get_graphics_command_list()->Close();
+
+	// コマンドキューにコマンドリストを送信
+	ID3D12CommandList* ppCommandLists[] = { graphics_list->get_graphics_command_list() };
+	graphics_queue->get_command_queue()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+
+	//	シグナルを送って配列に保存
+	frame_resources[current_frame_index]->set_frame_fence_value(fence_->signal(graphics_queue->get_command_queue()));
+
+	sync_frame_resource();
 
 	/* ==================== DrawPass作成 ==================== */
 

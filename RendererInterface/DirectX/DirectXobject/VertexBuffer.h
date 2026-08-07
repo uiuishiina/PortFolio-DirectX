@@ -40,14 +40,33 @@ namespace render {
 				
 				//@brief	=== 頂点バッファ作成関数 ===
 				//@param	device	DirectX12 デバイス
+				//@param	list	描画用コマンドリスト参照
+				//@param	upload_resource		Upload用リソース参照
 				//@param	buffer_data	頂点バッファに書き込むデータ型配列
 				//@return	作成の成否
 				template<typename T>
-				[[nodiscard]] HRESULT create_vertex_buffer(ID3D12Device* device, const std::vector<T>& buffer_data);
+				[[nodiscard]] HRESULT create_vertex_buffer(ID3D12Device* device, ID3D12GraphicsCommandList* list, 
+					Microsoft::WRL::ComPtr<ID3D12Resource>& upload_resource, const std::vector<T>& buffer_data);
 
 				//@brief	=== 頂点バッファビュー取得関数 ===
 				//@return	頂点バッファビュー参照
 				[[nodiscard]] const D3D12_VERTEX_BUFFER_VIEW* get_buffer_view()const noexcept;
+
+			protected:
+				///====================================================================
+				/// Protected メンバー関数
+				///====================================================================
+
+				//@brief	=== 設定構造体作成仮想関数 ===
+				//@param	data	初期設定データ構造体に設定する先頭ポインター
+				//@param	size	初期設定データ構造体に設定するメモリサイズ
+				//@return	作成した構造体
+				[[nodiscard]] desc::StaticBufferCreateDesc create_static_buffer_desc(const void* data, UINT64 size) override;
+
+				//@brief	=== 派生先別リソース作成仮想関数 ===
+				//@details	基底クラスではS_OKを返す
+				//@return	作成の成否
+				[[nodiscard]] HRESULT create_resource_object() override;
 
 			private:
 				///====================================================================
@@ -57,40 +76,30 @@ namespace render {
 				//@brief	== 頂点バッファビュー ==
 				D3D12_VERTEX_BUFFER_VIEW	vertex_buffer_view{};
 
-				///====================================================================
-				/// Private メンバー関数
-				///====================================================================
-
-				//@brief	=== 頂点バッファ用GPUリソース設定作成 ===
-				//@param	T_buffer_size	頂点バッファメモリサイズ
-				//@return	作成した頂点バッファ用GPUリソース設定
-				[[nodiscard]] desc::ResourceCreateDesc create_vertex_buffer_desc(UINT T_buffer_size);
+				UINT buffer_size{};
+				UINT class_size{};
 
 			};
 
 			//@brief	=== 頂点バッファ作成関数 ===
 			//@param	device	DirectX12 デバイス
+			//@param	list	描画用コマンドリスト参照
+			//@param	upload_resource		Upload用リソース参照
 			//@param	buffer_data	頂点バッファに書き込むデータ型配列
 			//@return	作成の成否
 			template<typename T>
-			[[nodiscard]] HRESULT VertexBuffer::create_vertex_buffer(ID3D12Device* device, const std::vector<T>& buffer_data) {
+			[[nodiscard]] HRESULT VertexBuffer::create_vertex_buffer(ID3D12Device* device, ID3D12GraphicsCommandList* list, 
+				Microsoft::WRL::ComPtr<ID3D12Resource>& upload_resource, const std::vector<T>& buffer_data) {
 
-				const UINT buffer_size = static_cast<UINT>(buffer_data.size() * sizeof(T));
-				const auto desc = create_vertex_buffer_desc(buffer_size);
+				class_size = sizeof(T);
+				buffer_size = static_cast<UINT>(buffer_data.size() * class_size);
+				
+				const auto desc = create_static_buffer_desc(buffer_data.data(), buffer_size);
 
-				auto hr = create_committed_resource(device, desc);
+				const auto hr = create_static_buffer(device, list, upload_resource, desc);
 				if (FAILED(hr)) {
 					return hr;
 				}
-
-				hr = copy_buffer(buffer_data);
-				if (FAILED(hr)) {
-					return hr;
-				}
-
-				vertex_buffer_view.BufferLocation = resource_->GetGPUVirtualAddress();
-				vertex_buffer_view.StrideInBytes = sizeof(T);
-				vertex_buffer_view.SizeInBytes = buffer_size;
 
 				return hr;
 			};

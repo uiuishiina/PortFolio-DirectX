@@ -1,32 +1,125 @@
 #include "StaticBufferResource.h"
+#include"../Factory&Builder&Helper/ResourceCreateDescHelper.h"
+#include"../Factory&Builder&Helper/ResourceBarrierHelper.h"
+#include<cassert>
+
 
 using namespace render::dx12::object;
 
-//@brief	=== バッファリソースコピー関数 ===
-//@param	src	コピーするデータの先頭ポインター
-//@param	size	コピーするメモリサイズ
-//@return	コピーの成否
-[[nodiscard]] HRESULT StaticBufferResource::copy_buffer(const void* src, size_t size) {
+///====================================================================
+/// 初期化関数
+///====================================================================
 
-	void* mapped = nullptr;
-	const auto hr = resource_->Map(0, nullptr, &mapped);
+//@brief	=== 初期作成描画バッファリソース作成関数 ===
+//@param	device		DirectX12 デバイス
+//@param	commandList	描画用コマンドリスト参照
+//@param	upload_resource		Upload用リソース参照
+//@param	data		書き込むデータ参照
+//@return	作成の成否
+[[nodiscard]] HRESULT StaticBufferResource::create_static_buffer(ID3D12Device* device, ID3D12GraphicsCommandList* list,
+	Microsoft::WRL::ComPtr<ID3D12Resource>& upload_resource, const render::dx12::desc::StaticBufferCreateDesc& desc) {
+
+	//	バッファ作成
+	auto hr = create_buffers(device, upload_resource, desc);
 	if (FAILED(hr)) {
 		return hr;
 	}
-	memcpy(mapped, src, size);
-	resource_->Unmap(0, nullptr);
+
+	//	データ書き込み
+	hr = upload_data(list, upload_resource.Get(), desc.initial_data);
+	if (FAILED(hr)) {
+		return hr;
+	}
+
+	//	リソース設定
+	barrier_transition(list, D3D12_RESOURCE_STATE_COPY_DEST, desc.final_state);
+
+	//	その他必要処理
+	hr = create_resource_object();
+	if (FAILED(hr)) {
+		return hr;
+	}
 
 	return hr;
 }
 
-///====================================================================
-/// 実行時処理関数
-///====================================================================
 
-//@brief	=== GPUアドレス取得関数 ===
-//@return	GPUアドレス
-[[nodiscard]] D3D12_GPU_VIRTUAL_ADDRESS StaticBufferResource::get_GPU_address() const noexcept {
-	(resource_ && "GPUリソース nullptr");
-	return resource_->GetGPUVirtualAddress();
+//@brief	=== バッファ作成関数 ===
+//@param	device		DirectX12 デバイス
+//@param	upload_		upload用リソース参照
+//@param	desc		初期作成バッファ設定
+//@return	作成の成否
+[[nodiscard]] HRESULT StaticBufferResource::create_buffers(ID3D12Device* device,
+	Microsoft::WRL::ComPtr<ID3D12Resource>& upload_resource, const desc::StaticBufferCreateDesc& desc) {
+
+	//	デフォルト作成
+	desc::ResourceCreateDesc create_desc{};
+
+	create_desc.heap_properties = helper::ResourceCreateDescHelper::get_heap_properties(D3D12_HEAP_TYPE_DEFAULT);
+	create_desc.heap_flags = D3D12_HEAP_FLAG_NONE;
+	create_desc.resource_desc = desc.resource_desc;
+	create_desc.initial_state = D3D12_RESOURCE_STATE_COMMON;
+
+	auto hr = create_committed_resource(device, create_desc);
+	if (FAILED(hr)) {
+		return hr;
+	}
+
+	//	書き込み用作成
+	create_desc.heap_properties = helper::ResourceCreateDescHelper::get_heap_properties(D3D12_HEAP_TYPE_UPLOAD);
+	create_desc.initial_state = D3D12_RESOURCE_STATE_GENERIC_READ;
+
+	hr = create_committed_resource(device, create_desc, upload_resource);
+	if (FAILED(hr)) {
+		return hr;
+	}
+
+	return hr;
 }
 
+//@brief	=== データUpload関数 ===
+//@param	list	描画用コマンドリスト
+//@param	upload	upload用リソース参照(一時バッファ)
+//@param	data	Uploadするデータ参照
+//@return	Uploadの成否
+[[nodiscard]] HRESULT StaticBufferResource::upload_data(ID3D12GraphicsCommandList* list,
+	ID3D12Resource* upload_resource, const utility::InitialBufferData& data) {
+	
+	assert(data.data_ && "StaticBufferResource initial_data Not Found");
+	assert(data.size_ > 0 && "StaticBufferResource initial_data.size Not Set or 0");
+
+	void* mapped_{};
+
+	//	UploadにMap
+	auto hr = upload_resource->Map(0, nullptr, &mapped_);
+	if (FAILED(hr)) {
+		return hr;
+	}
+
+	//	Uploadにコピー
+	memcpy(mapped_, data.data_, static_cast<size_t>(data.size_));
+
+	//	UploadをUnmap
+	upload_resource->Unmap(0, nullptr);
+
+	//	Defaultにコピー
+	list->CopyBufferRegion(
+		resource_.Get(),	//コピー先
+		0,					//コピー先メモリオフセット
+		upload_resource,	//コピー元
+		0,					//コピー元メモリオフセット
+		data.size_);			//コピーするメモリサイズ
+
+	return hr;
+}
+
+//@brief	=== リソースバリア遷移関数 ===
+//@param	list	描画用コマンドリスト
+//@param	current_state	遷移前バリアステート
+//@param	next_state	遷移先バリアステート
+void StaticBufferResource::barrier_transition(ID3D12GraphicsCommandList* list, D3D12_RESOURCE_STATES current_state, D3D12_RESOURCE_STATES next_state) {
+
+	auto barrier = helper::ResourceBarrierHelper::create_resource_barrier(resource_.Get(),
+		current_state, next_state);
+	list->ResourceBarrier(1, &barrier);
+}

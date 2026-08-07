@@ -62,7 +62,7 @@ namespace render {
 				//@param	data	データ配列
 				//@return	作成の成否
 				template<typename T>
-				[[nodiscard]] HRESULT create_mesh(ID3D12Device* device, const MeshDesc<T>& data);
+				[[nodiscard]] HRESULT create_mesh(ID3D12Device* device, ID3D12GraphicsCommandList* list, std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>>& upload_resource, const MeshDesc<T>& data);
 
 				//@breif	=== ポリゴン描画関数 ===
 				//@param	list	描画用コマンドリスト参照
@@ -93,16 +93,16 @@ namespace render {
 			//@param	data	データ配列
 			//@return	作成の成否
 			template<typename T>
-			[[nodiscard]] HRESULT Mesh::create_mesh(ID3D12Device* device, const MeshDesc<T>& data) {
+			[[nodiscard]] HRESULT Mesh::create_mesh(ID3D12Device* device, ID3D12GraphicsCommandList* list, std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>>& upload_resource, const MeshDesc<T>& data) {
 
 				vertex_buffer = std::make_unique<object::VertexBuffer>();
-				auto hr = vertex_buffer->create_vertex_buffer(device,data.vertex_data);
+				auto hr = vertex_buffer->create_vertex_buffer(device, list, upload_resource[0], data.vertex_data);
 				if (FAILED(hr)) {
 					return hr;
 				}
 
 				index_buffer = std::make_unique<object::IndexBuffer>();
-				hr = index_buffer->create_index_buffer(device, data.index_data);
+				hr = index_buffer->create_index_buffer(device, list, upload_resource[1], data.index_data);
 				if (FAILED(hr)) {
 					return hr;
 				}
@@ -111,7 +111,7 @@ namespace render {
 				topology_ = data.topology_;
 
 				return hr;
-			}
+			};
 		};
 	};
 };

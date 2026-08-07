@@ -19,6 +19,11 @@ namespace render {
 
 		namespace helper {
 
+			///====================================================================
+			/// ResourceCreateDescHelper クラス
+			///====================================================================
+
+			//@brief	=== リソース設定作成ヘルパークラス ===
 			class ResourceCreateDescHelper final
 			{
 			public:

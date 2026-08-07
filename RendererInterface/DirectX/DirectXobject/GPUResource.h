@@ -85,15 +85,26 @@ namespace render {
 				/// protected メンバー関数
 				///====================================================================
 
-				//@brief	=== リソース作成関数
+				//@brief	=== リソース作成関数 ===
 				//@param	device	DirectX12 デバイス
 				//@param	desc	GPUリソース設定構造体
 				//@return	作成の成否
 				[[nodiscard]] HRESULT create_committed_resource(ID3D12Device* device, const desc::ResourceCreateDesc& desc);
 
+				//@brief	=== リソース作成オーバーロード関数 ===
+				//@param	device		DirectX12 デバイス
+				//@param	desc		GPUリソース設定構造体
+				//@param	resource	作成するリソース先参照
+				//@return	作成の成否
+				[[nodiscard]] HRESULT create_committed_resource(ID3D12Device* device, const desc::ResourceCreateDesc& desc, Microsoft::WRL::ComPtr<ID3D12Resource>& resource);
+
 				//@brief	=== リソース設定取得関数 ===
 				//@return	リソース設定
 				[[nodiscard]] D3D12_RESOURCE_DESC get_desc() const noexcept;
+
+				//@brief	=== GPUアドレス取得関数 ===
+				//@return	GPUアドレス
+				[[nodiscard]] D3D12_GPU_VIRTUAL_ADDRESS get_GPU_address() const noexcept;
 
 			};
 		};
