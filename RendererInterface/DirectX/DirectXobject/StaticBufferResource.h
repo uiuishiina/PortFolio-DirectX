@@ -78,14 +78,18 @@ namespace render {
 			//@brief	=== 初期作成描画バッファリソースクラス ===
 			class StaticBufferResource : public GPUResourceBase
 			{
-			protected:
+			public:
 				///====================================================================
 				/// クラス設定
 				///====================================================================
 
-				//コンストラクタ,デストラクタ
-				StaticBufferResource() = default;
+				//デストラクタ
 				virtual ~StaticBufferResource() = default;
+
+			protected:
+				
+				//コンストラクタ
+				StaticBufferResource() = default;
 
 				///====================================================================
 				/// Protected メンバー関数

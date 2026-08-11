@@ -39,9 +39,11 @@ namespace render {
 			class StaticShaderContainer;
 			class StaticRootSignatureContainer;
 			class StaticPiplineStateContainer;
+			class StaticBufferContainer;
 
 			class StaticDrawStateContainer;
 			class StaticRenderTargetStateContainer;
+			class StaticDrawCommandsContainer;
 		};
 
 		namespace resources {
@@ -171,8 +173,6 @@ private:
 	//@brief	== Fenceインスタンス ==
 	std::unique_ptr<render::dx12::object::Fence> fence_{};
 
-	UINT normal_pipline{};
-
 	/* -- コンテナ各種 -- */
 
 	//@brief	== 初期作成ディスクリプタヒープコンテナインスタンス ==
@@ -193,6 +193,12 @@ private:
 	//@brief	== 描画パス用レンダーターゲット設定コンテナインスタンス ==
 	std::unique_ptr<render::dx12::container::StaticRenderTargetStateContainer> static_render_target_state_container{};
 
+	//@brief	== 描画パスコマンドコンテナインスタンス ==
+	std::unique_ptr<render::dx12::container::StaticDrawCommandsContainer> static_draw_commands_container{};
+
+
+	std::unique_ptr<render::dx12::container::StaticBufferContainer> static_buffer_container{};
+
 
 	//@brief	== ポリゴンインスタンス ==
 	std::unique_ptr<render::dx12::mesh::Mesh> polygon_{};
@@ -201,10 +207,6 @@ private:
 	std::unique_ptr<render::dx12::pass::DrawPass> NormalPass_{};
 	std::unique_ptr<render::dx12::pass::DrawPass> Color_Pass_{};
 
-	std::unique_ptr<render::dx12::command::DrawCommands> NormalCommands_{};
-
-	std::unique_ptr<render::dx12::command::DrawCommands> Color_Commands_{};
-	
 	///====================================================================
 	/// Private メンバー関数
 	///====================================================================

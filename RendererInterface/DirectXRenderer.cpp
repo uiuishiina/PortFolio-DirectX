@@ -26,8 +26,10 @@
 #include"DirectX/Container/StaticShaderContainer.h"
 #include"DirectX/Container/StaticRootSignatureContainer.h"
 #include"DirectX/Container/StaticPiplineStateContainer.h"
+#include"DirectX/Container/StaticBufferContainer.h"
 #include"DirectX/Container/StaticDrawStateContainer.h"
 #include"DirectX/Container/StaticRenderTargetStateContainer.h"
+#include"DirectX/Container/StaticDrawCommandsContainer.h"
 
 #include"DirectX/DrawResouces.h"
 #include"DirectX/DrawPass/DrawPass.h"
@@ -108,8 +110,11 @@ DirectXRenderer::~DirectXRenderer() = default;
 		shader_container = std::make_unique<container::StaticShaderContainer>();
 		root_signature_container = std::make_unique<container::StaticRootSignatureContainer>();
 		pipline_container = std::make_unique<container::StaticPiplineStateContainer>();
+		static_buffer_container = std::make_unique<container::StaticBufferContainer>();
+
 		static_draw_state_container = std::make_unique<container::StaticDrawStateContainer>();
 		static_render_target_state_container = std::make_unique<container::StaticRenderTargetStateContainer>();
+		static_draw_commands_container = std::make_unique<container::StaticDrawCommandsContainer>();
 	}
 
 	//	DXGIインスタンス生成
@@ -216,8 +221,6 @@ DirectXRenderer::~DirectXRenderer() = default;
 		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Normal_vs");
 		return false;
 	}
-	const auto vs_hash = shader_container->get_hash_key("Normal_vs");
-
 	if (FAILED(shader_container->compile_shader("Normal_ps", L"../RendererInterface/HLSLshader/NormalPixelShader.hlsl", "main", "ps_5_0"))) {
 		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Normal_ps");
 		return false;
@@ -259,9 +262,6 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 
-	normal_pipline = pipline_container->get_hash_key("Normal_pipline").value();
-
-
 	//	PiplineStateインスタンス生成
 	desc::PipelineStateDesc color_pipline{};
 
@@ -278,7 +278,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 	color_pipline.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
 	color_pipline.blend_desc = helper::PipelineStateHelper::get_enable_blend();
-	pipline_desc.depth_stencil_desc = helper::PipelineStateHelper::get_enable_depth();
+	color_pipline.depth_stencil_desc = helper::PipelineStateHelper::get_enable_depth();
 	//フォーマット指定
 	color_pipline.dsv_format = depth_desc.format;
 
@@ -368,7 +368,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 		//	DrawState作成
 		desc::DrawStateDesc draw_state_desc{};
 		draw_state_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
-		draw_state_desc.pipline_state = pipline_container->get_pipline_state(normal_pipline);
+		draw_state_desc.pipline_state = pipline_container->get_pipline_state("Normal_pipline");
 
 		// ビューポート設定
 		D3D12_VIEWPORT viewport{};
@@ -395,7 +395,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 		//	DrawRenderTargetState作成
 		//	BackBufferを追加
-		if (!static_render_target_state_container->create_render_target_state("NormalTarget", 
+		if (!static_render_target_state_container->create_render_target_state("Normal_Target", 
 			{
 						RenderTargetSlot::BackBuffer
 			}, 
@@ -404,9 +404,10 @@ DirectXRenderer::~DirectXRenderer() = default;
 			return false;
 		}
 
-		//	DrawCommands作成
-		NormalCommands_ = std::make_unique<command::DrawCommands>();
-		NormalCommands_->set_begin_command(
+		//	描画コマンド作成
+
+		//	バックバッファとデプスバッファクリア
+		if (!static_draw_commands_container->add_command_map("claer_backbuffer_and_depthbuffer",	
 			[&](resources::DrawResources& resource) {
 				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
 				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
@@ -414,22 +415,43 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 				auto* depth = resource.get_depth_target(DepthSlot::MainDepth);
 				resource.graphics_list->ClearDepthStencilView(depth->get_dsv_handle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
-			}
-		);
-		NormalCommands_->add_apply_command(
+			})) {
+			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
+		}
+
+		//	無色ポリゴン描画
+		if (!static_draw_commands_container->add_command_map("draw_Normal_polygon",
 			[&](resources::DrawResources& resource) {
 				polygon_->draw_mesh(graphics_list->get_graphics_command_list());
-			}
-		);
+			})) {
+			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
+		}
 
-		NormalCommands_->set_end_command(
-			[](resources::DrawResources& resource) {
+		//	バックバッファバリアをPresentに変更
+		if (!static_draw_commands_container->add_command_map("backbuffer_barrier_present",
+			[&](resources::DrawResources& resource) {
 				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
 				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
-			}
-		);
+			})) {
+			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
+		}
 
-		if (!NormalPass_->initialize_pass(static_draw_state_container->get_draw_state("Normal_State"), static_render_target_state_container->get_draw_state("NormalTarget"), NormalCommands_.get())) {
+		//	DrawCommands作成
+		desc::DrawCommandDesc draw_commands_desc{};
+		draw_commands_desc.begin_name = "claer_backbuffer_and_depthbuffer";
+		draw_commands_desc.apply_names = { "draw_Normal_polygon" };
+		draw_commands_desc.end_name = "backbuffer_barrier_present";
+		
+		if (static_draw_commands_container->create_draw_commands("Normal_Commands", draw_commands_desc)) {
+			DEBUG_LOG("DirectXRenderer :: create_draw_commands() FAILED");
+		}
+
+		//	DrawPass作成
+		if (!NormalPass_->initialize_pass(
+			static_draw_state_container->get_draw_state("Normal_State"),
+			static_render_target_state_container->get_draw_state("Normal_Target"),
+			static_draw_commands_container->get_draw_commands("Normal_Commands")
+		)) {
 			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
 			return false;
 		}
@@ -468,28 +490,41 @@ DirectXRenderer::~DirectXRenderer() = default;
 			return false;
 		}
 
-		//	DrawCommands作成
-		Color_Commands_ = std::make_unique<command::DrawCommands>();
-		Color_Commands_->set_begin_command(
+		//	描画コマンド作成
+
+		//	バックバッファバリアをTargetに変更
+		if (!static_draw_commands_container->add_command_map("backbuffer_barrier_target",
 			[&](resources::DrawResources& resource) {
 				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
 				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
-			}
-		);
-		Color_Commands_->add_apply_command(
+			})) {
+			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
+		}
+
+		//	色付きポリゴン描画
+		if (!static_draw_commands_container->add_command_map("draw_Color_polygon",
 			[&](resources::DrawResources& resource) {
 				Color_polygon_->draw_mesh(graphics_list->get_graphics_command_list());
-			}
-		);
+			})) {
+			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
+		}
+		
+		//	DrawCommands作成
+		desc::DrawCommandDesc draw_commands_desc{};
+		draw_commands_desc.begin_name = "backbuffer_barrier_target";
+		draw_commands_desc.apply_names = { "draw_Color_polygon" };
+		draw_commands_desc.end_name = "backbuffer_barrier_present";
 
-		Color_Commands_->set_end_command(
-			[](resources::DrawResources& resource) {
-				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
-				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
-			}
-		);
+		if (static_draw_commands_container->create_draw_commands("Color_Commands", draw_commands_desc)) {
+			DEBUG_LOG("DirectXRenderer :: create_draw_commands() FAILED");
+		}
 
-		if (!Color_Pass_->initialize_pass(static_draw_state_container->get_draw_state("Color_State"), static_render_target_state_container->get_draw_state("NormalTarget"), Color_Commands_.get())) {
+		
+		if (!Color_Pass_->initialize_pass(
+			static_draw_state_container->get_draw_state("Color_State"), 
+			static_render_target_state_container->get_draw_state("Normal_Target"), 
+			static_draw_commands_container->get_draw_commands("Color_Commands")
+		)) {
 			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
 			return false;
 		}

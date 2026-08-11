@@ -207,6 +207,12 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\ConstantBuffer.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticBufferContainer.cpp">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawCommandsContainer.cpp">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Debug\DebugLogBuilder.h">
@@ -412,6 +418,12 @@
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\ResourceUtility.h">
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticBufferContainer.h">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticDrawCommandsContainer.h">
+      <Filter>RendererInterface\DirectX\Container</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
