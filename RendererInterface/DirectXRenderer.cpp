@@ -30,6 +30,7 @@
 #include"DirectX/Container/StaticDrawStateContainer.h"
 #include"DirectX/Container/StaticRenderTargetStateContainer.h"
 #include"DirectX/Container/StaticDrawCommandsContainer.h"
+#include"DirectX/Container/StaticDrawPassContainer.h"
 
 #include"DirectX/DrawResouces.h"
 #include"DirectX/DrawPass/DrawPass.h"
@@ -115,6 +116,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 		static_draw_state_container = std::make_unique<container::StaticDrawStateContainer>();
 		static_render_target_state_container = std::make_unique<container::StaticRenderTargetStateContainer>();
 		static_draw_commands_container = std::make_unique<container::StaticDrawCommandsContainer>();
+		static_draw_pass_container = std::make_unique<container::StaticDrawPassContainer>();
 	}
 
 	//	DXGIインスタンス生成
@@ -363,8 +365,6 @@ DirectXRenderer::~DirectXRenderer() = default;
 	/* -- NormalPass作成 -- */
 
 	{
-		NormalPass_ = std::make_unique<pass::DrawPass>();
-		
 		//	DrawState作成
 		desc::DrawStateDesc draw_state_desc{};
 		draw_state_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
@@ -442,16 +442,18 @@ DirectXRenderer::~DirectXRenderer() = default;
 		draw_commands_desc.apply_names = { "draw_Normal_polygon" };
 		draw_commands_desc.end_name = "backbuffer_barrier_present";
 		
-		if (static_draw_commands_container->create_draw_commands("Normal_Commands", draw_commands_desc)) {
+		if (!static_draw_commands_container->create_draw_commands("Normal_Commands", draw_commands_desc)) {
 			DEBUG_LOG("DirectXRenderer :: create_draw_commands() FAILED");
+			return false;
 		}
 
 		//	DrawPass作成
-		if (!NormalPass_->initialize_pass(
+		desc::DrawPassDesc normal_pass_desc(
 			static_draw_state_container->get_draw_state("Normal_State"),
 			static_render_target_state_container->get_draw_state("Normal_Target"),
 			static_draw_commands_container->get_draw_commands("Normal_Commands")
-		)) {
+		);
+		if (!static_draw_pass_container->create_draw_pass("Normal_pass", normal_pass_desc)) {
 			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
 			return false;
 		}
@@ -459,9 +461,6 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 	/* -- ColorPass作成 -- */
 	{
-
-		Color_Pass_ = std::make_unique<pass::DrawPass>();
-
 		//	DrawState作成
 		desc::DrawStateDesc draw_state_desc{};
 		draw_state_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
@@ -515,16 +514,18 @@ DirectXRenderer::~DirectXRenderer() = default;
 		draw_commands_desc.apply_names = { "draw_Color_polygon" };
 		draw_commands_desc.end_name = "backbuffer_barrier_present";
 
-		if (static_draw_commands_container->create_draw_commands("Color_Commands", draw_commands_desc)) {
+		if (!static_draw_commands_container->create_draw_commands("Color_Commands", draw_commands_desc)) {
 			DEBUG_LOG("DirectXRenderer :: create_draw_commands() FAILED");
+			return false;
 		}
 
-		
-		if (!Color_Pass_->initialize_pass(
-			static_draw_state_container->get_draw_state("Color_State"), 
-			static_render_target_state_container->get_draw_state("Normal_Target"), 
+		//	DrawPass作成
+		desc::DrawPassDesc color_pass_desc(
+			static_draw_state_container->get_draw_state("Color_State"),
+			static_render_target_state_container->get_draw_state("Normal_Target"),
 			static_draw_commands_container->get_draw_commands("Color_Commands")
-		)) {
+		);
+		if (!static_draw_pass_container->create_draw_pass("Color_pass", color_pass_desc)) {
 			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
 			return false;
 		}
@@ -583,8 +584,8 @@ void DirectXRenderer::update_renderer() {
 
 	/* ==================== 描画パス実行 ==================== */
 
-	NormalPass_->apply(resources);
-	Color_Pass_->apply(resources);
+	static_draw_pass_container->apply_draw_pass("Normal_pass", resources);
+	static_draw_pass_container->apply_draw_pass("Color_pass", resources);
 
 	/* ==================== 描画パス終了 ==================== */
 

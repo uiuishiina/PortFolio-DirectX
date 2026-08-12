@@ -152,6 +152,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticBufferContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticContainerBase.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawCommandsContainer.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawPassContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawStateContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticHeapContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticPiplineStateContainer.cpp" />

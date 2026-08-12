@@ -213,6 +213,9 @@
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawCommandsContainer.cpp">
       <Filter>RendererInterface\DirectX\Container</Filter>
     </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawPassContainer.cpp">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Debug\DebugLogBuilder.h">

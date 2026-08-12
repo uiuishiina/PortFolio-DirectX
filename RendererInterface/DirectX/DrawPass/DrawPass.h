@@ -16,6 +16,35 @@ namespace render {
 	namespace dx12 {
 
 		///====================================================================
+		/// DX12オブジェクト設定名前空間
+		///====================================================================
+
+		namespace desc {
+
+			//@brief	=== 描画パス作成補助構造体 ===
+			struct DrawPassDesc {
+
+				//@brief	== 描画設定クラス参照 ==
+				state::Drawstate* state_;
+
+				//@brief	== 描画先設定クラス参照 ==
+				state::DrawRenderTargetState* target_;
+
+				//@breif	== 描画パスコマンドクラス参照 ==
+				command::DrawCommands* command_;
+
+				//@brief	== コンストラクタ ==
+				DrawPassDesc() = default;
+				DrawPassDesc(
+					state::Drawstate* state,
+					state::DrawRenderTargetState* target,
+					command::DrawCommands* command
+				) :state_(state), target_(target), command_(command) {};
+
+			};
+		};
+
+		///====================================================================
 		/// 描画パス名前空間
 		///====================================================================
 
@@ -33,6 +62,7 @@ namespace render {
 				/// クラス設定
 				///====================================================================
 
+				//コンストラクタ,デストラクタ
 				DrawPass() = default;
 				~DrawPass() = default;
 
@@ -41,15 +71,13 @@ namespace render {
 				///====================================================================
 
 				//@brief	=== 描画パス初期化関数 ===
-				//@param	state	描画設定クラス参照
-				//@param	target	描画先設定クラス参照
-				//@param	command	描画コマンド設定クラス参照
+				//@param	desc	描画パス作成補助構造体
 				//@return	作成の成否
-				[[nodiscard]] bool initialize_pass(state::Drawstate* state, state::DrawRenderTargetState* target, command::DrawCommands* command);
+				[[nodiscard]] bool initialize_pass(desc::DrawPassDesc& desc);
 
 				//@brief	=== 描画パス実行関数 ===
-				//@param	resouce	描画リソース
-				void apply(resources::DrawResources& resouce);
+				//@param	resource	描画リソース
+				void apply(resources::DrawResources& resource);
 
 			private:
 				///====================================================================

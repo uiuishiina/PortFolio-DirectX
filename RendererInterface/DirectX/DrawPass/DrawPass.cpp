@@ -7,21 +7,19 @@ using namespace render::dx12::pass;
 ///====================================================================
 
 //@brief	=== 描画パス初期化関数 ===
-//@param	state	描画設定クラス参照
-//@param	target	描画先設定クラス参照
-//@param	command	描画コマンド設定クラス参照
+//@param	desc	描画パス作成補助構造体
 //@return	作成の成否
-[[nodiscard]] bool DrawPass::initialize_pass(state::Drawstate* state, state::DrawRenderTargetState* target, command::DrawCommands* command) {
+[[nodiscard]] bool DrawPass::initialize_pass(desc::DrawPassDesc& desc) {
 
 	//	すべてNullptrではないか確認
-	if (state == nullptr || target == nullptr || command == nullptr) {
+	if (desc.state_ == nullptr || desc.target_ == nullptr || desc.command_ == nullptr) {
 		return false;
 	}
 
 	//	設定
-	draw_state = state;
-	draw_target = target;
-	draw_commands = command;
+	draw_state = desc.state_;
+	draw_target = desc.target_;
+	draw_commands = desc.command_;
 
 	return true;
 }

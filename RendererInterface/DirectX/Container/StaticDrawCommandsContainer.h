@@ -53,6 +53,7 @@ namespace render {
 				///	クラス設定
 				///====================================================================
 
+				//コンストラクタ,デストラクタ
 				StaticDrawCommandsContainer() = default;
 				~StaticDrawCommandsContainer() = default;
 

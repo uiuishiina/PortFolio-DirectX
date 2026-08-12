@@ -44,6 +44,7 @@ namespace render {
 			class StaticDrawStateContainer;
 			class StaticRenderTargetStateContainer;
 			class StaticDrawCommandsContainer;
+			class StaticDrawPassContainer;
 		};
 
 		namespace resources {
@@ -196,6 +197,9 @@ private:
 	//@brief	== 描画パスコマンドコンテナインスタンス ==
 	std::unique_ptr<render::dx12::container::StaticDrawCommandsContainer> static_draw_commands_container{};
 
+	//@brief	== 描画パスコンテナクラスインスタンス ==
+	std::unique_ptr<render::dx12::container::StaticDrawPassContainer> static_draw_pass_container{};
+
 
 	std::unique_ptr<render::dx12::container::StaticBufferContainer> static_buffer_container{};
 
@@ -203,9 +207,6 @@ private:
 	//@brief	== ポリゴンインスタンス ==
 	std::unique_ptr<render::dx12::mesh::Mesh> polygon_{};
 	std::unique_ptr<render::dx12::mesh::Mesh> Color_polygon_{};
-
-	std::unique_ptr<render::dx12::pass::DrawPass> NormalPass_{};
-	std::unique_ptr<render::dx12::pass::DrawPass> Color_Pass_{};
 
 	///====================================================================
 	/// Private メンバー関数
