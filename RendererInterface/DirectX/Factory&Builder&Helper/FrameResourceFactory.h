@@ -1,5 +1,7 @@
 #pragma once
 #include"../FrameResource.h"
+#include"../DirectXRendererContext.h"
+#include"WindowSize.h"
 #include<vector>
 #include<memory>
 
@@ -34,11 +36,12 @@ namespace render {
 				///====================================================================
 
 				//@brief	=== フレームリソース作成関数 ===
-				//@param	device	DirectX12 デバイス
-				//@param	size	フレームリソースサイズ
-				//@param	out	受け渡すインスタンス
+				//@param	context		DirectX描画機能インスタンス保存クラス
+				//@param	window_size	ウィンドウサイズ
+				//@param	size		フレームリソースサイズ
 				//@return	作成の成否
-				static [[nodiscard]] HRESULT create_frame_resources(ID3D12Device* device, UINT size, std::vector<std::unique_ptr<resources::FrameResource>>& out);
+				static [[nodiscard]] HRESULT create_frame_resources(DirectXRendererContext* context, 
+					WindowSize window_size,UINT size);
 
 			private:
 				///====================================================================

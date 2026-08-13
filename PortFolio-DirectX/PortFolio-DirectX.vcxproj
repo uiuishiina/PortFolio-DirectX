@@ -159,6 +159,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticRenderTargetStateContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticRootSignatureContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXInitializer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\BackBuffer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\ConstantBuffer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\StaticBufferResource.cpp" />
@@ -181,6 +182,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\TextureResource.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\UploadBufferResource.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\VertexBuffer.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXRendererContext.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawCommands.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawPass.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawRenderTargetState.cpp" />
@@ -226,6 +228,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticBufferContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticRootSignatureContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXInitializer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\BackBuffer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\ResourceUtility.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\StaticBufferResource.h" />
@@ -249,6 +252,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\TextureResource.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\UploadBufferResource.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\VertexBuffer.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXRendererContext.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawCommands.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawPass.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawRenderTargetState.h" />
@@ -265,6 +269,7 @@
     <ClInclude Include="..\RendererInterface\RendererFactory.h" />
     <ClInclude Include="..\RendererInterface\RendererInterface.h" />
     <ClInclude Include="..\Utility\NonMovable.h" />
+    <ClInclude Include="..\Utility\WIndowSize.h" />
     <ClInclude Include="..\windowInterface\windowFactory.h" />
     <ClInclude Include="..\windowInterface\windowInterface.h" />
     <ClInclude Include="..\windowInterface\WindowsWindow.h" />

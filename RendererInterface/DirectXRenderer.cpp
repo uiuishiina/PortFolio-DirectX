@@ -3,37 +3,9 @@
 /// IncludeFile 参照まとめ
 ///====================================================================
 
-/* -- DirectXObject --*/ 
-#include"DirectX/DirectXobject/DXGI.h"
-#include"DirectX/DirectXobject/Device.h"
-#include"DirectX/DirectXobject/CommandQueue.h"
-#include"DirectX/DirectXobject/CommandAllocator.h"
-#include"DirectX/DirectXobject/GraphicsCommandList.h"
-#include"DirectX/DirectXobject/DescriptorHeap.h"
-#include"DirectX/DirectXobject/SwapChain.h"
-#include"DirectX/DirectXobject/RenderTarget.h"
-#include"DirectX/DirectXobject/BackBuffer.h"
-#include"DirectX/DirectXobject/DepthBuffer.h"
-#include"DirectX/DirectXobject/Fence.h"
-#include"DirectX/DirectXobject/RootSignature.h"
-#include"DirectX/DirectXobject/ShaderCompiler.h"
-#include"DirectX/DirectXobject/PipelineState.h"
-#include"DirectX/DirectXobject/Mesh.h"
-
-/* -- DirectXObjectを利用したまとめクラス -- */
-#include"DirectX/FrameResource.h"
-#include"DirectX/Container/StaticHeapContainer.h"
-#include"DirectX/Container/StaticShaderContainer.h"
-#include"DirectX/Container/StaticRootSignatureContainer.h"
-#include"DirectX/Container/StaticPiplineStateContainer.h"
-#include"DirectX/Container/StaticBufferContainer.h"
-#include"DirectX/Container/StaticDrawStateContainer.h"
-#include"DirectX/Container/StaticRenderTargetStateContainer.h"
-#include"DirectX/Container/StaticDrawCommandsContainer.h"
-#include"DirectX/Container/StaticDrawPassContainer.h"
-
+#include"DirectX/DirectXRendererContext.h"
+#include"DirectX/DirectXInitializer.h"
 #include"DirectX/DrawResouces.h"
-#include"DirectX/DrawPass/DrawPass.h"
 
 /* -- 各Factory -- */
 #include"DirectX/Factory&Builder&Helper/CommandObjectFactory.h"
@@ -101,435 +73,31 @@ DirectXRenderer::~DirectXRenderer() = default;
 	auto hwnd = (HWND)window->get_native_handle();
 	window_size = window->get_window_size();
 	
-	frame_resources.resize(frame_resouse_size);
-
 	/* ==================== 作成開始 ==================== */
 
-	//	コンテナ各種インスタンス生成
-	{
-		static_heap_container = std::make_unique<container::StaticHeapContainer>();
-		shader_container = std::make_unique<container::StaticShaderContainer>();
-		root_signature_container = std::make_unique<container::StaticRootSignatureContainer>();
-		pipline_container = std::make_unique<container::StaticPiplineStateContainer>();
-		static_buffer_container = std::make_unique<container::StaticBufferContainer>();
+	renderer_context = std::make_unique<DirectXRendererContext>();
 
-		static_draw_state_container = std::make_unique<container::StaticDrawStateContainer>();
-		static_render_target_state_container = std::make_unique<container::StaticRenderTargetStateContainer>();
-		static_draw_commands_container = std::make_unique<container::StaticDrawCommandsContainer>();
-		static_draw_pass_container = std::make_unique<container::StaticDrawPassContainer>();
-	}
-
-	//	DXGIインスタンス生成
-	dxgi_ = std::make_unique<object::DXGI>();
-	if (FAILED(dxgi_->initialize_DXGI())) {
-		DEBUG_LOG("DirectXRenderer :: create_renderer() FAILED");
+	//	描画機能初期化
+	if (!DirectXInitializer::initialze_graphics(renderer_context.get(), buffer_size, frame_resouse_size, hwnd, window_size)) {
 		return false;
 	}
 
-	//	Deviceインスタンス生成
-	device_ = std::make_unique<object::Device>();
-	if (FAILED(device_->initialize_Device(dxgi_->get_DXGI_adaptor()))) {
-		DEBUG_LOG("DirectXRenderer :: create_renderer() FAILED");
+	//	描画機能リソース初期化
+	if (!DirectXInitializer::initialize_graphics_resource(renderer_context.get())) {
 		return false;
 	}
 
-	//キャッシュ
-	auto deviceP = device_->get_device();
-
-	//	描画用コマンドキューインスタンス生成
-	graphics_queue = std::make_unique<object::CommandQueue>();
-	if (FAILED(factory::CommandObjectFactory::create_graphics_command_queue(deviceP,*graphics_queue))) {
-		DEBUG_LOG("DirectXRenderer :: create_command_queue() FAILED");
+	//	GPUリソース初期化
+	if (!DirectXInitializer::initialize_GPU_resource(renderer_context.get())) {
 		return false;
 	}
 
-	//	フレームリソース生成
-	if (FAILED(factory::FrameResourceFactory::create_frame_resources(deviceP, frame_resouse_size, frame_resources))) {
-		DEBUG_LOG("DirectXRenderer :: create_frame_resources() FAILED");
+	//	描画パス初期化
+	if (!DirectXInitializer::initialize_draw_pass(renderer_context.get())) {
 		return false;
 	}
 
-	//	描画用コマンドリストインスタンス生成
-	graphics_list = std::make_unique<object::GraphicsCommandList>();
-	if (FAILED(factory::CommandObjectFactory::create_graphics_command_list(deviceP,
-		frame_resources[0]->get_graphics_allocator()->get_command_allocator(), *graphics_list))) {
-		DEBUG_LOG("DirectXRenderer :: create_command_queue() FAILED");
-		return false;
-	}
-	
-	//	初期作成ディスクリプタヒープコンテナインスタンス生成
-	if (FAILED(static_heap_container->create_static_heap_container(deviceP,
-		{
-			{D3D12_DESCRIPTOR_HEAP_TYPE_RTV,buffer_size,D3D12_DESCRIPTOR_HEAP_FLAG_NONE},	//RTV
-			{D3D12_DESCRIPTOR_HEAP_TYPE_DSV,1,D3D12_DESCRIPTOR_HEAP_FLAG_NONE},				//DSV
-		}
-	))) {
-		DEBUG_LOG("DirectXRenderer :: create_static_heap_container() FAILED");
-		return false;
-	}
-
-	//	スワップチェーンインスタンス生成
-	swap_chain = std::make_unique<object::SwapChain>();
-	if (FAILED(swap_chain->create_swapchain(dxgi_->get_DXGI_factory(), graphics_queue->get_command_queue(),
-		window_size, hwnd, buffer_size))) {
-		DEBUG_LOG("DirectXRenderer :: create_swapchain() FAILED");
-		return false;
-	}
-
-	//	バックバッファ配列インスタンス生成
-	back_buffers.resize(buffer_size);
-	for (unsigned int i = 0; i < buffer_size; i++) {
-
-		auto& p = back_buffers[i];
-		p = std::make_unique<object::BackBuffer>();
-		if (FAILED(p->create_back_buffer(deviceP, swap_chain->get_swapchain(),
-			static_heap_container->get_discriptor_heap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV)->get_cpu_descriptor_handle(i), i))) {
-			DEBUG_LOG("DirectXRenderer :: create_back_buffer() FAILED");
-			return false;
-		}
-	}
-
-	//	デプスバッファインスタンス生成
-	depth_buffer = std::make_unique<object::DepthBuffer>();
-
-	//	ウィンドウのサイズ分のバッファを指定
-	desc::DepthBufferDesc depth_desc{};
-	depth_desc.width = window_size.width;
-	depth_desc.height = window_size.height;
-
-	if (FAILED(depth_buffer->create_depth_buffer(deviceP, static_heap_container->get_discriptor_heap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV)->get_cpu_descriptor_handle(0), depth_desc))) {
-		DEBUG_LOG("DirectXRenderer :: create_depth_buffer() FAILED");
-		return false;
-	}
-
-	//	Fenceインスタンス生成
-	fence_ = std::make_unique<object::Fence>();
-	if (FAILED(fence_->create_fence(deviceP))) {
-		DEBUG_LOG("DirectXRenderer :: create_fence() FAILED");
-		return false;
-	}
-
-	//	RootSignatureインスタンス生成
-	desc::RootSignatureDesc root_desc{};
-	builder::RootSignatureDescBuilder::add_flags(root_desc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
-
-	if (FAILED(root_signature_container->create_root_signature("Normal_root", deviceP, root_desc))) {
-		DEBUG_LOG("DirectXRenderer :: create_root_signature() FAILED");
-		return false;
-	}
-
-	//	シェーダーコンテナインスタンス生成&登録
-	if (FAILED(shader_container->compile_shader("Normal_vs", L"../RendererInterface/HLSLshader/NormalVertexShader.hlsl", "main", "vs_5_0"))) {
-		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Normal_vs");
-		return false;
-	}
-	if (FAILED(shader_container->compile_shader("Normal_ps", L"../RendererInterface/HLSLshader/NormalPixelShader.hlsl", "main", "ps_5_0"))) {
-		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Normal_ps");
-		return false;
-	}
-
-	if (FAILED(shader_container->compile_shader("Color_vs", L"../RendererInterface/HLSLshader/ColorVertexShader.hlsl", "main", "vs_5_0"))) {
-		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Color_vs");
-		return false;
-	}
-	if (FAILED(shader_container->compile_shader("Color_ps", L"../RendererInterface/HLSLshader/ColorPixelShader.hlsl", "main", "ps_5_0"))) {
-		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Color_ps");
-		return false;
-	}
-
-
-	/* ==================== PiplineState作成 ==================== */
-
-	desc::PipelineStateDesc pipline_desc{};
-
-	//	頂点入力設定
-	pipline_desc.input_elements = {
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-	};
-
-	//	必要なインスタンス設定
-	pipline_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
-	pipline_desc.vs_hlsl = shader_container->get_shader("Normal_vs");
-	pipline_desc.ps_hlsl = shader_container->get_shader("Normal_ps");
-
-	pipline_desc.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
-	pipline_desc.blend_desc = helper::PipelineStateHelper::get_enable_blend();
-	pipline_desc.depth_stencil_desc = helper::PipelineStateHelper::get_enable_depth();
-
-	//フォーマット指定
-	pipline_desc.dsv_format = depth_desc.format;
-
-	if (FAILED(pipline_container->create_pipline_state("Normal_pipline", deviceP, pipline_desc))) {
-		DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
-		return false;
-	}
-
-	//	PiplineStateインスタンス生成
-	desc::PipelineStateDesc color_pipline{};
-
-	//	頂点入力設定
-	color_pipline.input_elements = {
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-	};
-
-	//	必要なインスタンス設定
-	color_pipline.root_signature = root_signature_container->get_root_signature("Normal_root");
-	color_pipline.vs_hlsl = shader_container->get_shader("Color_vs");
-	color_pipline.ps_hlsl = shader_container->get_shader("Color_ps");
-
-	color_pipline.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
-	color_pipline.blend_desc = helper::PipelineStateHelper::get_enable_blend();
-	color_pipline.depth_stencil_desc = helper::PipelineStateHelper::get_enable_depth();
-	//フォーマット指定
-	color_pipline.dsv_format = depth_desc.format;
-
-	if (FAILED(pipline_container->create_pipline_state("Color_pipline", deviceP, color_pipline))) {
-		DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
-		return false;
-	}
-	
-	/* ==================== Mesh作成 ==================== */
-
-	//	StaticBufferResourceクラスで作成するDefaultリソース等を作成
-
-	auto allocator = frame_resources[current_frame_index]->get_graphics_allocator();
-
-	allocator->reset_command_allocator();
-	graphics_list->reset_command_list(allocator->get_command_allocator());
-
-	//Normal用Uploadリソース作成
-	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_normal_resource;
-	upload_normal_resource.resize(2);
-
-	//	ポリゴンインスタンス生成
-	polygon_ = std::make_unique<mesh::Mesh>();
-
-	//	頂点情報作成
-
-	struct normal_polygon {
-		float pos_[3]{};
-	};
-	mesh::MeshDesc<normal_polygon> polygon_desc{};
-	polygon_desc.vertex_data = {
-		{-0.5f,-1.0f, 0.5f},
-		{ 0.0f, 1.0f, 0.5f},
-		{ 0.5f,-1.0f, 0.5f}
-	};
-	polygon_desc.index_data = {
-		0,1,2
-	};
-	if (FAILED(polygon_->create_mesh(deviceP, graphics_list->get_graphics_command_list(), upload_normal_resource, polygon_desc))) {
-		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
-		return false;
-	}
-
-	//Color用UPloadリソース作成
-	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_color_resource;
-	upload_color_resource.resize(2);
-
-	//	ポリゴンインスタンス生成
-	Color_polygon_ = std::make_unique<mesh::Mesh>();
-
-	struct color_polygon {
-		float pos_[3]{};
-		float color_[4]{};
-	};
-	mesh::MeshDesc<color_polygon> color_mesh{};
-	color_mesh.vertex_data = {
-		{{ 0.5f, 1.0f, 0.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//右
-		{{ 0.0f, 0.0f, 0.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//真ん中
-		{{-0.5f, 1.0f, 0.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}}	//左
-	};
-	color_mesh.index_data = {
-		0,1,2
-	};
-	if (FAILED(Color_polygon_->create_mesh(deviceP, graphics_list->get_graphics_command_list(), upload_color_resource, color_mesh))) {
-		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
-		return false;
-	}
-
-	graphics_list->get_graphics_command_list()->Close();
-
-	ID3D12CommandList* ppCommandLists[] = { graphics_list->get_graphics_command_list() };
-	graphics_queue->get_command_queue()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
-
-	frame_resources[current_frame_index]->set_frame_fence_value(fence_->signal(graphics_queue->get_command_queue()));
-
-
-	//	Uploadリソースのライフタイムが切れる前に作成できている必要があるためここで [ wait ]
-	sync_frame_resource();
-
-	/* ==================== DrawPass作成 ==================== */
-
-	/* -- NormalPass作成 -- */
-
-	{
-		//	DrawState作成
-		desc::DrawStateDesc draw_state_desc{};
-		draw_state_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
-		draw_state_desc.pipline_state = pipline_container->get_pipline_state("Normal_pipline");
-
-		// ビューポート設定
-		D3D12_VIEWPORT viewport{};
-		viewport.TopLeftX = 0.0f;
-		viewport.TopLeftY = 0.0f;
-		viewport.Width = static_cast<float>(window_size.width);
-		viewport.Height = static_cast<float>(window_size.height);
-		viewport.MinDepth = 0.0f;
-		viewport.MaxDepth = 1.0f;
-		draw_state_desc.viewport_ = viewport;
-
-		// シザー矩形設定
-		D3D12_RECT scissorRect{};
-		scissorRect.left = 0;
-		scissorRect.top = 0;
-		scissorRect.right = window_size.width;
-		scissorRect.bottom = window_size.height;
-		draw_state_desc.rect_ = scissorRect;
-
-		if (!static_draw_state_container->create_draw_state("Normal_State", draw_state_desc)) {
-			DEBUG_LOG("DirectXRenderer :: creaate_draw_state() FAILED");
-			return false;
-		}
-
-		//	DrawRenderTargetState作成
-		//	BackBufferを追加
-		if (!static_render_target_state_container->create_render_target_state("Normal_Target", 
-			{
-						RenderTargetSlot::BackBuffer
-			}, 
-			DepthSlot::MainDepth )) {
-			DEBUG_LOG("DirectXRenderer :: create_render_target_state() FAILED");
-			return false;
-		}
-
-		//	描画コマンド作成
-
-		//	バックバッファとデプスバッファクリア
-		if (!static_draw_commands_container->add_command_map("claer_backbuffer_and_depthbuffer",	
-			[&](resources::DrawResources& resource) {
-				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
-				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
-				resource.graphics_list->ClearRenderTargetView(target->get_rtv_handle(), back_ground_color, 0, nullptr);
-
-				auto* depth = resource.get_depth_target(DepthSlot::MainDepth);
-				resource.graphics_list->ClearDepthStencilView(depth->get_dsv_handle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
-			})) {
-			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
-		}
-
-		//	無色ポリゴン描画
-		if (!static_draw_commands_container->add_command_map("draw_Normal_polygon",
-			[&](resources::DrawResources& resource) {
-				polygon_->draw_mesh(graphics_list->get_graphics_command_list());
-			})) {
-			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
-		}
-
-		//	バックバッファバリアをPresentに変更
-		if (!static_draw_commands_container->add_command_map("backbuffer_barrier_present",
-			[&](resources::DrawResources& resource) {
-				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
-				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
-			})) {
-			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
-		}
-
-		//	DrawCommands作成
-		desc::DrawCommandDesc draw_commands_desc{};
-		draw_commands_desc.begin_name = "claer_backbuffer_and_depthbuffer";
-		draw_commands_desc.apply_names = { "draw_Normal_polygon" };
-		draw_commands_desc.end_name = "backbuffer_barrier_present";
-		
-		if (!static_draw_commands_container->create_draw_commands("Normal_Commands", draw_commands_desc)) {
-			DEBUG_LOG("DirectXRenderer :: create_draw_commands() FAILED");
-			return false;
-		}
-
-		//	DrawPass作成
-		desc::DrawPassDesc normal_pass_desc(
-			static_draw_state_container->get_draw_state("Normal_State"),
-			static_render_target_state_container->get_draw_state("Normal_Target"),
-			static_draw_commands_container->get_draw_commands("Normal_Commands")
-		);
-		if (!static_draw_pass_container->create_draw_pass("Normal_pass", normal_pass_desc)) {
-			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
-			return false;
-		}
-	}
-
-	/* -- ColorPass作成 -- */
-	{
-		//	DrawState作成
-		desc::DrawStateDesc draw_state_desc{};
-		draw_state_desc.root_signature = root_signature_container->get_root_signature("Normal_root");
-		draw_state_desc.pipline_state = pipline_container->get_pipline_state("Color_pipline");
-
-		// ビューポート設定
-		D3D12_VIEWPORT viewport{};
-		viewport.TopLeftX = 0.0f;
-		viewport.TopLeftY = 0.0f;
-		viewport.Width = static_cast<float>(window_size.width);
-		viewport.Height = static_cast<float>(window_size.height);
-		viewport.MinDepth = 0.0f;
-		viewport.MaxDepth = 1.0f;
-		draw_state_desc.viewport_ = viewport;
-
-		// シザー矩形設定
-		D3D12_RECT scissorRect{};
-		scissorRect.left = 0;
-		scissorRect.top = 0;
-		scissorRect.right = window_size.width;
-		scissorRect.bottom = window_size.height;
-		draw_state_desc.rect_ = scissorRect;
-
-		if (!static_draw_state_container->create_draw_state("Color_State", draw_state_desc)) {
-			DEBUG_LOG("DirectXRenderer :: creaate_draw_state() FAILED");
-			return false;
-		}
-
-		//	描画コマンド作成
-
-		//	バックバッファバリアをTargetに変更
-		if (!static_draw_commands_container->add_command_map("backbuffer_barrier_target",
-			[&](resources::DrawResources& resource) {
-				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
-				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
-			})) {
-			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
-		}
-
-		//	色付きポリゴン描画
-		if (!static_draw_commands_container->add_command_map("draw_Color_polygon",
-			[&](resources::DrawResources& resource) {
-				Color_polygon_->draw_mesh(graphics_list->get_graphics_command_list());
-			})) {
-			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
-		}
-		
-		//	DrawCommands作成
-		desc::DrawCommandDesc draw_commands_desc{};
-		draw_commands_desc.begin_name = "backbuffer_barrier_target";
-		draw_commands_desc.apply_names = { "draw_Color_polygon" };
-		draw_commands_desc.end_name = "backbuffer_barrier_present";
-
-		if (!static_draw_commands_container->create_draw_commands("Color_Commands", draw_commands_desc)) {
-			DEBUG_LOG("DirectXRenderer :: create_draw_commands() FAILED");
-			return false;
-		}
-
-		//	DrawPass作成
-		desc::DrawPassDesc color_pass_desc(
-			static_draw_state_container->get_draw_state("Color_State"),
-			static_render_target_state_container->get_draw_state("Normal_Target"),
-			static_draw_commands_container->get_draw_commands("Color_Commands")
-		);
-		if (!static_draw_pass_container->create_draw_pass("Color_pass", color_pass_desc)) {
-			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
-			return false;
-		}
-	}
+	pass_order = { "Normal_pass","Color_pass" };
 
 	auto end = std::chrono::high_resolution_clock::now();
 
@@ -565,44 +133,48 @@ void DirectXRenderer::update_renderer() {
 
 	/* - 準備 - */
 	//	描画先のバッファインデックスを取得
-	const auto backBufferIndex = swap_chain->get_swapchain()->GetCurrentBackBufferIndex();
+	const auto backBufferIndex = renderer_context->swap_chain->get_swapchain()->GetCurrentBackBufferIndex();
 
-	auto allocator = frame_resources[current_frame_index]->get_graphics_allocator();
+	auto allocator = renderer_context->frame_resources[current_frame_index]->get_graphics_allocator();
 
 	// コマンドアロケータリセット
 	allocator->reset_command_allocator();
 	// コマンドリストリセット
-	graphics_list->reset_command_list(allocator->get_command_allocator());
+	renderer_context->graphics_list->reset_command_list(allocator->get_command_allocator());
 
 	//	描画リソースセット
 	resources::DrawResources resources{};
-	resources.graphics_list = graphics_list->get_graphics_command_list();
-	resources.frame_resource = frame_resources[current_frame_index].get();
-	resources.static_heap_container = static_heap_container.get();
-	resources.render_targets[resources::to_index(RenderTargetSlot::BackBuffer)] = back_buffers[backBufferIndex].get();
-	resources.depth_targets[resources::to_index(DepthSlot::MainDepth)] = depth_buffer.get();
+	resources.graphics_list = renderer_context->graphics_list->get_graphics_command_list();
+	resources.frame_resource = renderer_context->frame_resources[current_frame_index].get();
+	resources.static_heap_container = renderer_context->static_heap_container.get();
+	resources.render_targets[resources::to_index(RenderTargetSlot::BackBuffer)] = renderer_context->back_buffers[backBufferIndex].get();
+	resources.depth_targets[resources::to_index(DepthSlot::MainDepth)] = renderer_context->frame_resources[current_frame_index]->get_deprh_buffer();
+
+	resources.mesh_[0] = renderer_context->polygon_.get();
+	resources.mesh_[1] = renderer_context->Color_polygon_.get();
 
 	/* ==================== 描画パス実行 ==================== */
 
-	static_draw_pass_container->apply_draw_pass("Normal_pass", resources);
-	static_draw_pass_container->apply_draw_pass("Color_pass", resources);
+	for (auto& name : pass_order) {
+		renderer_context->static_draw_pass_container->apply_draw_pass(name, resources);
+	}
 
 	/* ==================== 描画パス終了 ==================== */
 
 	// コマンドリストをクローズ
-	graphics_list->get_graphics_command_list()->Close();
+	renderer_context->graphics_list->get_graphics_command_list()->Close();
 
 	// コマンドキューにコマンドリストを送信
-	ID3D12CommandList* ppCommandLists[] = { graphics_list->get_graphics_command_list()};
-	graphics_queue->get_command_queue()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+	ID3D12CommandList* ppCommandLists[] = { renderer_context->graphics_list->get_graphics_command_list()};
+	renderer_context->graphics_queue->get_command_queue()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 	
 	//	シグナルを送って配列に保存
-	frame_resources[current_frame_index]->set_frame_fence_value(fence_->signal(graphics_queue->get_command_queue()));
+	renderer_context->frame_resources[current_frame_index]->set_frame_fence_value(renderer_context->fence_->signal(renderer_context->graphics_queue->get_command_queue()));
 
 	auto t0 = std::chrono::high_resolution_clock::now();
 
 	// プレゼント
-	swap_chain->get_swapchain()->Present(1, 0);
+	renderer_context->swap_chain->get_swapchain()->Present(1, 0);
 
 	auto t1 = std::chrono::high_resolution_clock::now();
 	if (update_timer_flag) {
@@ -652,12 +224,12 @@ void DirectXRenderer::end_update_renderer() {
 void DirectXRenderer::sync_frame_resource() {
 
 	//	これから使うフレームリソースが使える状態か判断
-	auto value = frame_resources[current_frame_index]->get_frame_fence_value();
-	auto complete = fence_->get_completed_value();
+	auto value = renderer_context->frame_resources[current_frame_index]->get_frame_fence_value();
+	auto complete = renderer_context->fence_->get_completed_value();
 	if (value > complete) {
 
 		//	使えるまで待機
-		fence_->wait_to_completed_value(value);
+		renderer_context->fence_->wait_to_completed_value(value);
 
 		if (frame_index_flag) {
 			DEBUG_LOG("DirectXRenderer :: wait() : frame = ", std::to_string(current_frame_index),
@@ -675,8 +247,8 @@ void DirectXRenderer::sync_frame_resource() {
 void DirectXRenderer::end_renderer() {
 
 	//	すべてのフレームリソースが使われなくなるまで待機
-	for (auto& value : frame_resources) {
-		fence_->wait_to_completed_value(value->get_frame_fence_value());
+	for (auto& value : renderer_context->frame_resources) {
+		renderer_context->fence_->wait_to_completed_value(value->get_frame_fence_value());
 	}
 
 	DEBUG_LOG("DirectXRenderer :: end_renderer()");

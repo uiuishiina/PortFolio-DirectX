@@ -216,6 +216,12 @@
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawPassContainer.cpp">
       <Filter>RendererInterface\DirectX\Container</Filter>
     </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXRendererContext.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXInitializer.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Debug\DebugLogBuilder.h">
@@ -427,6 +433,15 @@
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticDrawCommandsContainer.h">
       <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXRendererContext.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXInitializer.h">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utility\WIndowSize.h">
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

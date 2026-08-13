@@ -1,6 +1,7 @@
 #pragma once
 #include"DirectXobject/CommandAllocator.h"
-#include"NonMovable.h"
+#include"DirectXobject/DepthBuffer.h"
+#include"Container/StaticHeapContainer.h"
 #include<memory>
 
 ///====================================================================
@@ -48,9 +49,14 @@ namespace render {
 				///====================================================================
 
 				//@brief	=== フレームリソース作成関数 ===
+				//@param	index	フレームリソースインデックス番号
 				//@param	device	DirectX12 デバイス
+				//@param	heap_container	ディスクリプターヒープコンテナクラス
+				//@param	depth_desc	デプスバッファ設定
 				//@return	作成の成否
-				[[nodiscard]] HRESULT create_frame_resource(ID3D12Device* device);
+				[[nodiscard]] HRESULT create_frame_resource(
+					UINT index, ID3D12Device* device,
+					container::StaticHeapContainer* heap_container, desc::DepthBufferDesc depth_desc);
 
 				//@brief	=== フレームフェンス保存変数変更関数 ===
 				//@param	value	変更する値
@@ -64,6 +70,10 @@ namespace render {
 				//@return	コマンドアロケータークラス参照
 				[[nodiscard]] object::CommandAllocator* get_graphics_allocator()const noexcept;
 
+				//@brief	===	デプスバッファクラス取得関数 ===
+				//@return	デプスバッファクラス参照
+				[[nodiscard]] object::DepthBuffer* get_deprh_buffer()const noexcept;
+
 			private:
 				///====================================================================
 				/// Private メンバー変数
@@ -72,8 +82,11 @@ namespace render {
 				//@brief	== フレームフェンス保存変数 ==
 				UINT64 frame_fence_value{};
 
-				//@breif	== 描画用コマンドアロケータークラス ==
+				//@breif	== 描画用コマンドアロケータークラスインスタンス ==
 				std::unique_ptr<object::CommandAllocator> graphics_allocator{};
+
+				//@brief	== デプスバッファクラスインスタンス ==
+				std::unique_ptr<object::DepthBuffer> depth_buffer{};
 
 			};
 		};

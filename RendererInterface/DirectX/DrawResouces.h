@@ -3,6 +3,7 @@
 #include"Container/StaticHeapContainer.h"
 #include"DirectXobject/RenderTarget.h"
 #include"DirectXobject/DepthBuffer.h"
+#include"DirectXobject/Mesh.h"
 #include<array>
 
 ///====================================================================
@@ -69,6 +70,7 @@ namespace render {
 				//@brief	== デプスバッファ参照保存配列 ==
 				std::array<object::DepthBuffer*, to_index(DepthSlot::Count)> depth_targets{};
 
+				std::array<mesh::Mesh*, 2> mesh_{};
 
 				//@brief	=== 描画先参照取得補助関数 ===
 				object::RenderTarget* get_render_target(RenderTargetSlot slot) const {

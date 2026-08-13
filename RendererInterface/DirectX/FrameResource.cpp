@@ -8,10 +8,17 @@ using namespace render::dx12::resources;
 ///====================================================================
 
 //@brief	=== フレームリソース作成関数 ===
+//@param	index	フレームリソースインデックス番号
 //@param	device	DirectX12 デバイス
+//@param	heap_container	ディスクリプターヒープコンテナクラス
+//@param	depth_desc	デプスバッファ設定
 //@return	作成の成否
-[[nodiscard]] HRESULT FrameResource::create_frame_resource(ID3D12Device* device) {
+[[nodiscard]] HRESULT FrameResource::create_frame_resource(
+    UINT index, ID3D12Device* device,
+    container::StaticHeapContainer* heap_container, desc::DepthBufferDesc depth_desc) {
 
+
+    //コマンドアロケーター作成
     auto allocator = std::make_unique<object::CommandAllocator>();
 
     auto hr = factory::CommandObjectFactory::create_graphics_command_allocator(device, *allocator);
@@ -20,6 +27,21 @@ using namespace render::dx12::resources;
     }
 
     graphics_allocator = std::move(allocator);
+
+
+    // デプスバッファ作成
+    auto depth = std::make_unique<object::DepthBuffer>();
+
+    hr = depth->create_depth_buffer(
+        device,
+        heap_container->get_discriptor_heap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV)->get_cpu_descriptor_handle(index),
+        depth_desc);
+
+    if (FAILED(hr)) {
+        return hr;
+    }
+
+    depth_buffer = std::move(depth);
 
 	return hr;
 }
@@ -45,4 +67,10 @@ void FrameResource::set_frame_fence_value(const UINT64& value) {
 //@return	コマンドアロケータークラス参照
 [[nodiscard]] render::dx12::object::CommandAllocator* FrameResource::get_graphics_allocator()const noexcept {
 	return graphics_allocator.get();
+}
+
+//@brief	===	デプスバッファクラス取得関数 ===
+//@return	デプスバッファクラス参照
+[[nodiscard]] render::dx12::object::DepthBuffer* FrameResource::get_deprh_buffer()const noexcept {
+    return depth_buffer.get();
 }

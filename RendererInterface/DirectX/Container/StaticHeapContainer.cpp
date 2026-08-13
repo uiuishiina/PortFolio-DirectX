@@ -18,11 +18,20 @@ using namespace render::dx12::container;
 		return E_FAIL;
 	}
 
+	
 	//	設定分作成
 	for (auto& value : desc) {
+		
+		auto [type, num, flag] = value;
+
+		//	既に作成されているならエラーを返す
+		const auto it = static_heap_map.find(type);
+		if (it != static_heap_map.end()) {
+			return E_FAIL;
+		}
+
 		auto heap = std::make_unique<object::DescriptorHeap>();
 
-		auto [type, num, flag] = value;
 		const auto hr = heap->create_descriptor_heap(device, type, num, flag);
 		if (FAILED(hr)) {
 			return hr;

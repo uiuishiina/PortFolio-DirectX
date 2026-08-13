@@ -2,6 +2,7 @@
 #include"RendererInterface.h"
 #include<memory>
 #include<vector>
+#include<string>
 
 ///====================================================================
 /// UINT互換typeof
@@ -18,54 +19,8 @@ namespace render {
 
 	namespace dx12 {
 
-		namespace object {
-			class DXGI;
-			class Device;
-			class CommandQueue;
-			class GraphicsCommandList;
+		class DirectXRendererContext;
 
-			class SwapChain;
-			class RenderTarget;
-			class BackBuffer;
-			class DepthBuffer;
-			class ConstantBuffer;
-			class Fence;
-			class RootSignature;
-			class PipelineState;
-		};
-
-		namespace container {
-			class StaticHeapContainer;
-			class StaticShaderContainer;
-			class StaticRootSignatureContainer;
-			class StaticPiplineStateContainer;
-			class StaticBufferContainer;
-
-			class StaticDrawStateContainer;
-			class StaticRenderTargetStateContainer;
-			class StaticDrawCommandsContainer;
-			class StaticDrawPassContainer;
-		};
-
-		namespace resources {
-			class FrameResource;
-		};
-
-		namespace mesh {
-			class Mesh;
-		};
-
-		namespace state {
-			class DrawRenderTargetState;
-		};
-
-		namespace command {
-			class DrawCommands;
-		};
-
-		namespace pass {
-			class DrawPass;
-		};
 	};
 };
 
@@ -142,71 +97,12 @@ private:
 	//@details	使用するフレームリソースインデックスを保存
 	UINT64 current_frame_index{};
 
-	//@brief	== 背景色保存関数 ==
-	const float back_ground_color[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	//@brief	== DirectX描画機能インスタンス保存クラスインスタンス ==
+	//@details	制作途中
+	std::unique_ptr<render::dx12::DirectXRendererContext> renderer_context{};
 
-	/* -- 描画用 -- */
-
-	//@brief	== DXGIインスタンス ==
-	std::unique_ptr<render::dx12::object::DXGI> dxgi_{};
-
-	//@brief	== Deviceインスタンス ==
-	std::unique_ptr<render::dx12::object::Device> device_{};
-
-	//@brief	== 描画用コマンドキューインスタンス ==
-	std::unique_ptr<render::dx12::object::CommandQueue> graphics_queue{};
-
-	//@brief	== 描画用コマンドリストインスタンス ==
-	std::unique_ptr<render::dx12::object::GraphicsCommandList> graphics_list{};
-
-	//@brief	== フレームリソース配列インスタンス ==
-	std::vector<std::unique_ptr<render::dx12::resources::FrameResource>> frame_resources{};
-
-	//@brief	== スワップチェーンインスタンス ==
-	std::unique_ptr<render::dx12::object::SwapChain> swap_chain{};
-
-	//@brief	== バックバッファ配列インスタンス ==
-	std::vector<std::unique_ptr<render::dx12::object::BackBuffer>> back_buffers{};
-
-	//@brief	== デプスバッファインスタンス ==
-	std::unique_ptr<render::dx12::object::DepthBuffer> depth_buffer{};
-
-	//@brief	== Fenceインスタンス ==
-	std::unique_ptr<render::dx12::object::Fence> fence_{};
-
-	/* -- コンテナ各種 -- */
-
-	//@brief	== 初期作成ディスクリプタヒープコンテナインスタンス ==
-	std::unique_ptr<render::dx12::container::StaticHeapContainer> static_heap_container{};
-
-	//@brief	== シェーダーコンテナインスタンス ==
-	std::unique_ptr<render::dx12::container::StaticShaderContainer> shader_container{};
-
-	//@brief	== ルートシグネチャーコンテナインスタンス ==
-	std::unique_ptr<render::dx12::container::StaticRootSignatureContainer> root_signature_container{};
-
-	//@brief	== パイプラインステートコンテナインスタンス ==
-	std::unique_ptr<render::dx12::container::StaticPiplineStateContainer> pipline_container{};
-
-	//@brief	== 描画設定コンテナインスタンス ==
-	std::unique_ptr<render::dx12::container::StaticDrawStateContainer> static_draw_state_container{};
-
-	//@brief	== 描画パス用レンダーターゲット設定コンテナインスタンス ==
-	std::unique_ptr<render::dx12::container::StaticRenderTargetStateContainer> static_render_target_state_container{};
-
-	//@brief	== 描画パスコマンドコンテナインスタンス ==
-	std::unique_ptr<render::dx12::container::StaticDrawCommandsContainer> static_draw_commands_container{};
-
-	//@brief	== 描画パスコンテナクラスインスタンス ==
-	std::unique_ptr<render::dx12::container::StaticDrawPassContainer> static_draw_pass_container{};
-
-
-	std::unique_ptr<render::dx12::container::StaticBufferContainer> static_buffer_container{};
-
-
-	//@brief	== ポリゴンインスタンス ==
-	std::unique_ptr<render::dx12::mesh::Mesh> polygon_{};
-	std::unique_ptr<render::dx12::mesh::Mesh> Color_polygon_{};
+	//@brief	== 描画パス呼び出し順保存配列 ==
+	std::vector<std::string> pass_order{};
 
 	///====================================================================
 	/// Private メンバー関数
