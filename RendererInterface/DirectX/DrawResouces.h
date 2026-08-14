@@ -67,19 +67,16 @@ namespace render {
 				//@brief	== 描画先参照保存配列 ==
 				std::array<object::RenderTarget*, to_index(RenderTargetSlot::Count)> render_targets{};
 
-				//@brief	== デプスバッファ参照保存配列 ==
-				std::array<object::DepthBuffer*, to_index(DepthSlot::Count)> depth_targets{};
-
 				std::array<mesh::Mesh*, 2> mesh_{};
 
 				//@brief	=== 描画先参照取得補助関数 ===
 				object::RenderTarget* get_render_target(RenderTargetSlot slot) const {
 					return render_targets[to_index(slot)];
 				}
-				//@brief	=== デプスバッファ参照取得補助関数 ===
-				object::DepthBuffer* get_depth_target(DepthSlot slot) const {
-					return depth_targets[to_index(slot)];
-				}
+				////@brief	=== デプスバッファ参照取得補助関数 ===
+				//object::DepthBuffer* get_depth_target(DepthSlot slot) const {
+				//	return depth_targets[to_index(slot)];
+				//}
 
 			};
 		};

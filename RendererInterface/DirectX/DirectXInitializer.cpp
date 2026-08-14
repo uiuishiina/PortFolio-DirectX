@@ -427,7 +427,7 @@ namespace {
 				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
 				resource.graphics_list->ClearRenderTargetView(target->get_rtv_handle(), back_ground_color, 0, nullptr);
 
-				auto* depth = resource.get_depth_target(DepthSlot::MainDepth);
+				auto* depth = resource.frame_resource->get_deprh_buffer();
 				resource.graphics_list->ClearDepthStencilView(depth->get_dsv_handle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 			})) {
 			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");

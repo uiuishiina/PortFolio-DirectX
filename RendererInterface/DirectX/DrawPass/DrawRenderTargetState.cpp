@@ -31,7 +31,7 @@ void DrawRenderTargetState::apply(resources::DrawResources& resouce) {
 		handles_.push_back(resouce.get_render_target(p)->get_rtv_handle());
 	}
 	if (depth_slot.has_value()) {
-		const auto dsv_ = resouce.get_depth_target(depth_slot.value())->get_dsv_handle();
+		const auto dsv_ = resouce.frame_resource->get_deprh_buffer()->get_dsv_handle();
 		resouce.graphics_list->OMSetRenderTargets(1, handles_.data(), false,&dsv_);
 	}
 	else {

@@ -149,8 +149,7 @@ void DirectXUpdater::destroy_updater() {
 	resources.frame_resource = context_->frame_resources[current_frame_index].get();
 	resources.static_heap_container = context_->static_heap_container.get();
 	resources.render_targets[resources::to_index(RenderTargetSlot::BackBuffer)] = context_->back_buffers[backBufferIndex].get();
-	resources.depth_targets[resources::to_index(DepthSlot::MainDepth)] = context_->frame_resources[current_frame_index]->get_deprh_buffer();
-
+	
 	resources.mesh_[0] = context_->polygon_.get();
 	resources.mesh_[1] = context_->Color_polygon_.get();
 
