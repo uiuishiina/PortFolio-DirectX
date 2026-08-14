@@ -5,6 +5,7 @@
 
 #include"DirectX/DirectXRendererContext.h"
 #include"DirectX/DirectXInitializer.h"
+#include"DirectX/DirectXUpdater.h"
 #include"DirectX/DrawResouces.h"
 
 /* -- 各Factory -- */
@@ -75,6 +76,8 @@ DirectXRenderer::~DirectXRenderer() = default;
 	
 	/* ==================== 作成開始 ==================== */
 
+	//DirectX描画機能インスタンス作成
+		
 	renderer_context = std::make_unique<DirectXRendererContext>();
 
 	//	描画機能初期化
@@ -98,6 +101,12 @@ DirectXRenderer::~DirectXRenderer() = default;
 	}
 
 	pass_order = { "Normal_pass","Color_pass" };
+
+
+	//DirectX描画機能更新クラス作成
+
+	renderer_updater = std::make_unique<DirectXUpdater>(renderer_context.get());
+
 
 	auto end = std::chrono::high_resolution_clock::now();
 
@@ -123,58 +132,30 @@ void DirectXRenderer::update_renderer() {
 
 	/* ==================== 更新前処理 ==================== */
 
-	// 外部との連携
+	//	更新前
 	begin_update_renderer();
+	
+	//	非同期待機
+	renderer_updater->sync_frame_resource();
 
-	//	リソース待機
-	sync_frame_resource();
+	/* ==================== 描画機能 & リソース 更新 ==================== */
 
-	/* ==================== 描画機能更新 ==================== */
-
-	/* - 準備 - */
-	//	描画先のバッファインデックスを取得
-	const auto backBufferIndex = renderer_context->swap_chain->get_swapchain()->GetCurrentBackBufferIndex();
-
-	auto allocator = renderer_context->frame_resources[current_frame_index]->get_graphics_allocator();
-
-	// コマンドアロケータリセット
-	allocator->reset_command_allocator();
-	// コマンドリストリセット
-	renderer_context->graphics_list->reset_command_list(allocator->get_command_allocator());
-
-	//	描画リソースセット
-	resources::DrawResources resources{};
-	resources.graphics_list = renderer_context->graphics_list->get_graphics_command_list();
-	resources.frame_resource = renderer_context->frame_resources[current_frame_index].get();
-	resources.static_heap_container = renderer_context->static_heap_container.get();
-	resources.render_targets[resources::to_index(RenderTargetSlot::BackBuffer)] = renderer_context->back_buffers[backBufferIndex].get();
-	resources.depth_targets[resources::to_index(DepthSlot::MainDepth)] = renderer_context->frame_resources[current_frame_index]->get_deprh_buffer();
-
-	resources.mesh_[0] = renderer_context->polygon_.get();
-	resources.mesh_[1] = renderer_context->Color_polygon_.get();
+	//	更新前リセット
+	renderer_updater->reset_frame_resource();
 
 	/* ==================== 描画パス実行 ==================== */
 
-	for (auto& name : pass_order) {
-		renderer_context->static_draw_pass_container->apply_draw_pass(name, resources);
-	}
+	renderer_updater->apply_draw_pass(pass_order);
 
 	/* ==================== 描画パス終了 ==================== */
 
-	// コマンドリストをクローズ
-	renderer_context->graphics_list->get_graphics_command_list()->Close();
-
-	// コマンドキューにコマンドリストを送信
-	ID3D12CommandList* ppCommandLists[] = { renderer_context->graphics_list->get_graphics_command_list()};
-	renderer_context->graphics_queue->get_command_queue()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
-	
-	//	シグナルを送って配列に保存
-	renderer_context->frame_resources[current_frame_index]->set_frame_fence_value(renderer_context->fence_->signal(renderer_context->graphics_queue->get_command_queue()));
+	//	描画コマンド実行
+	renderer_updater->execute_command_lists();
 
 	auto t0 = std::chrono::high_resolution_clock::now();
 
-	// プレゼント
-	renderer_context->swap_chain->get_swapchain()->Present(1, 0);
+	//	バックバッファプレゼント
+	renderer_updater->present();
 
 	auto t1 = std::chrono::high_resolution_clock::now();
 	if (update_timer_flag) {
@@ -183,7 +164,7 @@ void DirectXRenderer::update_renderer() {
 
 	/* ==================== 更新後処理 ==================== */
 
-	//	次フレーム移行への後処理
+	//	更新後
 	end_update_renderer();
 
 	auto end = std::chrono::high_resolution_clock::now();
@@ -200,7 +181,11 @@ void DirectXRenderer::update_renderer() {
 //@details	描画機能を更新する際に先に処理する必要があるものを呼び出す関数
 void DirectXRenderer::begin_update_renderer() {
 
-	frame_count++;
+	if (!renderer_updater->begin_update_renderer()) {
+
+		//	ここにきているならエラー
+		return;
+	}
 }
 
 
@@ -211,31 +196,7 @@ void DirectXRenderer::begin_update_renderer() {
 //@details	描画機能を更新した後に処理する必要があるものを呼び出す関数
 void DirectXRenderer::end_update_renderer() {
 
-	//	フレームリソースサイクルを進める
-	current_frame_index = (current_frame_index + 1) % frame_resouse_size;
-}
-
-
-
-/* ==================== 描画待機制御 ==================== */
-
-//@brief == = フレームリソース使用可能確認関数 == =
-//@details	フレームリソースが使用可能な状態か確認する関数
-void DirectXRenderer::sync_frame_resource() {
-
-	//	これから使うフレームリソースが使える状態か判断
-	auto value = renderer_context->frame_resources[current_frame_index]->get_frame_fence_value();
-	auto complete = renderer_context->fence_->get_completed_value();
-	if (value > complete) {
-
-		//	使えるまで待機
-		renderer_context->fence_->wait_to_completed_value(value);
-
-		if (frame_index_flag) {
-			DEBUG_LOG("DirectXRenderer :: wait() : frame = ", std::to_string(current_frame_index),
-				", value = ", std::to_string(value), ", complete = ", std::to_string(complete));
-		}	
-	}
+	renderer_updater->end_update_renderer();
 }
 
 ///====================================================================
@@ -246,12 +207,8 @@ void DirectXRenderer::sync_frame_resource() {
 //@details	描画機能破棄前最終処理(非同期処理の待機など)をするための関数
 void DirectXRenderer::end_renderer() {
 
-	//	すべてのフレームリソースが使われなくなるまで待機
-	for (auto& value : renderer_context->frame_resources) {
-		renderer_context->fence_->wait_to_completed_value(value->get_frame_fence_value());
-	}
+	renderer_updater->destroy_updater();
 
 	DEBUG_LOG("DirectXRenderer :: end_renderer()");
-	DEBUG_LOG("DirectXRenderer :: frame_count = ", frame_count);
 }
 

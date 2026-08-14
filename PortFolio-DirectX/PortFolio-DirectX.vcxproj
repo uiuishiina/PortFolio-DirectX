@@ -183,6 +183,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\UploadBufferResource.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\VertexBuffer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXRendererContext.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXUpdater.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawCommands.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawPass.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawRenderTargetState.cpp" />
@@ -253,6 +254,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\UploadBufferResource.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\VertexBuffer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXRendererContext.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXUpdater.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawCommands.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawPass.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawRenderTargetState.h" />

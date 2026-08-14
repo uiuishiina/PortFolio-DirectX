@@ -20,6 +20,7 @@ namespace render {
 	namespace dx12 {
 
 		class DirectXRendererContext;
+		class DirectXUpdater;
 
 	};
 };
@@ -87,28 +88,17 @@ private:
 
 	//@breif	== フレームリソースサイズ設定変数 ==
 	//@details	描画に使うフレームリソースサイズを指定
-	const UINT frame_resouse_size = 2;
-
-	//@brief	== フレームカウント保存変数 ==
-	//@details	何フレーム目かを保存
-	UINT64 frame_count{};
-
-	//@brief	== フレームリソースサイクル管理用変数 ==
-	//@details	使用するフレームリソースインデックスを保存
-	UINT64 current_frame_index{};
+	const UINT frame_resouse_size = 3;
 
 	//@brief	== DirectX描画機能インスタンス保存クラスインスタンス ==
 	//@details	制作途中
 	std::unique_ptr<render::dx12::DirectXRendererContext> renderer_context{};
 
+	//@brief	== DirectX描画機能更新クラスインスタンス ==
+	//@details	制作途中
+	std::unique_ptr<render::dx12::DirectXUpdater> renderer_updater{};
+
 	//@brief	== 描画パス呼び出し順保存配列 ==
 	std::vector<std::string> pass_order{};
 
-	///====================================================================
-	/// Private メンバー関数
-	///====================================================================
-
-	//@brief	=== フレームリソース使用可能確認関数 ===
-	//@details	フレームリソースが使用可能な状態か確認する関数
-	void sync_frame_resource();
 };

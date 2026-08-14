@@ -222,6 +222,9 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXInitializer.cpp">
       <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DirectXUpdater.cpp">
+      <Filter>RendererInterface\DirectX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Debug\DebugLogBuilder.h">
@@ -442,6 +445,9 @@
     </ClInclude>
     <ClInclude Include="..\Utility\WIndowSize.h">
       <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXUpdater.h">
+      <Filter>RendererInterface\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
