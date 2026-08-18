@@ -35,6 +35,7 @@
 #include"Container/StaticRenderTargetStateContainer.h"
 #include"Container/StaticDrawCommandsContainer.h"
 #include"Container/StaticDrawPassContainer.h"
+#include"Container/StaticDrawObjectContainer.h"
 
 ///====================================================================
 /// 描画名前空間
@@ -117,23 +118,17 @@ namespace render {
 			//@brief	== 描画パスコンテナクラスインスタンス ==
 			std::unique_ptr<container::StaticDrawPassContainer> static_draw_pass_container{};
 
-			
+
 			/* -- 描画リソース各種 -- */
 
 			//@brief	== 初期作成ディスクリプタヒープコンテナインスタンス ==
 			std::unique_ptr<container::StaticHeapContainer> static_heap_container{};
 
-			
+			//@brief	== 初期作成描画オブジェクトコンテナインスタンス ==
+			std::unique_ptr<container::StaticDrawObjectContainer> static_draw_object_container{};
 
 			//@brief	== 描画バッファリソースコンテナインスタンス ==
 			std::unique_ptr<container::StaticBufferContainer> static_buffer_container{};
-
-
-			/* -- 描画対象 -- */
-
-			//@brief	== ポリゴンインスタンス ==
-			std::unique_ptr<mesh::Mesh> polygon_{};
-			std::unique_ptr<mesh::Mesh> Color_polygon_{};
 
 		};
 	};

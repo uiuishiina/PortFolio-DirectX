@@ -225,6 +225,9 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXUpdater.cpp">
       <Filter>RendererInterface\DirectX</Filter>
     </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawObjectContainer.cpp">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Debug\DebugLogBuilder.h">
@@ -448,6 +451,12 @@
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DirectXUpdater.h">
       <Filter>RendererInterface\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\DrawObjectBase.h">
+      <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticDrawObjectContainer.h">
+      <Filter>RendererInterface\DirectX\Container</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

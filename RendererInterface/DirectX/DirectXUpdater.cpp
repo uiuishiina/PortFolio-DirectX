@@ -1,4 +1,5 @@
-#include "DirectXUpdater.h"
+#include"DirectXUpdater.h"
+#include"DirectXInitializer.h"
 
 #include"../../Debug/DebugLogSystem.h"
 
@@ -77,7 +78,7 @@ void DirectXUpdater::apply_draw_pass(std::vector<std::string>& pass_order) {
 
 
 	//	描画リソース作成
-	auto resources = create_draw_resources();
+	auto resources = DirectXInitializer::create_draw_resources(context_, current_frame_index);
 
 	//	描画パス実行
 	for (auto& name : pass_order) {
@@ -130,28 +131,4 @@ void DirectXUpdater::destroy_updater() {
 	}
 
 	DEBUG_LOG("DirectXUpdater :: frame_count = ", frame_count);
-}
-
-
-/* ==================== その他 ==================== */
-
-//@brief	=== 描画リソース作成関数 ===
-//@details	描画に利用するリソースをフレームごとにまとめて構造体にする関数
-//@return	描画リソース構造体
-[[nodiscard]] resources::DrawResources DirectXUpdater::create_draw_resources() {
-
-	//	描画先のバッファインデックスを取得
-	const auto backBufferIndex = context_->swap_chain->get_swapchain()->GetCurrentBackBufferIndex();
-
-	//	描画リソースセット
-	resources::DrawResources resources{};
-	resources.graphics_list = context_->graphics_list->get_graphics_command_list();
-	resources.frame_resource = context_->frame_resources[current_frame_index].get();
-	resources.static_heap_container = context_->static_heap_container.get();
-	resources.render_targets[resources::to_index(RenderTargetSlot::BackBuffer)] = context_->back_buffers[backBufferIndex].get();
-	
-	resources.mesh_[0] = context_->polygon_.get();
-	resources.mesh_[1] = context_->Color_polygon_.get();
-
-	return resources;
 }

@@ -96,15 +96,6 @@ namespace render {
 			//@brief	== DirectX描画機能インスタンス保存クラス参照 ==
 			DirectXRendererContext* context_{};
 
-			///====================================================================
-			/// Private メンバー関数
-			///====================================================================
-
-			//@brief	=== 描画リソース作成関数 ===
-			//@details	描画に利用するリソースをフレームごとにまとめて構造体にする関数
-			//@return	描画リソース構造体
-			[[nodiscard]] resources::DrawResources create_draw_resources();
-
 		};
 	};
 };

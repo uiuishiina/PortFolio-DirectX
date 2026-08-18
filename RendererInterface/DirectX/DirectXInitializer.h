@@ -26,6 +26,8 @@ namespace render {
 			/// Public メンバー関数
 			///====================================================================
 
+			/* -- 初期化 -- */
+
 			//@brief	=== 描画機能初期化関数 ===
 			//@param	context		描画機能インスタンス保存クラス参照
 			//@param	back_buffe_size			バックバッファサイズ
@@ -50,6 +52,16 @@ namespace render {
 			//@param	context		描画機能インスタンス保存クラス参照
 			//@return	初期化の成否
 			static [[nodiscard]] bool initialize_draw_pass(DirectXRendererContext* context);
+
+
+			/* -- 実行時 -- */
+
+			//@brief	=== 描画リソース作成関数 ===
+			//@details	描画に利用するリソースをフレームごとにまとめて構造体にする関数
+			//@param	context					描画機能インスタンス保存クラス参照
+			//@param	current_frame_index		使用するフレームリソースインデックス
+			//@return	描画リソース構造体
+			static [[nodiscard]] resources::DrawResources create_draw_resources(DirectXRendererContext* context, UINT64 current_frame_index);
 
 		private:
 			///====================================================================

@@ -288,14 +288,14 @@ namespace {
 	//	ポリゴンインスタンス生成
 
 	//描画オブジェくとクラスを作成していないためインスタンスをここで生成することに(コンテナクラス内でやる予定)
-	context->polygon_ = std::make_unique<mesh::Mesh>();
+	auto Normal_Polygon = std::make_unique<drawobject::Mesh>();
 
 	//	頂点情報作成
 
 	struct normal_polygon {
 		float pos_[3]{};
 	};
-	mesh::MeshDesc<normal_polygon> polygon_desc{};
+	drawobject::MeshDesc<normal_polygon> polygon_desc{};
 	polygon_desc.vertex_data = {
 		{-0.5f,-1.0f, 0.5f},
 		{ 0.0f, 1.0f, 0.5f},
@@ -304,11 +304,15 @@ namespace {
 	polygon_desc.index_data = {
 		0,1,2
 	};
-	if (FAILED(context->polygon_->create_mesh(deviceP, context->graphics_list->get_graphics_command_list(), upload_normal_resource, polygon_desc))) {
+	if (FAILED(Normal_Polygon->create_mesh(deviceP, context->graphics_list->get_graphics_command_list(), upload_normal_resource, polygon_desc))) {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
 
+	if (!context->static_draw_object_container->register_draw_object("NormalPolygon", std::move(Normal_Polygon))) {
+		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
+		return false;
+	}
 
 	//Color
 
@@ -319,12 +323,12 @@ namespace {
 	//	ポリゴンインスタンス生成
 
 	//描画オブジェくとクラスを作成していないためインスタンスをここで生成することに(コンテナクラス内でやる予定)
-	context->Color_polygon_ = std::make_unique<mesh::Mesh>();
+	auto Color_Polygon = std::make_unique<drawobject::Mesh>();
 	struct color_polygon {
 		float pos_[3]{};
 		float color_[4]{};
 	};
-	mesh::MeshDesc<color_polygon> color_mesh{};
+	drawobject::MeshDesc<color_polygon> color_mesh{};
 	color_mesh.vertex_data = {
 		{{ 0.5f, 1.0f, 0.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//右
 		{{ 0.0f, 0.0f, 0.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//真ん中
@@ -333,7 +337,12 @@ namespace {
 	color_mesh.index_data = {
 		0,1,2
 	};
-	if (FAILED(context->Color_polygon_->create_mesh(deviceP, context->graphics_list->get_graphics_command_list(), upload_color_resource, color_mesh))) {
+	if (FAILED(Color_Polygon->create_mesh(deviceP, context->graphics_list->get_graphics_command_list(), upload_color_resource, color_mesh))) {
+		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
+		return false;
+	}
+
+	if (!context->static_draw_object_container->register_draw_object("ColorPolygon", std::move(Color_Polygon))) {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
@@ -436,7 +445,7 @@ namespace {
 		//	無色ポリゴン描画
 		if (!context->static_draw_commands_container->add_command_map("draw_Normal_polygon",
 			[](resources::DrawResources& resource) {
-				resource.mesh_[0]->draw_mesh(resource.graphics_list);
+				resource.static_draw_object_container->get_draw_object("NormalPolygon")->draw(resource.graphics_list);
 			})) {
 			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
 		}
@@ -520,7 +529,7 @@ namespace {
 		//	色付きポリゴン描画
 		if (!context->static_draw_commands_container->add_command_map("draw_Color_polygon",
 			[](resources::DrawResources& resource) {
-				resource.mesh_[1]->draw_mesh(resource.graphics_list);
+				resource.static_draw_object_container->get_draw_object("ColorPolygon")->draw(resource.graphics_list);
 			})) {
 			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
 		}
@@ -550,4 +559,31 @@ namespace {
 	}
 
 	return true;
+}
+
+
+
+///====================================================================
+/// 実行時処理関数
+///====================================================================
+
+//@brief	=== 描画リソース作成関数 ===
+//@details	描画に利用するリソースをフレームごとにまとめて構造体にする関数
+//@return	描画リソース構造体
+[[nodiscard]] resources::DrawResources DirectXInitializer::create_draw_resources(DirectXRendererContext* context, UINT64 current_frame_index) {
+
+	//	描画先のバッファインデックスを取得
+	const auto backBufferIndex = context->swap_chain->get_swapchain()->GetCurrentBackBufferIndex();
+
+	//	描画リソースセット
+	resources::DrawResources resources{};
+	resources.graphics_list = context->graphics_list->get_graphics_command_list();
+	resources.frame_resource = context->frame_resources[current_frame_index].get();
+	resources.static_heap_container = context->static_heap_container.get();
+	resources.static_draw_object_container = context->static_draw_object_container.get();
+
+	resources.render_targets[resources::to_index(RenderTargetSlot::BackBuffer)] = context->back_buffers[backBufferIndex].get();
+
+	return resources;
+
 }

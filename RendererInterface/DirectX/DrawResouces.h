@@ -1,6 +1,7 @@
 #pragma once
 #include"FrameResource.h"
 #include"Container/StaticHeapContainer.h"
+#include"Container/StaticDrawObjectContainer.h"
 #include"DirectXobject/RenderTarget.h"
 #include"DirectXobject/DepthBuffer.h"
 #include"DirectXobject/Mesh.h"
@@ -58,16 +59,17 @@ namespace render {
 				//@brief	== 描画用コマンドリスト参照 ==
 				ID3D12GraphicsCommandList* graphics_list{};
 
-				//@brief	== フレームリソースクラス ==
+				//@brief	== フレームリソースクラス参照 ==
 				FrameResource* frame_resource{};
 
-				//@brief	== ディスクリプタヒープコンテナクラス
+				//@brief	== ディスクリプタヒープコンテナクラス参照 ==
 				container::StaticHeapContainer* static_heap_container{};
+
+				//@brief	== 描画オブジェクトコンテナクラス参照 ==
+				container::StaticDrawObjectContainer* static_draw_object_container{};
 
 				//@brief	== 描画先参照保存配列 ==
 				std::array<object::RenderTarget*, to_index(RenderTargetSlot::Count)> render_targets{};
-
-				std::array<mesh::Mesh*, 2> mesh_{};
 
 				//@brief	=== 描画先参照取得補助関数 ===
 				object::RenderTarget* get_render_target(RenderTargetSlot slot) const {

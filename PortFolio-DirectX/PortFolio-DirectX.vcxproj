@@ -152,6 +152,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticBufferContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticContainerBase.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawCommandsContainer.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawObjectContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawPassContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawStateContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticHeapContainer.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_state_object.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticContainerBase.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticDrawCommandsContainer.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticDrawObjectContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticDrawPassContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticDrawStateContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticHeapContainer.h" />
@@ -231,6 +233,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXInitializer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\BackBuffer.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\DrawObjectBase.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\ResourceUtility.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\StaticBufferResource.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\CommandAllocator.h" />

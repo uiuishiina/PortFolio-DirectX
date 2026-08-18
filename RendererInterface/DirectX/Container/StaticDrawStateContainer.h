@@ -1,10 +1,6 @@
 #pragma once
 #include"StaticContainerBase.h"
 #include"../DrawPass/DrawState.h"
-#include<string>
-#include<unordered_map>
-#include<memory>
-#include<optional>
 
 ///====================================================================
 /// 描画名前空間

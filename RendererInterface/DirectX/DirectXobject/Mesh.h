@@ -1,4 +1,5 @@
 #pragma once
+#include"DrawObjectBase.h"
 #include"VertexBuffer.h"
 #include"IndexBuffer.h"
 #include<memory>
@@ -16,10 +17,10 @@ namespace render {
 	namespace dx12 {
 
 		///====================================================================
-		/// メッシュ名前空間
+		/// 描画オブジェクト名前空間
 		///====================================================================
 
-		namespace mesh {
+		namespace drawobject {
 
 			///====================================================================
 			/// MeshDesc 構造体
@@ -41,7 +42,7 @@ namespace render {
 			///====================================================================
 
 			//@brief	=== メッシュクラス ===
-			class Mesh final : public NonMovableBase
+			class Mesh final : public DrawObjectBase
 			{
 			public:
 				///====================================================================
@@ -66,7 +67,7 @@ namespace render {
 
 				//@breif	=== ポリゴン描画関数 ===
 				//@param	list	描画用コマンドリスト参照
-				void draw_mesh(ID3D12GraphicsCommandList* list) const noexcept;
+				void draw(ID3D12GraphicsCommandList* list) const noexcept override;
 
 			private:
 				///====================================================================
