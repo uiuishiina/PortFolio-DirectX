@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClCompile Include="..\Application\Application.cpp" />
     <ClCompile Include="..\Application\EntryPoint.cpp" />
+    <ClCompile Include="..\Application\Input\InputStateManager.cpp" />
     <ClCompile Include="..\Debug\DebugLogBuilder.cpp" />
     <ClCompile Include="..\Debug\DebugLogOutPut.cpp" />
     <ClCompile Include="..\Debug\DebugLogSystem.cpp" />
@@ -203,6 +204,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Application\Application.h" />
+    <ClInclude Include="..\Application\Input\InputEnum.h" />
+    <ClInclude Include="..\Application\Input\InputState.h" />
+    <ClInclude Include="..\Application\Input\InputStateManager.h" />
     <ClInclude Include="..\Debug\DebugLogBuilder.h" />
     <ClInclude Include="..\Debug\DebugLogOutPut.h" />
     <ClInclude Include="..\Debug\DebugLogSystem.h" />
@@ -273,8 +277,10 @@
     <ClInclude Include="..\RendererInterface\DirectX\HashAllocator.h" />
     <ClInclude Include="..\RendererInterface\RendererFactory.h" />
     <ClInclude Include="..\RendererInterface\RendererInterface.h" />
+    <ClInclude Include="..\Utility\EnumToIndex.h" />
     <ClInclude Include="..\Utility\NonMovable.h" />
     <ClInclude Include="..\Utility\WIndowSize.h" />
+    <ClInclude Include="..\windowInterface\wIndowEvents\WindowEvents.h" />
     <ClInclude Include="..\windowInterface\windowFactory.h" />
     <ClInclude Include="..\windowInterface\windowInterface.h" />
     <ClInclude Include="..\windowInterface\WindowsWindow.h" />

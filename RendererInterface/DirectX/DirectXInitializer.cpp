@@ -582,7 +582,7 @@ namespace {
 	resources.static_heap_container = context->static_heap_container.get();
 	resources.static_draw_object_container = context->static_draw_object_container.get();
 
-	resources.render_targets[resources::to_index(RenderTargetSlot::BackBuffer)] = context->back_buffers[backBufferIndex].get();
+	resources.render_targets[to_index(RenderTargetSlot::BackBuffer)] = context->back_buffers[backBufferIndex].get();
 
 	return resources;
 

@@ -59,7 +59,7 @@ namespace render {
 				//@param	data	初期設定データ構造体に設定する先頭ポインター
 				//@param	size	初期設定データ構造体に設定するメモリサイズ
 				//@return	作成した構造体
-				[[nodiscard]] desc::StaticBufferCreateDesc create_static_buffer_desc(const void* data, UINT64 size) override;
+				[[nodiscard]] desc::StaticBufferCreateDesc create_static_buffer_desc(const void* data, UINT size) override;
 
 				//@brief	=== 派生先別リソース作成仮想関数 ===
 				//@details	基底クラスではS_OKを返す

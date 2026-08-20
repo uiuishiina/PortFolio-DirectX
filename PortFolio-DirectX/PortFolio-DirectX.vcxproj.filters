@@ -52,6 +52,12 @@
     <Filter Include="RendererInterface\DirectX\DirectXobject\GPUResource">
       <UniqueIdentifier>{226a48f7-633a-49f1-8dcb-81b2826c9cdf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="windowInterface\windowEvents">
+      <UniqueIdentifier>{27ee608c-be47-4790-aef8-f2d2be50811d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Input">
+      <UniqueIdentifier>{32199be0-bb24-4993-a6eb-27d7c136bef2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\EntryPoint.cpp">
@@ -227,6 +233,9 @@
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawObjectContainer.cpp">
       <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Application\Input\InputStateManager.cpp">
+      <Filter>Application\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -457,6 +466,21 @@
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticDrawObjectContainer.h">
       <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\windowInterface\wIndowEvents\WindowEvents.h">
+      <Filter>windowInterface\windowEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utility\EnumToIndex.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Input\InputEnum.h">
+      <Filter>Application\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Input\InputState.h">
+      <Filter>Application\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Input\InputStateManager.h">
+      <Filter>Application\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

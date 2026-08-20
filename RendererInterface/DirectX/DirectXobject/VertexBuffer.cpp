@@ -12,7 +12,7 @@ using namespace render::dx12::object;
 //@param	data	初期設定データ構造体に設定する先頭ポインター
 //@param	size	初期設定データ構造体に設定するメモリサイズ
 //@return	作成した構造体
-[[nodiscard]] render::dx12::desc::StaticBufferCreateDesc VertexBuffer::create_static_buffer_desc(const void* data, UINT64 size) {
+[[nodiscard]] render::dx12::desc::StaticBufferCreateDesc VertexBuffer::create_static_buffer_desc(const void* data, UINT size) {
 
 	//	VerTexBuffer用リソース設定作成
 	render::dx12::desc::StaticBufferCreateDesc desc{};

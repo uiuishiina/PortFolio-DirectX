@@ -87,7 +87,7 @@ namespace render {
 
 			//@breif	== フレームリソースサイズ保存変数 ==
 			//@details	描画に使うフレームリソースサイズを保存
-			UINT frame_resouse_size{};
+			size_t frame_resouse_size{};
 
 			//@brief	== フレームリソースサイクル管理用変数 ==
 			//@details	使用するフレームリソースインデックスを保存

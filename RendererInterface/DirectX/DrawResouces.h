@@ -5,6 +5,7 @@
 #include"DirectXobject/RenderTarget.h"
 #include"DirectXobject/DepthBuffer.h"
 #include"DirectXobject/Mesh.h"
+#include"EnumToIndex.h"
 #include<array>
 
 ///====================================================================
@@ -41,11 +42,6 @@ namespace render {
 		///====================================================================
 
 		namespace resources {
-
-			template<class Enum>
-			constexpr size_t to_index(Enum e) noexcept {
-				return static_cast<size_t>(e);
-			}
 
 			//そのフレームで使う描画リソースを保存する構造体
 

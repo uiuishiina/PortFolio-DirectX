@@ -109,7 +109,7 @@ namespace render {
 				//@param	data	初期設定データ構造体に設定する先頭ポインター
 				//@param	size	初期設定データ構造体に設定するメモリサイズ
 				//@return	作成した構造体
-				virtual [[nodiscard]] desc::StaticBufferCreateDesc create_static_buffer_desc(const void* data, UINT64 size) = 0;
+				virtual [[nodiscard]] desc::StaticBufferCreateDesc create_static_buffer_desc(const void* data, UINT size) = 0;
 
 				//@brief	=== 設定構造体作成オーバーロード関数 ===
 				//@param	data	初期設定データ構造体に設定するデータ配列
