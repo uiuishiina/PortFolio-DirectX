@@ -19,8 +19,11 @@ namespace {
             break;
         }
         case WM_CLOSE: {    //破棄時
-            DestroyWindow(hwnd);
-            break;
+            auto pWnd = reinterpret_cast<WindowsWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+            if (pWnd) {
+                pWnd->close_window();
+            }
+            return 0;
         }
         case WM_NCDESTROY: {    //最終破棄
             auto pWnd = reinterpret_cast<WindowsWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
@@ -28,7 +31,7 @@ namespace {
                 SetWindowLongPtr(hwnd, GWLP_USERDATA, 0);
                 pWnd->on_destroy_window();
             }
-            break;
+            return 0;
         }
         default:
             break;
@@ -40,9 +43,9 @@ namespace {
         return DefWindowProc(hwnd, msg, wParam, lParam);
     }
 
-///====================================================================
-/// 補助関数
-///====================================================================
+    ///====================================================================
+    /// 補助関数
+    ///====================================================================
 
     static WindowSize adjust_window_size(WindowSize new_size) {
 
@@ -118,11 +121,13 @@ void WindowsWindow::process_message(unsigned int msg, uintptr_t wParam, intptr_t
         switch (wParam)
         {
         case VK_ESCAPE:
-            DestroyWindow(hwnd_);
+            current_frame_key.set_state<input::InputKeyBoard>().set_key(input::InputKeyBoard::Esc, true);
             break;
         case VK_LEFT:
+            current_frame_key.set_state<input::InputKeyBoard>().set_key(input::InputKeyBoard::LeftArrow, true);
             break;
         case VK_RIGHT:
+            current_frame_key.set_state<input::InputKeyBoard>().set_key(input::InputKeyBoard::RightArrow, true);
             break;
         }
         break;
@@ -137,20 +142,32 @@ void WindowsWindow::process_message(unsigned int msg, uintptr_t wParam, intptr_t
     }
 }
 
+//@brief	=== ウィンドウ終了処理関数 ===
+void WindowsWindow::close_window() {
+    should_close = true;
+    DestroyWindow(hwnd_);
+}
+
 //@breif	=== ウィンドウ破棄時処理関数 ===
 void WindowsWindow::on_destroy_window() {
     hwnd_ = nullptr;
     hinstance_ = nullptr;
+    complete_destroy = true;
 
     PostQuitMessage(0);
 }
 
 //@brief	=== OSイベント取得関数 ===
 void WindowsWindow::poll_events() {
+
+    // キー入力変数初期化
+    current_frame_key = {};
+
+    //  メッセージループ処理開始
     MSG msg{};
     while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
         if (msg.message == WM_QUIT) {
-            is_stop = true;
+            return;
         }
         TranslateMessage(&msg);
         DispatchMessage(&msg);
@@ -181,18 +198,6 @@ void WindowsWindow::on_resize_window(WindowSize new_size) {
 ///====================================================================
 /// 取得関数
 ///====================================================================
-
-//@breif	=== ウィンドウ破棄フラグ取得関数 ===
-//@return	ウィンドウ破棄フラグ
-bool WindowsWindow::should_close_window()const {
-    return is_stop;
-}
-
-//@brief	=== ウィンドウサイズ取得関数 ===
-//@return	ウィンドウサイズ構造体
-WindowSize WindowsWindow::get_window_size()const {
-    return window_size;
-}
 
 //@brief	=== ウィンドウハンドル取得関数 ===
 //@return	ウィンドウハンドルポインター

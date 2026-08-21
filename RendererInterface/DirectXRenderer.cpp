@@ -207,7 +207,7 @@ void DirectXRenderer::end_update_renderer() {
 //@details	描画機能破棄前最終処理(非同期処理の待機など)をするための関数
 void DirectXRenderer::end_renderer() {
 
-	renderer_updater->destroy_updater();
+	renderer_updater->end_updater();
 
 	DEBUG_LOG("DirectXRenderer :: end_renderer()");
 }

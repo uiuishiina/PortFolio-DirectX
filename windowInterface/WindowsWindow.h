@@ -40,27 +40,25 @@ public:
 	//@return	作成の可否
 	[[nodiscard]] bool create_window(WindowSize size)override;
 
-	//@breif	=== ウィンドウ破棄時処理関数 ===
-	void on_destroy_window()override;
-
-	//@breif	=== ウィンドウ破棄フラグ取得関数 ===
-	//@return	ウィンドウ破棄フラグ
-	bool should_close_window()const override;
-
 	//@brief	=== OSイベント取得関数 ===
 	void poll_events()override;
+
+	//@brief	=== ウィンドウ終了処理関数 ===
+	void close_window()override;
+
+	//@breif	=== ウィンドウ破棄時処理関数 ===
+	void on_destroy_window()override;
 
 	//@brief	=== ウィンドウサイズ設定関数 ===
 	//@param	new_size	ウィンドウサイズ
 	void set_window_size(WindowSize new_size)override;
 
-	//@brief	=== ウィンドウサイズ取得関数 ===
-	//@return	ウィンドウサイズ構造体
-	WindowSize get_window_size()const override;
-
 	//@brief	=== ウィンドウハンドル取得関数 ===
 	//@return	ウィンドウハンドルポインター
 	void* get_native_handle()const override;
+
+
+	/* -- 独自関数 -- */
 
 	//@brief	=== ウィンドウプロシージャ互換関数 ===
 	//@param	msg	ウィンドウメッセージ互換
@@ -73,19 +71,12 @@ private:
 	/// Private メンバー変数
 	///====================================================================
 
-	//@brief	== ウィンドウ終了フラグ ==
-	bool is_stop = false;
-
-	WindowSize window_size{};
-
 	HINSTANCE hinstance_{};
 	HWND hwnd_{};
 
 	///====================================================================
 	/// Private メンバー関数
 	///====================================================================
-
-	/* -- 独自関数 -- */
 
 	//@brief	=== ウィンドウリサイズ時関数 ===
 	//@param	new_size	ウィンドウサイズ

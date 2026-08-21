@@ -1,6 +1,7 @@
 
 #include"../windowInterface/windowInterface.h"
 #include"../RendererInterface/RendererInterface.h"
+#include"../Application/Input/InputStateManager.h"
 
 #include"Application.h"
 
@@ -39,6 +40,8 @@ Application::~Application() {
 		return false;
 	}
 
+	input_manager_ins = std::make_unique<input::InputStateManager>();
+
 	DEBUG_LOG("Application :: initialize_App() SUCCESS");
 	return true;
 }
@@ -74,10 +77,29 @@ void Application::run_App() {
 	}
 
 	//アプリケーションループ
-	while (!main_window_ins->should_close_window()) {
+	while (true) {
 
 		//	入力など取得
 		main_window_ins->poll_events();
+
+		//	ウィンドウが終了要求を受け取ったなら
+		if (main_window_ins->should_close_window()) {
+			break;
+		}
+
+		//	ウィンドウがアクティブではないなら
+		if (!main_window_ins->is_active_window()) {
+			continue;
+		}
+
+		//	キー入力保存
+		input_manager_ins->set_input_frame(main_window_ins->get_input_frame());
+
+		//	ESCキーが押されたなら、ウィンドウ終了
+		if (input_manager_ins->is_down(input::InputKeyBoard::Esc)) {
+			main_window_ins->close_window();
+			continue;
+		}
 
 		//	描画更新
 		main_renderer_ins->update_renderer();
@@ -94,5 +116,14 @@ void Application::run_App() {
 //@brief	=== アプリケーション終了時処理関数 ===
 //@details	 [ run_App() ] の最後(アプリ終了時)に呼び出される
 void Application::end_App() {
+
+	//	描画機能終了処理
 	main_renderer_ins->end_renderer();
+
+	//	OS側が終了していないなら待機
+	if (!main_window_ins->is_complete_destroy_window()) {
+		do {
+			main_window_ins->poll_events();
+		} while (!main_window_ins->is_complete_destroy_window());
+	}
 }

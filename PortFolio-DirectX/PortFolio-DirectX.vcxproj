@@ -200,11 +200,13 @@
     <ClCompile Include="..\RendererInterface\DirectX\HashAllocator.cpp" />
     <ClCompile Include="..\RendererInterface\RendererFactory.cpp" />
     <ClCompile Include="..\windowInterface\windowFactory.cpp" />
+    <ClCompile Include="..\windowInterface\windowInterface.cpp" />
     <ClCompile Include="..\windowInterface\WindowsWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Application\Application.h" />
     <ClInclude Include="..\Application\Input\InputEnum.h" />
+    <ClInclude Include="..\Application\Input\InputFrame.h" />
     <ClInclude Include="..\Application\Input\InputState.h" />
     <ClInclude Include="..\Application\Input\InputStateManager.h" />
     <ClInclude Include="..\Debug\DebugLogBuilder.h" />

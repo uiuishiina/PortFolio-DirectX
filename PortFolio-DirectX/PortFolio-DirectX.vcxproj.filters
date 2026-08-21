@@ -237,6 +237,9 @@
     <ClCompile Include="..\Application\Input\InputStateManager.cpp">
       <Filter>Application\Input</Filter>
     </ClCompile>
+    <ClCompile Include="..\windowInterface\windowInterface.cpp">
+      <Filter>windowInterface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Debug\DebugLogBuilder.h">
@@ -480,6 +483,9 @@
       <Filter>Application\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\Application\Input\InputStateManager.h">
+      <Filter>Application\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Input\InputFrame.h">
       <Filter>Application\Input</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,6 +3,9 @@
 
 class windowInterface;
 class RendererInterface;
+namespace input {
+	class InputStateManager;
+}
 
 ///====================================================================
 /// Application クラス
@@ -50,6 +53,9 @@ private:
 	//@brief	== アプリケーション描画機能インスタンス ==
 	//@details	対応する描画機能
 	std::unique_ptr<RendererInterface> main_renderer_ins{};
+
+	//@breif	== アプリケーション入力機能マネージャーインスタンス ==
+	std::unique_ptr<input::InputStateManager> input_manager_ins{};
 
 	///====================================================================
 	/// Private メンバー関数

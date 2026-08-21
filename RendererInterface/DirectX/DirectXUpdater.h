@@ -74,7 +74,7 @@ namespace render {
 
 			//@brief	=== 描画機能終了時処理関数 ===
 			//@details	内部でGPU同期チェック
-			void destroy_updater();
+			void end_updater();
 
 		private:
 			///====================================================================

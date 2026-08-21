@@ -123,12 +123,13 @@ void DirectXUpdater::end_update_renderer() {
 
 //@brief	=== 描画機能終了時処理関数 ===
 //@details	内部でGPU同期チェック
-void DirectXUpdater::destroy_updater() {
+void DirectXUpdater::end_updater() {
 
-	//	すべてのフレームリソースが使われなくなるまで待機
-	for (auto& value : context_->frame_resources) {
-		context_->fence_->wait_to_completed_value(value->get_frame_fence_value());
-	}
+	//	GPUに投入済みのすべてのコマンドが完了するまで待機
+	//	アプリケーション終了時は次フレームが存在しないため通常のフレーム同期ではなく終了用のFenceを使用する
+
+	const auto signal = context_->fence_->signal(context_->graphics_queue->get_command_queue());
+	context_->fence_->wait_to_completed_value(signal);
 
 	DEBUG_LOG("DirectXUpdater :: frame_count = ", frame_count);
 }
