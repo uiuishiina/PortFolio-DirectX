@@ -24,7 +24,7 @@ namespace render {
 
 		namespace concepts {
 
-			//@brief	== 初期作成描画バッファ継承コンセプト ==
+			//@brief	=== 初期作成描画バッファ継承コンセプト ===
 			template<typename T>
 			concept FromStaticBuffer = std::derived_from<T, object::StaticBufferResource>;
 		};
@@ -51,14 +51,28 @@ namespace render {
 				StaticBufferContainer() = default;
 				~StaticBufferContainer() = default;
 
+				///====================================================================
+				/// Public メンバー関数
+				///====================================================================
+
+				//@brief	=== 初期作成描画バッファリソース登録関数 ===
+				//@param	key_name	登録するキーの名前
+				//@param	buffer		登録するバッファクラスインスタンス
+				//@return	登録の成否
 				template<concepts::FromStaticBuffer T>
 				[[nodiscard]] bool register_buffer(const std::string& key_name, std::unique_ptr<T> buffer);
 
-				template<concepts::FromStaticBuffer T>
-				[[nodiscard]] T* get_buffer(const std::string& key_name)const noexcept;
-
+				//@breif	=== 初期作成描画バッファリソース取得関数 ===
+				//@param	key		リソースと紐づけたキー
+				//@return	[ T ] 型にキャストしたバッファクラス参照
 				template<concepts::FromStaticBuffer T>
 				[[nodiscard]] T* get_buffer(UINT key)const noexcept;
+
+				//@breif	=== 初期作成描画バッファリソース取得オーバーロード関数 ===
+				//@param	key_name	リソースと紐づけたキーの名前
+				//@return	[ T ] 型にキャストしたバッファクラス参照
+				template<concepts::FromStaticBuffer T>
+				[[nodiscard]] T* get_buffer(const std::string& key_name)const noexcept;
 
 			private:
 				///====================================================================
@@ -73,11 +87,17 @@ namespace render {
 				/// Private メンバー関数
 				///====================================================================
 
-				
+				//@brief	=== リソース取得関数 ===
+				//@param	key		リソースと紐づけたキー
+				//@return	リソースクラス参照
 				[[nodiscard]] object::StaticBufferResource* get_resource(UINT key)const noexcept;
+
 			};
 
-
+			//@brief	=== 初期作成描画バッファリソース登録関数 ===
+			//@param	key_name	登録するキーの名前
+			//@param	buffer		登録するバッファクラスインスタンス
+			//@return	登録の成否
 			template<concepts::FromStaticBuffer T>
 			[[nodiscard]] bool StaticBufferContainer::register_buffer(const std::string& key_name,std::unique_ptr<T> buffer) {
 				
@@ -93,25 +113,36 @@ namespace render {
 				return true;
 			}
 
-			template<concepts::FromStaticBuffer T>
-			[[nodiscard]] T* StaticBufferContainer::get_buffer(const std::string& key_name)const noexcept {
-				
-				auto hash = get_hash_key(key_name);
-				if (!hash.has_value()) {
-					return nullptr;
-				}
-				return get_buffer(hash.value());
-			}
-
+			//@breif	=== 初期作成描画バッファリソース取得関数 ===
+			//@param	key		リソースと紐づけたキー
+			//@return	[ T ] 型にキャストしたバッファクラス参照
 			template<concepts::FromStaticBuffer T>
 			[[nodiscard]] T* StaticBufferContainer::get_buffer(UINT key)const noexcept {
 
+				//	コンテナから取得
 				auto value = get_resource(key);
 				if (value == nullptr) {
 					return nullptr;
 				}
 
+				//	T型にキャスト
 				return dynamic_cast<T*>(value);
+			}
+
+			//@breif	=== 初期作成描画バッファリソース取得オーバーロード関数 ===
+			//@param	key_name	リソースと紐づけたキーの名前
+			//@return	[ T ] 型にキャストしたバッファクラス参照
+			template<concepts::FromStaticBuffer T>
+			[[nodiscard]] T* StaticBufferContainer::get_buffer(const std::string& key_name)const noexcept {
+				
+				//  登録されているか確認
+				auto hash = get_hash_key(key_name);
+				if (!hash.has_value()) {
+					return nullptr;
+				}
+
+				//	上の関数に処理を任せる
+				return get_buffer(hash.value());
 			}
 		};
 	};

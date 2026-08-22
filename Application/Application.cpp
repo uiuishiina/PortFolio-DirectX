@@ -27,13 +27,15 @@ Application::~Application() {
 //@brief	=== アプリケーション初期化関数 ===
 //@return	初期化の成否
 [[nodiscard]] bool Application::initialize_App() {
-
+	
+	//	メインウィンドウ作成
 	if (!initialize_window()) {
 		is_initialize_error = true;
 		DEBUG_ERROR_LOG(" Application :: initialize_window() FAILED");
 		return false;
 	}
 
+	//	描画機能作成
 	if (!initialize_renderer()) {
 		is_initialize_error = true;
 		DEBUG_ERROR_LOG(" Application :: initialize_renderer() FAILED");
@@ -50,7 +52,11 @@ Application::~Application() {
 //@details	責務 [ ウィンドウインスタンス初期化 ] 
 [[nodiscard]] bool Application::initialize_window() {
 
-	main_window_ins = windowFactory::create_window(WindowSize(1280, 720));
+	//	適当にサイズを用意
+	auto A_window = WindowSize(1280, 720);
+	auto B_window = WindowSize(1920, 1080);
+
+	main_window_ins = windowFactory::create_window(A_window);
 	return main_window_ins != nullptr;
 }
 
@@ -87,9 +93,23 @@ void Application::run_App() {
 			break;
 		}
 
-		//	ウィンドウがアクティブではないなら
+		//	ウィンドウアクティブ分岐処理
 		if (!main_window_ins->is_active_window()) {
+
+			//	アクティブではないなら
+			if (is_active_app) {
+				is_active_app = false;
+				DEBUG_LOG("Application :: NotActive window");
+			}
 			continue;
+		}
+		else {			
+
+			//	アクティブなら
+			if (!is_active_app) {
+				is_active_app = true;
+				DEBUG_LOG("Application :: Active window");
+			}
 		}
 
 		//	キー入力保存

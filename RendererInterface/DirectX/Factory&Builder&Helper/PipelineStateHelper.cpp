@@ -3,7 +3,7 @@
 using namespace render::dx12::helper;
 
 ///====================================================================
-/// 初期化関数
+/// 実行時処理関数
 ///====================================================================
 
 //@brief	=== ブレンド有効化設定作成関数 ===
@@ -26,7 +26,7 @@ using namespace render::dx12::helper;
 }
 
 //@brief	=== デプス有効化設定作成関数 ===
-                //@return	デプス有効化設定
+//@return	デプス有効化設定
 [[nodiscard]] D3D12_DEPTH_STENCIL_DESC PipelineStateHelper::get_enable_depth()
 {
     D3D12_DEPTH_STENCIL_DESC desc =

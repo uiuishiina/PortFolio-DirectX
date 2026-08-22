@@ -38,12 +38,6 @@ namespace render {
 				FrameResource() = default;
 				~FrameResource() = default;
 
-				//コピー禁止,ムーブ禁止
-				FrameResource(const FrameResource&) = delete;
-				FrameResource& operator=(const FrameResource&) = delete;
-				FrameResource(FrameResource&&) = delete;
-				FrameResource& operator=(FrameResource&&) = delete;
-
 				///====================================================================
 				/// Public メンバー関数
 				///====================================================================

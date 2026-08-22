@@ -23,7 +23,7 @@ namespace render {
 			/// RenderTarget 基底クラス
 			///====================================================================
 
-			//@brief === レンダーターゲット基底クラス ===
+			//@brief	=== レンダーターゲット基底クラス ===
 			class RenderTarget : public TextureResource
 			{
 			public:

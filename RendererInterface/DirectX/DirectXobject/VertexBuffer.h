@@ -31,6 +31,7 @@ namespace render {
 				/// クラス設定
 				///====================================================================
 
+				//コンストラクタ,デストラクタ
 				VertexBuffer() = default;
 				~VertexBuffer() = default;
 

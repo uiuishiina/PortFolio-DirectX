@@ -71,11 +71,7 @@ namespace render {
 				object::RenderTarget* get_render_target(RenderTargetSlot slot) const {
 					return render_targets[to_index(slot)];
 				}
-				////@brief	=== デプスバッファ参照取得補助関数 ===
-				//object::DepthBuffer* get_depth_target(DepthSlot slot) const {
-				//	return depth_targets[to_index(slot)];
-				//}
-
+				
 			};
 		};
 	};

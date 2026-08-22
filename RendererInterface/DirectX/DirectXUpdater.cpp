@@ -6,6 +6,16 @@
 using namespace render::dx12;
 
 ///====================================================================
+/// 無名空間
+///====================================================================
+
+namespace {
+
+	//@brief	== フレームリソースインデックス確認フラグ ==
+	const bool frame_index_flag = false;
+};
+
+///====================================================================
 /// 初期化間数
 ///====================================================================
 
@@ -55,6 +65,15 @@ void DirectXUpdater::sync_frame_resource() {
 
 		//	使えるまで待機
 		context_->fence_->wait_to_completed_value(value);
+	}
+
+	//	frame_count = 現在フレームの値 : complete_fence_value = GPU処理が終わったフェンスの値
+	if (frame_index_flag) {
+		DEBUG_LOG(
+			"frame_count", std::to_string(frame_count), " : ",
+			"complete_fence_value = ", std::to_string(value), " : ",
+			"new_fence_value = ", std::to_string(context_->fence_->get_now_signal_value())
+		);
 	}
 }
 
@@ -130,6 +149,20 @@ void DirectXUpdater::end_updater() {
 
 	const auto signal = context_->fence_->signal(context_->graphics_queue->get_command_queue());
 	context_->fence_->wait_to_completed_value(signal);
+
+	//	最終フェンス確認用(GPU待機が完全にできているか)
+	if (frame_index_flag) {
+
+		//	フレームリソース待機インデックス確認
+		DEBUG_LOG(
+			"fence_value = ", 
+			context_->frame_resources[0]->get_frame_fence_value()," : ",
+			context_->frame_resources[1]->get_frame_fence_value()," : ",
+			context_->frame_resources[2]->get_frame_fence_value()
+		);
+		//	上記の値の最大値より [ 1 ] 上なら正常
+		DEBUG_LOG("last_fence_value = ", std::to_string(signal));
+	}
 
 	DEBUG_LOG("DirectXUpdater :: frame_count = ", frame_count);
 }

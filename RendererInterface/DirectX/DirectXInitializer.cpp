@@ -352,18 +352,16 @@ namespace {
 	//	リソース作成
 	context->graphics_list->get_graphics_command_list()->Close();
 
+	//	コマンドリスト送信
 	ID3D12CommandList* ppCommandLists[] = { context->graphics_list->get_graphics_command_list() };
 	context->graphics_queue->get_command_queue()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
-	context->frame_resources[0]->set_frame_fence_value(context->fence_->signal(context->graphics_queue->get_command_queue()));
+	//	フェンス設定
+	const auto fence_value = context->fence_->signal(context->graphics_queue->get_command_queue());
+	context->frame_resources[0]->set_frame_fence_value(fence_value);
 
-	auto value = context->frame_resources[0]->get_frame_fence_value();
-	auto complete = context->fence_->get_completed_value();
-	if (value > complete) {
-
-		//	使えるまで待機
-		context->fence_->wait_to_completed_value(value);
-	}
+	//	使えるまで待機
+	context->fence_->wait_to_completed_value(fence_value);
 
 	return true;
 }

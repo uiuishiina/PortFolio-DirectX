@@ -51,7 +51,7 @@ namespace render {
 			///====================================================================
 
 			//@brief	=== ルートシグネチャクラス ===
-			class RootSignature final :public NonMovableBase
+			class RootSignature final : public NonMovableBase
 			{
 			public:
 				///====================================================================

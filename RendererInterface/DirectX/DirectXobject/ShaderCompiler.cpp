@@ -20,10 +20,13 @@ using namespace render::dx12::object;
 [[nodiscard]] HRESULT ShaderCompiler::compile_shader(const std::wstring& path,
 	const std::string& entry_point_name, const std::string& target_profile) {
 
+	//	デバッグ設定
 	UINT compile_flags = D3DCOMPILE_ENABLE_STRICTNESS;
 #if defined(_DEBUG)
 	compile_flags |= D3DCOMPILE_DEBUG;
 #endif
+
+	//	シェーダーコンパイル
 	Microsoft::WRL::ComPtr<ID3DBlob> error_blob;
 	const auto hr = D3DCompileFromFile(path.c_str(), nullptr, nullptr, entry_point_name.c_str(),
 		target_profile.c_str(), compile_flags, 0, &shader_blob, &error_blob);

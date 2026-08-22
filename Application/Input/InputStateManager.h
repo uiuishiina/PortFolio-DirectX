@@ -12,7 +12,7 @@ namespace input {
 	/// InputStateManager クラス
 	///====================================================================
 
-	//@brief	=== 
+	//@brief	=== 入力機能マネージャークラス ===
 	class InputStateManager final : public NonMovableBase
 	{
 	public:

@@ -30,10 +30,13 @@ namespace render {
 			template<typename T>
 			struct MeshDesc
 			{
+				//@brief	== 頂点データ配列 ==
 				std::vector<T> vertex_data{};
 
+				//@brief	== 頂点データインデックス配列 ==
 				std::vector<UINT> index_data{};
 
+				//@breif	== 描画トポロジー設定 ==
 				D3D_PRIMITIVE_TOPOLOGY topology_ = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 			};
 
@@ -96,18 +99,21 @@ namespace render {
 			template<typename T>
 			[[nodiscard]] HRESULT Mesh::create_mesh(ID3D12Device* device, ID3D12GraphicsCommandList* list, std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>>& upload_resource, const MeshDesc<T>& data) {
 
+				//	VertexBuffer作成
 				vertex_buffer = std::make_unique<object::VertexBuffer>();
 				auto hr = vertex_buffer->create_vertex_buffer(device, list, upload_resource[0], data.vertex_data);
 				if (FAILED(hr)) {
 					return hr;
 				}
 
+				//	IndexBuffer作成
 				index_buffer = std::make_unique<object::IndexBuffer>();
 				hr = index_buffer->create_index_buffer(device, list, upload_resource[1], data.index_data);
 				if (FAILED(hr)) {
 					return hr;
 				}
 
+				//	その他設定
 				index_size = static_cast<UINT>(data.index_data.size());
 				topology_ = data.topology_;
 

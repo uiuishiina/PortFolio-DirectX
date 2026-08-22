@@ -47,6 +47,9 @@ namespace {
     /// 補助関数
     ///====================================================================
 
+    //@brief    === ウィンドウサイズ取得補助関数 ===
+    //@details  ウィンドウバーがある場合にバーのサイズを除き、描画できる範囲を出してくれる
+    //@details  WS_OVERLAPPEDWINDOW　を変えればその他のウィンドウもできるため改良の余地あり
     static WindowSize adjust_window_size(WindowSize new_size) {
 
         RECT rc{ 0, 0, new_size.width,new_size.height };
@@ -65,38 +68,49 @@ namespace {
 //@return	作成の可否
 [[nodiscard]] bool WindowsWindow::create_window(WindowSize size) {
 
+    //  すでにインスタンスがあるなら作成せず失敗を返す
     if (hinstance_) {
         return false;
     }
 
+    //  ウィンドウインスタンスを [ WIndowsOS ] から取得
     hinstance_ = GetModuleHandle(nullptr);
 
+    //  補助関数経由で画面サイズ取得
     auto adjust = adjust_window_size(size);
 
+    //  ウィンドウクラス登録
     WNDCLASS wc{};
     wc.lpfnWndProc = static_window_proc;
     wc.lpszClassName = L"windows_window";
     wc.hInstance = hinstance_;
     wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 
+    //  登録失敗なら失敗を返す
+    //  二重登録でもfalseだが今回は失敗とする
     if (!RegisterClass(&wc)) {
         return false;
     }
     
-
+    //  ウィンドウ作成
     hwnd_ = CreateWindow(
         wc.lpszClassName, wc.lpszClassName,
         WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 
         adjust.width, adjust.height,
         nullptr, nullptr, hinstance_, this);
 
+    //  ウィンドウが作成できたか
     if (!hwnd_) {
         return false;
     }
+
+    //  ウィンドウ表示
     ShowWindow(hwnd_, SW_SHOW);
 
+    //  ウィンドウ開始
     UpdateWindow(hwnd_);
 
+    //  ウィンドウサイズ保存
     window_size = size;
 
     return true;
@@ -132,6 +146,14 @@ void WindowsWindow::process_message(unsigned int msg, uintptr_t wParam, intptr_t
         }
         break;
     }
+    case WM_SETFOCUS: {
+        is_active = true;
+        break;
+    }
+    case WM_KILLFOCUS: {
+        is_active = false;
+        break;
+    }
     case WM_SIZE: {
         //リサイズ時
         on_resize_window(WindowSize(LOWORD(lParam), HIWORD(lParam)));
@@ -144,16 +166,25 @@ void WindowsWindow::process_message(unsigned int msg, uintptr_t wParam, intptr_t
 
 //@brief	=== ウィンドウ終了処理関数 ===
 void WindowsWindow::close_window() {
+
+    //  ウィンドウ終了フラグオン
     should_close = true;
+
+    //  ウィンドウ破棄通知をOSに送る
     DestroyWindow(hwnd_);
 }
 
 //@breif	=== ウィンドウ破棄時処理関数 ===
 void WindowsWindow::on_destroy_window() {
+
+    //  ウィンドウ情報破棄
     hwnd_ = nullptr;
     hinstance_ = nullptr;
+
+    //  ウィンドウ破棄フラグオン
     complete_destroy = true;
 
+    //  ウィンドウで使っていたメッセージループ終了
     PostQuitMessage(0);
 }
 
@@ -167,8 +198,11 @@ void WindowsWindow::poll_events() {
     MSG msg{};
     while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
         if (msg.message == WM_QUIT) {
+            //PostQuitMessage()されたならここに
             return;
         }
+
+        //  static_window_procに送る
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }

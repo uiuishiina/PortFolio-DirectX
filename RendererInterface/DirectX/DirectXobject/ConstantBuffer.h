@@ -50,6 +50,7 @@ namespace render {
 				[[nodiscard]] HRESULT create_constant_buffer(ID3D12Device* device, utility::Descripter_Handles& handles, size_t size);
 
 				//@brief	=== CBVハンドル取得関数 ===
+				//@return	CBVディスクリプターハンドル
 				[[nodiscard]] D3D12_GPU_DESCRIPTOR_HANDLE get_cbv_handle()const noexcept;
 
 			private:

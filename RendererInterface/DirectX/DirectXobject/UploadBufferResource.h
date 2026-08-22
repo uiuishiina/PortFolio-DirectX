@@ -32,6 +32,7 @@ namespace render {
 				/// クラス設定
 				///====================================================================
 
+				//コンストラクタ,デストラクタ
 				UploadBufferResource() = default;
 				virtual ~UploadBufferResource() = default;
 

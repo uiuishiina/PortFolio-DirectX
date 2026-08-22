@@ -46,17 +46,25 @@ namespace render {
 				//@return	作成の成否
 				[[nodiscard]] HRESULT create_fence(ID3D12Device* device);
 
-				//@brief	コマンドキューにフェンスをシグナル
+				//@brief	=== フェンスシグナル関数 ===
 				//@param	command_queue	フェンスをシグナルするコマンドキュー
-				[[nodiscard]] UINT64 signal(ID3D12CommandQueue* command_queue);
+				//@return	シグナルした値
+				[[nodiscard]] const UINT64 signal(ID3D12CommandQueue* command_queue);
 
-				//@brief	フェンスの値を待機
+				//@brief	=== フェンス待機関数 ===
 				//@param	completed_value	待機するフェンスの値
 				void wait_to_completed_value(UINT64 completed_value) const noexcept;
 
-				//@brief	フェンス値の取得
-				//@return	フェンス値
-				[[nodiscard]] UINT64 get_completed_value() const noexcept;
+
+				/* -- 取得関数 -- */
+
+				//@brief	=== フェンス値取得関数 ===
+				//@return	GPUが完了したフェンス値
+				[[nodiscard]] const UINT64 get_completed_value() const noexcept;
+
+				//@brief	=== 現在シグナル値取得関数 ===
+				//@return	フェンスの値
+				[[nodiscard]] const UINT64 get_now_signal_value()const noexcept;
 
 				//@brief	=== フェンス取得関数 ===
 				//@return	フェンス参照

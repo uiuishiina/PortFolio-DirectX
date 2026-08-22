@@ -40,9 +40,6 @@ namespace {
 	//@brief	== 描画ループ時タイマー計測フラグ ==
 	const bool update_timer_flag = false;
 
-	//@brief	== フレームリソースインデックス確認フラグ ==
-	const bool frame_index_flag = false;
-
 	//@brief	=== タイマーデバッグ表示関数 ===
 	//@param	name	出力ウィンドウに出す名前
 	//@param	after	計測したい区間の後ろ
@@ -211,4 +208,3 @@ void DirectXRenderer::end_renderer() {
 
 	DEBUG_LOG("DirectXRenderer :: end_renderer()");
 }
-

@@ -1,10 +1,13 @@
 #include "windowInterface.h"
 
+///====================================================================
+/// 実行時処理関数
+///====================================================================
+
 //@brief	=== 現在フレームキー状態取得関数 ===
 [[nodiscard]] input::InputFrame windowInterface::get_input_frame()const noexcept {
 	return current_frame_key;
 }
-
 
 //@brief	=== ウィンドウサイズ取得関数 ===
 //@return	ウィンドウサイズ構造体

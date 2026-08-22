@@ -23,16 +23,17 @@ using namespace render::dx12::object;
 		return E_FAIL;
 	}
 
-	return S_OK;
+	return hr;
 }
 
 ///====================================================================
 /// 実行時処理関数
 ///====================================================================
 
-//@brief	コマンドキューにフェンスをシグナル
+//@brief	=== フェンスシグナル関数 ===
 //@param	command_queue	フェンスをシグナルするコマンドキュー
-[[nodiscard]] UINT64 Fence::signal(ID3D12CommandQueue* command_queue) {
+//@return	シグナルした値
+[[nodiscard]] const UINT64 Fence::signal(ID3D12CommandQueue* command_queue) {
 
 	assert(fence_ && "フェンス nullptr");
 	fence_value++;
@@ -41,7 +42,7 @@ using namespace render::dx12::object;
 	return fence_value;
 }
 
-//@brief	フェンスの値を待機
+//@brief	=== フェンス待機関数 ===
 //@param	completed_value	待機するフェンスの値
 void Fence::wait_to_completed_value(UINT64 completed_value) const noexcept {
 
@@ -51,11 +52,20 @@ void Fence::wait_to_completed_value(UINT64 completed_value) const noexcept {
 	WaitForSingleObject(wait_event, INFINITE);
 }
 
-//@brief	フェンス値の取得
-//@return	フェンス値
-[[nodiscard]] UINT64 Fence::get_completed_value() const noexcept {
+
+/* -- 取得関数 -- */
+
+//@brief	=== フェンス値取得関数 ===
+//@return	GPUが完了したフェンス値
+[[nodiscard]] const UINT64 Fence::get_completed_value() const noexcept {
 	assert(fence_ && "フェンス nullptr");
 	return fence_->GetCompletedValue();
+}
+
+//@brief	=== 現在シグナル値取得関数 ===
+//@return	フェンスの値
+[[nodiscard]] const UINT64 Fence::get_now_signal_value()const noexcept {
+	return fence_value;
 }
 
 //@brief	=== フェンス取得関数 ===

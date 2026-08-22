@@ -74,7 +74,7 @@ namespace render {
 				[[nodiscard]] bool create_draw_commands(const std::string& key_name, desc::DrawCommandDesc& desc);
 
 				//@brief	=== 描画パスコマンド取得関数 ===
-				//@param	key	描画パスコマンド紐づけたキー
+				//@param	key	描画パスコマンドと紐づけたキー
 				//@return	描画パスコマンド参照
 				[[nodiscard]] command::DrawCommands* get_draw_commands(UINT key)const noexcept;
 
