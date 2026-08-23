@@ -98,6 +98,9 @@ private:
 	//@details	制作途中
 	std::unique_ptr<render::dx12::DirectXUpdater> renderer_updater{};
 
+	//@brief	== アプリケーション共有データ保存クラス参照保存変数 ==
+	sharedData::ApplicationSharedData* app_shared_datas{};
+
 	//@brief	== 描画パス呼び出し順保存配列 ==
 	std::vector<std::string> pass_order{};
 

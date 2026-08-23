@@ -10,6 +10,9 @@
 #include"Factory&Builder&Helper/PipelineStateHelper.h"
 #include"Factory&Builder&Helper/RootSignatureDescBuilder.h"
 
+#include"DrawPass/DrawPass.h"
+#include"DrawPass/CommandPass.h"
+
 /* -- その他 -- */
 #include<chrono>
 #include"../Debug/DebugLogSystem.h"
@@ -22,12 +25,16 @@ using namespace render::dx12;
 
 namespace {
 
-	//@brief	=== 初期化時使用ウィンドウサイズ変数 ===
+	//@brief	== 初期化時使用ウィンドウサイズ変数 ==
 	//@details	グローバルな変数を活用してみたらというアドバイスを参考にお試し
 	WindowSize window_size{};
 
 	//@brief	== 初期化時使用背景色保存関数 ==
 	const float back_ground_color[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+	//@breif	== 初期作成時描画パス実行順保存配列 ==
+	//@details	初期作成時に [ DirectXRenderer ] 側に取得させたいがインスタンス化や引数参照で受け渡すのが面倒だったのでここで保存してみる
+	std::vector<std::string> pass_order{};
 
 };
 
@@ -380,6 +387,66 @@ namespace {
 	//キャッシュ
 	const auto deviceP = context->device_->get_device();
 
+	/* ==================== ClearPass作成 ==================== */
+
+	{
+		/* ==================== DrawCommands作成 ==================== */
+
+		//	コマンド作成
+		//	バックバッファバリアをTargetに変更
+		if (!context->static_draw_commands_container->add_command_map("backbuffer_barrier_target",
+			[](resources::DrawResources& resource) {
+				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
+				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
+			})) {
+			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
+		}
+
+		//	バックバッファバリアをPresentに変更
+		if (!context->static_draw_commands_container->add_command_map("backbuffer_barrier_present",
+			[](resources::DrawResources& resource) {
+				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
+				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
+			})) {
+			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
+		}
+
+		//	バックバッファとデプスバッファクリア
+		if (!context->static_draw_commands_container->add_command_map("claer_backbuffer_and_depthbuffer",
+			[](resources::DrawResources& resource) {
+				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
+				resource.graphics_list->ClearRenderTargetView(target->get_rtv_handle(), back_ground_color, 0, nullptr);
+
+				auto* depth = resource.frame_resource->get_deprh_buffer();
+				resource.graphics_list->ClearDepthStencilView(depth->get_dsv_handle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+			})) {
+			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
+		}
+
+		//	DrawCommands作成
+		desc::DrawCommandDesc draw_commands_desc{};
+		draw_commands_desc.begin_name = "backbuffer_barrier_target";
+		draw_commands_desc.apply_names = { "claer_backbuffer_and_depthbuffer" };
+		draw_commands_desc.end_name = "backbuffer_barrier_present";
+
+		if (!context->static_draw_commands_container->create_draw_commands("Clear_Backbuffer", draw_commands_desc)) {
+			DEBUG_LOG("DirectXRenderer :: create_draw_commands() FAILED");
+			return false;
+		}
+
+		auto clear_pass = std::make_unique<pass::CommandPass>();
+
+		desc::CommandPassDesc clear_pass_desc(context->static_draw_commands_container->get_draw_commands("Clear_Backbuffer"));
+		if (!clear_pass->initialize_pass(clear_pass_desc)) {
+			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
+		}
+		if (!context->static_draw_pass_container->register_draw_pass("Clear_pass", std::move(clear_pass))) {
+			DEBUG_LOG("DirectXRenderer :: register_draw_pass() FAILED");
+			return false;
+		}
+	}
+
+
 	/* ==================== NormalPass作成 ==================== */
 
 	{
@@ -427,19 +494,6 @@ namespace {
 
 		//	コマンド作成
 
-		//	バックバッファとデプスバッファクリア
-		if (!context->static_draw_commands_container->add_command_map("claer_backbuffer_and_depthbuffer",
-			[](resources::DrawResources& resource) {
-				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
-				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
-				resource.graphics_list->ClearRenderTargetView(target->get_rtv_handle(), back_ground_color, 0, nullptr);
-
-				auto* depth = resource.frame_resource->get_deprh_buffer();
-				resource.graphics_list->ClearDepthStencilView(depth->get_dsv_handle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
-			})) {
-			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
-		}
-
 		//	無色ポリゴン描画
 		if (!context->static_draw_commands_container->add_command_map("draw_Normal_polygon",
 			[](resources::DrawResources& resource) {
@@ -448,18 +502,9 @@ namespace {
 			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
 		}
 
-		//	バックバッファバリアをPresentに変更
-		if (!context->static_draw_commands_container->add_command_map("backbuffer_barrier_present",
-			[](resources::DrawResources& resource) {
-				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
-				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
-			})) {
-			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
-		}
-
 		//	DrawCommands作成
 		desc::DrawCommandDesc draw_commands_desc{};
-		draw_commands_desc.begin_name = "claer_backbuffer_and_depthbuffer";
+		draw_commands_desc.begin_name = "backbuffer_barrier_target";
 		draw_commands_desc.apply_names = { "draw_Normal_polygon" };
 		draw_commands_desc.end_name = "backbuffer_barrier_present";
 
@@ -475,8 +520,13 @@ namespace {
 			context->static_render_target_state_container->get_draw_state("Normal_Target"),
 			context->static_draw_commands_container->get_draw_commands("Normal_Commands")
 		);
-		if (!context->static_draw_pass_container->create_draw_pass("Normal_pass", normal_pass_desc)) {
+
+		auto normal_pass = std::make_unique<pass::DrawPass>();
+		if (!normal_pass->initialize_pass(normal_pass_desc)) {
 			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
+		}
+		if (!context->static_draw_pass_container->register_draw_pass("Normal_pass", std::move(normal_pass))) {
+			DEBUG_LOG("DirectXRenderer :: register_draw_pass() FAILED");
 			return false;
 		}
 	}
@@ -515,15 +565,6 @@ namespace {
 		
 		//	描画コマンド作成
 
-		//	バックバッファバリアをTargetに変更
-		if (!context->static_draw_commands_container->add_command_map("backbuffer_barrier_target",
-			[](resources::DrawResources& resource) {
-				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
-				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
-			})) {
-			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
-		}
-
 		//	色付きポリゴン描画
 		if (!context->static_draw_commands_container->add_command_map("draw_Color_polygon",
 			[](resources::DrawResources& resource) {
@@ -550,15 +591,29 @@ namespace {
 			context->static_render_target_state_container->get_draw_state("Normal_Target"),
 			context->static_draw_commands_container->get_draw_commands("Color_Commands")
 		);
-		if (!context->static_draw_pass_container->create_draw_pass("Color_pass", color_pass_desc)) {
+
+		auto color_pass = std::make_unique<pass::DrawPass>();
+		if (!color_pass->initialize_pass(color_pass_desc)) {
 			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
+		}
+		if (!context->static_draw_pass_container->register_draw_pass("Color_pass", std::move(color_pass))) {
+			DEBUG_LOG("DirectXRenderer :: register_draw_pass() FAILED");
 			return false;
 		}
 	}
 
+	pass_order = { "Clear_pass","Normal_pass","Color_pass" };
+	
 	return true;
 }
 
+
+//@brief	=== 描画パス順取得関数 ===
+//@details	内部でグローバル変数で保持(この先設計変更になる可能性あり)
+//@return	初期化時に作った描画パス順配列
+[[nodiscard]] std::vector<std::string> DirectXInitializer::get_draw_pass_order() noexcept {
+	return pass_order;
+}
 
 
 ///====================================================================

@@ -53,6 +53,10 @@ namespace render {
 			//@return	初期化の成否
 			static [[nodiscard]] bool initialize_draw_pass(DirectXRendererContext* context);
 
+			//@brief	=== 描画パス順取得関数 ===
+			//@details	内部でグローバル変数で保持(この先設計変更になる可能性あり)
+			//@return	初期化時に作った描画パス順配列
+			static [[nodiscard]] std::vector<std::string> get_draw_pass_order() noexcept;
 
 			/* -- 実行時 -- */
 

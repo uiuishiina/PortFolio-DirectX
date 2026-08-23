@@ -55,7 +55,9 @@ private:
 	//@details	ウィンドウアクティブ状態が [ false ] なら [ false ]
 	bool is_active_app = true;
 
-	bool aaaa = false;
+	/* -- 連携お試し変数 -- */
+	bool right = true;
+	bool left = true;
 
 	//@brief	== アプリケーションウィンドウインスタンス ==
 	//@details	対応するウィンドウ

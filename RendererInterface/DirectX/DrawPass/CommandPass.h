@@ -1,6 +1,4 @@
 #pragma once
-#include"DrawState.h"
-#include"DrawRenderTargetState.h"
 #include"DrawCommands.h"
 #include"PassBase.h"
 
@@ -13,7 +11,7 @@ namespace render {
 	///====================================================================
 	/// DirectX名前空間
 	///====================================================================
-	
+
 	namespace dx12 {
 
 		///====================================================================
@@ -22,25 +20,17 @@ namespace render {
 
 		namespace desc {
 
-			//@brief	=== 描画パス作成補助構造体 ===
-			struct DrawPassDesc {
-
-				//@brief	== 描画設定クラス参照 ==
-				state::Drawstate* state_;
-
-				//@brief	== 描画先設定クラス参照 ==
-				state::DrawRenderTargetState* target_;
+			//@brief	=== コマンドパス作成補助構造体 ===
+			struct CommandPassDesc {
 
 				//@breif	== 描画パスコマンドクラス参照 ==
 				command::DrawCommands* command_;
 
 				//@brief	== コンストラクタ ==
-				DrawPassDesc() = default;
-				DrawPassDesc(
-					state::Drawstate* state,
-					state::DrawRenderTargetState* target,
+				CommandPassDesc() = default;
+				CommandPassDesc(
 					command::DrawCommands* command
-				) :state_(state), target_(target), command_(command) {};
+				) : command_(command) {};
 
 			};
 		};
@@ -52,11 +42,11 @@ namespace render {
 		namespace pass {
 
 			///====================================================================
-			/// DrawPass クラス
+			/// CommandPass クラス
 			///====================================================================
 
-			//@brief	=== 描画パスクラス ===
-			class DrawPass final : public PassBase
+			//@brief	=== コマンドパスクラス ===
+			class CommandPass final : public PassBase
 			{
 			public:
 				///====================================================================
@@ -64,19 +54,19 @@ namespace render {
 				///====================================================================
 
 				//コンストラクタ,デストラクタ
-				DrawPass() = default;
-				~DrawPass() = default;
+				CommandPass() = default;
+				~CommandPass() = default;
 
 				///====================================================================
 				/// Public メンバー関数
 				///====================================================================
 
-				//@brief	=== 描画パス初期化関数 ===
-				//@param	desc	描画パス作成補助構造体
+				//@brief	=== コマンドパス初期化関数 ===
+				//@param	desc	コマンドパス作成補助構造体
 				//@return	作成の成否
-				[[nodiscard]] bool initialize_pass(desc::DrawPassDesc& desc);
+				[[nodiscard]] bool initialize_pass(desc::CommandPassDesc& desc);
 
-				//@brief	=== 描画パス実行関数 ===
+				//@brief	=== コマンドパス実行関数 ===
 				//@param	resource	描画リソース
 				void apply(resources::DrawResources& resource) override;
 
@@ -85,13 +75,7 @@ namespace render {
 				/// Private メンバー変数
 				///====================================================================
 
-				//@brief	== 描画設定クラス参照 ==
-				state::Drawstate* draw_state{};
-
-				//@brief	== 描画先設定クラス参照 ==
-				state::DrawRenderTargetState* draw_target{};
-
-				//@brief	== 描画コマンド設定クラス参照 ==
+				//@brief	== コマンドパスコマンド設定クラス参照 ==
 				command::DrawCommands* draw_commands{};
 
 			};

@@ -70,6 +70,8 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 	auto hwnd = (HWND)window->get_native_handle();
 	window_size = window->get_window_size();
+
+	app_shared_datas = shared_datas;
 	
 	/* ==================== 作成開始 ==================== */
 
@@ -97,7 +99,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 		return false;
 	}
 
-	pass_order = { "Normal_pass","Color_pass" };
+	pass_order = DirectXInitializer::get_draw_pass_order();
 
 
 	//DirectX描画機能更新クラス作成
@@ -142,7 +144,28 @@ void DirectXRenderer::update_renderer() {
 
 	/* ==================== 描画パス実行 ==================== */
 
-	renderer_updater->apply_draw_pass(pass_order);
+	const auto value = app_shared_datas->get_state<bool>().get_data(0);
+	const auto left = app_shared_datas->get_state<bool>().get_data(1);
+
+	if (value.has_value() && left.has_value()) {
+
+		if (value.value() && left.value()) {
+			renderer_updater->apply_draw_pass(pass_order);
+		}
+		else if (value.value() && !left.value()) {
+			std::vector<std::string> v = { "Clear_pass","Normal_pass" };
+			renderer_updater->apply_draw_pass(v);
+		}
+		else if (!left.value() && left.value()) {
+			std::vector<std::string> v = { "Clear_pass","Color_pass" };
+			renderer_updater->apply_draw_pass(v);
+		}
+		else {
+			std::vector<std::string> v = { "Clear_pass" };
+			renderer_updater->apply_draw_pass(v);
+		}
+
+	}
 
 	/* ==================== 描画パス終了 ==================== */
 

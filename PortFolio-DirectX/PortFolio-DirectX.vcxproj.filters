@@ -43,9 +43,6 @@
     <Filter Include="RendererInterface\DirectX\Factory&amp;Builder&amp;Helper">
       <UniqueIdentifier>{e9b569a0-7f8c-4c69-a9a8-962e42980867}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility">
-      <UniqueIdentifier>{35d5563b-5920-4afd-b915-5e9fb91c719a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="RendererInterface\DirectX\DrawPass">
       <UniqueIdentifier>{a0d872a9-135d-4783-91e8-4eec4ae15136}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,9 @@
     </Filter>
     <Filter Include="Application\SharedData">
       <UniqueIdentifier>{1f366311-8781-42d6-8bbc-11f864e42919}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{35d5563b-5920-4afd-b915-5e9fb91c719a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -242,6 +242,9 @@
     </ClCompile>
     <ClCompile Include="..\windowInterface\windowInterface.cpp">
       <Filter>windowInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\DrawPass\CommandPass.cpp">
+      <Filter>RendererInterface\DirectX\DrawPass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -496,6 +499,12 @@
     </ClInclude>
     <ClInclude Include="..\Application\SharedData\SharedData.h">
       <Filter>Application\SharedData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DrawPass\PassBase.h">
+      <Filter>RendererInterface\DirectX\DrawPass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\DrawPass\CommandPass.h">
+      <Filter>RendererInterface\DirectX\DrawPass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

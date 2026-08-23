@@ -8,19 +8,13 @@ using namespace render::dx12::container;
 
 //@breif	=== 描画パス作成関数 ===
 //@param	key_name	登録するキーの名前
-//@param	desc		作成する描画パス設定
+//@param	pass		登録するパスクラスインスタンス
 //@return	作成の成否
-[[nodiscard]] bool StaticDrawPassContainer::create_draw_pass(const std::string& key_name, render::dx12::desc::DrawPassDesc& desc) {
+[[nodiscard]] bool StaticDrawPassContainer::register_draw_pass(const std::string& key_name, std::unique_ptr<pass::PassBase> pass) {
 
 	//	すでに同名で登録されているなら登録失敗
 	auto hash = get_hash_key(key_name);
 	if (hash.has_value()) {
-		return false;
-	}
-
-	//	インスタンス生成
-	auto pass = std::make_unique<pass::DrawPass>();
-	if (!pass->initialize_pass(desc)) {
 		return false;
 	}
 

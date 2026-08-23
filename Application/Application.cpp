@@ -29,8 +29,10 @@ Application::~Application() {
 //@return	初期化の成否
 [[nodiscard]] bool Application::initialize_App() {
 	
+	//連携お試し
 	share_datas_ins = std::make_unique<sharedData::ApplicationSharedData>();
-	share_datas_ins->set_state<bool>().add_data(aaaa);
+	share_datas_ins->set_state<bool>().add_data(right);
+	share_datas_ins->set_state<bool>().add_data(left);
 
 	//	メインウィンドウ作成
 	if (!initialize_window()) {
@@ -128,6 +130,11 @@ void Application::run_App() {
 		}
 		if (input_manager_ins->is_down(input::InputKeyBoard::RightArrow)) {
 			DEBUG_LOG("Application :: RightArrow ");
+			right = !right;
+		}
+		if (input_manager_ins->is_down(input::InputKeyBoard::LeftArrow)) {
+			DEBUG_LOG("Application :: LeftArrow ");
+			left = !left;
 		}
 		
 

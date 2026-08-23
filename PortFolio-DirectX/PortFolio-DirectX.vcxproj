@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -186,6 +186,7 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\VertexBuffer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXRendererContext.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DirectXUpdater.cpp" />
+    <ClCompile Include="..\RendererInterface\DirectX\DrawPass\CommandPass.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawCommands.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawPass.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawRenderTargetState.cpp" />
@@ -266,10 +267,12 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\VertexBuffer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXRendererContext.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DirectXUpdater.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DrawPass\CommandPass.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawCommands.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawPass.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawRenderTargetState.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\DrawState.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\DrawPass\PassBase.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawResouces.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\CommandObjectFactory.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\FrameResourceFactory.h" />

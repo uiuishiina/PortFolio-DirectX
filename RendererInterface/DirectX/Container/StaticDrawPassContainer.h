@@ -1,5 +1,5 @@
 #pragma once
-#include"../DrawPass/DrawPass.h"
+#include"../DrawPass/PassBase.h"
 #include"StaticContainerBase.h"
 #include<unordered_map>
 #include<memory>
@@ -45,9 +45,9 @@ namespace render {
 
 				//@breif	=== 描画パス作成関数 ===
 				//@param	key_name	登録するキーの名前
-				//@param	desc		作成する描画パス設定
+				//@param	pass		登録するパスクラスインスタンス
 				//@return	作成の成否
-				[[nodiscard]] bool create_draw_pass(const std::string& key_name, desc::DrawPassDesc& desc);
+				[[nodiscard]] bool register_draw_pass(const std::string& key_name, std::unique_ptr<pass::PassBase> pass);
 
 				//@breif == = 描画パス呼び出し関数 == =
 				//@details	無い場合は何もなし
@@ -68,7 +68,7 @@ namespace render {
 
 				//@brief	== 描画パス保存マップ ===
 				//@details	作成できた描画パスを保存するmap
-				std::unordered_map<UINT, std::unique_ptr<pass::DrawPass>> pass_map{};
+				std::unordered_map<UINT, std::unique_ptr<pass::PassBase>> pass_map{};
 
 			};
 		};
