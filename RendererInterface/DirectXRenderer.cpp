@@ -62,7 +62,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 //@param	window	ウィンドウインターフェース
 //@details	作成したウィンドウに描画するため引数で参照を渡す
 //@return	作成の成否
-[[nodiscard]] bool DirectXRenderer::create_renderer(windowInterface* window) {
+[[nodiscard]] bool DirectXRenderer::create_renderer(windowInterface* window, sharedData::ApplicationSharedData* shared_datas) {
 
 	/* ==================== 作成前処理 ==================== */
 

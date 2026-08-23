@@ -330,9 +330,9 @@ namespace {
 	};
 	drawobject::MeshDesc<color_polygon> color_mesh{};
 	color_mesh.vertex_data = {
-		{{ 0.5f, 1.0f, 0.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//右
-		{{ 0.0f, 0.0f, 0.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//真ん中
-		{{-0.5f, 1.0f, 0.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}}	//左
+		{{ 0.5f, 1.0f, 1.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//右
+		{{ 0.0f, 0.0f, 1.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//真ん中
+		{{-0.5f, 1.0f, 1.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}}	//左
 	};
 	color_mesh.index_data = {
 		0,1,2

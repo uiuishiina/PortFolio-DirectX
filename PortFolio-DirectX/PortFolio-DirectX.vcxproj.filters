@@ -58,6 +58,9 @@
     <Filter Include="Application\Input">
       <UniqueIdentifier>{32199be0-bb24-4993-a6eb-27d7c136bef2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\SharedData">
+      <UniqueIdentifier>{1f366311-8781-42d6-8bbc-11f864e42919}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\EntryPoint.cpp">
@@ -487,6 +490,12 @@
     </ClInclude>
     <ClInclude Include="..\Application\Input\InputFrame.h">
       <Filter>Application\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\SharedData\ApplicationSharedData.h">
+      <Filter>Application\SharedData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\SharedData\SharedData.h">
+      <Filter>Application\SharedData</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

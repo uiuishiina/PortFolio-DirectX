@@ -2,6 +2,7 @@
 #include"../windowInterface/windowInterface.h"
 #include"../RendererInterface/RendererInterface.h"
 #include"../Application/Input/InputStateManager.h"
+#include"SharedData/ApplicationSharedData.h"
 
 #include"Application.h"
 
@@ -28,6 +29,9 @@ Application::~Application() {
 //@return	初期化の成否
 [[nodiscard]] bool Application::initialize_App() {
 	
+	share_datas_ins = std::make_unique<sharedData::ApplicationSharedData>();
+	share_datas_ins->set_state<bool>().add_data(aaaa);
+
 	//	メインウィンドウ作成
 	if (!initialize_window()) {
 		is_initialize_error = true;
@@ -43,6 +47,8 @@ Application::~Application() {
 	}
 
 	input_manager_ins = std::make_unique<input::InputStateManager>();
+
+	
 
 	DEBUG_LOG("Application :: initialize_App() SUCCESS");
 	return true;
@@ -64,7 +70,7 @@ Application::~Application() {
 //@details	責務 [ 描画機能インスタンス初期化 ]
 [[nodiscard]] bool Application::initialize_renderer() {
 
-	main_renderer_ins = RendererFactory::create_renderer(main_window_ins.get());
+	main_renderer_ins = RendererFactory::create_renderer(main_window_ins.get(), share_datas_ins.get());
 	return main_renderer_ins != nullptr;
 }
 
@@ -120,6 +126,10 @@ void Application::run_App() {
 			main_window_ins->close_window();
 			continue;
 		}
+		if (input_manager_ins->is_down(input::InputKeyBoard::RightArrow)) {
+			DEBUG_LOG("Application :: RightArrow ");
+		}
+		
 
 		//	描画更新
 		main_renderer_ins->update_renderer();

@@ -1,4 +1,5 @@
 #include"DebugLogOutPut.h"
+#include<iostream>
 
 //出力用
 #define WIN32_LEAN_AND_MEAN	//軽量化マクロ
@@ -24,4 +25,5 @@ void DebugLogOutPut:: ReceptionLog(const LogObject& log) {
 //@param	log	Log文字列
 void DebugLogOutPut:: OutPutLog(const std::string& log) {
 	OutputDebugStringA(log.c_str());
+	std::cout << log.c_str();
 }

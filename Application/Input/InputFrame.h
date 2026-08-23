@@ -10,19 +10,27 @@
 namespace input {
 
 	///====================================================================
+	/// 入力設定空間
+	///====================================================================
+
+	namespace desc {
+
+		//@brief	=== Input用Tuple設定 ===
+		using InputStates = std::tuple<
+			InputState<InputKeyBoard>,
+			InputState<InputMouse>
+		>;
+	};
+
+	///====================================================================
 	/// InputFrame 構造体
 	///====================================================================
 
 	//@breif	=== フレームキー入力まとめ構造体 ===
 	struct InputFrame {
 
-		//@brief	=== tuple用メンバー変数作成 ===
-		using States = std::tuple<
-			InputState<InputKeyBoard>
-		>;
-
 		//@brief	== tuple保存変数 ==
-		States states_{};
+		desc::InputStates states_{};
 
 		//@brief	=== メンバー変数設定用取得関数 ===
 		template<concepts::Enum_has_Count T>

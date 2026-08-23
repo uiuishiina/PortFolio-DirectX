@@ -17,7 +17,7 @@ public:
 	//@brief	=== 描画機能作成関数 ===
 	//@param	window	作成に使用するウィンドウクラス参照
 	//@return	描画機能クラスインスタンス
-	static std::unique_ptr<RendererInterface> create_renderer(windowInterface* window);
+	static std::unique_ptr<RendererInterface> create_renderer(windowInterface* window, sharedData::ApplicationSharedData* shared_datas);
 
 private:
 	///====================================================================

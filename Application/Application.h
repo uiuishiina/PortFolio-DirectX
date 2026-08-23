@@ -6,6 +6,9 @@ class RendererInterface;
 namespace input {
 	class InputStateManager;
 }
+namespace sharedData {
+	class ApplicationSharedData;
+}
 
 ///====================================================================
 /// Application クラス
@@ -52,6 +55,8 @@ private:
 	//@details	ウィンドウアクティブ状態が [ false ] なら [ false ]
 	bool is_active_app = true;
 
+	bool aaaa = false;
+
 	//@brief	== アプリケーションウィンドウインスタンス ==
 	//@details	対応するウィンドウ
 	std::unique_ptr<windowInterface> main_window_ins{};
@@ -62,6 +67,8 @@ private:
 
 	//@breif	== アプリケーション入力機能マネージャーインスタンス ==
 	std::unique_ptr<input::InputStateManager> input_manager_ins{};
+
+	std::unique_ptr<sharedData::ApplicationSharedData> share_datas_ins{};
 
 	///====================================================================
 	/// Private メンバー関数

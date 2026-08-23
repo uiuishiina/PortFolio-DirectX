@@ -2,13 +2,13 @@
 #include"DirectXRenderer.h"
 #include"../Debug/DebugLogSystem.h"
 
-std::unique_ptr<RendererInterface> RendererFactory::create_renderer(windowInterface* window) {
+std::unique_ptr<RendererInterface> RendererFactory::create_renderer(windowInterface* window, sharedData::ApplicationSharedData* shared_datas) {
     std::unique_ptr<RendererInterface> renderer_{};
 
 #if defined(_WIN32)
     DEBUG_LOG("RendererFactory :: create_renderer() = DirectXRenderer");
     renderer_ = std::make_unique<DirectXRenderer>();
-    if (renderer_->create_renderer(window)) {
+    if (renderer_->create_renderer(window,shared_datas)) {
         return renderer_;
     }
 #elif defined(__APPLE__)

@@ -209,6 +209,8 @@
     <ClInclude Include="..\Application\Input\InputFrame.h" />
     <ClInclude Include="..\Application\Input\InputState.h" />
     <ClInclude Include="..\Application\Input\InputStateManager.h" />
+    <ClInclude Include="..\Application\SharedData\ApplicationSharedData.h" />
+    <ClInclude Include="..\Application\SharedData\SharedData.h" />
     <ClInclude Include="..\Debug\DebugLogBuilder.h" />
     <ClInclude Include="..\Debug\DebugLogOutPut.h" />
     <ClInclude Include="..\Debug\DebugLogSystem.h" />
