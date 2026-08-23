@@ -156,7 +156,7 @@ void DirectXRenderer::update_renderer() {
 			std::vector<std::string> v = { "Clear_pass","Normal_pass" };
 			renderer_updater->apply_draw_pass(v);
 		}
-		else if (!left.value() && left.value()) {
+		else if (!value.value() && left.value()) {
 			std::vector<std::string> v = { "Clear_pass","Color_pass" };
 			renderer_updater->apply_draw_pass(v);
 		}
