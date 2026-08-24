@@ -63,6 +63,8 @@ namespace render {
 				//@brief	=== ポリゴン作成関数 ===
 				//@details	ポリゴンデータに使用する型を設定
 				//@param	device	DirectX12 デバイス
+				//@param	list	描画用コマンドリスト参照
+				//@param	upload_resource 各Staticバッファ用書き込み先バッファインスタンス(ライフタイムは外部管理)
 				//@param	data	データ配列
 				//@return	作成の成否
 				template<typename T>
@@ -94,6 +96,8 @@ namespace render {
 			//@brief	=== ポリゴン作成関数 ===
 			//@details	ポリゴンデータに使用する型を設定
 			//@param	device	DirectX12 デバイス
+			//@param	list	描画用コマンドリスト参照
+			//@param	upload_resource 各Staticバッファ用書き込み先バッファインスタンス(ライフタイムは外部管理)
 			//@param	data	データ配列
 			//@return	作成の成否
 			template<typename T>

@@ -86,6 +86,7 @@ void DirectXUpdater::reset_frame_resource() {
 
 	// コマンドアロケータリセット
 	allocator->reset_command_allocator();
+
 	// コマンドリストリセット
 	context_->graphics_list->reset_command_list(allocator->get_command_allocator());
 }

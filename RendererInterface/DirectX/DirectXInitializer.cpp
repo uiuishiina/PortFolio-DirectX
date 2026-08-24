@@ -17,6 +17,7 @@
 
 /* -- その他 -- */
 #include<chrono>
+#include"ReferenceQueue.h"
 #include"../Debug/DebugLogSystem.h"
 
 using namespace render::dx12;
@@ -279,8 +280,6 @@ namespace {
 	//キャッシュ
 	const auto deviceP = context->device_->get_device();
 
-	/* ==================== Mesh作成 ==================== */
-
 	//	StaticBufferResourceクラスで作成するDefaultリソース等を作成
 
 	auto allocator = context->frame_resources[0]->get_graphics_allocator();
@@ -288,16 +287,21 @@ namespace {
 	allocator->reset_command_allocator();
 	context->graphics_list->reset_command_list(allocator->get_command_allocator());
 
+	//	Upload用リソース配列用意
+	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_resources{};
+	upload_resources.resize(4);
 
-	//Normal
+	//	参照をキューに追加
+	ReferenceQueue<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_queue{};
+	upload_queue.push_queue(upload_resources);
 
-	//Normal用Uploadリソース作成
-	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_normal_resource;
-	upload_normal_resource.resize(2);
+	/* ==================== Mesh作成 ==================== */
+
+	/* ==================== NormalPolygon作成 ==================== */
 
 	//	ポリゴンインスタンス生成
 
-	//描画オブジェくとクラスを作成していないためインスタンスをここで生成することに(コンテナクラス内でやる予定)
+	//	描画オブジェクトクラス作成
 	auto Normal_Polygon = std::make_unique<drawobject::Mesh>();
 
 	//	頂点情報作成
@@ -314,7 +318,9 @@ namespace {
 	polygon_desc.index_data = {
 		0,1,2
 	};
-	if (FAILED(Normal_Polygon->create_mesh(deviceP, context->graphics_list->get_graphics_command_list(), upload_normal_resource, polygon_desc))) {
+
+	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> normal_resource = { upload_queue.get_reference().value(),upload_queue.get_reference().value() };
+	if (FAILED(Normal_Polygon->create_mesh(deviceP, context->graphics_list->get_graphics_command_list(), normal_resource, polygon_desc))) {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
@@ -324,15 +330,11 @@ namespace {
 		return false;
 	}
 
-	//Color
-
-	//Color用UPloadリソース作成
-	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_color_resource;
-	upload_color_resource.resize(2);
+	/* ==================== ColorPolygon作成 ==================== */
 
 	//	ポリゴンインスタンス生成
 
-	//描画オブジェくとクラスを作成していないためインスタンスをここで生成することに(コンテナクラス内でやる予定)
+	//	描画オブジェクトクラス作成
 	auto Color_Polygon = std::make_unique<drawobject::Mesh>();
 	struct color_polygon {
 		float pos_[3]{};
@@ -347,7 +349,9 @@ namespace {
 	color_mesh.index_data = {
 		0,1,2
 	};
-	if (FAILED(Color_Polygon->create_mesh(deviceP, context->graphics_list->get_graphics_command_list(), upload_color_resource, color_mesh))) {
+
+	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> color_resource = { upload_queue.get_reference().value(),upload_queue.get_reference().value() };
+	if (FAILED(Color_Polygon->create_mesh(deviceP, context->graphics_list->get_graphics_command_list(), color_resource, color_mesh))) {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
@@ -403,8 +407,10 @@ namespace {
 		//	バックバッファバリアをTargetに変更
 		if (!context->static_draw_commands_container->add_command_map("backbuffer_barrier_target",
 			[](resources::DrawResources& resource) {
+
 				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
 				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_RENDER_TARGET);
+
 			})) {
 			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
 		}
@@ -412,8 +418,10 @@ namespace {
 		//	バックバッファバリアをPresentに変更
 		if (!context->static_draw_commands_container->add_command_map("backbuffer_barrier_present",
 			[](resources::DrawResources& resource) {
+
 				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
 				target->barrier_transition(resource.graphics_list, D3D12_RESOURCE_STATE_PRESENT);
+
 			})) {
 			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
 		}
@@ -421,11 +429,13 @@ namespace {
 		//	バックバッファとデプスバッファクリア
 		if (!context->static_draw_commands_container->add_command_map("claer_backbuffer_and_depthbuffer",
 			[](resources::DrawResources& resource) {
+
 				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
 				resource.graphics_list->ClearRenderTargetView(target->get_rtv_handle(), back_ground_color, 0, nullptr);
 
 				auto* depth = resource.frame_resource->get_deprh_buffer();
 				resource.graphics_list->ClearDepthStencilView(depth->get_dsv_handle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+
 			})) {
 			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
 		}
@@ -469,7 +479,7 @@ namespace {
 		draw_state_desc.pipline_state = context->pipline_container->get_pipline_state("Normal_pipline");
 
 		// ビューポート設定
-		draw_state_desc.viewport_ = helper::ViewportHelper::create_viewport(window_size.width, window_size.height);
+		draw_state_desc.viewport_ = helper::ViewportHelper::create_viewport(static_cast<float>(window_size.width), static_cast<float>(window_size.height));
 
 		// シザー矩形設定
 		draw_state_desc.rect_ = helper::ScissorRectHelper::create_scissor_rect(window_size.width, window_size.height);
@@ -481,9 +491,8 @@ namespace {
 
 		/* ==================== DrawRenderTargetState作成 ==================== */
 
-		//	BackBufferを追加
-		if (!context->static_render_target_state_container->create_render_target_state(
-			"Normal_Target",
+		//	BackBufferとDepthBufferを描画先に指定
+		if (!context->static_render_target_state_container->create_render_target_state("Normal_Target",
 			{ RenderTargetSlot::BackBuffer },DepthSlot::MainDepth
 		)) {
 			DEBUG_LOG("DirectXRenderer :: create_render_target_state() FAILED");
@@ -497,7 +506,9 @@ namespace {
 		//	無色ポリゴン描画
 		if (!context->static_draw_commands_container->add_command_map("draw_Normal_polygon",
 			[](resources::DrawResources& resource) {
+
 				resource.static_draw_object_container->get_draw_object("NormalPolygon")->draw(resource.graphics_list);
+
 			})) {
 			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
 		}
@@ -539,7 +550,7 @@ namespace {
 		draw_state_desc.pipline_state = context->pipline_container->get_pipline_state("Color_pipline");
 
 		// ビューポート設定
-		draw_state_desc.viewport_ = helper::ViewportHelper::create_viewport(window_size.width, window_size.height);
+		draw_state_desc.viewport_ = helper::ViewportHelper::create_viewport(static_cast<float>(window_size.width), static_cast<float>(window_size.height));
 
 		// シザー矩形設定
 		draw_state_desc.rect_ = helper::ScissorRectHelper::create_scissor_rect(window_size.width, window_size.height);
@@ -556,7 +567,9 @@ namespace {
 		//	色付きポリゴン描画
 		if (!context->static_draw_commands_container->add_command_map("draw_Color_polygon",
 			[](resources::DrawResources& resource) {
+
 				resource.static_draw_object_container->get_draw_object("ColorPolygon")->draw(resource.graphics_list);
+
 			})) {
 			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
 		}

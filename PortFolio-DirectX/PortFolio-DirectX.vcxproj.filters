@@ -518,6 +518,9 @@
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ScissorRectHelper.h">
       <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utility\ReferenceQueue.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\windowInterface\WIndowInterface.Readme.txt">

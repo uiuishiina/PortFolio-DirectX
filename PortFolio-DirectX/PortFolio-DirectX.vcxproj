@@ -290,6 +290,7 @@
     <ClInclude Include="..\RendererInterface\RendererInterface.h" />
     <ClInclude Include="..\Utility\EnumToIndex.h" />
     <ClInclude Include="..\Utility\NonMovable.h" />
+    <ClInclude Include="..\Utility\ReferenceQueue.h" />
     <ClInclude Include="..\Utility\WIndowSize.h" />
     <ClInclude Include="..\windowInterface\wIndowEvents\WindowEvents.h" />
     <ClInclude Include="..\windowInterface\windowFactory.h" />

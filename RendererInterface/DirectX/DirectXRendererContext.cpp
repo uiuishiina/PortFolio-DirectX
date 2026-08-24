@@ -33,5 +33,4 @@ DirectXRendererContext::DirectXRendererContext() {
 	static_draw_pass_container = std::make_unique<container::StaticDrawPassContainer>();
 
 	static_draw_object_container = std::make_unique<container::StaticDrawObjectContainer>();
-
 }

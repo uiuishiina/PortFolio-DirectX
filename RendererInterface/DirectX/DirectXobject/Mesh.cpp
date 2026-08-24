@@ -20,6 +20,6 @@ void Mesh::draw(ID3D12GraphicsCommandList* list) const noexcept {
 	//	プリミティブトポロジー設定
 	list->IASetPrimitiveTopology(topology_);
 
-	//	インデックスバッファを使用して三角形を描画
+	//	インデックスバッファを使用して描画
 	list->DrawIndexedInstanced(index_size, 1, 0, 0, 0);
 }
