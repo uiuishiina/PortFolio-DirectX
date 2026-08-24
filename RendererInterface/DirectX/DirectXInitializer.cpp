@@ -9,6 +9,8 @@
 /* -- 各ヘルパー -- */
 #include"Factory&Builder&Helper/PipelineStateHelper.h"
 #include"Factory&Builder&Helper/RootSignatureDescBuilder.h"
+#include"Factory&Builder&Helper/ViewportHelper.h"
+#include"Factory&Builder&Helper/ScissorRectHelper.h"
 
 #include"DrawPass/DrawPass.h"
 #include"DrawPass/CommandPass.h"
@@ -252,6 +254,7 @@ namespace {
 	color_pipline.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
 	color_pipline.blend_desc = helper::PipelineStateHelper::get_enable_blend();
 	color_pipline.depth_stencil_desc = helper::PipelineStateHelper::get_enable_depth();
+
 	//フォーマット指定
 	color_pipline.dsv_format = depth_format;
 
@@ -387,6 +390,10 @@ namespace {
 	//キャッシュ
 	const auto deviceP = context->device_->get_device();
 
+	///====================================================================
+	/// CommandPass作成
+	///====================================================================
+
 	/* ==================== ClearPass作成 ==================== */
 
 	{
@@ -434,6 +441,8 @@ namespace {
 			return false;
 		}
 
+		/* ==================== CommandPass作成 ==================== */
+
 		auto clear_pass = std::make_unique<pass::CommandPass>();
 
 		desc::CommandPassDesc clear_pass_desc(context->static_draw_commands_container->get_draw_commands("Clear_Backbuffer"));
@@ -446,6 +455,9 @@ namespace {
 		}
 	}
 
+	///====================================================================
+	/// DrawPass作成
+	///====================================================================
 
 	/* ==================== NormalPass作成 ==================== */
 
@@ -457,22 +469,10 @@ namespace {
 		draw_state_desc.pipline_state = context->pipline_container->get_pipline_state("Normal_pipline");
 
 		// ビューポート設定
-		D3D12_VIEWPORT viewport{};
-		viewport.TopLeftX = 0.0f;
-		viewport.TopLeftY = 0.0f;
-		viewport.Width = static_cast<float>(window_size.width);
-		viewport.Height = static_cast<float>(window_size.height);
-		viewport.MinDepth = 0.0f;
-		viewport.MaxDepth = 1.0f;
-		draw_state_desc.viewport_ = viewport;
+		draw_state_desc.viewport_ = helper::ViewportHelper::create_viewport(window_size.width, window_size.height);
 
 		// シザー矩形設定
-		D3D12_RECT scissorRect{};
-		scissorRect.left = 0;
-		scissorRect.top = 0;
-		scissorRect.right = window_size.width;
-		scissorRect.bottom = window_size.height;
-		draw_state_desc.rect_ = scissorRect;
+		draw_state_desc.rect_ = helper::ScissorRectHelper::create_scissor_rect(window_size.width, window_size.height);
 
 		if (!context->static_draw_state_container->create_draw_state("Normal_State", draw_state_desc)) {
 			DEBUG_LOG("DirectXRenderer :: creaate_draw_state() FAILED");
@@ -539,22 +539,10 @@ namespace {
 		draw_state_desc.pipline_state = context->pipline_container->get_pipline_state("Color_pipline");
 
 		// ビューポート設定
-		D3D12_VIEWPORT viewport{};
-		viewport.TopLeftX = 0.0f;
-		viewport.TopLeftY = 0.0f;
-		viewport.Width = static_cast<float>(window_size.width);
-		viewport.Height = static_cast<float>(window_size.height);
-		viewport.MinDepth = 0.0f;
-		viewport.MaxDepth = 1.0f;
-		draw_state_desc.viewport_ = viewport;
+		draw_state_desc.viewport_ = helper::ViewportHelper::create_viewport(window_size.width, window_size.height);
 
 		// シザー矩形設定
-		D3D12_RECT scissorRect{};
-		scissorRect.left = 0;
-		scissorRect.top = 0;
-		scissorRect.right = window_size.width;
-		scissorRect.bottom = window_size.height;
-		draw_state_desc.rect_ = scissorRect;
+		draw_state_desc.rect_ = helper::ScissorRectHelper::create_scissor_rect(window_size.width, window_size.height);
 
 		if (!context->static_draw_state_container->create_draw_state("Color_State", draw_state_desc)) {
 			DEBUG_LOG("DirectXRenderer :: creaate_draw_state() FAILED");

@@ -246,6 +246,12 @@
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\CommandPass.cpp">
       <Filter>RendererInterface\DirectX\DrawPass</Filter>
     </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ViewportHelper.cpp">
+      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ScissorRectHelper.cpp">
+      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Debug\DebugLogBuilder.h">
@@ -505,6 +511,12 @@
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\CommandPass.h">
       <Filter>RendererInterface\DirectX\DrawPass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ViewportHelper.h">
+      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ScissorRectHelper.h">
+      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
