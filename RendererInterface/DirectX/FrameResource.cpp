@@ -8,42 +8,58 @@ using namespace render::dx12::resources;
 ///====================================================================
 
 //@brief	=== フレームリソース作成関数 ===
-//@param	index	フレームリソースインデックス番号
 //@param	device	DirectX12 デバイス
-//@param	heap_container	ディスクリプターヒープコンテナクラス
 //@param	depth_desc	デプスバッファ設定
+//@param	heaps_desc	ディスクリプタヒープ設定配列
 //@return	作成の成否
 [[nodiscard]] HRESULT FrameResource::create_frame_resource(
-    UINT index, ID3D12Device* device,
-    container::StaticHeapContainer* heap_container, desc::DepthBufferDesc depth_desc) {
-
+    ID3D12Device* device,
+    desc::DepthBufferDesc depth_desc, const std::vector<desc::DescriptorHeapDesc>& heaps_desc) {
 
     //コマンドアロケーター作成
-    auto allocator = std::make_unique<object::CommandAllocator>();
+    {
+        auto allocator = std::make_unique<object::CommandAllocator>();
 
-    auto hr = factory::CommandObjectFactory::create_graphics_command_allocator(device, *allocator);
-    if (FAILED(hr)) {
-        return hr;
+        const auto hr = factory::CommandObjectFactory::create_graphics_command_allocator(device, *allocator);
+        if (FAILED(hr)) {
+            return hr;
+        }
+
+        graphics_allocator = std::move(allocator);
     }
 
-    graphics_allocator = std::move(allocator);
 
+    //  ディスクリプタヒープ作成
+    {
+        frame_heap_container = std::make_unique<container::StaticHeapContainer>();
+
+        auto heap = heaps_desc;
+
+        //  内部で用意(外部にするかは検討)
+        heap.push_back({ D3D12_DESCRIPTOR_HEAP_TYPE_DSV,1,D3D12_DESCRIPTOR_HEAP_FLAG_NONE });
+
+        const auto hr = frame_heap_container->create_static_heap_container(device, heap);
+        if (FAILED(hr)) {
+            return hr;
+        }
+    }
 
     // デプスバッファ作成
-    auto depth = std::make_unique<object::DepthBuffer>();
+    {
+        auto depth = std::make_unique<object::DepthBuffer>();
 
-    hr = depth->create_depth_buffer(
-        device,
-        heap_container->get_discriptor_heap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV)->get_cpu_descriptor_handle(index),
-        depth_desc);
+        const auto hr = depth->create_depth_buffer(
+            device,
+            frame_heap_container->get_discriptor_heap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV)->get_cpu_descriptor_handle(0),
+            depth_desc);
+        if (FAILED(hr)) {
+            return hr;
+        }
 
-    if (FAILED(hr)) {
-        return hr;
+        depth_buffer = std::move(depth);
     }
 
-    depth_buffer = std::move(depth);
-
-	return hr;
+	return S_OK;
 }
 
 

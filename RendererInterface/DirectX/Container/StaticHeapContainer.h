@@ -24,23 +24,6 @@ namespace render {
 		namespace container {
 
 			///====================================================================
-			/// DescriptorHeapDesc 構造体
-			///====================================================================
-
-			//@brief	=== ディスクリプタヒープ作成補助構造体 ===
-			struct DescriptorHeapDesc
-			{
-				//@brief	== ディスクリプターヒープタイプ設定 ==
-				D3D12_DESCRIPTOR_HEAP_TYPE type;
-
-				//@brief	== ディスクリプターヒープサイズ設定 ==
-				UINT numDescriptors;
-
-				//@brief	== シェーダー可視設定 ==
-				D3D12_DESCRIPTOR_HEAP_FLAGS flags;
-			};
-
-			///====================================================================
 			/// StaticHeapContainer クラス
 			///====================================================================
 
@@ -64,7 +47,7 @@ namespace render {
 				//@param	device	DirectX12 デバイス
 				//@param	desc	ディスクリプタヒープ設定配列
 				//@return	作成の可否
-				[[nodiscard]] HRESULT create_static_heap_container(ID3D12Device* device, const std::vector<DescriptorHeapDesc>& desc);
+				[[nodiscard]] HRESULT create_static_heap_container(ID3D12Device* device, const std::vector<desc::DescriptorHeapDesc>& desc);
 
 				//@brief	=== ディスクリプタヒープ参照取得関数 ===
 				//@param	type	ディスクリプターヒープタイプ

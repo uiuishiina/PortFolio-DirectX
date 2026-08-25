@@ -43,14 +43,13 @@ namespace render {
 				///====================================================================
 
 				//@brief	=== フレームリソース作成関数 ===
-				//@param	index	フレームリソースインデックス番号
 				//@param	device	DirectX12 デバイス
-				//@param	heap_container	ディスクリプターヒープコンテナクラス
 				//@param	depth_desc	デプスバッファ設定
+				//@param	heaps_desc	ディスクリプタヒープ設定配列
 				//@return	作成の成否
 				[[nodiscard]] HRESULT create_frame_resource(
-					UINT index, ID3D12Device* device,
-					container::StaticHeapContainer* heap_container, desc::DepthBufferDesc depth_desc);
+					ID3D12Device* device,
+					desc::DepthBufferDesc depth_desc, const std::vector<desc::DescriptorHeapDesc>& heaps_desc);
 
 				//@brief	=== フレームフェンス保存変数変更関数 ===
 				//@param	value	変更する値
@@ -81,6 +80,9 @@ namespace render {
 
 				//@brief	== デプスバッファクラスインスタンス ==
 				std::unique_ptr<object::DepthBuffer> depth_buffer{};
+
+				//@brief	== ディスクリプタヒープコンテナクラスインスタンス ==
+				std::unique_ptr<container::StaticHeapContainer> frame_heap_container{};
 
 			};
 		};

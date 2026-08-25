@@ -10,9 +10,10 @@ using namespace render::dx12::factory;
 //@param	context		DirectX描画機能インスタンス保存クラス
 //@param	window_size	ウィンドウサイズ
 //@param	size		フレームリソースサイズ
+//@param	heaps_desc	ディスクリプタヒープ設定配列
 //@return	作成の成否
 [[nodiscard]] HRESULT FrameResourceFactory::create_frame_resources(DirectXRendererContext* context, WindowSize window_size,
-	UINT size) {
+	UINT size, const std::vector<desc::DescriptorHeapDesc>& heaps_desc) {
 
 	context->frame_resources.resize(size);
 
@@ -28,8 +29,8 @@ using namespace render::dx12::factory;
 	//	サイズ分インスタンス & リソース作成
 	for (UINT i = 0; i < size; i++) {
 		temp[i] = std::make_unique<resources::FrameResource>();
-		const auto hr = temp[i]->create_frame_resource(i, context->device_->get_device(),
-			context->static_heap_container.get(), depth_desc);
+		const auto hr = temp[i]->create_frame_resource(context->device_->get_device(),
+			depth_desc, heaps_desc);
 		if (FAILED(hr)) {
 			return hr;
 		}

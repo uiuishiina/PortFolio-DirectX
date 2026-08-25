@@ -11,7 +11,7 @@ using namespace render::dx12::container;
 //@param	device	DirectX12 デバイス
 //@param	desc	ディスクリプタヒープ設定配列
 //@return	作成の可否
-[[nodiscard]] HRESULT StaticHeapContainer::create_static_heap_container(ID3D12Device* device, const std::vector<DescriptorHeapDesc>& desc) {
+[[nodiscard]] HRESULT StaticHeapContainer::create_static_heap_container(ID3D12Device* device, const std::vector<desc::DescriptorHeapDesc>& desc) {
 
 	//	空ならエラーを返す
 	if (desc.empty()) {

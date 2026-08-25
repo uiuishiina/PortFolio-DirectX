@@ -39,9 +39,10 @@ namespace render {
 				//@param	context		DirectX描画機能インスタンス保存クラス
 				//@param	window_size	ウィンドウサイズ
 				//@param	size		フレームリソースサイズ
+				//@param	heaps_desc	ディスクリプタヒープ設定配列
 				//@return	作成の成否
-				static [[nodiscard]] HRESULT create_frame_resources(DirectXRendererContext* context, 
-					WindowSize window_size,UINT size);
+				static [[nodiscard]] HRESULT create_frame_resources(DirectXRendererContext* context,
+					WindowSize window_size, UINT size, const std::vector<desc::DescriptorHeapDesc>& heaps_desc);
 
 			private:
 				///====================================================================

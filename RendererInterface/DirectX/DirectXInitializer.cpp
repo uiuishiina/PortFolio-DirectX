@@ -86,7 +86,6 @@ namespace {
 	if (FAILED(context->static_heap_container->create_static_heap_container(deviceP,
 		{
 			{D3D12_DESCRIPTOR_HEAP_TYPE_RTV,back_buffe_size,D3D12_DESCRIPTOR_HEAP_FLAG_NONE},				//RTV
-			{D3D12_DESCRIPTOR_HEAP_TYPE_DSV,frame_resource_size,D3D12_DESCRIPTOR_HEAP_FLAG_NONE},			//DSV
 		}
 		))) {
 		DEBUG_LOG("DirectXRenderer :: create_static_heap_container() FAILED");
@@ -114,7 +113,7 @@ namespace {
 	}
 
 	//	フレームリソース生成
-	if (FAILED(factory::FrameResourceFactory::create_frame_resources(context, window_size, frame_resource_size))) {
+	if (FAILED(factory::FrameResourceFactory::create_frame_resources(context, window_size, frame_resource_size, {}))) {
 		DEBUG_LOG("DirectXRenderer :: create_frame_resources() FAILED");
 		return false;
 	}
