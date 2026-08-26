@@ -1,5 +1,7 @@
 #include"FrameResource.h"
 #include"Factory&Builder&Helper/CommandObjectFactory.h"
+#include"DirectXobject/ConstantBuffer.h"
+#include<DirectXMath.h>
 
 using namespace render::dx12::resources;
 
@@ -37,6 +39,7 @@ using namespace render::dx12::resources;
 
         //  内部で用意(外部にするかは検討)
         heap.push_back({ D3D12_DESCRIPTOR_HEAP_TYPE_DSV,1,D3D12_DESCRIPTOR_HEAP_FLAG_NONE });
+        heap.push_back({ D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,1,D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE });
 
         const auto hr = frame_heap_container->create_static_heap_container(device, heap);
         if (FAILED(hr)) {
@@ -58,6 +61,24 @@ using namespace render::dx12::resources;
 
         depth_buffer = std::move(depth);
     }
+
+    upload_resource_container = std::make_unique<container::UploadBufferContainer>();
+
+    {
+        DirectX::XMMATRIX transform = {};
+
+        auto handle = frame_heap_container->get_handles(device, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 0);
+        auto constantBuffer = std::make_unique<object::ConstantBuffer>();
+        const auto hr = constantBuffer->create_constant_buffer(device, handle, &transform, sizeof(DirectX::XMMATRIX));
+        if (FAILED(hr)) {
+            return hr;
+        }
+
+        if (!upload_resource_container->register_buffer("constant", std::move(constantBuffer))) {
+            return false;
+        }
+    }
+
 
 	return S_OK;
 }

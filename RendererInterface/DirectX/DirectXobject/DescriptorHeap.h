@@ -88,6 +88,8 @@ namespace render {
 				//@return	GPU ディスクリプタハンドル
 				[[nodiscard]] D3D12_GPU_DESCRIPTOR_HANDLE get_gpu_descriptor_handle(UINT index) const noexcept;
 
+
+
 			private:
 				///====================================================================
 				/// Private メンバー変数

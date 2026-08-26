@@ -2,6 +2,7 @@
 #include"DirectXobject/CommandAllocator.h"
 #include"DirectXobject/DepthBuffer.h"
 #include"Container/StaticHeapContainer.h"
+#include"Container/UploadBufferContainer.h"
 #include<memory>
 
 ///====================================================================
@@ -25,6 +26,8 @@ namespace render {
 			///====================================================================
 			/// FrameResouse クラス
 			///====================================================================
+			
+			//	GPUが非同期に動く際に同時利用しないようにする
 
 			//@brief	=== フレームリソースクラス ===
 			class FrameResource final : public NonMovableBase
@@ -83,6 +86,9 @@ namespace render {
 
 				//@brief	== ディスクリプタヒープコンテナクラスインスタンス ==
 				std::unique_ptr<container::StaticHeapContainer> frame_heap_container{};
+
+
+				std::unique_ptr<container::UploadBufferContainer> upload_resource_container{};
 
 			};
 		};

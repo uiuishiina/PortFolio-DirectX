@@ -47,11 +47,16 @@ namespace render {
 				//@param	src		コピーするデータの先頭ポインター
 				//@param	size	コピーするメモリサイズ
 				//@return	作成の成否
-				[[nodiscard]] HRESULT create_constant_buffer(ID3D12Device* device, utility::Descripter_Handles& handles, size_t size);
+				[[nodiscard]] HRESULT create_constant_buffer(ID3D12Device* device, utility::Descripter_Handles& handles, const void* src, size_t size);
 
 				//@brief	=== CBVハンドル取得関数 ===
 				//@return	CBVディスクリプターハンドル
 				[[nodiscard]] D3D12_GPU_DESCRIPTOR_HANDLE get_cbv_handle()const noexcept;
+
+				//@brief	=== データUpload関数 ===
+				//@param	src		コピーするデータの先頭ポインター
+				//@param	size	コピーするメモリサイズ
+				void upload_constant_buffer(const void* src, size_t size);
 
 			private:
 				///====================================================================

@@ -1,5 +1,6 @@
 #pragma once
 #include"../DirectXobject/DescriptorHeap.h"
+#include"../DirectXobject/ResourceUtility.h"
 #include"NonMovable.h"
 #include<unordered_map>
 #include<memory>
@@ -53,6 +54,8 @@ namespace render {
 				//@param	type	ディスクリプターヒープタイプ
 				//@return	ディスクリプターヒープポインター
 				[[nodiscard]] object::DescriptorHeap* get_discriptor_heap(D3D12_DESCRIPTOR_HEAP_TYPE type);
+
+				[[nodiscard]] utility::Descripter_Handles get_handles(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE type, UINT index);
 
 			private:
 				///====================================================================

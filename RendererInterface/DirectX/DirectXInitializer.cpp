@@ -341,12 +341,15 @@ namespace {
 	};
 	drawobject::MeshDesc<color_polygon> color_mesh{};
 	color_mesh.vertex_data = {
-		{{ 0.5f, 1.0f, 1.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//右
-		{{ 0.0f, 0.0f, 1.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//真ん中
-		{{-0.5f, 1.0f, 1.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}}	//左
+		{{ 0.0f, 0.5f, 0.0f},{ 1.0f, 1.0f, 1.0f, 1.0f}},//
+		{{ 0.5f,-0.5f, 0.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//
+		{{-0.5f,-0.5f, 0.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//
+		{{ 0.0f,-0.5f,-0.5f},{ 0.0f, 0.0f, 1.0f, 1.0f}}	//
 	};
 	color_mesh.index_data = {
-		0,1,2
+		0,1,2,
+		0,2,3,
+		0,3,1
 	};
 
 	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> color_resource = { upload_queue.get_reference().value(),upload_queue.get_reference().value() };
@@ -359,6 +362,8 @@ namespace {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
+
+
 
 	/* ==================== すべてまとめて作成 ==================== */
 

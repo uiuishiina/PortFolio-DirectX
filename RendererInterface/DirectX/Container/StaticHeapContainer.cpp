@@ -59,3 +59,8 @@ using namespace render::dx12::container;
 	}
 	return it->second.get();
 }
+
+[[nodiscard]] render::dx12::utility::Descripter_Handles StaticHeapContainer::get_handles(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE type, UINT index) {
+
+	return utility::Descripter_Handles(device, get_discriptor_heap(type)->get_descriptor_heap(), type, index);
+}

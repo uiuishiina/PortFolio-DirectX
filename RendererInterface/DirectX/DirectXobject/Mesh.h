@@ -45,7 +45,7 @@ namespace render {
 			///====================================================================
 
 			//@brief	=== メッシュクラス ===
-			class Mesh final : public DrawObjectBase
+			class Mesh : public DrawObjectBase
 			{
 			public:
 				///====================================================================

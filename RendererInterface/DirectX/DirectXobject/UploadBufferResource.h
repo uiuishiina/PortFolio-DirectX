@@ -27,6 +27,9 @@ namespace render {
 			//@brief	=== 描画バッファリソース更新可能クラス ===
 			class UploadBufferResource : public GPUResourceBase
 			{
+			public:
+				virtual ~UploadBufferResource() = default;
+
 			protected:
 				///====================================================================
 				/// クラス設定
@@ -34,7 +37,7 @@ namespace render {
 
 				//コンストラクタ,デストラクタ
 				UploadBufferResource() = default;
-				virtual ~UploadBufferResource() = default;
+				
 
 				///====================================================================
 				/// Protected メンバー変数
