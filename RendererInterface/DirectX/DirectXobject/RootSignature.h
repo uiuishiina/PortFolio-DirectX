@@ -30,6 +30,9 @@ namespace render {
 			struct RootSignatureDesc
 			{
 				//@brief	== ルートパラメーター設定配列 ==
+				std::vector<D3D12_DESCRIPTOR_RANGE> ranges_;
+
+				//@brief	== ルートパラメーター設定配列 ==
 				std::vector<D3D12_ROOT_PARAMETER> parameters_;
 
 				//@brief	== サンプラー設定配列 ==

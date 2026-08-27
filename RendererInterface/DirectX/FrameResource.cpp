@@ -65,17 +65,46 @@ using namespace render::dx12::resources;
     upload_resource_container = std::make_unique<container::UploadBufferContainer>();
 
     {
-        DirectX::XMMATRIX transform = {};
+        struct a
+        {
+            DirectX::XMMATRIX transform = {};
+            DirectX::XMMATRIX view = {};
+            DirectX::XMMATRIX projection = {};
+        };
+        a A{};
+
+        A.transform = DirectX::XMMatrixIdentity();
+
+        // カメラ
+        DirectX::XMVECTOR eye = DirectX::XMVectorSet(0.0f, 0.0f, -5.0f, 1.0f);
+        DirectX::XMVECTOR target = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+        DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+        A.view = DirectX::XMMatrixLookAtLH(
+            eye,
+            target,
+            up
+        );
+
+        float fov = DirectX::XMConvertToRadians(60.0f);
+        float aspect = 1280.0f / 720.0f;
+
+        A.projection = DirectX::XMMatrixPerspectiveFovLH(
+            fov,
+            aspect,
+            0.1f,
+            100.0f
+        );
 
         auto handle = frame_heap_container->get_handles(device, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 0);
         auto constantBuffer = std::make_unique<object::ConstantBuffer>();
-        const auto hr = constantBuffer->create_constant_buffer(device, handle, &transform, sizeof(DirectX::XMMATRIX));
+        const auto hr = constantBuffer->create_constant_buffer(device, handle, &A, sizeof(a));
         if (FAILED(hr)) {
             return hr;
         }
 
         if (!upload_resource_container->register_buffer("constant", std::move(constantBuffer))) {
-            return false;
+            return E_FAIL;
         }
     }
 

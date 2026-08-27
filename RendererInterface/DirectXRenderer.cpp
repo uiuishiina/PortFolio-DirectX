@@ -157,11 +157,11 @@ void DirectXRenderer::update_renderer() {
 			renderer_updater->apply_draw_pass(v);
 		}
 		else if (!value.value() && left.value()) {
-			std::vector<std::string> v = { "Clear_pass","Color_pass" };
+			std::vector<std::string> v = { "Clear_pass","Constant_pass" };
 			renderer_updater->apply_draw_pass(v);
 		}
 		else {
-			std::vector<std::string> v = { "Clear_pass" };
+			std::vector<std::string> v = { "Clear_pass"};
 			renderer_updater->apply_draw_pass(v);
 		}
 

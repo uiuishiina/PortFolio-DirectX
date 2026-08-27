@@ -20,6 +20,9 @@
 #include"ReferenceQueue.h"
 #include"../Debug/DebugLogSystem.h"
 
+#include<DirectXMath.h>
+#include"DirectXobject/ConstantBuffer.h"
+
 using namespace render::dx12;
 
 ///====================================================================
@@ -39,6 +42,14 @@ namespace {
 	//@details	初期作成時に [ DirectXRenderer ] 側に取得させたいがインスタンス化や引数参照で受け渡すのが面倒だったのでここで保存してみる
 	std::vector<std::string> pass_order{};
 
+	struct a
+	{
+		DirectX::XMMATRIX transform = {};
+		DirectX::XMMATRIX view = {};
+		DirectX::XMMATRIX projection = {};
+	};
+	a A{};
+	float angle = 0;
 };
 
 ///====================================================================
@@ -182,6 +193,10 @@ namespace {
 		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Color_ps");
 		return false;
 	}
+	if (FAILED(context->shader_container->compile_shader("Constant_vs", L"../RendererInterface/HLSLshader/ConstantBufferVertexShader.hlsl", "main", "vs_5_0"))) {
+		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Constant_vs");
+		return false;
+	}
 
 	return true;
 }
@@ -195,14 +210,28 @@ namespace {
 	const auto deviceP = context->device_->get_device();
 
 	/* ==================== RootSignature作成 ==================== */
+	{
 
-	//	RootSignatureインスタンス生成
-	desc::RootSignatureDesc root_desc{};
-	builder::RootSignatureDescBuilder::add_flags(root_desc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+		//	RootSignatureインスタンス生成
+		desc::RootSignatureDesc root_desc{};
+		builder::RootSignatureDescBuilder::add_flags(root_desc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
-	if (FAILED(context->root_signature_container->create_root_signature("Normal_root", deviceP, root_desc))) {
-		DEBUG_LOG("DirectXRenderer :: create_root_signature() FAILED");
-		return false;
+		if (FAILED(context->root_signature_container->create_root_signature("Normal_root", deviceP, root_desc))) {
+			DEBUG_LOG("DirectXRenderer :: create_root_signature() FAILED");
+			return false;
+		}
+	}
+	{
+
+		//	RootSignatureインスタンス生成
+		desc::RootSignatureDesc root_desc{};
+		builder::RootSignatureDescBuilder::add_flags(root_desc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+		builder::RootSignatureDescBuilder::add_CBV(root_desc, 0, 0, D3D12_SHADER_VISIBILITY_VERTEX);
+
+			if (FAILED(context->root_signature_container->create_root_signature("Constant_root", deviceP, root_desc))) {
+				DEBUG_LOG("DirectXRenderer :: create_root_signature() FAILED");
+				return false;
+			}
 	}
 
 	/* ==================== PiplineState作成 ==================== */
@@ -263,6 +292,38 @@ namespace {
 		return false;
 	}
 
+
+	///====================================================================
+	/// Constant
+	///====================================================================
+
+	//	PiplineStateインスタンス生成
+	desc::PipelineStateDesc constant_pipline{};
+
+	//	頂点入力設定
+	constant_pipline.input_elements = {
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+	};
+
+	//	必要なインスタンス設定
+	constant_pipline.root_signature = context->root_signature_container->get_root_signature("Constant_root");
+	constant_pipline.vs_hlsl = context->shader_container->get_shader("Constant_vs");
+	constant_pipline.ps_hlsl = context->shader_container->get_shader("Color_ps");
+
+	constant_pipline.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
+	constant_pipline.blend_desc = helper::PipelineStateHelper::get_enable_blend();
+	constant_pipline.depth_stencil_desc = helper::PipelineStateHelper::get_enable_depth();
+
+	//フォーマット指定
+	constant_pipline.dsv_format = depth_format;
+
+	if (FAILED(context->pipline_container->create_pipline_state("Constant_pipline", deviceP, constant_pipline))) {
+		DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
+		return false;
+	}
+
+
 	return true;
 }
 
@@ -310,9 +371,9 @@ namespace {
 	};
 	drawobject::MeshDesc<normal_polygon> polygon_desc{};
 	polygon_desc.vertex_data = {
-		{-0.5f,-1.0f, 0.5f},
-		{ 0.0f, 1.0f, 0.5f},
-		{ 0.5f,-1.0f, 0.5f}
+		{-0.5f,-1.0f, 1.0f},
+		{ 0.0f, 1.0f, 1.0f},
+		{ 0.5f,-1.0f, 1.0f}
 	};
 	polygon_desc.index_data = {
 		0,1,2
@@ -342,14 +403,15 @@ namespace {
 	drawobject::MeshDesc<color_polygon> color_mesh{};
 	color_mesh.vertex_data = {
 		{{ 0.0f, 0.5f, 0.0f},{ 1.0f, 1.0f, 1.0f, 1.0f}},//
-		{{ 0.5f,-0.5f, 0.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//
-		{{-0.5f,-0.5f, 0.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//
-		{{ 0.0f,-0.5f,-0.5f},{ 0.0f, 0.0f, 1.0f, 1.0f}}	//
+		{{ 0.5f,-0.5f,-0.5f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//
+		{{-0.5f,-0.5f,-0.5f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//
+		{{ 0.0f,-0.5f, 0.5f},{ 0.0f, 0.0f, 1.0f, 1.0f}}	//
 	};
 	color_mesh.index_data = {
 		0,1,2,
+		0,3,1,
 		0,2,3,
-		0,3,1
+		1,2,3
 	};
 
 	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> color_resource = { upload_queue.get_reference().value(),upload_queue.get_reference().value() };
@@ -380,6 +442,32 @@ namespace {
 
 	//	使えるまで待機
 	context->fence_->wait_to_completed_value(fence_value);
+
+
+	/* ==================== 回転 ==================== */
+	A.transform = DirectX::XMMatrixIdentity();
+
+	// カメラ
+	DirectX::XMVECTOR eye = DirectX::XMVectorSet(0.0f, 0.0f, -5.0f, 1.0f);
+	DirectX::XMVECTOR target = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+	DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+	A.view = DirectX::XMMatrixLookAtLH(
+		eye,
+		target,
+		up
+	);
+
+	float fov = DirectX::XMConvertToRadians(60.0f);
+	float aspect = 1280.0f / 720.0f;
+
+	A.projection = DirectX::XMMatrixPerspectiveFovLH(
+		fov,
+		aspect,
+		0.1f,
+		100.0f
+	);
+
 
 	return true;
 }
@@ -607,7 +695,78 @@ namespace {
 		}
 	}
 
-	pass_order = { "Clear_pass","Normal_pass","Color_pass" };
+	/* ==================== ConstantPass作成 ==================== */
+	{
+		/* ==================== DrawState作成 ==================== */
+		desc::DrawStateDesc draw_state_desc{};
+		draw_state_desc.root_signature = context->root_signature_container->get_root_signature("Constant_root");
+		draw_state_desc.pipline_state = context->pipline_container->get_pipline_state("Constant_pipline");
+
+		// ビューポート設定
+		draw_state_desc.viewport_ = helper::ViewportHelper::create_viewport(static_cast<float>(window_size.width), static_cast<float>(window_size.height));
+
+		// シザー矩形設定
+		draw_state_desc.rect_ = helper::ScissorRectHelper::create_scissor_rect(window_size.width, window_size.height);
+
+		if (!context->static_draw_state_container->create_draw_state("Constant_State", draw_state_desc)) {
+			DEBUG_LOG("DirectXRenderer :: creaate_draw_state() FAILED");
+			return false;
+		}
+
+		/* ==================== DrawCommands作成 ==================== */
+
+		//	描画コマンド作成
+
+		//	色付きポリゴン描画
+		if (!context->static_draw_commands_container->add_command_map("draw_Constant_polygon",
+			[](resources::DrawResources& resource) {
+
+				auto heap = resource.frame_resource->get_heap_container()->get_discriptor_heap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)->get_descriptor_heap();
+				ID3D12DescriptorHeap* p[] = { heap };
+				resource.graphics_list->SetDescriptorHeaps(1, p);
+				resource.graphics_list->SetGraphicsRootDescriptorTable(0, heap->GetGPUDescriptorHandleForHeapStart());
+
+				angle += 0.01f;
+				A.transform = DirectX::XMMatrixRotationY(angle);
+				resource.frame_resource->get_upload_container()->get_buffer<object::ConstantBuffer>("constant")->upload_constant_buffer(&A, sizeof(decltype(A)));
+
+
+				resource.static_draw_object_container->get_draw_object("ColorPolygon")->draw(resource.graphics_list);
+
+			})) {
+			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
+		}
+
+		//	DrawCommands作成
+		desc::DrawCommandDesc draw_commands_desc{};
+		draw_commands_desc.begin_name = "backbuffer_barrier_target";
+		draw_commands_desc.apply_names = { "draw_Constant_polygon" };
+		draw_commands_desc.end_name = "backbuffer_barrier_present";
+
+		if (!context->static_draw_commands_container->create_draw_commands("Constant_Commands", draw_commands_desc)) {
+			DEBUG_LOG("DirectXRenderer :: create_draw_commands() FAILED");
+			return false;
+		}
+
+		/* ==================== DrawPass作成 ==================== */
+
+		desc::DrawPassDesc color_pass_desc(
+			context->static_draw_state_container->get_draw_state("Constant_State"),
+			context->static_render_target_state_container->get_draw_state("Normal_Target"),
+			context->static_draw_commands_container->get_draw_commands("Constant_Commands")
+		);
+
+		auto color_pass = std::make_unique<pass::DrawPass>();
+		if (!color_pass->initialize_pass(color_pass_desc)) {
+			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
+		}
+		if (!context->static_draw_pass_container->register_draw_pass("Constant_pass", std::move(color_pass))) {
+			DEBUG_LOG("DirectXRenderer :: register_draw_pass() FAILED");
+			return false;
+		}
+	}
+
+	pass_order = { "Clear_pass","Normal_pass" ,"Constant_pass" };
 	
 	return true;
 }

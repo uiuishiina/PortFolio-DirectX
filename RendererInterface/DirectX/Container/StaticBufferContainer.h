@@ -142,7 +142,7 @@ namespace render {
 				}
 
 				//	上の関数に処理を任せる
-				return get_buffer(hash.value());
+				return get_buffer<T>(hash.value());
 			}
 		};
 	};

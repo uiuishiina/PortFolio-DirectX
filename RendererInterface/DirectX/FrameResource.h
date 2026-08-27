@@ -70,6 +70,14 @@ namespace render {
 				//@return	デプスバッファクラス参照
 				[[nodiscard]] object::DepthBuffer* get_deprh_buffer()const noexcept;
 
+				[[nodiscard]] container::StaticHeapContainer* get_heap_container()const noexcept {
+					return frame_heap_container.get();
+				}
+
+				[[nodiscard]] container::UploadBufferContainer* get_upload_container()const noexcept {
+					return upload_resource_container.get();
+				}
+
 			private:
 				///====================================================================
 				/// Private メンバー変数

@@ -16,11 +16,20 @@ using namespace render::dx12::builder;
 void RootSignatureDescBuilder::add_CBV(desc::RootSignatureDesc& desc, UINT base_shader_register,
 	UINT register_space, D3D12_SHADER_VISIBILITY visibility) {
 
+	D3D12_DESCRIPTOR_RANGE r0{};
+	r0.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
+	r0.NumDescriptors = 1;
+	r0.BaseShaderRegister = base_shader_register;
+	r0.RegisterSpace = register_space;
+	r0.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+	desc.ranges_.push_back(r0);
+
 	D3D12_ROOT_PARAMETER root{};
-	root.ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	root.ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 	root.ShaderVisibility = visibility;
-	root.Descriptor.ShaderRegister = base_shader_register;
-	root.Descriptor.RegisterSpace = register_space;
+	root.DescriptorTable.NumDescriptorRanges = 1;
+	root.DescriptorTable.pDescriptorRanges = &desc.ranges_.back();
 
 	desc.parameters_.push_back(root);
 }
