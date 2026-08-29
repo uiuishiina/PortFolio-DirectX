@@ -1,5 +1,6 @@
 #pragma once
 #include"NonMovable.h"
+#include"ResourceUtility.h"
 #include<d3d12.h>
 #include<wrl/client.h>
 
@@ -87,6 +88,8 @@ namespace render {
 				//@param	index	ディスクリプタインデックス
 				//@return	GPU ディスクリプタハンドル
 				[[nodiscard]] D3D12_GPU_DESCRIPTOR_HANDLE get_gpu_descriptor_handle(UINT index) const noexcept;
+
+				[[nodiscard]] utility::Descripter_Handles get_descriptor_handles(UINT index) const noexcept;
 
 			private:
 				///====================================================================

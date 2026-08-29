@@ -64,3 +64,15 @@ using namespace render::dx12::object;
 	handle.ptr = heap_.Get()->GetGPUDescriptorHandleForHeapStart().ptr + index * descriptor_size_;
 	return handle;
 }
+
+[[nodiscard]] render::dx12::utility::Descripter_Handles DescriptorHeap::get_descriptor_handles(UINT index) const noexcept {
+
+	assert(heap_ && "ディスクリプタヒープ nullptr");
+	D3D12_CPU_DESCRIPTOR_HANDLE cpu{};
+	cpu.ptr = heap_.Get()->GetCPUDescriptorHandleForHeapStart().ptr + index * descriptor_size_;
+
+	D3D12_GPU_DESCRIPTOR_HANDLE gpu{};
+	gpu.ptr = heap_.Get()->GetGPUDescriptorHandleForHeapStart().ptr + index * descriptor_size_;
+
+	return render::dx12::utility::Descripter_Handles(cpu, gpu);
+}

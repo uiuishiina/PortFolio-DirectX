@@ -47,6 +47,9 @@ namespace render {
 					gpu_handle = heap->GetGPUDescriptorHandleForHeapStart();
 					gpu_handle.ptr += offset;
 				};
+
+				Descripter_Handles(D3D12_CPU_DESCRIPTOR_HANDLE cpu, D3D12_GPU_DESCRIPTOR_HANDLE gpu) :
+					cpu_handle{ cpu }, gpu_handle{ gpu } {}
 			};
 		};
 	};
