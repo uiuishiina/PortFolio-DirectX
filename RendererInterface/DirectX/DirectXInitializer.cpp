@@ -17,7 +17,7 @@
 
 /* -- その他 -- */
 #include<chrono>
-#include"ReferenceQueue.h"
+#include"Container/ReferenceQueue.h"
 #include"../Debug/DebugLogSystem.h"
 
 using namespace render::dx12;
@@ -291,8 +291,8 @@ namespace {
 	upload_resources.resize(4);
 
 	//	参照をキューに追加
-	ReferenceQueue<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_queue{};
-	upload_queue.push_queue(upload_resources);
+	HandyItems::container::ReferenceQueue<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_queue{};
+	upload_queue.add_reference(upload_resources);
 
 	/* ==================== Mesh作成 ==================== */
 
@@ -635,7 +635,7 @@ namespace {
 	resources.static_heap_container = context->static_heap_container.get();
 	resources.static_draw_object_container = context->static_draw_object_container.get();
 
-	resources.render_targets[to_index(RenderTargetSlot::BackBuffer)] = context->back_buffers[backBufferIndex].get();
+	resources.render_targets[Enum::enum_to_index(RenderTargetSlot::BackBuffer)] = context->back_buffers[backBufferIndex].get();
 
 	return resources;
 

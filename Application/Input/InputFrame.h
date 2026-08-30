@@ -33,13 +33,13 @@ namespace input {
 		desc::InputStates states_{};
 
 		//@brief	=== メンバー変数設定用取得関数 ===
-		template<concepts::Enum_has_Count T>
+		template<HandyItems::Enum::concepts::EnumHasCount T>
 		InputState<T>& set_state()noexcept {
 			return std::get<InputState<T>>(states_);
 		};
 
 		//@brief	=== メンバー変数取得関数 ===
-		template<concepts::Enum_has_Count T>
+		template<HandyItems::Enum::concepts::EnumHasCount T>
 		const InputState<T>& get_state()const noexcept {
 			return std::get<InputState<T>>(states_);
 		};

@@ -61,6 +61,12 @@
     <Filter Include="Utility">
       <UniqueIdentifier>{35d5563b-5920-4afd-b915-5e9fb91c719a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utility\Enum">
+      <UniqueIdentifier>{182c0051-249b-437f-a2c2-6e5466f506be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Container">
+      <UniqueIdentifier>{26ff516b-d0ac-4136-805a-ed6d99d018e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\EntryPoint.cpp">
@@ -485,9 +491,6 @@
     <ClInclude Include="..\windowInterface\wIndowEvents\WindowEvents.h">
       <Filter>windowInterface\windowEvents</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utility\EnumToIndex.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\Application\Input\InputEnum.h">
       <Filter>Application\Input</Filter>
     </ClInclude>
@@ -518,8 +521,20 @@
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ScissorRectHelper.h">
       <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utility\ReferenceQueue.h">
-      <Filter>Utility</Filter>
+    <ClInclude Include="..\Utility\Enum\EnumArray.h">
+      <Filter>Utility\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utility\Enum\EnumToIndex.h">
+      <Filter>Utility\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utility\Container\KeyMap.h">
+      <Filter>Utility\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utility\Container\ReferenceQueue.h">
+      <Filter>Utility\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utility\Container\UnorderedMapBase.h">
+      <Filter>Utility\Container</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

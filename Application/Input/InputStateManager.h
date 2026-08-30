@@ -46,19 +46,19 @@ namespace input {
 		//@brief	=== 入力中取得関数 ===
 		//@param	value	取得したいキー
 		//@return	入力されているかどうか
-		template<concepts::Enum_has_Count T>
+		template<HandyItems::Enum::concepts::EnumHasCount T>
 		[[nodiscard]] bool is_pressed(T value)const noexcept;
 
 		//@brief	=== 入力開始取得関数 ===
 		//@param	value	取得したいキー
 		//@return	入力されているかどうか
-		template<concepts::Enum_has_Count T>
+		template<HandyItems::Enum::concepts::EnumHasCount T>
 		[[nodiscard]] bool is_down(T value)const noexcept;
 
 		//@brief	=== 入力終了取得関数 ===
 		//@param	value	取得したいキー
 		//@return	入力されているかどうか
-		template<concepts::Enum_has_Count T>
+		template<HandyItems::Enum::concepts::EnumHasCount T>
 		[[nodiscard]] bool is_up(T value)const noexcept;
 
 	private:
@@ -81,13 +81,13 @@ namespace input {
 		//@brief	=== 現在フレームキー状態取得関数 ===
 		//@param	value	取得したいキー
 		//@return	キー状態
-		template<concepts::Enum_has_Count T>
+		template<HandyItems::Enum::concepts::EnumHasCount T>
 		[[nodiscard]] bool get_current_key(T value)const noexcept;
 
 		//@brief	=== 前フレームキー状態取得関数 ===
 		//@param	value	取得したいキー
 		//@return	キー状態
-		template<concepts::Enum_has_Count T>
+		template<HandyItems::Enum::concepts::EnumHasCount T>
 		[[nodiscard]] bool get_previous_key(T value)const noexcept;
 
 	};
@@ -97,7 +97,7 @@ namespace input {
 	//@brief	=== 現在キー状態取得関数 ===
 	//@param	value	取得したいキー
 	//@return	キー状態
-	template<concepts::Enum_has_Count T>
+	template<HandyItems::Enum::concepts::EnumHasCount T>
 	[[nodiscard]] bool InputStateManager::get_current_key(T value)const noexcept {
 		return current_state.get_state<T>().get_key(value);
 	};
@@ -105,7 +105,7 @@ namespace input {
 	//@brief	=== 前フレームキー状態取得関数 ===
 	//@param	value	取得したいキー
 	//@return	キー状態
-	template<concepts::Enum_has_Count T>
+	template<HandyItems::Enum::concepts::EnumHasCount T>
 	[[nodiscard]] bool InputStateManager::get_previous_key(T value)const noexcept {
 		return previous_state.get_state<T>().get_key(value);
 	};
@@ -115,7 +115,7 @@ namespace input {
 	//@brief	=== 入力中取得関数 ===
 	//@param	value	取得したいキー
 	//@return	入力されているかどうか
-	template<concepts::Enum_has_Count T>
+	template<HandyItems::Enum::concepts::EnumHasCount T>
 	[[nodiscard]] bool InputStateManager::is_pressed(T value)const noexcept {
 		return get_current_key(value);
 	};
@@ -123,7 +123,7 @@ namespace input {
 	//@brief	=== 入力開始取得関数 ===
 	//@param	value	取得したいキー
 	//@return	入力されているかどうか
-	template<concepts::Enum_has_Count T>
+	template<HandyItems::Enum::concepts::EnumHasCount T>
 	[[nodiscard]] bool InputStateManager::is_down(T value)const noexcept {
 		return	get_current_key(value) && !get_previous_key(value);
 	};
@@ -131,7 +131,7 @@ namespace input {
 	//@brief	=== 入力終了取得関数 ===
 	//@param	value	取得したいキー
 	//@return	入力されているかどうか
-	template<concepts::Enum_has_Count T>
+	template<HandyItems::Enum::concepts::EnumHasCount T>
 	[[nodiscard]] bool InputStateManager::is_up(T value)const noexcept {
 		return	!get_current_key(value) && get_previous_key(value);
 	};

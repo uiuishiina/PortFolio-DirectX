@@ -5,7 +5,7 @@
 #include"DirectXobject/RenderTarget.h"
 #include"DirectXobject/DepthBuffer.h"
 #include"DirectXobject/Mesh.h"
-#include"EnumToIndex.h"
+#include"Enum/EnumToIndex.h"
 #include<array>
 
 ///====================================================================
@@ -65,11 +65,11 @@ namespace render {
 				container::StaticDrawObjectContainer* static_draw_object_container{};
 
 				//@brief	== 描画先参照保存配列 ==
-				std::array<object::RenderTarget*, to_index(RenderTargetSlot::Count)> render_targets{};
+				std::array<object::RenderTarget*, HandyItems::Enum::enum_to_index(RenderTargetSlot::Count)> render_targets{};
 
 				//@brief	=== 描画先参照取得補助関数 ===
 				object::RenderTarget* get_render_target(RenderTargetSlot slot) const {
-					return render_targets[to_index(slot)];
+					return render_targets[HandyItems::Enum::enum_to_index(slot)];
 				}
 				
 			};
