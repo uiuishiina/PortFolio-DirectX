@@ -1,11 +1,40 @@
 #pragma once
 #include"../ID/IDBase.h"
 #include<concepts>
+#include"../../Debug/DebugLogSystem.h"
 
 /// <summary>
 /// キー名前空間
 /// </summary>
 namespace key {
+
+	/// <summary>
+	/// 初期設定値キー
+	/// </summary>
+	struct DefaultKey {
+
+		/* ===== メンバー変数 ===== */
+
+		/// <summary>
+		/// キー保存変数
+		/// </summary>
+		std::uint32_t key_value{};
+
+		/* ===== メンバー関数 ===== */
+
+		/// <summary>
+		/// コンストラクタ
+		/// </summary>
+		DefaultKey() = default;
+
+		/// <summary>
+		/// 引数付きコンストラクタ
+		/// </summary>
+		/// <param name="value">キーに入れる値</param>
+		DefaultKey(std::uint32_t value) :
+			key_value{ value } {}
+
+	};
 
 	/* ========== テンプレートコンセプト定義 ========== */
 
@@ -13,7 +42,7 @@ namespace key {
 	/// テンプレートコンセプト定義用名前空間
 	/// </summary>
 	namespace concepts {
-	
+
 		/// <summary>
 		/// キー指定コンセプト
 		/// </summary>
@@ -22,8 +51,9 @@ namespace key {
 		///	それが[std::uint32_t] であることを保証する
 		/// </details>
 		template<typename T>
-		concept HasKeyValue = requires(const T & value) { value.key_value; }
-		&& std::same_as<decltype(std::declval<T>().key_value), std::uint32_t>;
+		concept HasKeyValue = requires(const T & value) {
+			value.key_value;
+		} && std::same_as<decltype(T::key_value),std::uint32_t>;
 
 	}
 
@@ -37,7 +67,7 @@ namespace key {
 	/// </details>
 	/// <typeparam name="T">エンコードするキー</typeparam>
 	/// <typeparam name="U">デコードするキー</typeparam>
-	template<concepts::HasKeyValue T, concepts::HasKeyValue U>
+	template<concepts::HasKeyValue T = DefaultKey, concepts::HasKeyValue U = DefaultKey>
 	class KeyConverterBase
 	{
 	public:
@@ -50,7 +80,7 @@ namespace key {
 		/// デストラクタ
 		/// </summary>
 		virtual ~KeyConverterBase() = default;
-		
+
 		/// <summary>
 		/// エンコード関数
 		/// </summary>

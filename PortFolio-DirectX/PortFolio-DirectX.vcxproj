@@ -231,6 +231,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_resource_helpers.h" />
     <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_root_signature.h" />
     <ClInclude Include="..\RendererInterface\DirectX\AddFile\d3dx12_state_object.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\Container\KeyMapBase.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticContainerBase.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticDrawCommandsContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticDrawObjectContainer.h" />
@@ -293,7 +294,12 @@
     <ClInclude Include="..\Utility\Container\UnorderedMapBase.h" />
     <ClInclude Include="..\Utility\Enum\EnumArray.h" />
     <ClInclude Include="..\Utility\Enum\EnumToIndex.h" />
+    <ClInclude Include="..\Utility\ID\IDBase.h" />
+    <ClInclude Include="..\Utility\Key\FeistelKeyConverter.h" />
+    <ClInclude Include="..\Utility\Key\KeyConverterBase.h" />
     <ClInclude Include="..\Utility\NonMovable.h" />
+    <ClInclude Include="..\Utility\Others\CircularIndex.h" />
+    <ClInclude Include="..\Utility\Others\NonCopyableBase.h" />
     <ClInclude Include="..\Utility\WIndowSize.h" />
     <ClInclude Include="..\windowInterface\wIndowEvents\WindowEvents.h" />
     <ClInclude Include="..\windowInterface\windowFactory.h" />

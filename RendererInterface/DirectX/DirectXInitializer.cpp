@@ -165,20 +165,20 @@ namespace {
 [[nodiscard]] bool DirectXInitializer::compile_shader(DirectXRendererContext* context) {
 
 	//	シェーダーコンテナインスタンス生成&登録
-	if (FAILED(context->shader_container->compile_shader("Normal_vs", L"../RendererInterface/HLSLshader/NormalVertexShader.hlsl", "main", "vs_5_0"))) {
+	if (FAILED(context->shader_container->compile_shader(key::DefaultKey(1), L"../RendererInterface/HLSLshader/NormalVertexShader.hlsl", "main", "vs_5_0"))) {
 		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Normal_vs");
 		return false;
 	}
-	if (FAILED(context->shader_container->compile_shader("Normal_ps", L"../RendererInterface/HLSLshader/NormalPixelShader.hlsl", "main", "ps_5_0"))) {
+	if (FAILED(context->shader_container->compile_shader(key::DefaultKey(2), L"../RendererInterface/HLSLshader/NormalPixelShader.hlsl", "main", "ps_5_0"))) {
 		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Normal_ps");
 		return false;
 	}
 
-	if (FAILED(context->shader_container->compile_shader("Color_vs", L"../RendererInterface/HLSLshader/ColorVertexShader.hlsl", "main", "vs_5_0"))) {
+	if (FAILED(context->shader_container->compile_shader(key::DefaultKey(3), L"../RendererInterface/HLSLshader/ColorVertexShader.hlsl", "main", "vs_5_0"))) {
 		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Color_vs");
 		return false;
 	}
-	if (FAILED(context->shader_container->compile_shader("Color_ps", L"../RendererInterface/HLSLshader/ColorPixelShader.hlsl", "main", "ps_5_0"))) {
+	if (FAILED(context->shader_container->compile_shader(key::DefaultKey(4), L"../RendererInterface/HLSLshader/ColorPixelShader.hlsl", "main", "ps_5_0"))) {
 		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Color_ps");
 		return false;
 	}
@@ -216,10 +216,11 @@ namespace {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 	};
 
+
 	//	必要なインスタンス設定
 	pipline_desc.root_signature = context->root_signature_container->get_root_signature("Normal_root");
-	pipline_desc.vs_hlsl = context->shader_container->get_shader("Normal_vs");
-	pipline_desc.ps_hlsl = context->shader_container->get_shader("Normal_ps");
+	pipline_desc.vs_hlsl = context->shader_container->get_handle(key::DefaultKey(1)).shader_p->get_shader();
+	pipline_desc.ps_hlsl = context->shader_container->get_handle(key::DefaultKey(2)).shader_p->get_shader();
 
 	pipline_desc.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
 	pipline_desc.blend_desc = helper::PipelineStateHelper::get_enable_blend();
@@ -248,8 +249,8 @@ namespace {
 
 	//	必要なインスタンス設定
 	color_pipline.root_signature = context->root_signature_container->get_root_signature("Normal_root");
-	color_pipline.vs_hlsl = context->shader_container->get_shader("Color_vs");
-	color_pipline.ps_hlsl = context->shader_container->get_shader("Color_ps");
+	color_pipline.vs_hlsl = context->shader_container->get_handle(key::DefaultKey(3)).shader_p->get_shader();
+	color_pipline.ps_hlsl = context->shader_container->get_handle(key::DefaultKey(4)).shader_p->get_shader();
 
 	color_pipline.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
 	color_pipline.blend_desc = helper::PipelineStateHelper::get_enable_blend();
@@ -292,7 +293,7 @@ namespace {
 
 	//	参照をキューに追加
 	HandyItems::container::ReferenceQueue<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_queue{};
-	upload_queue.add_reference(upload_resources);
+	upload_queue.add_references(upload_resources);
 
 	/* ==================== Mesh作成 ==================== */
 
@@ -635,7 +636,7 @@ namespace {
 	resources.static_heap_container = context->static_heap_container.get();
 	resources.static_draw_object_container = context->static_draw_object_container.get();
 
-	resources.render_targets[Enum::enum_to_index(RenderTargetSlot::BackBuffer)] = context->back_buffers[backBufferIndex].get();
+	resources.render_targets[HandyItems::Enum::enum_to_index(RenderTargetSlot::BackBuffer)] = context->back_buffers[backBufferIndex].get();
 
 	return resources;
 

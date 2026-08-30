@@ -43,8 +43,14 @@ namespace HandyItems {
 				reference_queue.push(value);
 			}
 
-			template<std::ranges::range T>
-			void add_reference(T& value) {
+			/// <summary>
+			/// 参照配列追加関数
+			/// </summary>
+			/// <typeparam name="R"></typeparam>
+			/// <param name="value"></param>
+			template<std::ranges::range R>
+			requires std::same_as<std::remove_cvref_t<std::ranges::range_reference_t<R>>, T>
+			void add_references(R& value) {
 				for (auto& p : value) {
 					reference_queue.push(p);
 				}

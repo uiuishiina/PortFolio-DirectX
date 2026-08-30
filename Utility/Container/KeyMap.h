@@ -45,35 +45,85 @@ namespace HandyItems {
 			~KeyMap() = default;
 
 			/// <summary>
-			/// コンテナ追加関数
+			/// データ追加関数
 			/// </summary>
 			/// <param name="key">登録するキー</param>
 			/// <param name="value">追加する値</param>
 			/// <returns>追加の成否</returns>
-			[[nodiscard]] bool add_value(const Key& key, const Value& value) {
+			[[nodiscard]] bool add_value(const Key& key, Value&& value) {
 
 				return map_.add_value(encode_key(key).key_value, std::move(value));
 			}
 
+
+			/* ===== 通常取得側 ===== */
+
 			/// <summary>
-			/// コンテナ取得関数
+			/// データ取得関数
 			/// </summary>
 			/// <param name="key">探索するキー</param>
 			/// <returns>取得した値... ないなら [ std::nullopt ]</returns>
-			[[nodiscard]] std::optional<Value> get_value(const Key& key) const noexcept {
+			[[nodiscard]] std::optional<Value> get_value(const Key& key) noexcept {
 
 				return map_.get_value(encode_key(key).key_value);
 			}
 
+			[[nodiscard]] const std::optional<Value> get_value(const Key& key)const noexcept {
+
+				return map_.get_value(encode_key(key).key_value);
+			}
+
+
 			/// <summary>
-			/// コンテナ取得オーバーロード関数
+			/// データ取得関数
 			/// </summary>
-			/// <param name="encode_key">エンコードされたキー</param>
+			/// <param name="encode_key">エンコードされた探索するキー</param>
 			/// <returns>取得した値... ないなら [ std::nullopt ]</returns>
-			[[nodiscard]] std::optional<Value> get_value(const EncodedKey& encode_key) const noexcept {
+			[[nodiscard]] std::optional<Value> get_value(const EncodedKey& encode_key) noexcept {
 
 				return map_.get_value(encode_key.key_value);
 			}
+
+			[[nodiscard]] const std::optional<Value> get_value(const EncodedKey& encode_key) const noexcept {
+
+				return map_.get_value(encode_key.key_value);
+			}
+
+
+			/* ===== ポインター取得側 ===== */
+
+			/// <summary>
+			/// データ取得関数
+			/// </summary>
+			/// <param name="key">探索するキー</param>
+			/// <returns>取得した値のポインター</returns>
+			[[nodiscard]] Value* get_value_p(const Key& key) noexcept {
+
+				return map_.get_value_p(encode_key(key).key_value);
+			}
+
+			[[nodiscard]] const Value* get_value_p(const Key& key) const noexcept {
+
+				return map_.get_value_p(encode_key(key).key_value);
+			}
+
+			/// <summary>
+			/// データ取得関数
+			/// </summary>
+			/// <param name="key">探索するキー</param>
+			/// <returns>取得した値のポインター</returns>
+			[[nodiscard]] Value* get_value_p(const EncodedKey& encode_key) noexcept {
+
+				return map_.get_value_p(encode_key.key_value);
+			}
+
+			[[nodiscard]] const Value* get_value_p(const EncodedKey& encode_key) const noexcept {
+
+				return map_.get_value_p(encode_key.key_value);
+			}
+
+
+			/* ===== その他 ===== */
 
 			/// <summary>
 			/// エンコード関数
@@ -90,7 +140,7 @@ namespace HandyItems {
 			/// </summary>
 			/// <param name="encode_key">デコードしたいキー</param>
 			/// <returns>デコードされたキー</returns>
-			[[nodiscard]] Key decode_key(const Key& encode_key)const noexcept {
+			[[nodiscard]] Key decode_key(const EncodedKey& encode_key)const noexcept {
 
 				return converter_.decode_key(encode_key);
 			}

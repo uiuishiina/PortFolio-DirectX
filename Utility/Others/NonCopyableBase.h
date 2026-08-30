@@ -35,14 +35,14 @@ namespace others {
 		//	ムーブ代入演算子削除
 		NonCopyableBase& operator=(NonCopyableBase&&) = delete;
 
-	private:
+	protected:
 		/* ===== メンバー関数 ===== */
 
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
 		/// <details>
-		/// このクラスはインスタンスを作成できないようにするため [ Private]
+		/// このクラスはインスタンスを作成できないようにするため [ protected ]
 		/// </details>
 		NonCopyableBase() = default;
 

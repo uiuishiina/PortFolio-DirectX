@@ -67,6 +67,15 @@
     <Filter Include="Utility\Container">
       <UniqueIdentifier>{26ff516b-d0ac-4136-805a-ed6d99d018e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utility\Key">
+      <UniqueIdentifier>{0faaee61-3122-4e5f-8f6b-276a7cfd7309}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Others">
+      <UniqueIdentifier>{7e9b341e-9017-4519-ac5e-0e25610e1c80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\ID">
+      <UniqueIdentifier>{7fafe35f-455e-4469-8ecb-ed985f6c9357}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\EntryPoint.cpp">
@@ -535,6 +544,24 @@
     </ClInclude>
     <ClInclude Include="..\Utility\Container\UnorderedMapBase.h">
       <Filter>Utility\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utility\Key\FeistelKeyConverter.h">
+      <Filter>Utility\Key</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utility\Key\KeyConverterBase.h">
+      <Filter>Utility\Key</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utility\Others\CircularIndex.h">
+      <Filter>Utility\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utility\Others\NonCopyableBase.h">
+      <Filter>Utility\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Container\KeyMapBase.h">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utility\ID\IDBase.h">
+      <Filter>Utility\ID</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

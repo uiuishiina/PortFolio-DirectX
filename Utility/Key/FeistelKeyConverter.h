@@ -1,7 +1,6 @@
 #pragma once
 #include"KeyConverterBase.h"
 
-
 /// <summary>
 /// キー名前空間
 /// </summary>
