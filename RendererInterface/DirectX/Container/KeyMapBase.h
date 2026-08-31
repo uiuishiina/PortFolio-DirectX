@@ -3,23 +3,90 @@
 #include"Container/KeyMap.h"
 #include"Key/FeistelKeyConverter.h"
 
-///====================================================================
+/// <summary>
 /// 描画名前空間
-///====================================================================
-
+/// </summary>
 namespace render {
 
-	///====================================================================
+	/// <summary>
 	/// DirectX名前空間
-	///====================================================================
-
+	/// </summary>
 	namespace dx12 {
 
-		///====================================================================
+		/// <summary>
 		/// コンテナ名前空間
-		///====================================================================
-
+		/// </summary>
 		namespace container {
+
+
+			/* ========== 汎用キー&ハンドル定義 ========== */
+
+			/// <summary>
+			/// ハンドル名前空間
+			/// </summary>
+			namespace handle {
+
+
+				/* ========== 汎用基底キー定義 ========== */
+
+				/// <summary>
+				/// 倫理側基底キー
+				/// </summary>
+				struct LogicalKey : public key::DefaultKey {
+
+					/// <summary>
+					/// コンストラクタ
+					/// </summary>
+					LogicalKey() = default;
+
+					/// <summary>
+					/// 引数付きコンストラクタ
+					/// </summary>
+					/// <param name="key">キーに入れる値</param>
+					LogicalKey(std::uint32_t key) :
+						DefaultKey(key) {}
+				};
+
+				/// <summary>
+				/// 保存側基底キー
+				/// </summary>
+				struct EncodeKey : public key::DefaultKey {
+
+					/// <summary>
+					/// コンストラクタ
+					/// </summary>
+					EncodeKey() = default;
+				};
+
+
+				/* ========== 汎用基底ハンドル定義 ========== */
+
+				/// <summary>
+				/// ハンドル基底構造体
+				/// </summary>
+				/// <typeparam name="T">保存している型</typeparam>
+				/// <typeparam name="Key">保存側の派生キーの型</typeparam>
+				template<typename T, typename Key>
+					requires std::derived_from<Key, EncodeKey>
+				struct HandleBase {
+					T handle_{};
+					Key handle_key{};
+				};
+
+				/// <summary>
+				/// ポインターハンドル基底構造体
+				/// </summary>
+				/// <typeparam name="T">保存している型</typeparam>
+				/// <typeparam name="Key">保存側の派生キーの型</typeparam>
+				template<typename T, typename Key>
+					requires std::derived_from<Key, EncodeKey>
+				struct HandlePtrBase {
+					T* handle_p{};
+					Key handle_key{};
+				};
+			}
+
+			/* ========== 汎用キーマップ基底クラス定義 ========== */
 
 			/// <summary>
 			/// 汎用キーハッシュ利用マップ保存基底クラス
@@ -56,7 +123,7 @@ namespace render {
 				/// <param name="key">取得したいデータに紐づいた倫理側キー</param>
 				/// <returns>ハンドル</returns>
 				[[nodiscard]] virtual Handle get_handle(const Key& key) noexcept = 0;
-				[[nodiscard]] virtual const Handle get_handle(const Key& key) const noexcept = 0;
+				[[nodiscard]] virtual Handle get_handle(const Key& key) const noexcept = 0;
 
 				/// <summary>
 				/// ハンドル取得関数
@@ -64,7 +131,7 @@ namespace render {
 				/// <param name="encode_key">取得したいデータに紐づいた保存用キー</param>
 				/// <returns>ハンドル</returns>
 				[[nodiscard]] virtual Handle get_handle(const EncodedKey& encode_key) noexcept = 0;
-				[[nodiscard]] virtual const Handle get_handle(const EncodedKey& encode_key) const noexcept = 0;
+				[[nodiscard]] virtual Handle get_handle(const EncodedKey& encode_key) const noexcept = 0;
 
 
 			protected:
@@ -97,7 +164,7 @@ namespace render {
 					return map_.get_value(key);
 				}
 
-				[[nodiscard]] const std::optional<Value> get_value(const Key& key) const noexcept {
+				[[nodiscard]] std::optional<Value> get_value(const Key& key) const noexcept {
 					return map_.get_value(key);
 				}
 
@@ -110,7 +177,7 @@ namespace render {
 					return map_.get_value(encode_key);
 				}
 
-				[[nodiscard]] const std::optional<Value> get_value(const EncodedKey& encode_key) const noexcept {
+				[[nodiscard]] std::optional<Value> get_value(const EncodedKey& encode_key) const noexcept {
 					return map_.get_value(encode_key);
 				}
 

@@ -12,6 +12,9 @@ namespace HandyItems {
 	/// </summary>
 	namespace container {
 
+
+		/* ========== キーマップクラス定義 ========== */
+
 		/// <summary>
 		/// 重複なしキー変換保存クラス
 		/// </summary>
@@ -68,7 +71,7 @@ namespace HandyItems {
 				return map_.get_value(encode_key(key).key_value);
 			}
 
-			[[nodiscard]] const std::optional<Value> get_value(const Key& key)const noexcept {
+			[[nodiscard]] std::optional<Value> get_value(const Key& key) const noexcept {
 
 				return map_.get_value(encode_key(key).key_value);
 			}
@@ -84,7 +87,7 @@ namespace HandyItems {
 				return map_.get_value(encode_key.key_value);
 			}
 
-			[[nodiscard]] const std::optional<Value> get_value(const EncodedKey& encode_key) const noexcept {
+			[[nodiscard]] std::optional<Value> get_value(const EncodedKey& encode_key) const noexcept {
 
 				return map_.get_value(encode_key.key_value);
 			}

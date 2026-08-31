@@ -1,74 +1,97 @@
 #pragma once
 #include"../DirectXobject/RootSignature.h"
-#include"StaticContainerBase.h"
-#include<string>
-#include<unordered_map>
-#include<memory>
-#include<optional>
+#include"UniqueptrKeyMap.h"
 
-///====================================================================
+/// <summary>
 /// 描画名前空間
-///====================================================================
-
+/// </summary>
 namespace render {
 
-	///====================================================================
+	/// <summary>
 	/// DirectX名前空間
-	///====================================================================
-
+	/// </summary>
 	namespace dx12 {
-
-		///====================================================================
+		
+		/// <summary>
 		/// コンテナ名前空間
-		///====================================================================
-
+		/// </summary>
 		namespace container {
 
-			///====================================================================
-			/// StaticRootSignatureContainer クラス
-			///====================================================================
 
-			//@brief	=== 初期作成ルートシグネチャーコンテナクラス ===
-			class StaticRootSignatureContainer final : public StaticContainerBase
+			/* ========== ルートシグネチャー用キー定義 ========== */
+
+			/// <summary>
+			/// ハンドル名前空間
+			/// </summary>
+			namespace handle {
+
+				/// <summary>
+				/// ルートシグネチャー用倫理側派生キー
+				/// </summary>
+				struct RootSignatureKey : public LogicalKey {
+
+					/// <summary>
+					/// コンストラクタ
+					/// </summary>
+					RootSignatureKey() = default;
+				
+					/// <summary>
+					/// デストラクタ
+					/// </summary>
+					/// <param name="key">キーに入れる値</param>
+					explicit RootSignatureKey(std::uint32_t key) :
+						LogicalKey(key) {}
+				};
+
+				/// <summary>
+				/// ルートシグネチャー用保存側派生キー
+				/// </summary>
+				struct RSEncodeKey : public EncodeKey {
+
+					/// <summary>
+					/// コンストラクタ
+					/// </summary>
+					RSEncodeKey() = default;
+				};
+			}
+
+
+			/* ========== ルートシグネチャーコンテナクラス定義 ========== */
+
+			/// <summary>
+			/// ルートシグネチャーコンテナクラス
+			/// </summary>
+			/// <typeparam name="handle::RootSignatureKey">ルートシグネチャー用倫理側派生キー</typeparam>
+			/// <typeparam name="handle::RSEncodeKey">ルートシグネチャー用保存側派生キー</typeparam>
+			/// <typeparam name="object::RootSignature">ルートシグネチャークラス</typeparam>
+			class StaticRootSignatureContainer final : public UniqueptrKeyMap<
+				handle::RootSignatureKey,
+				handle::RSEncodeKey,
+				object::RootSignature
+			>
 			{
 			public:
-				///====================================================================
-				/// クラス設定
-				///====================================================================
+				/* ========== メンバー関数 ========== */
 
-				//コンストラクタ,デストラクタ
+				/// <summary>
+				/// コンストラクタ
+				/// </summary>
 				StaticRootSignatureContainer() = default;
+
+				/// <summary>
+				/// デストラクタ
+				/// </summary>
 				~StaticRootSignatureContainer() = default;
 
-				///====================================================================
-				/// Public メンバー関数
-				///====================================================================
 
-				//@brief	=== ルートシグネチャー作成関数 ===
-				//@param	key_name	登録するキーの名前
-				//@param	device	DirectX12 デバイス
-				//@param	desc	ルートシグネチャー設定
-				//@return	作成の成否
-				[[nodiscard]] HRESULT create_root_signature(const std::string& key_name, ID3D12Device* device, desc::RootSignatureDesc& desc);
-
-				//@brief	=== ルートシグネチャー取得関数 ===
-				//@param	key	ルートシグネチャーと紐づけたキー
-				//@return	ルートシグネチャー参照
-				[[nodiscard]] ID3D12RootSignature* get_root_signature(UINT key)const noexcept;
-
-				//@brief	=== ルートシグネチャー取得関数オーバーロード ===
-				//@param	key_name	ルートシグネチャーと紐づけたキーの名前
-				//@return	ルートシグネチャー参照
-				[[nodiscard]] ID3D12RootSignature* get_root_signature(const std::string& key_name)const noexcept;
-
-			private:
-				///====================================================================
-				/// Private メンバー変数
-				///====================================================================
-
-				//@brief	== ルートシグネチャー保存マップ ===
-				//@details	作成できたルートシグネチャーを保存するmap
-				std::unordered_map<UINT, std::unique_ptr<object::RootSignature>> root_map{};
+				/// <summary>
+				/// ルートシグネチャー作成関数
+				/// </summary>
+				/// <param name="key">追加したい倫理側のキー</param>
+				/// <param name="device">DirectX12デバイスポインター</param>
+				/// <param name="desc">ルートシグネチャー設定</param>
+				/// <returns>作成の成否</returns>
+				[[nodiscard]] HRESULT create_root_signature(const handle::RootSignatureKey& key, ID3D12Device* device, desc::RootSignatureDesc& desc);
 
 			};
 		};

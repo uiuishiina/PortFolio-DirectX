@@ -165,20 +165,20 @@ namespace {
 [[nodiscard]] bool DirectXInitializer::compile_shader(DirectXRendererContext* context) {
 
 	//	シェーダーコンテナインスタンス生成&登録
-	if (FAILED(context->shader_container->compile_shader(key::DefaultKey(1), L"../RendererInterface/HLSLshader/NormalVertexShader.hlsl", "main", "vs_5_0"))) {
+	if (FAILED(context->shader_container->compile_shader(container::handle::ShaderKey(1), L"../RendererInterface/HLSLshader/NormalVertexShader.hlsl", "main", "vs_5_0"))) {
 		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Normal_vs");
 		return false;
 	}
-	if (FAILED(context->shader_container->compile_shader(key::DefaultKey(2), L"../RendererInterface/HLSLshader/NormalPixelShader.hlsl", "main", "ps_5_0"))) {
+	if (FAILED(context->shader_container->compile_shader(container::handle::ShaderKey(2), L"../RendererInterface/HLSLshader/NormalPixelShader.hlsl", "main", "ps_5_0"))) {
 		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Normal_ps");
 		return false;
 	}
 
-	if (FAILED(context->shader_container->compile_shader(key::DefaultKey(3), L"../RendererInterface/HLSLshader/ColorVertexShader.hlsl", "main", "vs_5_0"))) {
+	if (FAILED(context->shader_container->compile_shader(container::handle::ShaderKey(3), L"../RendererInterface/HLSLshader/ColorVertexShader.hlsl", "main", "vs_5_0"))) {
 		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Color_vs");
 		return false;
 	}
-	if (FAILED(context->shader_container->compile_shader(key::DefaultKey(4), L"../RendererInterface/HLSLshader/ColorPixelShader.hlsl", "main", "ps_5_0"))) {
+	if (FAILED(context->shader_container->compile_shader(container::handle::ShaderKey(4), L"../RendererInterface/HLSLshader/ColorPixelShader.hlsl", "main", "ps_5_0"))) {
 		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Color_ps");
 		return false;
 	}
@@ -200,7 +200,7 @@ namespace {
 	desc::RootSignatureDesc root_desc{};
 	builder::RootSignatureDescBuilder::add_flags(root_desc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
-	if (FAILED(context->root_signature_container->create_root_signature("Normal_root", deviceP, root_desc))) {
+	if (FAILED(context->root_signature_container->create_root_signature(container::handle::RootSignatureKey(1), deviceP, root_desc))) {
 		DEBUG_LOG("DirectXRenderer :: create_root_signature() FAILED");
 		return false;
 	}
@@ -216,11 +216,10 @@ namespace {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 	};
 
-
 	//	必要なインスタンス設定
-	pipline_desc.root_signature = context->root_signature_container->get_root_signature("Normal_root");
-	pipline_desc.vs_hlsl = context->shader_container->get_handle(key::DefaultKey(1)).shader_p->get_shader();
-	pipline_desc.ps_hlsl = context->shader_container->get_handle(key::DefaultKey(2)).shader_p->get_shader();
+	pipline_desc.root_signature = context->root_signature_container->get_handle(container::handle::RootSignatureKey(1)).handle_p->get_root_signature();
+	pipline_desc.vs_hlsl = context->shader_container->get_handle(container::handle::ShaderKey(1)).handle_p->get_shader();
+	pipline_desc.ps_hlsl = context->shader_container->get_handle(container::handle::ShaderKey(2)).handle_p->get_shader();
 
 	pipline_desc.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
 	pipline_desc.blend_desc = helper::PipelineStateHelper::get_enable_blend();
@@ -231,7 +230,7 @@ namespace {
 	//フォーマット指定
 	pipline_desc.dsv_format = depth_format;
 
-	if (FAILED(context->pipline_container->create_pipline_state("Normal_pipline", deviceP, pipline_desc))) {
+	if (FAILED(context->pipline_container->create_pipline_state(container::handle::PiplineStateKey(1), deviceP, pipline_desc))) {
 		DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
 		return false;
 	}
@@ -248,9 +247,9 @@ namespace {
 	};
 
 	//	必要なインスタンス設定
-	color_pipline.root_signature = context->root_signature_container->get_root_signature("Normal_root");
-	color_pipline.vs_hlsl = context->shader_container->get_handle(key::DefaultKey(3)).shader_p->get_shader();
-	color_pipline.ps_hlsl = context->shader_container->get_handle(key::DefaultKey(4)).shader_p->get_shader();
+	color_pipline.root_signature = context->root_signature_container->get_handle(container::handle::RootSignatureKey(1)).handle_p->get_root_signature();
+	color_pipline.vs_hlsl = context->shader_container->get_handle(container::handle::ShaderKey(3)).handle_p->get_shader();
+	color_pipline.ps_hlsl = context->shader_container->get_handle(container::handle::ShaderKey(4)).handle_p->get_shader();
 
 	color_pipline.rasterizer_desc.FillMode = static_cast<D3D12_FILL_MODE>(3);	//	D3D12_FILL_MODE_WIREFRAME = 2,D3D12_FILL_MODE_SOLID = 3
 	color_pipline.blend_desc = helper::PipelineStateHelper::get_enable_blend();
@@ -259,7 +258,7 @@ namespace {
 	//フォーマット指定
 	color_pipline.dsv_format = depth_format;
 
-	if (FAILED(context->pipline_container->create_pipline_state("Color_pipline", deviceP, color_pipline))) {
+	if (FAILED(context->pipline_container->create_pipline_state(container::handle::PiplineStateKey(2), deviceP, color_pipline))) {
 		DEBUG_LOG("DirectXRenderer :: create_piplinestate() FAILED");
 		return false;
 	}
@@ -475,8 +474,8 @@ namespace {
 		/* ==================== DrawState作成 ==================== */
 
 		desc::DrawStateDesc draw_state_desc{};
-		draw_state_desc.root_signature = context->root_signature_container->get_root_signature("Normal_root");
-		draw_state_desc.pipline_state = context->pipline_container->get_pipline_state("Normal_pipline");
+		draw_state_desc.root_signature = context->root_signature_container->get_handle(container::handle::RootSignatureKey(1)).handle_p->get_root_signature();
+		draw_state_desc.pipline_state = context->pipline_container->get_handle(container::handle::PiplineStateKey(1)).handle_p->get_pipline_state();
 
 		// ビューポート設定
 		draw_state_desc.viewport_ = helper::ViewportHelper::create_viewport(static_cast<float>(window_size.width), static_cast<float>(window_size.height));
@@ -546,8 +545,8 @@ namespace {
 	{
 		/* ==================== DrawState作成 ==================== */
 		desc::DrawStateDesc draw_state_desc{};
-		draw_state_desc.root_signature = context->root_signature_container->get_root_signature("Normal_root");
-		draw_state_desc.pipline_state = context->pipline_container->get_pipline_state("Color_pipline");
+		draw_state_desc.root_signature = context->root_signature_container->get_handle(container::handle::RootSignatureKey(1)).handle_p->get_root_signature();
+		draw_state_desc.pipline_state = context->pipline_container->get_handle(container::handle::PiplineStateKey(2)).handle_p->get_pipline_state();
 
 		// ビューポート設定
 		draw_state_desc.viewport_ = helper::ViewportHelper::create_viewport(static_cast<float>(window_size.width), static_cast<float>(window_size.height));

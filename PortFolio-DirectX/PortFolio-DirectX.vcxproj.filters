@@ -563,6 +563,9 @@
     <ClInclude Include="..\Utility\ID\IDBase.h">
       <Filter>Utility\ID</Filter>
     </ClInclude>
+    <ClInclude Include="..\RendererInterface\DirectX\Container\UniqueptrKeyMap.h">
+      <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\windowInterface\WIndowInterface.Readme.txt">
