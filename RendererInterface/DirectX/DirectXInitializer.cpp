@@ -324,7 +324,7 @@ namespace {
 		return false;
 	}
 
-	if (!context->static_draw_object_container->register_draw_object("NormalPolygon", std::move(Normal_Polygon))) {
+	if (!context->static_draw_object_container->register_draw_object(container::handle::DrawObjectKey(1), std::move(Normal_Polygon))) {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
@@ -355,7 +355,7 @@ namespace {
 		return false;
 	}
 
-	if (!context->static_draw_object_container->register_draw_object("ColorPolygon", std::move(Color_Polygon))) {
+	if (!context->static_draw_object_container->register_draw_object(container::handle::DrawObjectKey(2), std::move(Color_Polygon))) {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
@@ -506,7 +506,7 @@ namespace {
 		if (!context->static_draw_commands_container->add_command_map("draw_Normal_polygon",
 			[](resources::DrawResources& resource) {
 
-				resource.static_draw_object_container->get_draw_object("NormalPolygon")->draw(resource.graphics_list);
+				resource.static_draw_object_container->get_handle(container::handle::DrawObjectKey(1)).handle_p->draw(resource.graphics_list);
 
 			})) {
 			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
@@ -567,7 +567,7 @@ namespace {
 		if (!context->static_draw_commands_container->add_command_map("draw_Color_polygon",
 			[](resources::DrawResources& resource) {
 
-				resource.static_draw_object_container->get_draw_object("ColorPolygon")->draw(resource.graphics_list);
+				resource.static_draw_object_container->get_handle(container::handle::DrawObjectKey(2)).handle_p->draw(resource.graphics_list);
 
 			})) {
 			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
