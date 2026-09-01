@@ -404,7 +404,7 @@ namespace {
 
 		//	コマンド作成
 		//	バックバッファバリアをTargetに変更
-		if (!context->static_draw_commands_container->add_command_map("backbuffer_barrier_target",
+		if (!context->static_draw_commands_container->add_command_map(container::handle::CommandKey("backbuffer_barrier_target"),
 			[](resources::DrawResources& resource) {
 
 				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
@@ -415,7 +415,7 @@ namespace {
 		}
 
 		//	バックバッファバリアをPresentに変更
-		if (!context->static_draw_commands_container->add_command_map("backbuffer_barrier_present",
+		if (!context->static_draw_commands_container->add_command_map(container::handle::CommandKey("backbuffer_barrier_present"),
 			[](resources::DrawResources& resource) {
 
 				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
@@ -426,7 +426,7 @@ namespace {
 		}
 
 		//	バックバッファとデプスバッファクリア
-		if (!context->static_draw_commands_container->add_command_map("claer_backbuffer_and_depthbuffer",
+		if (!context->static_draw_commands_container->add_command_map(container::handle::CommandKey("claer_backbuffer_and_depthbuffer"),
 			[](resources::DrawResources& resource) {
 
 				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
@@ -445,7 +445,7 @@ namespace {
 		draw_commands_desc.apply_names = { "claer_backbuffer_and_depthbuffer" };
 		draw_commands_desc.end_name = "backbuffer_barrier_present";
 
-		if (!context->static_draw_commands_container->create_draw_commands("Clear_Backbuffer", draw_commands_desc)) {
+		if (!context->static_draw_commands_container->create_draw_commands(container::handle::DrawCommandsKey("Clear_Backbuffer"), draw_commands_desc)) {
 			DEBUG_LOG("DirectXRenderer :: create_draw_commands() FAILED");
 			return false;
 		}
@@ -454,7 +454,7 @@ namespace {
 
 		auto clear_pass = std::make_unique<pass::CommandPass>();
 
-		desc::CommandPassDesc clear_pass_desc(context->static_draw_commands_container->get_draw_commands("Clear_Backbuffer"));
+		desc::CommandPassDesc clear_pass_desc(context->static_draw_commands_container->get_handle_to_name("Clear_Backbuffer").handle_p);
 		if (!clear_pass->initialize_pass(clear_pass_desc)) {
 			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
 		}
@@ -503,7 +503,7 @@ namespace {
 		//	コマンド作成
 
 		//	無色ポリゴン描画
-		if (!context->static_draw_commands_container->add_command_map("draw_Normal_polygon",
+		if (!context->static_draw_commands_container->add_command_map(container::handle::CommandKey("draw_Normal_polygon"),
 			[](resources::DrawResources& resource) {
 
 				resource.static_draw_object_container->get_handle(container::handle::DrawObjectKey(1)).handle_p->draw(resource.graphics_list);
@@ -518,7 +518,7 @@ namespace {
 		draw_commands_desc.apply_names = { "draw_Normal_polygon" };
 		draw_commands_desc.end_name = "backbuffer_barrier_present";
 
-		if (!context->static_draw_commands_container->create_draw_commands("Normal_Commands", draw_commands_desc)) {
+		if (!context->static_draw_commands_container->create_draw_commands(container::handle::DrawCommandsKey("Normal_Commands"), draw_commands_desc)) {
 			DEBUG_LOG("DirectXRenderer :: create_draw_commands() FAILED");
 			return false;
 		}
@@ -528,7 +528,7 @@ namespace {
 		desc::DrawPassDesc normal_pass_desc(
 			context->static_draw_state_container->get_handle_to_name("Normal_State").handle_p,
 			context->static_render_target_state_container->get_handle_to_name("Normal_Target").handle_p,
-			context->static_draw_commands_container->get_draw_commands("Normal_Commands")
+			context->static_draw_commands_container->get_handle_to_name("Normal_Commands").handle_p
 		);
 
 		auto normal_pass = std::make_unique<pass::DrawPass>();
@@ -564,7 +564,7 @@ namespace {
 		//	描画コマンド作成
 
 		//	色付きポリゴン描画
-		if (!context->static_draw_commands_container->add_command_map("draw_Color_polygon",
+		if (!context->static_draw_commands_container->add_command_map(container::handle::CommandKey("draw_Color_polygon"),
 			[](resources::DrawResources& resource) {
 
 				resource.static_draw_object_container->get_handle(container::handle::DrawObjectKey(2)).handle_p->draw(resource.graphics_list);
@@ -579,7 +579,7 @@ namespace {
 		draw_commands_desc.apply_names = { "draw_Color_polygon" };
 		draw_commands_desc.end_name = "backbuffer_barrier_present";
 
-		if (!context->static_draw_commands_container->create_draw_commands("Color_Commands", draw_commands_desc)) {
+		if (!context->static_draw_commands_container->create_draw_commands(container::handle::DrawCommandsKey("Color_Commands"), draw_commands_desc)) {
 			DEBUG_LOG("DirectXRenderer :: create_draw_commands() FAILED");
 			return false;
 		}
@@ -589,7 +589,7 @@ namespace {
 		desc::DrawPassDesc color_pass_desc(
 			context->static_draw_state_container->get_handle_to_name("Color_State").handle_p,
 			context->static_render_target_state_container->get_handle_to_name("Normal_Target").handle_p,
-			context->static_draw_commands_container->get_draw_commands("Color_Commands")
+			context->static_draw_commands_container->get_handle_to_name("Color_Commands").handle_p
 		);
 
 		auto color_pass = std::make_unique<pass::DrawPass>();
