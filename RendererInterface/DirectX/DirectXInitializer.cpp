@@ -483,7 +483,7 @@ namespace {
 		// シザー矩形設定
 		draw_state_desc.rect_ = helper::ScissorRectHelper::create_scissor_rect(window_size.width, window_size.height);
 
-		if (!context->static_draw_state_container->create_draw_state("Normal_State", draw_state_desc)) {
+		if (!context->static_draw_state_container->create_draw_state(container::handle::DrawStateKey("Normal_State"), draw_state_desc)) {
 			DEBUG_LOG("DirectXRenderer :: creaate_draw_state() FAILED");
 			return false;
 		}
@@ -526,7 +526,7 @@ namespace {
 		/* ==================== DrawPass作成 ==================== */
 
 		desc::DrawPassDesc normal_pass_desc(
-			context->static_draw_state_container->get_draw_state("Normal_State"),
+			context->static_draw_state_container->get_handle_to_name("Normal_State").handle_p,
 			context->static_render_target_state_container->get_handle_to_name("Normal_Target").handle_p,
 			context->static_draw_commands_container->get_draw_commands("Normal_Commands")
 		);
@@ -554,7 +554,7 @@ namespace {
 		// シザー矩形設定
 		draw_state_desc.rect_ = helper::ScissorRectHelper::create_scissor_rect(window_size.width, window_size.height);
 
-		if (!context->static_draw_state_container->create_draw_state("Color_State", draw_state_desc)) {
+		if (!context->static_draw_state_container->create_draw_state(container::handle::DrawStateKey("Color_State"), draw_state_desc)) {
 			DEBUG_LOG("DirectXRenderer :: creaate_draw_state() FAILED");
 			return false;
 		}
@@ -587,7 +587,7 @@ namespace {
 		/* ==================== DrawPass作成 ==================== */
 
 		desc::DrawPassDesc color_pass_desc(
-			context->static_draw_state_container->get_draw_state("Color_State"),
+			context->static_draw_state_container->get_handle_to_name("Color_State").handle_p,
 			context->static_render_target_state_container->get_handle_to_name("Normal_Target").handle_p,
 			context->static_draw_commands_container->get_draw_commands("Color_Commands")
 		);

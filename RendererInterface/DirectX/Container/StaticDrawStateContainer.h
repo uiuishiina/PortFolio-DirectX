@@ -1,70 +1,117 @@
 #pragma once
-#include"StaticContainerBase.h"
 #include"../DrawPass/DrawState.h"
+#include"UniqueptrKeyMap.h"
 
-///====================================================================
+/// <summary>
 /// 描画名前空間
-///====================================================================
-
+/// </summary>
 namespace render {
 
-	///====================================================================
+	/// <summary>
 	/// DirectX名前空間
-	///====================================================================
-
+	/// </summary>
 	namespace dx12 {
 
-		///====================================================================
+		/// <summary>
 		/// コンテナ名前空間
-		///====================================================================
-
+		/// </summary>
 		namespace container {
 			
-			///====================================================================
-			/// StaticDrawStateContainer クラス
-			///====================================================================
 
-			//@brief	=== 描画設定コンテナ ===
-			class StaticDrawStateContainer final : public StaticContainerBase
+			/* ========== 描画パス設定用キー定義 ========== */
+
+			/// <summary>
+			/// ハンドル名前空間
+			/// </summary>
+			namespace handle {
+
+				/// <summary>
+				/// 描画パス設定用倫理側派生キー
+				/// </summary>
+				struct DrawStateKey : public LogicalKey {
+
+					/// <summary>
+					/// コンストラクタ
+					/// </summary>
+					DrawStateKey() = default;
+
+					/// <summary>
+					/// 引数付きコンストラクタ
+					/// </summary>
+					/// <param name="key">キーに入れる値</param>
+					explicit DrawStateKey(std::uint32_t key) :
+						LogicalKey{ key } {}
+
+					/// <summary>
+					/// 引数付きコンストラクタ
+					/// </summary>
+					/// <param name="key">キーに入れる値</param>
+					explicit DrawStateKey(const char* key_name) :
+						LogicalKey{ static_cast<std::uint32_t>(HandyItems::id::get_id::get_name_id<DrawStateKey>(key_name)) } {}
+				};
+
+				/// <summary>
+				/// 描画パス設定用保存側派生キー
+				/// </summary>
+				struct DrawStateEncodeKey : public EncodeKey {
+
+					/// <summary>
+					/// コンストラクタ
+					/// </summary>
+					DrawStateEncodeKey() = default;
+				};
+			}
+
+			/// <summary>
+			/// 描画パス設定コンテナ
+			/// </summary>
+			class StaticDrawStateContainer final : public UniqueptrKeyMap<
+				handle::DrawStateKey,
+				handle::DrawStateEncodeKey,
+				state::Drawstate
+			>
 			{
 			public:
-				///====================================================================
-				/// クラス設定
-				///====================================================================
+				/* ========== メンバー関数 ========== */
 
-				//コンストラクタ,デストラクタ
+				/// <summary>
+				/// コンストラクタ
+				/// </summary>
 				StaticDrawStateContainer() = default;
+
+				/// <summary>
+				/// デストラクタ
+				/// </summary>
 				~StaticDrawStateContainer() = default;
 
-				///====================================================================
-				/// Public メンバー関数
-				///====================================================================
+
+				/* ===== 追加関数 ===== */
 				
-				//@brief	=== 描画設定作成関数 ===
-				//@param	key_name	登録するキーの名前
-				//@param	desc	描画設定
-				//@return	作成の成否
-				[[nodiscard]] bool create_draw_state(const std::string& key_name, desc::DrawStateDesc& desc);
+				/// <summary>
+				/// 描画設定作成関数
+				/// </summary>
+				/// <param name="key">追加したい倫理側のキー</param>
+				/// <param name="desc">設定する描画設定</param>
+				/// <returns>作成の成否</returns>
+				[[nodiscard]] bool create_draw_state(const handle::DrawStateKey& key, desc::DrawStateDesc& desc);
 
-				//@brief	=== 描画設定取得関数 ===
-				//@param	key	描画設定と紐づけたキー
-				//@return	描画設定クラス参照
-				[[nodiscard]] state::Drawstate* get_draw_state(UINT key)const noexcept;
 
-				//@brief	=== 描画設定取得関数オーバーロード ===
-				//@param	key_name	描画設定と紐づけたキーの名前
-				//@return	描画設定クラス参照
-				[[nodiscard]] state::Drawstate* get_draw_state(const std::string& key_name)const noexcept;
+				/* ===== 取得関数 ===== */
 
-			private:
-				///====================================================================
-				/// Private メンバー変数
-				///====================================================================
+				/// <summary>
+				/// ハンドル取得関数
+				/// </summary>
+				/// <param name="key_name">取得したい描画設定に紐づいた倫理側キーの名前</param>
+				/// <returns>描画設定用ハンドル</returns>
+				[[nodiscard]] Handle get_handle_to_name(const char* key_name) noexcept {
 
-				//@brief == 描画設定保存マップ == =
-				//@details	作成できた描画設定を保存するmap
-				std::unordered_map<UINT, std::unique_ptr<state::Drawstate>> state_map{};
+					return this->get_handle(handle::DrawStateKey(key_name));
+				}
 
+				[[nodiscard]] Handle get_handle_to_name(const char* key_name) const noexcept {
+
+					return this->get_handle(handle::DrawStateKey(key_name));
+				}
 			};
 		};
 	};
