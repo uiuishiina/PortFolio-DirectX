@@ -101,7 +101,7 @@ namespace key {
 		/// <summary>
 		/// 変換定数
 		/// </summary>
-		const std::uint32_t conversion_constant = id::make_id::mix_id<T, U>();
+		const std::uint32_t conversion_constant = HandyItems::id::make_id::mix_id<T, U>();
 
 	};
 

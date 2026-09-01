@@ -66,8 +66,8 @@ namespace render {
 				/// <summary>
 				/// ハンドル取得関数
 				/// </summary>
-				/// <param name="key">取得したいルートシグネチャーに紐づいた倫理側キー</param>
-				/// <returns>ルートシグネチャー用ハンドル</returns>
+				/// <param name="key">取得したいハンドルに紐づいた倫理側キー</param>
+				/// <returns>取得したいハンドル</returns>
 				[[nodiscard]] Handle get_handle(const KeyT& key) noexcept override {
 
 					Handle handle{};
@@ -100,8 +100,8 @@ namespace render {
 				/// <summary>
 				/// ハンドル取得関数
 				/// </summary>
-				/// <param name="key">取得したいルートシグネチャーに紐づいた保存用キー</param>
-				/// <returns>ルートシグネチャー用ハンドル</returns>
+				/// <param name="key">取得したいハンドルに紐づいた保存側キー</param>
+				/// <returns>取得したいハンドル</returns>
 				[[nodiscard]] Handle get_handle(const EncodeKeyT& encode_key) noexcept override {
 
 					Handle handle{};

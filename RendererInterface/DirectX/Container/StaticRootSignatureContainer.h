@@ -36,7 +36,7 @@ namespace render {
 					RootSignatureKey() = default;
 				
 					/// <summary>
-					/// デストラクタ
+					/// 引数付きコンストラクタ
 					/// </summary>
 					/// <param name="key">キーに入れる値</param>
 					explicit RootSignatureKey(std::uint32_t key) :

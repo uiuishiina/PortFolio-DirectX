@@ -1,75 +1,117 @@
 #pragma once
-#include"StaticContainerBase.h"
 #include"../DrawPass/DrawRenderTargetState.h"
-#include<string>
-#include<unordered_map>
-#include<memory>
-#include<optional>
-#include<vector>
+#include"UniqueptrKeyMap.h"
 
-///====================================================================
+/// <summary>
 /// 描画名前空間
-///====================================================================
-
+/// </summary>
 namespace render {
 
-	///====================================================================
+	/// <summary>
 	/// DirectX名前空間
-	///====================================================================
-
+	/// </summary>
 	namespace dx12 {
 
-		///====================================================================
+		/// <summary>
 		/// コンテナ名前空間
-		///====================================================================
-
+		/// </summary>
 		namespace container {
 
-			///====================================================================
-			/// StaticRenderTargetStateContainer クラス
-			///====================================================================
+			/* ========== 描画パス用レンダーターゲット設定キー定義 ========== */
 
-			//@brief	=== 描画パス用レンダーターゲット設定コンテナ ===
-			class StaticRenderTargetStateContainer final : public StaticContainerBase
+			/// <summary>
+			/// ハンドル名前空間
+			/// </summary>
+			namespace handle {
+
+				/// <summary>
+				/// レンダーターゲット設定用倫理側派生キー
+				/// </summary>
+				struct RenderTargetStateKey : public LogicalKey {
+
+					/// <summary>
+					/// コンストラクタ
+					/// </summary>
+					RenderTargetStateKey() = default;
+
+					/// <summary>
+					/// 引数付きコンストラクタ
+					/// </summary>
+					/// <param name="key">キーに入れる値</param>
+					explicit RenderTargetStateKey(std::uint32_t key) :
+						LogicalKey{key} {}
+
+					/// <summary>
+					/// 引数付きコンストラクタ
+					/// </summary>
+					/// <param name="key">キーに入れる値</param>
+					explicit RenderTargetStateKey(const char* key_name) :
+						LogicalKey{ static_cast<std::uint32_t>(HandyItems::id::get_id::get_name_id<RenderTargetStateKey>(key_name))} {}
+				};
+
+				/// <summary>
+				/// レンダーターゲット設定用保存側派生キー
+				/// </summary>
+				struct RTStateEncodeKey : public EncodeKey {
+
+					/// <summary>
+					/// コンストラクタ
+					/// </summary>
+					RTStateEncodeKey() = default;
+				};
+			}
+
+
+			/// <summary>
+			/// 描画パス用レンダーターゲット設定コンテナ
+			/// </summary>
+			class StaticRenderTargetStateContainer final : public UniqueptrKeyMap<
+				handle::RenderTargetStateKey,
+				handle::RTStateEncodeKey,
+				state::DrawRenderTargetState
+			>
 			{
 			public:
-				///====================================================================
-				/// クラス設定
-				///====================================================================
+				/* ========== メンバー関数 ========== */
 
-				//コンストラクタ,デストラクタ
+				/// <summary>
+				/// コンストラクタ
+				/// </summary>
 				StaticRenderTargetStateContainer() = default;
+
+				/// <summary>
+				/// デストラクタ
+				/// </summary>
 				~StaticRenderTargetStateContainer() = default;
 
-				///====================================================================
-				/// Public メンバー関数
-				///====================================================================
+				/* ===== 追加関数 ===== */
 
-				//@brief	=== 描画パス用レンダーターゲット設定作成関数 ==
-				//@param	key_name	登録するキーの名前
-				//@param	slots	登録するターゲットの種類配列
-				//@return	作成の成否
-				[[nodiscard]] bool create_render_target_state(const std::string& key_name, const std::vector<RenderTargetSlot>& render_target_slots, std::optional<DepthSlot> depth_slot = std::nullopt);
+				/// <summary>
+				/// 描画パス用レンダーターゲット設定作成関数
+				/// </summary>
+				/// <param name="key"></param>
+				/// <param name="render_target_slots"></param>
+				/// <param name="depth_slot"></param>
+				/// <returns></returns>
+				[[nodiscard]] bool create_render_target_state(const handle::RenderTargetStateKey& key, const std::vector<RenderTargetSlot>& render_target_slots, std::optional<DepthSlot> depth_slot = std::nullopt);
 
-				//@brief	=== 描画パス用レンダーターゲット設定取得関数 ===
-				//@param	key	描画パス用レンダーターゲット設定と紐づけたキー
-				//@return	描画パス用レンダーターゲット設定クラス参照
-				[[nodiscard]] state::DrawRenderTargetState* get_draw_state(UINT key)const noexcept;
 
-				//@brief	=== 描画パス用レンダーターゲット設定取得関数オーバーロード ===
-				//@param	key_name	描画パス用レンダーターゲット設定と紐づけたキーの名前
-				//@return	描画パス用レンダーターゲット設定クラス参照
-				[[nodiscard]] state::DrawRenderTargetState* get_draw_state(const std::string& key_name)const noexcept;
+				/* ===== 取得関数 ===== */
+				
+				/// <summary>
+				/// ハンドル取得関数
+				/// </summary>
+				/// <param name="key_name">取得したいレンダーターゲット設定用に紐づいた倫理側キーの名前</param>
+				/// <returns>レンダーターゲット設定用ハンドル</returns>
+				[[nodiscard]] Handle get_handle_to_name(const char* key_name) noexcept {
 
-			private:
-				///====================================================================
-				/// Private メンバー変数
-				///====================================================================
+					return this->get_handle(handle::RenderTargetStateKey(key_name));
+				}
 
-				//@brief	== 描画パス用レンダーターゲット設定保存マップ ===
-				//@details	作成できた描画パス用レンダーターゲット設定を保存するmap
-				std::unordered_map<UINT, std::unique_ptr<state::DrawRenderTargetState>> render_target_state_map{};
+				[[nodiscard]] Handle get_handle_to_name(const char* key_name) const noexcept {
 
+					return this->get_handle(handle::RenderTargetStateKey(key_name));
+				}
 			};
 		};
 	};

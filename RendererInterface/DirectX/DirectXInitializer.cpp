@@ -491,7 +491,7 @@ namespace {
 		/* ==================== DrawRenderTargetState作成 ==================== */
 
 		//	BackBufferとDepthBufferを描画先に指定
-		if (!context->static_render_target_state_container->create_render_target_state("Normal_Target",
+		if (!context->static_render_target_state_container->create_render_target_state(container::handle::RenderTargetStateKey("Normal_Target"),
 			{ RenderTargetSlot::BackBuffer },DepthSlot::MainDepth
 		)) {
 			DEBUG_LOG("DirectXRenderer :: create_render_target_state() FAILED");
@@ -527,7 +527,7 @@ namespace {
 
 		desc::DrawPassDesc normal_pass_desc(
 			context->static_draw_state_container->get_draw_state("Normal_State"),
-			context->static_render_target_state_container->get_draw_state("Normal_Target"),
+			context->static_render_target_state_container->get_handle_to_name("Normal_Target").handle_p,
 			context->static_draw_commands_container->get_draw_commands("Normal_Commands")
 		);
 
@@ -588,7 +588,7 @@ namespace {
 
 		desc::DrawPassDesc color_pass_desc(
 			context->static_draw_state_container->get_draw_state("Color_State"),
-			context->static_render_target_state_container->get_draw_state("Normal_Target"),
+			context->static_render_target_state_container->get_handle_to_name("Normal_Target").handle_p,
 			context->static_draw_commands_container->get_draw_commands("Color_Commands")
 		);
 
