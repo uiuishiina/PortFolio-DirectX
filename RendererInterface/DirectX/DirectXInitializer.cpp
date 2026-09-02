@@ -458,7 +458,7 @@ namespace {
 		if (!clear_pass->initialize_pass(clear_pass_desc)) {
 			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
 		}
-		if (!context->static_draw_pass_container->register_draw_pass("Clear_pass", std::move(clear_pass))) {
+		if (!context->static_draw_pass_container->register_draw_pass(container::handle::PassKey("Clear_pass"), std::move(clear_pass))) {
 			DEBUG_LOG("DirectXRenderer :: register_draw_pass() FAILED");
 			return false;
 		}
@@ -535,7 +535,7 @@ namespace {
 		if (!normal_pass->initialize_pass(normal_pass_desc)) {
 			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
 		}
-		if (!context->static_draw_pass_container->register_draw_pass("Normal_pass", std::move(normal_pass))) {
+		if (!context->static_draw_pass_container->register_draw_pass(container::handle::PassKey("Normal_pass"), std::move(normal_pass))) {
 			DEBUG_LOG("DirectXRenderer :: register_draw_pass() FAILED");
 			return false;
 		}
@@ -596,7 +596,7 @@ namespace {
 		if (!color_pass->initialize_pass(color_pass_desc)) {
 			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
 		}
-		if (!context->static_draw_pass_container->register_draw_pass("Color_pass", std::move(color_pass))) {
+		if (!context->static_draw_pass_container->register_draw_pass(container::handle::PassKey("Color_pass"), std::move(color_pass))) {
 			DEBUG_LOG("DirectXRenderer :: register_draw_pass() FAILED");
 			return false;
 		}

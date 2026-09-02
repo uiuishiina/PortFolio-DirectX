@@ -102,7 +102,7 @@ void DirectXUpdater::apply_draw_pass(std::vector<std::string>& pass_order) {
 
 	//	描画パス実行
 	for (auto& name : pass_order) {
-		context_->static_draw_pass_container->apply_draw_pass(name, resources);
+		context_->static_draw_pass_container->apply_draw_pass(name.c_str(), resources);
 	}
 }
 
