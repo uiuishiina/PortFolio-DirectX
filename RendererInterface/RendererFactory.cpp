@@ -2,7 +2,7 @@
 #include"DirectXRenderer.h"
 #include"../Debug/DebugLogSystem.h"
 
-std::unique_ptr<RendererInterface> RendererFactory::create_renderer(windowInterface* window, sharedData::ApplicationSharedData* shared_datas) {
+std::unique_ptr<RendererInterface> RendererFactory::create_renderer(window::windowInterface* window, sharedData::ApplicationSharedData* shared_datas) {
     std::unique_ptr<RendererInterface> renderer_{};
 
 #if defined(_WIN32)

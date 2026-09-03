@@ -2,12 +2,14 @@
 #include"WindowsWindow.h"
 #include"../Debug/DebugLogSystem.h"
 
+using namespace window;
+
 //@brief	=== ウィンドウ作成関数 ===
 //@param	window_size	ウィンドウサイズ
 //@return	ウィンドウインスタンス
 std::unique_ptr<windowInterface> windowFactory::create_window(WindowSize window_size) {
 
-	std::unique_ptr<windowInterface> window_{};
+    std::unique_ptr<windowInterface> window_{};
 
 #if defined(_WIN32)
     DEBUG_LOG("windowFactory :: create_window() = WindowsWindow");

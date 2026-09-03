@@ -62,13 +62,19 @@ DirectXRenderer::~DirectXRenderer() = default;
 //@param	window	ウィンドウインターフェース
 //@details	作成したウィンドウに描画するため引数で参照を渡す
 //@return	作成の成否
-[[nodiscard]] bool DirectXRenderer::create_renderer(windowInterface* window, sharedData::ApplicationSharedData* shared_datas) {
+[[nodiscard]] bool DirectXRenderer::create_renderer(window::windowInterface* window, sharedData::ApplicationSharedData* shared_datas) {
 
 	/* ==================== 作成前処理 ==================== */
 
 	auto start = std::chrono::high_resolution_clock::now();
 
-	auto hwnd = (HWND)window->get_native_handle();
+	window_handle = window->get_native_handle();
+	auto hwnd = std::any_cast<HWND>(window_handle);
+	if (hwnd == nullptr) {
+		DEBUG_ERROR_LOG("DirectXRenderer :: hwnd nullptr");
+		return false;
+	}
+
 	window_size = window->get_window_size();
 
 	app_shared_datas = shared_datas;
@@ -80,7 +86,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 	renderer_context = std::make_unique<DirectXRendererContext>();
 
 	//	描画機能初期化
-	if (!DirectXInitializer::initialze_graphics(renderer_context.get(), buffer_size, frame_resouse_size, hwnd, window_size)) {
+	if (!DirectXInitializer::initialze_graphics(renderer_context.get(), buffer_size, frame_resouse_size, *hwnd, window_size)) {
 		return false;
 	}
 
@@ -144,8 +150,8 @@ void DirectXRenderer::update_renderer() {
 
 	/* ==================== 描画パス実行 ==================== */
 
-	const auto value = app_shared_datas->get_state<bool>().get_data(0);
-	const auto left = app_shared_datas->get_state<bool>().get_data(1);
+	const auto value = app_shared_datas->get_share_data<bool>()->get_reference_to_index(0);
+	const auto left = app_shared_datas->get_share_data<bool>()->get_reference_to_index(1);
 
 	if (value.has_value() && left.has_value()) {
 

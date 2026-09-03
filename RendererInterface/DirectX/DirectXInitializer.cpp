@@ -318,7 +318,7 @@ namespace {
 		0,1,2
 	};
 
-	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> normal_resource = { upload_queue.get_reference().value(),upload_queue.get_reference().value() };
+	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> normal_resource = { upload_queue.get_front_reference().value(),upload_queue.get_front_reference().value() };
 	if (FAILED(Normal_Polygon->create_mesh(deviceP, context->graphics_list->get_graphics_command_list(), normal_resource, polygon_desc))) {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
@@ -349,7 +349,7 @@ namespace {
 		0,1,2
 	};
 
-	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> color_resource = { upload_queue.get_reference().value(),upload_queue.get_reference().value() };
+	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> color_resource = { upload_queue.get_front_reference().value(),upload_queue.get_front_reference().value() };
 	if (FAILED(Color_Polygon->create_mesh(deviceP, context->graphics_list->get_graphics_command_list(), color_resource, color_mesh))) {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;

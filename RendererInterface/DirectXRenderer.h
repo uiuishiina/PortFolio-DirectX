@@ -49,7 +49,7 @@ public:
 	//@param	window	ウィンドウインターフェース
 	//@details	作成したウィンドウに描画するため引数で参照を渡す
 	//@return	作成の成否
-	[[nodiscard]] bool create_renderer(windowInterface* window, sharedData::ApplicationSharedData* shared_datas)override;
+	[[nodiscard]] bool create_renderer(window::windowInterface* window, sharedData::ApplicationSharedData* shared_datas)override;
 
 	//@brief	=== 描画更新関数 ===
 	//@details	毎フレーム更新される想定

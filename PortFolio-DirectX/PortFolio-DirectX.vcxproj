@@ -203,7 +203,6 @@
     <ClCompile Include="..\RendererInterface\DirectX\HashAllocator.cpp" />
     <ClCompile Include="..\RendererInterface\RendererFactory.cpp" />
     <ClCompile Include="..\windowInterface\windowFactory.cpp" />
-    <ClCompile Include="..\windowInterface\windowInterface.cpp" />
     <ClCompile Include="..\windowInterface\WindowsWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -213,7 +212,6 @@
     <ClInclude Include="..\Application\Input\InputState.h" />
     <ClInclude Include="..\Application\Input\InputStateManager.h" />
     <ClInclude Include="..\Application\SharedData\ApplicationSharedData.h" />
-    <ClInclude Include="..\Application\SharedData\SharedData.h" />
     <ClInclude Include="..\Debug\DebugLogBuilder.h" />
     <ClInclude Include="..\Debug\DebugLogOutPut.h" />
     <ClInclude Include="..\Debug\DebugLogSystem.h" />
@@ -291,7 +289,9 @@
     <ClInclude Include="..\RendererInterface\RendererFactory.h" />
     <ClInclude Include="..\RendererInterface\RendererInterface.h" />
     <ClInclude Include="..\Utility\Container\KeyMap.h" />
+    <ClInclude Include="..\Utility\Container\ReferenceContainerBase.h" />
     <ClInclude Include="..\Utility\Container\ReferenceQueue.h" />
+    <ClInclude Include="..\Utility\Container\ReferenceVector.h" />
     <ClInclude Include="..\Utility\Container\UnorderedMapBase.h" />
     <ClInclude Include="..\Utility\Enum\EnumArray.h" />
     <ClInclude Include="..\Utility\Enum\EnumToIndex.h" />
@@ -301,6 +301,7 @@
     <ClInclude Include="..\Utility\NonMovable.h" />
     <ClInclude Include="..\Utility\Others\CircularIndex.h" />
     <ClInclude Include="..\Utility\Others\NonCopyableBase.h" />
+    <ClInclude Include="..\Utility\Tuple\TupleBase.h" />
     <ClInclude Include="..\Utility\WIndowSize.h" />
     <ClInclude Include="..\windowInterface\wIndowEvents\WindowEvents.h" />
     <ClInclude Include="..\windowInterface\windowFactory.h" />

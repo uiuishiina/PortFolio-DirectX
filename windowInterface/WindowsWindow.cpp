@@ -3,11 +3,21 @@
 
 #include"WindowsWindow.h"
 
-///====================================================================
-/// 無名空間
-///====================================================================
+using namespace window;
+
+/* ==================================================================== */
+// 無名空間
+/* ==================================================================== */
 
 namespace {
+
+    /// <summary>
+    /// ウィンドウプロシージャ関数
+    /// </summary>
+    /// <param name="hwnd">ウィンドウハンドル</param>
+    /// <param name="msg">ウィンドウメッセージ</param>
+    /// <param name="wParam">wParam</param>
+    /// <param name="lParam">lParam</param>
     static LRESULT CALLBACK static_window_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         switch (msg)
         {
@@ -43,13 +53,19 @@ namespace {
         return DefWindowProc(hwnd, msg, wParam, lParam);
     }
 
-    ///====================================================================
-    /// 補助関数
-    ///====================================================================
+    /* ==================================================================== */
+    // 補助関数
+    /* ==================================================================== */
 
-    //@brief    === ウィンドウサイズ取得補助関数 ===
-    //@details  ウィンドウバーがある場合にバーのサイズを除き、描画できる範囲を出してくれる
-    //@details  WS_OVERLAPPEDWINDOW　を変えればその他のウィンドウもできるため改良の余地あり
+    /// <summary>
+    /// ウィンドウサイズ補正補助関数
+    /// </summary>
+    /// <details>
+    /// ウィンドウバーがある場合にバーのサイズを除き、描画できる範囲を出してくれる
+    /// [ WS_OVERLAPPEDWINDOW ] を変えればその他のウィンドウもできるため改良の余地あり
+    /// </details>
+    /// <param name="new_size">補正するウィンドウサイズ構造体</param>
+    /// <returns>補正したウィンドウサイズ構造体</returns>
     static WindowSize adjust_window_size(WindowSize new_size) {
 
         RECT rc{ 0, 0, new_size.width,new_size.height };
@@ -59,13 +75,15 @@ namespace {
     }
 }
 
-///====================================================================
-/// 初期化時関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@breif	=== ウィンドウ作成関数 ===
-//@param	window_size	ウィンドウサイズ
-//@return	作成の可否
+/// <summary>
+/// ウィンドウ作成関数
+/// </summary>
+/// <param name="size">設定するウィンドウサイズ構造体</param>
+/// <returns>作成の成否</returns>
 [[nodiscard]] bool WindowsWindow::create_window(WindowSize size) {
 
     //  すでにインスタンスがあるなら作成せず失敗を返す
@@ -113,17 +131,97 @@ namespace {
     //  ウィンドウサイズ保存
     window_size = size;
 
+    native_handle = hwnd_;
+
     return true;
 }
 
-///====================================================================
-/// 実行時処理関数
-///====================================================================
 
-//@brief	=== ウィンドウプロシージャ互換関数 ===
-//@param	msg	ウィンドウメッセージ互換
-//@param	wParam	wParam互換
-//@param	lParam	lParam互換
+/// <summary>
+/// OSイベント取得関数
+/// </summary>
+void WindowsWindow::poll_events() {
+
+    // キー入力変数初期化
+    current_frame_key = {};
+
+    //  メッセージループ処理開始
+    MSG msg{};
+    while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+        if (msg.message == WM_QUIT) {
+            //PostQuitMessage()されたならここに
+            return;
+        }
+
+        //  static_window_procに送る
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+}
+
+
+/// <summary>
+/// ウィンドウ終了処理関数
+/// </summary>
+void WindowsWindow::close_window() {
+
+    //  ウィンドウ終了フラグオン
+    should_close = true;
+
+    //  ウィンドウ破棄通知をOSに送る
+    DestroyWindow(hwnd_);
+}
+
+/// <summary>
+/// ウィンドウ破棄時処理関数
+/// </summary>
+void WindowsWindow::on_destroy_window() {
+
+    //  ウィンドウ情報破棄
+    hwnd_ = nullptr;
+    hinstance_ = nullptr;
+    native_handle = nullptr;
+
+    //  ウィンドウ破棄フラグオン
+    complete_destroy = true;
+
+    //  ウィンドウで使っていたメッセージループ終了
+    PostQuitMessage(0);
+}
+
+/// <summary>
+/// ウィンドウハンドル取得関数
+/// </summary>
+/// <returns>ウィンドウハンドル</returns>
+[[nodiscard]] const std::any* WindowsWindow::get_native_handle()const {
+    return &native_handle;
+}
+
+
+/// <summary>
+/// ウィンドウサイズ設定関数
+/// </summary>
+/// <param name="new_size">設定するウィンドウサイズ構造体</param>
+void WindowsWindow::set_window_size(WindowSize new_size) {
+
+    auto size = adjust_window_size(new_size);
+
+    SetWindowPos(
+        hwnd_, nullptr,
+        0, 0,
+        size.width,
+        size.height,
+        SWP_NOMOVE | SWP_NOZORDER
+    );
+}
+
+
+/// <summary>
+/// ウィンドウプロシージャ互換関数
+/// </summary>
+/// <param name="msg">ウィンドウメッセージ互換</param>
+/// <param name="wParam">wParam互換</param>
+/// <param name="lParam">lParam互換</param>
 void WindowsWindow::process_message(unsigned int msg, uintptr_t wParam, intptr_t lParam) {
     switch (msg)
     {
@@ -164,77 +262,16 @@ void WindowsWindow::process_message(unsigned int msg, uintptr_t wParam, intptr_t
     }
 }
 
-//@brief	=== ウィンドウ終了処理関数 ===
-void WindowsWindow::close_window() {
 
-    //  ウィンドウ終了フラグオン
-    should_close = true;
 
-    //  ウィンドウ破棄通知をOSに送る
-    DestroyWindow(hwnd_);
-}
+/* ==================================================================== */
+// Privateメンバー関数
+/* ==================================================================== */
 
-//@breif	=== ウィンドウ破棄時処理関数 ===
-void WindowsWindow::on_destroy_window() {
-
-    //  ウィンドウ情報破棄
-    hwnd_ = nullptr;
-    hinstance_ = nullptr;
-
-    //  ウィンドウ破棄フラグオン
-    complete_destroy = true;
-
-    //  ウィンドウで使っていたメッセージループ終了
-    PostQuitMessage(0);
-}
-
-//@brief	=== OSイベント取得関数 ===
-void WindowsWindow::poll_events() {
-
-    // キー入力変数初期化
-    current_frame_key = {};
-
-    //  メッセージループ処理開始
-    MSG msg{};
-    while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
-        if (msg.message == WM_QUIT) {
-            //PostQuitMessage()されたならここに
-            return;
-        }
-
-        //  static_window_procに送る
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
-}
-
-//@brief	=== ウィンドウサイズ設定関数 ===
-//@param	new_size	ウィンドウサイズ
-void WindowsWindow::set_window_size(WindowSize new_size) {
-    
-    auto size = adjust_window_size(new_size);
-
-    SetWindowPos(
-        hwnd_, nullptr,
-        0, 0,
-        size.width,
-        size.height,
-        SWP_NOMOVE | SWP_NOZORDER
-    );
-}
-
-//@brief	=== ウィンドウリサイズ時関数 ===
-//@param	new_size	ウィンドウサイズ
+/// <summary>
+/// ウィンドウリサイズ時関数
+/// </summary>
+/// <param name="new_size">設定するウィンドウサイズ構造体</param>
 void WindowsWindow::on_resize_window(WindowSize new_size) {
     window_size = new_size;
-}
-
-///====================================================================
-/// 取得関数
-///====================================================================
-
-//@brief	=== ウィンドウハンドル取得関数 ===
-//@return	ウィンドウハンドルポインター
-void* WindowsWindow::get_native_handle()const {
-    return hwnd_;
 }

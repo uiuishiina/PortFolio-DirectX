@@ -76,6 +76,9 @@
     <Filter Include="Utility\ID">
       <UniqueIdentifier>{7fafe35f-455e-4469-8ecb-ed985f6c9357}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utility\Tuple">
+      <UniqueIdentifier>{7714a84a-a698-4906-8987-cbc9686316e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\EntryPoint.cpp">
@@ -254,9 +257,6 @@
     </ClCompile>
     <ClCompile Include="..\Application\Input\InputStateManager.cpp">
       <Filter>Application\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\windowInterface\windowInterface.cpp">
-      <Filter>windowInterface</Filter>
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\CommandPass.cpp">
       <Filter>RendererInterface\DirectX\DrawPass</Filter>
@@ -515,9 +515,6 @@
     <ClInclude Include="..\Application\SharedData\ApplicationSharedData.h">
       <Filter>Application\SharedData</Filter>
     </ClInclude>
-    <ClInclude Include="..\Application\SharedData\SharedData.h">
-      <Filter>Application\SharedData</Filter>
-    </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\PassBase.h">
       <Filter>RendererInterface\DirectX\DrawPass</Filter>
     </ClInclude>
@@ -565,6 +562,15 @@
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\Container\UniqueptrKeyMap.h">
       <Filter>RendererInterface\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utility\Container\ReferenceContainerBase.h">
+      <Filter>Utility\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utility\Container\ReferenceVector.h">
+      <Filter>Utility\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utility\Tuple\TupleBase.h">
+      <Filter>Utility\Tuple</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

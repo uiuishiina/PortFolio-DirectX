@@ -28,7 +28,7 @@ public:
 	//@param	shared_datas	
 	//@details	作成したウィンドウに描画するため引数で参照を渡す
 	//@return	作成の成否
-	virtual [[nodiscard]] bool create_renderer(windowInterface* window, sharedData::ApplicationSharedData* shared_datas) = 0;
+	virtual [[nodiscard]] bool create_renderer(window::windowInterface* window, sharedData::ApplicationSharedData* shared_datas) = 0;
 
 	//@brief	=== 描画更新関数 ===
 	//@details	毎フレーム更新される想定
@@ -55,6 +55,9 @@ protected:
 	/// Protected メンバー変数
 	///====================================================================
 
+
 	sharedData::ApplicationSharedData* shared_datas{};
+
+	const std::any* window_handle{};
 
 };

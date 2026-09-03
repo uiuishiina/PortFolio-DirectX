@@ -1,88 +1,113 @@
 #pragma once
 #include"windowInterface.h"
 
-///====================================================================
-///	Windows.h 用前方宣言
-///====================================================================
+/* ========== 前方宣言 ========== */
 
-//HINSTANCE用前方宣言
+/// <summary>
+/// HINSTANCE用前方宣言
+/// </summary>
 struct HINSTANCE__;
 using HINSTANCE = HINSTANCE__*;
 
-//HWND用前方宣言
+/// <summary>
+/// HWND用前方宣言
+/// </summary>
 struct HWND__;
 using HWND = HWND__*;
 
-///====================================================================
-/// WindowsWindow 派生クラス
-///====================================================================
+/// <summary>
+/// ウィンドウ名前空間
+/// </summary>
+namespace window {
 
-//@brief	=== Windowsウィンドウクラス ===
-class WindowsWindow :public windowInterface
-{
-public:
-	///====================================================================
-	/// クラス設定
-	///====================================================================
+	/// <summary>
+	/// Windowsウィンドウ派生クラス
+	/// </summary>
+	class WindowsWindow : public windowInterface
+	{
+	public:
+		/* ========== クラス設定 ========== */
 
-	//コンストラクタ,デストラクタ
-	WindowsWindow() = default;
-	~WindowsWindow() = default;
+		/// <summary>
+		/// コンストラクタ
+		/// </summary>
+		WindowsWindow() = default;
 
-	///====================================================================
-	/// Public メンバー関数
-	///====================================================================
-
-	/* -- 継承関数 -- */
-
-	//@breif	=== ウィンドウ作成関数 ===
-	//@param	window_size	ウィンドウサイズ
-	//@return	作成の可否
-	[[nodiscard]] bool create_window(WindowSize size)override;
-
-	//@brief	=== OSイベント取得関数 ===
-	void poll_events()override;
-
-	//@brief	=== ウィンドウ終了処理関数 ===
-	void close_window()override;
-
-	//@breif	=== ウィンドウ破棄時処理関数 ===
-	void on_destroy_window()override;
-
-	//@brief	=== ウィンドウサイズ設定関数 ===
-	//@param	new_size	ウィンドウサイズ
-	void set_window_size(WindowSize new_size)override;
-
-	//@brief	=== ウィンドウハンドル取得関数 ===
-	//@return	ウィンドウハンドルポインター
-	void* get_native_handle()const override;
+		/// <summary>
+		/// デストラクタ
+		/// </summary>
+		~WindowsWindow() = default;
 
 
-	/* -- 独自関数 -- */
+		/* ========== Publicメンバー関数 ========== */
 
-	//@brief	=== ウィンドウプロシージャ互換関数 ===
-	//@param	msg	ウィンドウメッセージ互換
-	//@param	wParam	wParam互換
-	//@param	lParam	lParam互換
-	void process_message(unsigned int msg, uintptr_t wParam, intptr_t lParam);
+		/* -- 継承関数 -- */
 
-private:
-	///====================================================================
-	/// Private メンバー変数
-	///====================================================================
+		/// <summary>
+		/// ウィンドウ作成関数
+		/// </summary>
+		/// <param name="size">設定するウィンドウサイズ構造体</param>
+		/// <returns>作成の成否</returns>
+		[[nodiscard]] bool create_window(WindowSize size) override;
 
-	//@brief	== ウィンドウインスタンス保存変数 ==
-	HINSTANCE hinstance_{};
+		/// <summary>
+		/// OSイベント取得関数
+		/// </summary>
+		void poll_events() override;
 
-	//@brief	== ウィンドウハンドル保存変数 ==
-	HWND hwnd_{};
+		/// <summary>
+		/// ウィンドウ終了処理関数
+		/// </summary>
+		void close_window() override;
 
-	///====================================================================
-	/// Private メンバー関数
-	///====================================================================
+		/// <summary>
+		/// ウィンドウ破棄時処理関数
+		/// </summary>
+		void on_destroy_window() override;
 
-	//@brief	=== ウィンドウリサイズ時関数 ===
-	//@param	new_size	ウィンドウサイズ
-	void on_resize_window(WindowSize new_size);
+		/// <summary>
+		/// ウィンドウハンドル取得関数
+		/// </summary>
+		/// <returns>ウィンドウハンドル</returns>
+		[[nodiscard]] const std::any* get_native_handle() const override;
 
-};
+		/// <summary>
+		/// ウィンドウサイズ設定関数
+		/// </summary>
+		/// <param name="new_size">設定するウィンドウサイズ構造体</param>
+		void set_window_size(WindowSize new_size) override;
+
+
+		/* -- 独自関数 -- */
+
+		/// <summary>
+		/// ウィンドウプロシージャ互換関数
+		/// </summary>
+		/// <param name="msg">ウィンドウメッセージ互換</param>
+		/// <param name="wParam">wParam互換</param>
+		/// <param name="lParam">lParam互換</param>
+		void process_message(unsigned int msg, uintptr_t wParam, intptr_t lParam);
+
+	private:
+		/* ========== Privateメンバー変数 ========== */
+
+		/// <summary>
+		/// ウィンドウインスタンス保存変数
+		/// </summary>
+		HINSTANCE hinstance_{};
+
+		/// <summary>
+		/// ウィンドウハンドル保存変数
+		/// </summary>
+		HWND hwnd_{};
+
+		/* ========== Privateメンバー関数 ========== */
+
+		/// <summary>
+		/// ウィンドウリサイズ時関数
+		/// </summary>
+		/// <param name="new_size">設定するウィンドウサイズ構造体</param>
+		void on_resize_window(WindowSize new_size);
+
+	};
+}

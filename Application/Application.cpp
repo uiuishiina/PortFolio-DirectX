@@ -1,38 +1,48 @@
-
+#include"Application.h"
 #include"../windowInterface/windowInterface.h"
 #include"../RendererInterface/RendererInterface.h"
 #include"../Application/Input/InputStateManager.h"
 #include"SharedData/ApplicationSharedData.h"
-
-#include"Application.h"
 
 #include"../windowInterface/windowFactory.h"
 #include"../RendererInterface/RendererFactory.h"
 
 #include"../Debug/DebugLogSystem.h"
 
-///====================================================================
+/* ==================================================================== */
+// クラス設定
+/* ==================================================================== */
 
-//コンストラクタ,デストラクタ
+/// <summary>
+/// コンストラクタ
+/// </summary>
 Application::Application() {
 	DEBUG_LOG("Application() call");
 }
+
+/// <summary>
+/// デストラクタ
+/// </summary>
 Application::~Application() {
 	DEBUG_LOG("~Application() call");
 }
 
-///====================================================================
-/// 初期化時関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@brief	=== アプリケーション初期化関数 ===
-//@return	初期化の成否
+/// <summary>
+/// アプリケーション初期化関数
+/// </summary>
+/// <returns>初期化の成否</returns>
 [[nodiscard]] bool Application::initialize_App() {
 	
 	//連携お試し
 	share_datas_ins = std::make_unique<sharedData::ApplicationSharedData>();
-	share_datas_ins->set_state<bool>().add_data(right);
-	share_datas_ins->set_state<bool>().add_data(left);
+	share_datas_ins->add_share_data<bool>();
+
+	share_datas_ins->get_share_data<bool>()->add_reference(right);
+	share_datas_ins->get_share_data<bool>()->add_reference(left);
 
 	//	メインウィンドウ作成
 	if (!initialize_window()) {
@@ -56,33 +66,12 @@ Application::~Application() {
 	return true;
 }
 
-//@brief	=== ウィンドウインスタンス初期化関数 ===
-//@details	責務 [ ウィンドウインスタンス初期化 ] 
-[[nodiscard]] bool Application::initialize_window() {
-
-	//	適当にサイズを用意
-	auto A_window = WindowSize(1280, 720);
-	auto B_window = WindowSize(1920, 1080);
-
-	main_window_ins = windowFactory::create_window(A_window);
-	return main_window_ins != nullptr;
-}
-
-//@brief	=== 描画機能インスタンス初期化関数 ===
-//@details	責務 [ 描画機能インスタンス初期化 ]
-[[nodiscard]] bool Application::initialize_renderer() {
-
-	main_renderer_ins = RendererFactory::create_renderer(main_window_ins.get(), share_datas_ins.get());
-	return main_renderer_ins != nullptr;
-}
-
-///====================================================================
-/// 実行時関数
-///====================================================================
-
-//@brief	=== アプリケーション動作関数 ===
-//@details	責務 [ アプリケーションループ ] , [ 終了判断 ] 
-//@details	初期化失敗時すぐに [ return ] する
+/// <summary>
+/// アプリケーション動作関数
+/// </summary>
+/// <details>
+/// 初期化失敗ならすぐ [ return ]
+/// </details>
 void Application::run_App() {
 
 	//初期化失敗時
@@ -111,7 +100,7 @@ void Application::run_App() {
 			}
 			continue;
 		}
-		else {			
+		else {
 
 			//	アクティブなら
 			if (!is_active_app) {
@@ -136,7 +125,7 @@ void Application::run_App() {
 			DEBUG_LOG("Application :: LeftArrow ");
 			left = !left;
 		}
-		
+
 
 		//	描画更新
 		main_renderer_ins->update_renderer();
@@ -146,12 +135,40 @@ void Application::run_App() {
 	end_App();
 }
 
-///====================================================================
-/// 終了時関数
-///====================================================================
+/* ==================================================================== */
+// Privateメンバー関数
+/* ==================================================================== */
 
-//@brief	=== アプリケーション終了時処理関数 ===
-//@details	 [ run_App() ] の最後(アプリ終了時)に呼び出される
+/// <summary>
+/// ウィンドウインスタンス初期化関数
+/// </summary>
+/// <returns>初期化の成否</returns>
+[[nodiscard]] bool Application::initialize_window() {
+
+	//	適当にサイズを用意
+	auto A_window = WindowSize(1280, 720);
+	auto B_window = WindowSize(1920, 1080);
+
+	main_window_ins = window::windowFactory::create_window(A_window);
+	return main_window_ins != nullptr;
+}
+
+/// <summary>
+/// 描画機能インスタンス初期化関数
+/// </summary>
+/// <returns>初期化の成否</returns>
+[[nodiscard]] bool Application::initialize_renderer() {
+
+	main_renderer_ins = RendererFactory::create_renderer(main_window_ins.get(), share_datas_ins.get());
+	return main_renderer_ins != nullptr;
+}
+
+/// <summary>
+/// アプリケーション終了時処理関数
+/// </summary>
+/// <details>
+/// [ run_App() ] 終了時に呼び出す
+/// </details>
 void Application::end_App() {
 
 	//	描画機能終了処理

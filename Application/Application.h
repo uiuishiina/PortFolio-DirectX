@@ -1,7 +1,11 @@
 #pragma once
 #include<memory>
 
-class windowInterface;
+/* ========== 前方宣言 ========== */
+
+namespace window {
+	class windowInterface;
+}
 class RendererInterface;
 namespace input {
 	class InputStateManager;
@@ -10,81 +14,109 @@ namespace sharedData {
 	class ApplicationSharedData;
 }
 
-///====================================================================
-/// Application クラス
-///====================================================================
-
-//@brief	=== アプリケーションクラス ===
+/// <summary>
+/// アプリケーションクラス
+/// </summary>
 class Application final
 {
 public:
-	///====================================================================
-	/// クラス設定
-	///====================================================================
+	/* ========== クラス設定 ========== */
 
-	//コンストラクタ,デストラクタ
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	Application();
+
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	~Application();
 
-	///====================================================================
-	/// Public メンバー関数
-	///====================================================================
 
-	//@brief	=== アプリケーション初期化関数 ===
-	//@details	責務 [ 初期化指示 ] , [ アプリ詳細設定 ] 
-	//@return	初期化の成否
+	/* ========== Publicメンバー関数 ========== */
+	
+	/// <summary>
+	/// アプリケーション初期化関数
+	/// </summary>
+	/// <returns>初期化の成否</returns>
 	[[nodiscard]] bool initialize_App();
 
-	//@brief	=== アプリケーション動作関数 ===
-	//@details	責務 [ アプリケーションループ ] , [ 終了判断 ] 
-	//@details	初期化失敗時すぐに [ return ] する
+	/// <summary>
+	/// アプリケーション動作関数
+	/// </summary>
+	/// <details>
+	/// 初期化失敗ならすぐ [ return ]
+	/// </details>
 	void run_App();
 
 private:
-	///====================================================================
-	/// Private メンバー変数
-	///====================================================================
+	/* ========== Privateメンバー変数 ========== */
 
-	/* === アプリケーションストップフラグ === */
+	/* === アプリケーションフラグ === */
 
-	//@brief	== 初期化失敗時ストップフラグ ==
-	//@details	初期化失敗時 [ ture ]
+	/// <summary>
+	/// 初期化失敗時ストップフラグ
+	/// </summary>
+	/// <details>
+	/// 初期化失敗時に [ true ]
+	/// </details>
 	bool is_initialize_error = false;
 
-	//@brief	== アプリケーションアクティブフラグ ==
-	//@details	ウィンドウアクティブ状態が [ false ] なら [ false ]
+	/// <summary>
+	/// アプリケーションアクティブフラグ
+	/// </summary>
+	/// <details>
+	/// ウィンドウがアクティブなら [ true ]
+	/// </details>
 	bool is_active_app = true;
 
 	/* -- 連携お試し変数 -- */
 	bool right = true;
 	bool left = true;
 
-	//@brief	== アプリケーションウィンドウインスタンス ==
-	//@details	対応するウィンドウ
-	std::unique_ptr<windowInterface> main_window_ins{};
+	/// <summary>
+	/// アプリケーションウィンドウインスタンス
+	/// </summary>
+	/// <details>
+	/// OSに対応するウィンドウ [ 現状Windowsのみ ]
+	/// </details>
+	std::unique_ptr<window::windowInterface> main_window_ins{};
 
-	//@brief	== アプリケーション描画機能インスタンス ==
-	//@details	対応する描画機能
+	/// <summary>
+	/// アプリケーション描画機能インスタンス
+	/// </summary>
+	/// <details>
+	/// OSに対応する描画機能 [ 現状DirectXのみ ]
+	/// </details>
 	std::unique_ptr<RendererInterface> main_renderer_ins{};
 
-	//@breif	== アプリケーション入力機能マネージャーインスタンス ==
+	/// <summary>
+	/// アプリケーション入力機能マネージャーインスタンス
+	/// </summary>
 	std::unique_ptr<input::InputStateManager> input_manager_ins{};
 
 	std::unique_ptr<sharedData::ApplicationSharedData> share_datas_ins{};
 
-	///====================================================================
-	/// Private メンバー関数
-	///====================================================================
 
-	//@brief	=== ウィンドウインスタンス初期化関数 ===
-	//@details	責務 [ ウィンドウインスタンス初期化 ] 
+	/* ========== Privateメンバー関数 ========== */
+
+	/// <summary>
+	/// ウィンドウインスタンス初期化関数
+	/// </summary>
+	/// <returns>初期化の成否</returns>
 	[[nodiscard]] bool initialize_window();
 
-	//@brief	=== 描画機能インスタンス初期化関数 ===
-	//@details	責務 [ 描画機能インスタンス初期化 ]
+	/// <summary>
+	/// 描画機能インスタンス初期化関数
+	/// </summary>
+	/// <returns>初期化の成否</returns>
 	[[nodiscard]] bool initialize_renderer();
 
-	//@brief	=== アプリケーション終了時処理関数 ===
-	//@details	 [ run_App() ] の最後(アプリ終了時)に呼び出される
+	/// <summary>
+	/// アプリケーション終了時処理関数
+	/// </summary>
+	/// <details>
+	/// [ run_App() ] 終了時に呼び出す
+	/// </details>
 	void end_App();
 };
