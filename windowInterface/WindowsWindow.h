@@ -47,8 +47,9 @@ namespace window {
 		/// ウィンドウ作成関数
 		/// </summary>
 		/// <param name="size">設定するウィンドウサイズ構造体</param>
+		/// <param name="input_">入力機能マネージャークラス参照</param>
 		/// <returns>作成の成否</returns>
-		[[nodiscard]] bool create_window(WindowSize size) override;
+		[[nodiscard]] bool create_window(WindowSize size, input::InputStateManager* input_) override;
 
 		/// <summary>
 		/// OSイベント取得関数

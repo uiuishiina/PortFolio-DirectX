@@ -255,9 +255,6 @@
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawObjectContainer.cpp">
       <Filter>RendererInterface\DirectX\Container</Filter>
     </ClCompile>
-    <ClCompile Include="..\Application\Input\InputStateManager.cpp">
-      <Filter>Application\Input</Filter>
-    </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\CommandPass.cpp">
       <Filter>RendererInterface\DirectX\DrawPass</Filter>
     </ClCompile>

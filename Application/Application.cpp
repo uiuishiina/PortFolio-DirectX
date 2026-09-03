@@ -37,12 +37,15 @@ Application::~Application() {
 /// <returns>初期化の成否</returns>
 [[nodiscard]] bool Application::initialize_App() {
 	
-	//連携お試し
+	//	連携お試し
 	share_datas_ins = std::make_unique<sharedData::ApplicationSharedData>();
 	share_datas_ins->add_share_data<bool>();
 
 	share_datas_ins->get_share_data<bool>()->add_reference(right);
 	share_datas_ins->get_share_data<bool>()->add_reference(left);
+
+	//	入力機能作成
+	input_manager_ins = std::make_unique<input::InputStateManager>();
 
 	//	メインウィンドウ作成
 	if (!initialize_window()) {
@@ -57,10 +60,6 @@ Application::~Application() {
 		DEBUG_ERROR_LOG(" Application :: initialize_renderer() FAILED");
 		return false;
 	}
-
-	input_manager_ins = std::make_unique<input::InputStateManager>();
-
-	
 
 	DEBUG_LOG("Application :: initialize_App() SUCCESS");
 	return true;
@@ -81,6 +80,8 @@ void Application::run_App() {
 
 	//アプリケーションループ
 	while (true) {
+
+		input_manager_ins->update_frame();
 
 		//	入力など取得
 		main_window_ins->poll_events();
@@ -108,9 +109,6 @@ void Application::run_App() {
 				DEBUG_LOG("Application :: Active window");
 			}
 		}
-
-		//	キー入力保存
-		input_manager_ins->set_input_frame(main_window_ins->get_input_frame());
 
 		//	ESCキーが押されたなら、ウィンドウ終了
 		if (input_manager_ins->is_down(input::InputKeyBoard::Esc)) {
@@ -149,7 +147,7 @@ void Application::run_App() {
 	auto A_window = WindowSize(1280, 720);
 	auto B_window = WindowSize(1920, 1080);
 
-	main_window_ins = window::windowFactory::create_window(A_window);
+	main_window_ins = window::windowFactory::create_window(A_window,input_manager_ins.get());
 	return main_window_ins != nullptr;
 }
 

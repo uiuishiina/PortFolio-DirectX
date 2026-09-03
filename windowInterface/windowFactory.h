@@ -15,10 +15,13 @@ namespace window {
 	public:
 		/* ========== Publicメンバー関数 ========== */
 
-		//@brief	=== ウィンドウ作成関数 ===
-		//@param	window_size	ウィンドウサイズ
-		//@return	ウィンドウインスタンス
-		static  std::unique_ptr<windowInterface> create_window(WindowSize window_size);
+		/// <summary>
+		/// ウィンドウインスタンス作成関数
+		/// </summary>
+		/// <param name="window_size">設定するウィンドウサイズ構造体</param>
+		/// <param name="input_">入力機能マネージャークラス参照</param>
+		/// <returns>ウィンドウインスタンス</returns>
+		static  std::unique_ptr<windowInterface> create_window(WindowSize window_size, input::InputStateManager* input_);
 
 	private:
 		/* ========== クラス設定 ========== */

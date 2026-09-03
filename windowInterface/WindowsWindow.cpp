@@ -84,7 +84,7 @@ namespace {
 /// </summary>
 /// <param name="size">設定するウィンドウサイズ構造体</param>
 /// <returns>作成の成否</returns>
-[[nodiscard]] bool WindowsWindow::create_window(WindowSize size) {
+[[nodiscard]] bool WindowsWindow::create_window(WindowSize size, input::InputStateManager* input_) {
 
     //  すでにインスタンスがあるなら作成せず失敗を返す
     if (hinstance_) {
@@ -133,17 +133,15 @@ namespace {
 
     native_handle = hwnd_;
 
+    input_manager = input_;
+
     return true;
 }
-
 
 /// <summary>
 /// OSイベント取得関数
 /// </summary>
 void WindowsWindow::poll_events() {
-
-    // キー入力変数初期化
-    current_frame_key = {};
 
     //  メッセージループ処理開始
     MSG msg{};
@@ -158,7 +156,6 @@ void WindowsWindow::poll_events() {
         DispatchMessage(&msg);
     }
 }
-
 
 /// <summary>
 /// ウィンドウ終了処理関数
@@ -197,7 +194,6 @@ void WindowsWindow::on_destroy_window() {
     return &native_handle;
 }
 
-
 /// <summary>
 /// ウィンドウサイズ設定関数
 /// </summary>
@@ -214,7 +210,6 @@ void WindowsWindow::set_window_size(WindowSize new_size) {
         SWP_NOMOVE | SWP_NOZORDER
     );
 }
-
 
 /// <summary>
 /// ウィンドウプロシージャ互換関数
@@ -233,13 +228,13 @@ void WindowsWindow::process_message(unsigned int msg, uintptr_t wParam, intptr_t
         switch (wParam)
         {
         case VK_ESCAPE:
-            current_frame_key.set_state<input::InputKeyBoard>().set_key(input::InputKeyBoard::Esc, true);
+            input_manager->get_current_state().get_input_state<input::InputKeyBoard>().set_key(input::InputKeyBoard::Esc, true);
             break;
         case VK_LEFT:
-            current_frame_key.set_state<input::InputKeyBoard>().set_key(input::InputKeyBoard::LeftArrow, true);
+            input_manager->get_current_state().get_input_state<input::InputKeyBoard>().set_key(input::InputKeyBoard::LeftArrow, true);
             break;
         case VK_RIGHT:
-            current_frame_key.set_state<input::InputKeyBoard>().set_key(input::InputKeyBoard::RightArrow, true);
+            input_manager->get_current_state().get_input_state<input::InputKeyBoard>().set_key(input::InputKeyBoard::RightArrow, true);
             break;
         }
         break;
@@ -261,8 +256,6 @@ void WindowsWindow::process_message(unsigned int msg, uintptr_t wParam, intptr_t
         break;
     }
 }
-
-
 
 /* ==================================================================== */
 // Privateメンバー関数

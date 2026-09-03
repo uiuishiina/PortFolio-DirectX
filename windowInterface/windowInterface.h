@@ -1,6 +1,6 @@
 #pragma once
 #include"WindowSize.h"
-#include"../Application/Input/InputFrame.h"
+#include"../Application/Input/InputStateManager.h"
 #include"Others/NonCopyableBase.h"
 #include<any>
 
@@ -36,8 +36,9 @@ namespace window {
 		/// ウィンドウ作成関数
 		/// </summary>
 		/// <param name="size">設定するウィンドウサイズ構造体</param>
+		/// <param name="input_">入力機能マネージャークラス参照</param>
 		/// <returns>作成の成否</returns>
-		[[nodiscard]] virtual bool create_window(WindowSize size) = 0;
+		[[nodiscard]] virtual bool create_window(WindowSize size,input::InputStateManager* input_) = 0;
 
 		/// <summary>
 		/// OSイベント取得関数
@@ -68,14 +69,6 @@ namespace window {
 
 
 		/* === 共通フラグ & 変数 取得関数 === */
-
-		/// <summary>
-		/// 現在フレームキー状態取得関数
-		/// </summary>
-		/// <returns>現在フレームキー</returns>
-		[[nodiscard]] input::InputFrame get_input_frame()const noexcept {
-			return current_frame_key;
-		}
 
 		/// <summary>
 		/// ウィンドウサイズ取得関数
@@ -155,7 +148,7 @@ namespace window {
 		/// <details>
 		/// フレーム毎に更新
 		/// </details>
-		input::InputFrame current_frame_key{};
+		input::InputStateManager* input_manager{};
 
 	};
 }

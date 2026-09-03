@@ -1,138 +1,134 @@
 #pragma once
 #include"InputFrame.h"
-#include"NonMovable.h"
+#include"Others/NonCopyableBase.h"
 
-///====================================================================
+/// <summary>
 /// 入力名前空間
-///====================================================================
-
+/// </summary>
 namespace input {
 
-	///====================================================================
-	/// InputStateManager クラス
-	///====================================================================
-
-	//@brief	=== 入力機能マネージャークラス ===
-	class InputStateManager final : public NonMovableBase
+	/// <summary>
+	/// 入力機能マネージャークラス
+	/// </summary>
+	class InputStateManager final : public others::NonCopyableBase
 	{
 	public:
-		///====================================================================
-		/// クラス設定
-		///====================================================================
+		/* ========== クラス設定 ========== */
 
-		//コンストラクタ,デストラクタ
+		/// <summary>
+		/// コンストラクタ
+		/// </summary>
 		InputStateManager() = default;
+		
+		/// <summary>
+		/// デストラクタ
+		/// </summary>
 		~InputStateManager() = default;
 
-		///====================================================================
-		/// Public メンバー関数
-		///====================================================================
+		
+		/* ========== Publicメンバー関数 ========== */
 
 		/* === 更新処理関数 === */
 
-		//@brief	=== フレーム更新関数 ===
-		//@details	キー状態を更新してリセットする関数
-		void update_frame();
+		/// <summary>
+		/// フレーム更新関数
+		/// </summary>
+		/// <details>
+		/// キー状態を更新してリセットする関数
+		/// </details>
+		void update_frame() {
+
+			//	キー状態更新
+			previous_state = current_state;
+			current_state = {};
+		}
 
 
 		/* === 状態セット関数 === */
 
-		//@brief	=== 現在フレームキー設定関数 ===
-		void set_input_frame(const InputFrame& value);
+		/// <summary>
+		/// 現在フレームキー参照取得関数
+		/// </summary>
+		/// <returns>現在フレームキー参照</returns>
+		[[nodiscard]] InputFrame& get_current_state() noexcept {
+			return current_state;
+		}
 
 
 		/* === キーフラグ取得関数 === */
 
-		//@brief	=== 入力中取得関数 ===
-		//@param	value	取得したいキー
-		//@return	入力されているかどうか
+		/// <summary>
+		/// 入力中取得関数
+		/// </summary>
+		/// <typeparam name="T">取得したい列挙体</typeparam>
+		/// <param name="value">取得したいキー</param>
+		/// <returns>入力されているなら [ true ]</returns>
 		template<HandyItems::Enum::concepts::EnumHasCount T>
-		[[nodiscard]] bool is_pressed(T value)const noexcept;
+		[[nodiscard]] bool is_pressed(T value) const noexcept {
+			return get_current_key(value);
+		};
 
-		//@brief	=== 入力開始取得関数 ===
-		//@param	value	取得したいキー
-		//@return	入力されているかどうか
+		/// <summary>
+		/// 入力開始取得関数
+		/// </summary>
+		/// <typeparam name="T">取得したい列挙体</typeparam>
+		/// <param name="value">取得したいキー</param>
+		/// <returns>入力されているなら [ true ]</returns>
 		template<HandyItems::Enum::concepts::EnumHasCount T>
-		[[nodiscard]] bool is_down(T value)const noexcept;
+		[[nodiscard]] bool is_down(T value) const noexcept {
+			return	get_current_key(value) && !get_previous_key(value);
+		};
 
-		//@brief	=== 入力終了取得関数 ===
-		//@param	value	取得したいキー
-		//@return	入力されているかどうか
+		/// <summary>
+		/// 入力終了取得関数
+		/// </summary>
+		/// <typeparam name="T">取得したい列挙体</typeparam>
+		/// <param name="value">取得したいキー</param>
+		/// <returns>入力されているなら [ true ]</returns>
 		template<HandyItems::Enum::concepts::EnumHasCount T>
-		[[nodiscard]] bool is_up(T value)const noexcept;
+		[[nodiscard]] bool is_up(T value) const noexcept {
+			return	!get_current_key(value) && get_previous_key(value);
+		};
 
 	private:
-		///====================================================================
-		/// Private メンバー変数
-		///====================================================================
-
-		//@breif	== 現在フレームキー状態保存変数 ==
+		/* ========== Privateメンバー変数 ========== */
+		
+		/// <summary>
+		/// 現在フレームキー状態保存変数
+		/// </summary>
 		InputFrame current_state{};
 
-		//@breif	== 前フレームキー状態保存変数 ==
+		/// <summary>
+		/// 前フレームキー状態保存変数
+		/// </summary>
 		InputFrame previous_state{};
 
-		///====================================================================
-		/// Private メンバー関数
-		///====================================================================
+
+		/* ========== Privateメンバー関数 ========== */
 
 		/* === キー取得関数 === */
 
-		//@brief	=== 現在フレームキー状態取得関数 ===
-		//@param	value	取得したいキー
-		//@return	キー状態
+		/// <summary>
+		/// 現在フレームキー状態取得関数
+		/// </summary>
+		/// <typeparam name="T">取得したい列挙体</typeparam>
+		/// <param name="value">取得したいキー</param>
+		/// <returns>入力されているなら [ true ]</returns>
 		template<HandyItems::Enum::concepts::EnumHasCount T>
-		[[nodiscard]] bool get_current_key(T value)const noexcept;
+		[[nodiscard]] bool get_current_key(T value) const noexcept {
+			return current_state.get_input_state<T>().get_key(value);
+		};
 
-		//@brief	=== 前フレームキー状態取得関数 ===
-		//@param	value	取得したいキー
-		//@return	キー状態
+		/// <summary>
+		/// 前フレームキー状態取得関数
+		/// </summary>
+		/// <typeparam name="T">取得したい列挙体</typeparam>
+		/// <param name="value">取得したいキー</param>
+		/// <returns>入力されていたなら [ true ]</returns>
 		template<HandyItems::Enum::concepts::EnumHasCount T>
-		[[nodiscard]] bool get_previous_key(T value)const noexcept;
+		[[nodiscard]] bool get_previous_key(T value) const noexcept {
+			return previous_state.get_input_state<T>().get_key(value);
+		};
 
 	};
-
-	/* === キー取得関数 === */
-
-	//@brief	=== 現在キー状態取得関数 ===
-	//@param	value	取得したいキー
-	//@return	キー状態
-	template<HandyItems::Enum::concepts::EnumHasCount T>
-	[[nodiscard]] bool InputStateManager::get_current_key(T value)const noexcept {
-		return current_state.get_state<T>().get_key(value);
-	};
-
-	//@brief	=== 前フレームキー状態取得関数 ===
-	//@param	value	取得したいキー
-	//@return	キー状態
-	template<HandyItems::Enum::concepts::EnumHasCount T>
-	[[nodiscard]] bool InputStateManager::get_previous_key(T value)const noexcept {
-		return previous_state.get_state<T>().get_key(value);
-	};
-
-	/* === キーフラグ取得関数 === */
-
-	//@brief	=== 入力中取得関数 ===
-	//@param	value	取得したいキー
-	//@return	入力されているかどうか
-	template<HandyItems::Enum::concepts::EnumHasCount T>
-	[[nodiscard]] bool InputStateManager::is_pressed(T value)const noexcept {
-		return get_current_key(value);
-	};
-
-	//@brief	=== 入力開始取得関数 ===
-	//@param	value	取得したいキー
-	//@return	入力されているかどうか
-	template<HandyItems::Enum::concepts::EnumHasCount T>
-	[[nodiscard]] bool InputStateManager::is_down(T value)const noexcept {
-		return	get_current_key(value) && !get_previous_key(value);
-	};
-
-	//@brief	=== 入力終了取得関数 ===
-	//@param	value	取得したいキー
-	//@return	入力されているかどうか
-	template<HandyItems::Enum::concepts::EnumHasCount T>
-	[[nodiscard]] bool InputStateManager::is_up(T value)const noexcept {
-		return	!get_current_key(value) && get_previous_key(value);
-	};
-};
+}

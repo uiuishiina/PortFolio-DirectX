@@ -144,7 +144,6 @@
   <ItemGroup>
     <ClCompile Include="..\Application\Application.cpp" />
     <ClCompile Include="..\Application\EntryPoint.cpp" />
-    <ClCompile Include="..\Application\Input\InputStateManager.cpp" />
     <ClCompile Include="..\Debug\DebugLogBuilder.cpp" />
     <ClCompile Include="..\Debug\DebugLogOutPut.cpp" />
     <ClCompile Include="..\Debug\DebugLogSystem.cpp" />
