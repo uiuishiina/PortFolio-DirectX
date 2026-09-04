@@ -2,30 +2,39 @@
 #include"RendererInterface.h"
 #include<memory>
 
-///====================================================================
-/// RendererFactory クラス
-///====================================================================
+/// <summary>
+/// 描画機能名前空間
+/// </summary>
+namespace render {
 
-//@brief	=== 描画機能ファクトリークラス ===
-class RendererFactory final
-{
-public:
-	///====================================================================
-	/// Public メンバー関数
-	///====================================================================
+	/// <summary>
+	/// 描画機能ファクトリークラス
+	/// </summary>
+	class RendererFactory final
+	{
+	public:
+		/* ========== Publicメンバー関数 ========== */
 
-	//@brief	=== 描画機能作成関数 ===
-	//@param	window	作成に使用するウィンドウクラス参照
-	//@return	描画機能クラスインスタンス
-	static std::unique_ptr<RendererInterface> create_renderer(window::windowInterface* window, sharedData::ApplicationSharedData* shared_datas);
+		/// <summary>
+		/// 描画機能作成関数
+		/// </summary>
+		/// <param name="window">ウィンドウインターフェースクラス参照</param>
+		/// <param name="shared_datas">プリケーションデータシェアクラス参照</param>
+		/// <returns>作成した描画機能インスタンス</returns>
+		static std::unique_ptr<RendererInterface> create_renderer(window::windowInterface* window, sharedData::ApplicationSharedData* shared_datas);
 
-private:
-	///====================================================================
-	/// クラス設定
-	///====================================================================
+	private:
+		/* ========== クラス設定 ========== */
+		
+		/// <summary>
+		/// コンストラクタ
+		/// </summary>
+		RendererFactory() = default;
 
-	//コンストラクタ,デストラクタ
-	RendererFactory() = default;
-	~RendererFactory() = default;
+		/// <summary>
+		/// デストラクタ
+		/// </summary>
+		~RendererFactory() = default;
 
-};
+	};
+}

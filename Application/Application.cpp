@@ -81,6 +81,7 @@ void Application::run_App() {
 	//アプリケーションループ
 	while (true) {
 
+		//	入力更新
 		input_manager_ins->update_frame();
 
 		//	入力など取得
@@ -94,7 +95,7 @@ void Application::run_App() {
 		//	ウィンドウアクティブ分岐処理
 		if (!main_window_ins->is_active_window()) {
 
-			//	アクティブではないなら
+			//	アクティブではなくなったなら
 			if (is_active_app) {
 				is_active_app = false;
 				DEBUG_LOG("Application :: NotActive window");
@@ -103,7 +104,7 @@ void Application::run_App() {
 		}
 		else {
 
-			//	アクティブなら
+			//	アクティブになったなら
 			if (!is_active_app) {
 				is_active_app = true;
 				DEBUG_LOG("Application :: Active window");
@@ -124,12 +125,11 @@ void Application::run_App() {
 			left = !left;
 		}
 
-
 		//	描画更新
 		main_renderer_ins->update_renderer();
 	}
 
-	//終了時処理
+	//	終了時処理
 	end_App();
 }
 
@@ -157,7 +157,7 @@ void Application::run_App() {
 /// <returns>初期化の成否</returns>
 [[nodiscard]] bool Application::initialize_renderer() {
 
-	main_renderer_ins = RendererFactory::create_renderer(main_window_ins.get(), share_datas_ins.get());
+	main_renderer_ins = render::RendererFactory::create_renderer(main_window_ins.get(), share_datas_ins.get());
 	return main_renderer_ins != nullptr;
 }
 

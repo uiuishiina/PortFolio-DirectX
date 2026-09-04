@@ -1,11 +1,11 @@
 #pragma once
-#include"NonMovable.h"
+#include"Others/NonCopyableBase.h"
 #include<memory>
 #include<vector>
 
-///====================================================================
-/// IncludeFile 参照まとめ
-///====================================================================
+/* ==================================================================== */
+// IncludeFile まとめ
+/* ==================================================================== */
 
 /* -- DirectXObject --*/
 #include"DirectXobject/DXGI.h"
@@ -37,99 +37,138 @@
 #include"Container/StaticDrawPassContainer.h"
 #include"Container/StaticDrawObjectContainer.h"
 
-///====================================================================
-/// 描画名前空間
-///====================================================================
-
+/// <summary>
+/// 描画機能名前空間
+/// </summary>
 namespace render {
 
-	///====================================================================
+	/// <summary>
 	/// DirectX名前空間
-	///====================================================================
-
+	/// </summary>
 	namespace dx12 {
 
-		///====================================================================
-		/// DirectXRendererContext クラス
-		///====================================================================
-
-		//@brief	=== DirectX描画機能インスタンス保存クラス ===
-		class DirectXRendererContext final : public NonMovableBase
+		/// <summary>
+		/// DirectX描画機能インスタンス保存クラス
+		/// </summary>
+		class DirectXRendererContext final : public others::NonCopyableBase
 		{
 		public:
-			///====================================================================
-			/// クラス設定
-			///====================================================================
+			/* ========== クラス設定 ========== */
 
-			//コンストラクタ,デストラクタ
+			/// <summary>
+			/// コンストラクタ
+			/// </summary>
+			/// <details>
+			/// unique_ptr使用メンバー変数のインスタンスを作成する
+			/// フレームリソース各種は別でインスタンス作成
+			/// </details>
 			DirectXRendererContext();
+
+			/// <summary>
+			/// デストラクタ
+			/// </summary>
 			~DirectXRendererContext() = default;
 
-			///====================================================================
-			/// public メンバー変数
-			///====================================================================
+			/* ========== Publicメンバー変数 ========== */
 
 			/* -- 描画機能 -- */
 
-			//@brief	== DXGIインスタンス ==
+			/// <summary>
+			/// DXGIインスタンス
+			/// </summary>
 			std::unique_ptr<object::DXGI> dxgi_{};
 
-			//@brief	== Deviceインスタンス ==
+			/// <summary>
+			/// Deviceインスタンス
+			/// </summary>
 			std::unique_ptr<object::Device> device_{};
 
-			//@brief	== 描画用コマンドキューインスタンス ==
+			/// <summary>
+			/// 描画用コマンドキューインスタンス
+			/// </summary>
 			std::unique_ptr<object::CommandQueue> graphics_queue{};
 
-			//@brief	== 描画用コマンドリストインスタンス ==
+			/// <summary>
+			/// 描画用コマンドリストインスタンス
+			/// </summary>
 			std::unique_ptr<object::GraphicsCommandList> graphics_list{};
 
-			//@brief	== スワップチェーンインスタンス ==
+			/// <summary>
+			/// スワップチェーンインスタンス
+			/// </summary>
 			std::unique_ptr<object::SwapChain> swap_chain{};
 
-			//@brief	== Fenceインスタンス ==
+			/// <summary>
+			/// Fenceインスタンス
+			/// </summary>
 			std::unique_ptr<object::Fence> fence_{};
 
-			//@brief	== フレームリソース配列インスタンス ==
+			/// <summary>
+			/// フレームリソースインスタンス配列
+			/// </summary>
 			std::vector<std::unique_ptr<resources::FrameResource>> frame_resources{};
 
-			//@brief	== バックバッファ配列インスタンス ==
+			/// <summary>
+			/// バックバッファインスタンス配列
+			/// </summary>
 			std::vector<std::unique_ptr<object::BackBuffer>> back_buffers{};
+
 
 			/* -- 描画機能コンテナ -- */
 
-			//@brief	== シェーダーコンテナインスタンス ==
+			/// <summary>
+			/// シェーダーコンテナインスタンス
+			/// </summary>
 			std::unique_ptr<container::StaticShaderContainer> shader_container{};
 
-			//@brief	== ルートシグネチャーコンテナインスタンス ==
+			/// <summary>
+			/// ルートシグネチャーコンテナインスタンス
+			/// </summary>
 			std::unique_ptr<container::StaticRootSignatureContainer> root_signature_container{};
 
-			//@brief	== パイプラインステートコンテナインスタンス ==
+			/// <summary>
+			/// パイプラインステートコンテナインスタンス
+			/// </summary>
 			std::unique_ptr<container::StaticPiplineStateContainer> pipline_container{};
 
-			//@brief	== 描画設定コンテナインスタンス ==
+			/// <summary>
+			/// 描画パス設定コンテナインスタンス
+			/// </summary>
 			std::unique_ptr<container::StaticDrawStateContainer> static_draw_state_container{};
 
-			//@brief	== 描画パス用レンダーターゲット設定コンテナインスタンス ==
+			/// <summary>
+			/// 描画パス用レンダーターゲット設定コンテナインスタンス
+			/// </summary>
 			std::unique_ptr<container::StaticRenderTargetStateContainer> static_render_target_state_container{};
 
-			//@brief	== 描画パスコマンドコンテナインスタンス ==
+			/// <summary>
+			/// 描画コマンドコンテナインスタンス
+			/// </summary>
 			std::unique_ptr<container::StaticDrawCommandsContainer> static_draw_commands_container{};
 
-			//@brief	== 描画パスコンテナクラスインスタンス ==
+			/// <summary>
+			/// 描画パスコンテナクラスインスタンス
+			/// </summary>
 			std::unique_ptr<container::StaticDrawPassContainer> static_draw_pass_container{};
 
 
 			/* -- 描画リソース各種 -- */
 
-			//@brief	== 初期作成ディスクリプタヒープコンテナインスタンス ==
+			/// <summary>
+			/// 初期作成ディスクリプタヒープコンテナインスタンス
+			/// </summary>
 			std::unique_ptr<container::StaticHeapContainer> static_heap_container{};
 
-			//@brief	== 初期作成描画オブジェクトコンテナインスタンス ==
+			/// <summary>
+			/// 初期作成描画オブジェクトコンテナインスタンス
+			/// </summary>
 			std::unique_ptr<container::StaticDrawObjectContainer> static_draw_object_container{};
 
-			//@brief	== 描画バッファリソースコンテナインスタンス ==
+			/// <summary>
+			/// 描画バッファリソースコンテナインスタンス
+			/// </summary>
 			std::unique_ptr<container::StaticBufferContainer> static_buffer_container{};
 
 		};
-	};
-};
+	}
+}

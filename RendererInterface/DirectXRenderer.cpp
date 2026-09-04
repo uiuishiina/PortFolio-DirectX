@@ -1,8 +1,11 @@
 
-///====================================================================
-/// IncludeFile 参照まとめ
-///====================================================================
+/* ==================================================================== */
+// IncludeFile まとめ
+/* ==================================================================== */
 
+#include"DirectXRenderer.h"
+
+/* -- 各統括クラス -- */
 #include"DirectX/DirectXRendererContext.h"
 #include"DirectX/DirectXInitializer.h"
 #include"DirectX/DirectXUpdater.h"
@@ -14,55 +17,72 @@
 
 /* -- 各ヘルパー -- */
 #include"DirectX/Factory&Builder&Helper/PipelineStateHelper.h"
-
 #include"DirectX/Factory&Builder&Helper/RootSignatureDescBuilder.h"
 
 /* -- その他 -- */
 #include<chrono>
-#include"DirectXRenderer.h"
-
 #include"../Debug/DebugLogSystem.h"
 
-///====================================================================
-/// Using Name Space
-///====================================================================
+/* ==================================================================== */
+// Using Name Space
+/* ==================================================================== */
 
+using namespace render;
 using namespace render::dx12;
 
-///====================================================================
-/// 無名空間
-///====================================================================
-
+/* ==================================================================== */
+// 無名空間
+/* ==================================================================== */
 namespace {
-	//@brief	== 初期化時タイマー計測フラグ ==
+
+	/// <summary>
+	/// 初期化時タイマー計測フラグ
+	/// </summary>
 	const bool create_timer_flag = false;
 
-	//@brief	== 描画ループ時タイマー計測フラグ ==
+	/// <summary>
+	/// 描画ループ時タイマー計測フラグ
+	/// </summary>
 	const bool update_timer_flag = false;
 
-	//@brief	=== タイマーデバッグ表示関数 ===
-	//@param	name	出力ウィンドウに出す名前
-	//@param	after	計測したい区間の後ろ
-	//@param	before	計測したい区間の前
-	static void debug_timer(const std::string& name, std::chrono::steady_clock::time_point& after, std::chrono::steady_clock::time_point& before) {
+	/// <summary>
+	/// タイマーデバッグ表示関数
+	/// </summary>
+	/// <param name="name">出力ウィンドウに出す名前</param>
+	/// <param name="before">計測したい区間の前</param>
+	/// <param name="after">計測したい区間の後ろ</param>
+	static void debug_timer(const std::string& name, std::chrono::steady_clock::time_point& before, std::chrono::steady_clock::time_point& after) {
 		DEBUG_LOG(name, std::to_string(std::chrono::duration_cast<std::chrono::microseconds>(after - before).count()), "us");
 	}
 }
 
-///====================================================================
+/* ==================================================================== */
+// クラス設定
+/* ==================================================================== */
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 DirectXRenderer::DirectXRenderer() = default;
+
+/// <summary>
+/// デストラクタ
+/// </summary>
 DirectXRenderer::~DirectXRenderer() = default;
 
-///====================================================================
-/// 初期化関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@brief	=== 描画機能作成関数 ===
-//@param	window	ウィンドウインターフェース
-//@details	作成したウィンドウに描画するため引数で参照を渡す
-//@return	作成の成否
-[[nodiscard]] bool DirectXRenderer::create_renderer(window::windowInterface* window, sharedData::ApplicationSharedData* shared_datas) {
+/* ===== 作成関数 ===== */
+
+/// <summary>
+/// 描画機能作成関数
+/// </summary>
+/// <param name="window">ウィンドウインターフェースクラス参照</param>
+/// <param name="shared_datas">プリケーションデータシェアクラス参照</param>
+/// <returns>作成の成否</returns>
+[[nodiscard]] bool DirectXRenderer::create_renderer(window::windowInterface* window, sharedData::ApplicationSharedData* shared_) {
 
 	/* ==================== 作成前処理 ==================== */
 
@@ -77,7 +97,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 	window_size = window->get_window_size();
 
-	app_shared_datas = shared_datas;
+	shared_datas = shared_;
 	
 	/* ==================== 作成開始 ==================== */
 
@@ -107,7 +127,6 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 	pass_order = DirectXInitializer::get_draw_pass_order();
 
-
 	//DirectX描画機能更新クラス作成
 
 	renderer_updater = std::make_unique<DirectXUpdater>(renderer_context.get());
@@ -116,21 +135,22 @@ DirectXRenderer::~DirectXRenderer() = default;
 	auto end = std::chrono::high_resolution_clock::now();
 
 	if (create_timer_flag) {
-		debug_timer("create = ", end, start);
+		debug_timer("create = ", start, end);
 	}
 
 	DEBUG_LOG("DirectXRenderer :: create_renderer() SUCCESS");
 	return true;
 }
 
-///====================================================================
-/// 実行時処理関数群
-///====================================================================
 
-/* ==================== 描画制御 ==================== */
+/* ===== 制御関数 ===== */
 
-//@brief	=== 描画更新関数 ===
-//@details	毎フレーム更新される想定
+/// <summary>
+/// 描画更新関数
+/// </summary>
+/// <details>
+/// 毎フレーム呼び出される関数
+/// </details>
 void DirectXRenderer::update_renderer() {
 	
 	auto start = std::chrono::high_resolution_clock::now();
@@ -150,8 +170,8 @@ void DirectXRenderer::update_renderer() {
 
 	/* ==================== 描画パス実行 ==================== */
 
-	const auto value = app_shared_datas->get_share_data<bool>()->get_reference_to_index(0);
-	const auto left = app_shared_datas->get_share_data<bool>()->get_reference_to_index(1);
+	const auto value = shared_datas->get_share_data<bool>()->get_reference_to_index(0);
+	const auto left = shared_datas->get_share_data<bool>()->get_reference_to_index(1);
 
 	if (value.has_value() && left.has_value()) {
 
@@ -185,7 +205,7 @@ void DirectXRenderer::update_renderer() {
 
 	auto t1 = std::chrono::high_resolution_clock::now();
 	if (update_timer_flag) {
-		debug_timer("present = ", t1, t0);
+		debug_timer("present = ", t0, t1);
 	}
 
 	/* ==================== 更新後処理 ==================== */
@@ -195,16 +215,34 @@ void DirectXRenderer::update_renderer() {
 
 	auto end = std::chrono::high_resolution_clock::now();
 	if (update_timer_flag) {
-		debug_timer("update = ", end, start);
+		debug_timer("update = ", start, end);
 	}
 }
 
+/// <summary>
+/// 描画機能終了処理関数
+/// </summary>
+/// <details>
+/// 描画機能破棄前最終処理(非同期処理の待機など)をするための関数
+/// </details>
+void DirectXRenderer::end_renderer() {
+
+	renderer_updater->end_updater();
+
+	DEBUG_LOG("DirectXRenderer :: end_renderer()");
+}
 
 
-/* ==================== 描画前制御 ==================== */
+/* ==================================================================== */
+// Protectedメンバー関数
+/* ==================================================================== */
 
-//@brief	=== 描画更新前関数 ===
-//@details	描画機能を更新する際に先に処理する必要があるものを呼び出す関数
+/// <summary>
+/// 描画更新前関数
+/// </summary>
+/// <details>
+/// 描画機能を更新する際に先に処理する必要があるものを呼び出す関数
+/// </details>
 void DirectXRenderer::begin_update_renderer() {
 
 	if (!renderer_updater->begin_update_renderer()) {
@@ -214,26 +252,13 @@ void DirectXRenderer::begin_update_renderer() {
 	}
 }
 
-
-
-/* ==================== 描画後制御 ==================== */
-
-//@brief	=== 描画更新後関数 ===
-//@details	描画機能を更新した後に処理する必要があるものを呼び出す関数
+/// <summary>
+/// 描画更新後関数
+/// </summary>
+/// <details>
+/// 描画機能を更新した後に処理する必要があるものを呼び出す関数
+/// </details>
 void DirectXRenderer::end_update_renderer() {
 
 	renderer_updater->end_update_renderer();
-}
-
-///====================================================================
-/// 終了時処理関数
-///====================================================================
-
-//@brief	=== 描画機能終了処理関数 ===
-//@details	描画機能破棄前最終処理(非同期処理の待機など)をするための関数
-void DirectXRenderer::end_renderer() {
-
-	renderer_updater->end_updater();
-
-	DEBUG_LOG("DirectXRenderer :: end_renderer()");
 }

@@ -5,22 +5,26 @@
 
 using namespace render::dx12;
 
-///====================================================================
+/* ==================================================================== */
 /// 無名空間
-///====================================================================
+/* ==================================================================== */
 
 namespace {
 
-	//@brief	== フレームリソースインデックス確認フラグ ==
+	/// <summary>
+	/// フレームリソースインデックス確認フラグ
+	/// </summary>
 	const bool frame_index_flag = false;
 };
 
-///====================================================================
-/// 初期化間数
-///====================================================================
+/* ==================================================================== */
+// 初期化間数
+/* ==================================================================== */
 
-//@brief	=== 引数付きコンストラクタ ===
-//@param	context	DirectX描画機能インスタンス保存クラス参照
+/// <summary>
+/// 引数付きコンストラクタ
+/// </summary>
+/// <param name="context">DirectX描画機能インスタンス保存クラス参照</param>
 DirectXUpdater::DirectXUpdater(DirectXRendererContext* context) {
 
 	//	参照を保存
@@ -30,14 +34,16 @@ DirectXUpdater::DirectXUpdater(DirectXRendererContext* context) {
 	frame_resouse_size = context_->frame_resources.size();
 }
 
-///====================================================================
-/// 実行時処理関数群
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
 /* ==================== 描画更新前 ==================== */
 
-//@brief	=== 描画更新前関数 ===
-//@return	DirectX描画機能インスタンスが破棄されていた場合 [ false ] 破棄されていないなら [ true ]
+/// <summary>
+/// 描画更新前関数
+/// </summary>
+/// <returns>DirectX描画機能インスタンスが破棄されていた場合 [ false ] 破棄されていないなら [ true ]</returns>
 [[nodiscard]] bool DirectXUpdater::begin_update_renderer() {
 
 	//	nullチェック
@@ -51,11 +57,14 @@ DirectXUpdater::DirectXUpdater(DirectXRendererContext* context) {
 	return true;
 }
 
-
 /* ==================== 描画更新中 ==================== */
 
-//@brief	=== フレームリソース使用可能確認関数 ===
-//@details	フレームリソースが使用可能な状態か確認する関数
+/// <summary>
+/// フレームリソース使用可能確認関数
+/// </summary>
+/// <details>
+/// フレームリソースが使用可能な状態か確認する関数
+/// </details>
 void DirectXUpdater::sync_frame_resource() {
 
 	//	これから使うフレームリソースが使える状態か判断
@@ -77,8 +86,9 @@ void DirectXUpdater::sync_frame_resource() {
 	}
 }
 
-//@brief	=== フレームリソースリセット関数 ===
-//@details	フレームリソース内のリセットが必要なものをリセット
+/// <summary>
+/// フレームリソースリセット関数
+/// </summary>
 void DirectXUpdater::reset_frame_resource() {
 
 	//コマンドアロケーター取得
@@ -91,9 +101,13 @@ void DirectXUpdater::reset_frame_resource() {
 	context_->graphics_list->reset_command_list(allocator->get_command_allocator());
 }
 
-//@breif	=== 描画パス呼び出し関数 ===
-//@detais	作成した描画パスを呼び出す関数
-//@param	pass_order	描画パス呼び出し順保存配列参照
+/// <summary>
+/// 描画パス呼び出し関数
+/// </summary>
+/// <details>
+/// 作成した描画パスを呼び出す関数
+/// </details>
+/// <param name="pass_order">描画パス呼び出し順保存配列参照</param>
 void DirectXUpdater::apply_draw_pass(std::vector<std::string>& pass_order) {
 
 
@@ -106,8 +120,12 @@ void DirectXUpdater::apply_draw_pass(std::vector<std::string>& pass_order) {
 	}
 }
 
-//@brief	=== 描画コマンド送信関数 ===
-//@details	コマンドリストに記録したコマンドを送信する
+/// <summary>
+/// 描画コマンド送信関数
+/// </summary>
+/// <details>
+/// コマンドリストに記録したコマンドを送信する
+/// </details>
 void DirectXUpdater::execute_command_lists() {
 
 	// コマンドリストをクローズ
@@ -121,7 +139,9 @@ void DirectXUpdater::execute_command_lists() {
 	context_->frame_resources[current_frame_index]->set_frame_fence_value(context_->fence_->signal(context_->graphics_queue->get_command_queue()));
 }
 
-//@brief	=== スワップチェーンプレゼント関数 ===
+/// <summary>
+/// スワップチェーンプレゼント関数
+/// </summary>
 void DirectXUpdater::present() {
 
 	// プレゼント
@@ -131,7 +151,9 @@ void DirectXUpdater::present() {
 
 /* ==================== 描画更新後 ==================== */
 
-//@brief	=== 描画更新後関数 ===
+/// <summary>
+/// 描画更新後関数
+/// </summary>
 void DirectXUpdater::end_update_renderer() {
 
 	//	フレームリソースサイクルを進める
@@ -141,8 +163,12 @@ void DirectXUpdater::end_update_renderer() {
 
 /* ==================== 描画終了時 ==================== */
 
-//@brief	=== 描画機能終了時処理関数 ===
-//@details	内部でGPU同期チェック
+/// <summary>
+/// 描画機能終了時処理関数
+/// </summary>
+/// <details>
+/// 内部でGPU同期チェック
+/// </details>
 void DirectXUpdater::end_updater() {
 
 	//	GPUに投入済みのすべてのコマンドが完了するまで待機

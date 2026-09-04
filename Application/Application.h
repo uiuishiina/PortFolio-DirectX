@@ -6,7 +6,9 @@
 namespace window {
 	class windowInterface;
 }
-class RendererInterface;
+namespace render {
+	class RendererInterface;
+}
 namespace input {
 	class InputStateManager;
 }
@@ -88,7 +90,7 @@ private:
 	/// <details>
 	/// OSに対応する描画機能 [ 現状DirectXのみ ]
 	/// </details>
-	std::unique_ptr<RendererInterface> main_renderer_ins{};
+	std::unique_ptr<render::RendererInterface> main_renderer_ins{};
 
 	/// <summary>
 	/// アプリケーション入力機能マネージャーインスタンス

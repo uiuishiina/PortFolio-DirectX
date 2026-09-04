@@ -2,94 +2,112 @@
 #include"DirectXRendererContext.h"
 #include"WindowSize.h"
 
-///====================================================================
-/// 描画名前空間
-///====================================================================
-
+/// <summary>
+/// 描画機能名前空間
+/// </summary>
 namespace render {
 
-	///====================================================================
+	/// <summary>
 	/// DirectX名前空間
-	///====================================================================
-
+	/// </summary>
 	namespace dx12 {
 
-		///====================================================================
-		/// DirectXInitializer クラス
-		///====================================================================
-
-		//@brief	=== DirectX描画機能初期化クラス ===
+		/// <summary>
+		/// DirectX描画機能初期化クラス
+		/// </summary>
 		class DirectXInitializer final
 		{
 		public:
-			///====================================================================
-			/// Public メンバー関数
-			///====================================================================
+			/* ========== Publicメンバー関数 ========== */
 
 			/* -- 初期化 -- */
 
-			//@brief	=== 描画機能初期化関数 ===
-			//@param	context		描画機能インスタンス保存クラス参照
-			//@param	back_buffe_size			バックバッファサイズ
-			//@param	frame_resource_size		フレームリソースサイズ
-			//@param	hwnd					描画先ウィンドウハンドル
-			//@param	window_size				描画先ウィンドウサイズ構造体
-			//@return	初期化の成否
+			/// <summary>
+			/// 描画機能初期化関数
+			/// </summary>
+			/// <param name="context">描画機能インスタンス保存クラス参照</param>
+			/// <param name="back_buffe_size">バックバッファサイズ</param>
+			/// <param name="frame_resource_size">フレームリソースサイズ</param>
+			/// <param name="hwnd">描画先ウィンドウハンドル</param>
+			/// <param name="size">描画先ウィンドウサイズ構造体</param>
+			/// <returns>初期化の成否</returns>
 			static [[nodiscard]] bool initialze_graphics(DirectXRendererContext* context,
 				UINT back_buffe_size, UINT frame_resource_size, HWND hwnd, WindowSize size);
 
-			//@brief	=== 描画機能リソース初期化関数 ===
-			//@param	context		描画機能インスタンス保存クラス参照
-			//@return	初期化の成否
+			/// <summary>
+			/// 描画機能リソース初期化関数
+			/// </summary>
+			/// <param name="context">描画機能インスタンス保存クラス参照</param>
+			/// <returns>初期化の成否</returns>
 			static [[nodiscard]] bool initialize_graphics_resource(DirectXRendererContext* context);
 
-			//@breif	=== GPUリソース初期化関数 ===
-			//@param	context		描画機能インスタンス保存クラス参照
-			//@return	初期化の成否
+			/// <summary>
+			/// GPUリソース初期化関数
+			/// </summary>
+			/// <param name="context">描画機能インスタンス保存クラス参照</param>
+			/// <returns>初期化の成否</returns>
 			static [[nodiscard]] bool initialize_GPU_resource(DirectXRendererContext* context);
 
-			//@brief	=== 描画パス初期化関数 ===
-			//@param	context		描画機能インスタンス保存クラス参照
-			//@return	初期化の成否
+			/// <summary>
+			/// 描画パス初期化関数
+			/// </summary>
+			/// <param name="context">描画機能インスタンス保存クラス参照</param>
+			/// <returns>初期化の成否</returns>
 			static [[nodiscard]] bool initialize_draw_pass(DirectXRendererContext* context);
 
-			//@brief	=== 描画パス順取得関数 ===
-			//@details	内部でグローバル変数で保持(この先設計変更になる可能性あり)
-			//@return	初期化時に作った描画パス順配列
+			/// <summary>
+			/// 描画パス順取得関数
+			/// </summary>
+			/// <details>
+			/// 内部でグローバル変数で保持(この先設計変更になる可能性あり)
+			/// </details>
+			/// <returns>初期化時に作った描画パス順配列</returns>
 			static [[nodiscard]] std::vector<std::string> get_draw_pass_order() noexcept;
+
 
 			/* -- 実行時 -- */
 
-			//@brief	=== 描画リソース作成関数 ===
-			//@details	描画に利用するリソースをフレームごとにまとめて構造体にする関数
-			//@param	context					描画機能インスタンス保存クラス参照
-			//@param	current_frame_index		使用するフレームリソースインデックス
-			//@return	描画リソース構造体
+			/// <summary>
+			/// 描画リソース作成関数
+			/// </summary>
+			/// <details>
+			/// 描画に利用するリソースをフレームごとにまとめて構造体にする関数
+			/// </details>
+			/// <param name="context">描画機能インスタンス保存クラス参照</param>
+			/// <param name="current_frame_index">使用するフレームリソースインデックス</param>
+			/// <returns>描画リソース構造体</returns>
 			static [[nodiscard]] resources::DrawResources create_draw_resources(DirectXRendererContext* context, UINT64 current_frame_index);
 
 		private:
-			///====================================================================
-			/// クラス設定
-			///====================================================================
+			/* ========== クラス設定 ========== */
 
-			//コンストラクタ,デストラクタ
+			/// <summary>
+			/// コンストラクタ
+			/// </summary>
 			DirectXInitializer() = default;
+
+			/// <summary>
+			/// コンストラクタ
+			/// </summary>
 			~DirectXInitializer() = default;
 
-			///====================================================================
-			/// Private メンバー関数
-			///====================================================================
 
-			//@brief	=== シェーダー初期化関数 ===
-			//@param	context		描画機能インスタンス保存クラス参照
-			//@return	初期化の成否
+			/* ========== Privateメンバー関数 ========== */
+
+			/// <summary>
+			/// シェーダー初期化関数
+			/// </summary>
+			/// <param name="context">描画機能インスタンス保存クラス参照</param>
+			/// <returns>初期化の成否</returns>
 			static [[nodiscard]] bool compile_shader(DirectXRendererContext* context);
 
-			//@breif	=== 描画パイプライン初期化関数 ===
-			//@param	context		描画機能インスタンス保存クラス参照
-			//@return	初期化の成否
+			/// <summary>
+			/// 描画パイプライン初期化関数
+			/// </summary>
+			/// <param name="context">描画機能インスタンス保存クラス参照</param>
+			/// <returns>初期化の成否</returns>
 			static [[nodiscard]] bool initialize_pipline(DirectXRendererContext* context);
 
 		};
-	};
-};
+	}
+}
