@@ -69,7 +69,15 @@ namespace render {
 				template<typename T, typename Key>
 					requires std::derived_from<Key, EncodeKey>
 				struct HandleBase {
+
+					/// <summary>
+					/// 保存変数
+					/// </summary>
 					T handle_{};
+
+					/// <summary>
+					/// ハンドルキー
+					/// </summary>
 					Key handle_key{};
 				};
 
@@ -81,7 +89,15 @@ namespace render {
 				template<typename T, typename Key>
 					requires std::derived_from<Key, EncodeKey>
 				struct HandlePtrBase {
+
+					/// <summary>
+					/// 保存ポインター
+					/// </summary>
 					T* handle_p{};
+
+					/// <summary>
+					/// ハンドルキー
+					/// </summary>
 					Key handle_key{};
 				};
 			}
@@ -107,7 +123,7 @@ namespace render {
 			class KeyMapBase : others::NonCopyableBase
 			{
 			public:
-				/* ===== メンバー関数 ===== */
+				/* ========== クラス設定 ========== */
 
 				/// <summary>
 				/// デストラクタ
@@ -115,7 +131,9 @@ namespace render {
 				virtual ~KeyMapBase() = default;
 
 
-				/* ===== 取得関数 ===== */
+				/* ========== Publicメンバー関数 ========== */
+
+				/* -- 取得関数 -- */
 
 				/// <summary>
 				/// ハンドル取得関数
@@ -135,12 +153,15 @@ namespace render {
 
 
 			protected:
-				/* ===== メンバー関数 ===== */
+				/* ========== クラス設定 ========== */
 
 				/// <summary>
 				/// コンストラクタ
 				/// </summary>
 				KeyMapBase() = default;
+
+
+				/* ========== Protectedメンバー関数 ========== */
 				
 				/// <summary>
 				/// データ追加関数
@@ -153,7 +174,7 @@ namespace render {
 				}
 
 
-				/* ===== 通常取得側 ===== */
+				/* -- 通常取得側 -- */
 
 				/// <summary>
 				/// データ取得関数
@@ -181,7 +202,7 @@ namespace render {
 					return map_.get_value(encode_key);
 				}
 
-				/* ===== 保存キー側 ===== */
+				/* -- 保存キー側 -- */
 
 				/// <summary>
 				/// データ取得関数
@@ -214,7 +235,7 @@ namespace render {
 				}
 
 
-				/* ===== その他 ===== */
+				/* -- その他 -- */
 
 				/// <summary>
 				/// エンコード関数
@@ -226,7 +247,7 @@ namespace render {
 				}
 
 			private:
-				/* ===== メンバー変数 ===== */
+				/* ========== Privateメンバー変数 ========== */
 
 				/// <summary>
 				/// 利用するマップクラス

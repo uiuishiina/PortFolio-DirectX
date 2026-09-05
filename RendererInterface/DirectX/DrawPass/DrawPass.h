@@ -24,6 +24,8 @@ namespace render {
 			/// </summary>
 			struct DrawPassDesc {
 
+				/* ========== メンバー変数 ========== */
+
 				/// <summary>
 				/// 描画設定クラス参照
 				/// </summary>
@@ -38,6 +40,9 @@ namespace render {
 				/// 描画パスコマンドクラス参照
 				/// </summary>
 				command::DrawCommands* command_;
+				
+
+				/* ========== メンバー関数 ========== */
 
 				/// <summary>
 				/// コンストラクタ

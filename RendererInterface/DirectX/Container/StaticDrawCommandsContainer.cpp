@@ -3,23 +3,30 @@
 
 using namespace render::dx12::container;
 
-///====================================================================
-/// 初期化関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@brief	=== 単体コマンド追加関数 ===
-//@param	name	追加するコマンド名
-//@return	追加の成否
+/* -- 追加関数 -- */
+
+//// <summary>
+/// 単体コマンド追加関数
+/// </summary>
+/// <param name="key">追加するコマンド名</param>
+/// <param name="func">追加するコマンド</param>
+/// <returns>追加の成否</returns>
 [[nodiscard]] bool StaticDrawCommandsContainer::add_command_map(const handle::CommandKey& key, utility::DrawCommand&& func) {
 
 	//	登録済みか確認
 	return command_map.add_value(key, std::move(func));
 }
 
-//@breif	=== 描画パスコマンド作成関数 ===
-//@param	key_name	登録するキーの名前
-//@param	desc		描画パスコマンド作成構造体
-//@return	作成の成否
+/// <summary>
+/// 描画パスコマンド作成関数
+/// </summary>
+/// <param name="key">登録するキーの名前</param>
+/// <param name="desc">描画パスコマンド作成構造体</param>
+/// <returns>作成の成否</returns>
 [[nodiscard]] bool StaticDrawCommandsContainer::create_draw_commands(const handle::DrawCommandsKey& key, desc::DrawCommandDesc& desc) {
 
 	
@@ -67,9 +74,15 @@ using namespace render::dx12::container;
 }
 
 
-//@brief	=== 単体コマンド取得関数 ===
-//@param	key_name	取得するコマンド名
-//@return	取得したコマンド...ないなら [ std::nullopt ]
+/* ==================================================================== */
+// Privateメンバー関数
+/* ==================================================================== */
+
+/// <summary>
+/// 単体コマンド取得関数
+/// </summary>
+/// <param name="key">取得するコマンド名</param>
+/// <returns>取得したコマンド...ないなら [ std::nullopt ]</returns>
 [[nodiscard]] std::optional<render::dx12::utility::DrawCommand> StaticDrawCommandsContainer::get_command(const handle::CommandKey& key) {
 
 	//	単体コマンド保存マップ探索

@@ -61,7 +61,9 @@ namespace render {
 				};
 			}
 
-			//@brief	=== 描画パスコンテナクラス ===
+			/// <summary>
+			/// 描画パスコンテナクラス
+			/// </summary>
 			class StaticDrawPassContainer final : public UniqueptrKeyMap<
 				handle::PassKey,
 				handle::PassEncodeKey,
@@ -69,7 +71,7 @@ namespace render {
 			>
 			{
 			public:
-				/* ========== メンバー関数 ========== */
+				/* ========== クラス設定 ========== */
 				
 				/// <summary>
 				/// コンストラクタ
@@ -82,16 +84,20 @@ namespace render {
 				~StaticDrawPassContainer() = default;
 
 
-				/* ========== 追加関数 ========== */
+				/* ========== Publicメンバー関数 ========== */
 
-				//@breif	=== 描画パス作成関数 ===
-				//@param	key_name	登録するキーの名前
-				//@param	pass		登録するパスクラスインスタンス
-				//@return	作成の成否
+				/* -- 追加関数 -- */
+
+				/// <summary>
+				/// 描画パス作成関数
+				/// </summary>
+				/// <param name="key">登録するキーの名前</param>
+				/// <param name="pass">登録するパスクラスインスタンス</param>
+				/// <returns>作成の成否</returns>
 				[[nodiscard]] bool register_draw_pass(const handle::PassKey& key, std::unique_ptr<pass::PassBase> pass);
 
 
-				/* ========== 取得関数 ========== */
+				/* -- 取得関数 -- */
 
 				/// <summary>
 				/// 描画パス呼び出し関数
@@ -118,12 +124,14 @@ namespace render {
 				}
 
 			private:
+				/* ========== Privateメンバー変数 ========== */
 
 				/// <summary>
 				/// ハンドルを取得できないように [ Private化 ]
 				/// </summary>
 				using UniqueptrKeyMap<handle::PassKey, handle::PassEncodeKey, pass::PassBase>::get_handle;
+
 			};
-		};
-	};
-};
+		}
+	}
+}

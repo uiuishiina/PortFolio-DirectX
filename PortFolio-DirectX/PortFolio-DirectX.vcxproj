@@ -149,7 +149,6 @@
     <ClCompile Include="..\Debug\DebugLogSystem.cpp" />
     <ClCompile Include="..\Debug\DebugLogThread.cpp" />
     <ClCompile Include="..\RendererInterface\DirectXRenderer.cpp" />
-    <ClCompile Include="..\RendererInterface\DirectX\Container\StaticBufferContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticContainerBase.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawCommandsContainer.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Container\StaticDrawObjectContainer.cpp" />

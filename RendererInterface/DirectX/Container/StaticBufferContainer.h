@@ -12,13 +12,14 @@ namespace render {
 	/// </summary>
 	namespace dx12 {
 
-		///====================================================================
+		/// <summary>
 		/// テンプレートコンセプト名前空間
-		///====================================================================
-
+		/// </summary>
 		namespace concepts {
 
-			//@brief	=== 初期作成描画バッファ継承コンセプト ===
+			/// <summary>
+			/// 初期作成描画バッファ継承コンセプト
+			/// </summary>
 			template<typename T>
 			concept FromStaticBuffer = std::derived_from<T, object::StaticBufferResource>;
 		};
@@ -74,12 +75,9 @@ namespace render {
 			}
 
 
-
-			///====================================================================
-			/// StaticBufferContainer クラス
-			///====================================================================
-
-			//@brief	=== 初期作成描画バッファリソースコンテナクラス ===
+			/// <summary>
+			/// 初期作成描画バッファリソースコンテナクラス
+			/// </summary>
 			class StaticBufferContainer final : public UniqueptrKeyMap<
 				handle::StaticBufferKey,
 				handle::StaticBufferEncodeKey,
@@ -87,7 +85,7 @@ namespace render {
 			>
 			{
 			public:
-				/* ========== メンバー関数 ========== */
+				/* ========== クラス設定 ========== */
 
 				/// <summary>
 				/// コンストラクタ
@@ -99,7 +97,8 @@ namespace render {
 				/// </summary>
 				~StaticBufferContainer() = default;
 
-				/* ===== 追加関数 ===== */
+
+				/* ========== Publicメンバー関数 ========== */
 
 				/// <summary>
 				/// 描画バッファリソース登録関数
@@ -109,22 +108,11 @@ namespace render {
 				/// <param name="buffer">設定する描画バッファ</param>
 				/// <returns>登録の成否</returns>
 				template<concepts::FromStaticBuffer T>
-				[[nodiscard]] bool register_buffer(const handle::StaticBufferKey& key, std::unique_ptr<T> buffer);
+				[[nodiscard]] bool register_buffer(const handle::StaticBufferKey& key, std::unique_ptr<T> buffer) {
+					return add_value(key, std::move(buffer));
+				}
 
 			};
-
-			/// <summary>
-			/// 描画バッファリソース登録関数
-			/// </summary>
-			/// <typeparam name="T">描画バッファ継承型</typeparam>
-			/// <param name="key">追加したい倫理側のキー</param>
-			/// <param name="buffer">設定する描画バッファ</param>
-			/// <returns>登録の成否</returns>
-			template<concepts::FromStaticBuffer T>
-			[[nodiscard]] bool StaticBufferContainer::register_buffer(const handle::StaticBufferKey& key, std::unique_ptr<T> buffer) {
-
-				return add_value(key, std::move(buffer));
-			}
-		};
-	};
-};
+		}
+	}
+}

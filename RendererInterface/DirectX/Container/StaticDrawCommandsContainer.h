@@ -23,6 +23,8 @@ namespace render {
 			/// </summary>
 			struct DrawCommandDesc {
 
+				/* ========== メンバー変数 ========== */
+
 				/// <summary>
 				/// Beginコマンド名
 				/// </summary>
@@ -39,7 +41,7 @@ namespace render {
 				std::string end_name{};
 
 			};
-		};
+		}
 
 		/// <summary>
 		/// コンテナ名前空間
@@ -132,7 +134,7 @@ namespace render {
 			>
 			{
 			public:
-				/* ========== メンバー関数 ========== */
+				/* ========== クラス設定 ========== */
 
 				/// <summary>
 				/// コンストラクタ
@@ -145,22 +147,28 @@ namespace render {
 				~StaticDrawCommandsContainer() = default;
 
 
-				/* ===== 追加関数 ===== */
+				/* ========== Publicメンバー関数 ========== */
 
-				//@brief	=== 単体コマンド追加関数 ===
-				//@param	name	追加するコマンド名
-				//@param	func	追加するコマンド
-				//@return	追加の成否
+				/* -- 追加関数 -- */
+
+				/// <summary>
+				/// 単体コマンド追加関数
+				/// </summary>
+				/// <param name="key">追加するコマンド名</param>
+				/// <param name="func">追加するコマンド</param>
+				/// <returns>追加の成否</returns>
 				[[nodiscard]] bool add_command_map(const handle::CommandKey& key, utility::DrawCommand&& func);
 
-				//@breif	=== 描画パスコマンド作成関数 ===
-				//@param	key_name	登録するキーの名前
-				//@param	desc		描画パスコマンド作成構造体
-				//@return	作成の成否
+				/// <summary>
+				/// 描画パスコマンド作成関数
+				/// </summary>
+				/// <param name="key">登録するキーの名前</param>
+				/// <param name="desc">描画パスコマンド作成構造体</param>
+				/// <returns>作成の成否</returns>
 				[[nodiscard]] bool create_draw_commands(const handle::DrawCommandsKey& key, desc::DrawCommandDesc& desc);
 
 
-				/* ===== 取得関数 ===== */
+				/* -- 取得関数 -- */
 
 				/// <summary>
 				/// ハンドル取得関数
@@ -178,10 +186,11 @@ namespace render {
 				}
 
 			private:
-				///====================================================================
-				/// Private メンバー変数
-				///====================================================================
+				/* ========== Privateメンバー変数 ========== */
 
+				/// <summary>
+				/// 単体コマンド保存マップ
+				/// </summary>
 				HandyItems::container::KeyMap<
 					handle::CommandKey,
 					handle::CommandEncodeKey,
@@ -189,9 +198,11 @@ namespace render {
 					key::FeistelKeyConverter<handle::CommandKey, handle::CommandEncodeKey>
 				> command_map{};
 
-				//@brief	=== 単体コマンド取得関数 ===
-				//@param	key_name	取得するコマンド名
-				//@return	取得したコマンド...ないなら [ std::nullopt ]
+				/// <summary>
+				/// 単体コマンド取得関数
+				/// </summary>
+				/// <param name="key">取得するコマンド名</param>
+				/// <returns>取得したコマンド...ないなら [ std::nullopt ]</returns>
 				[[nodiscard]] std::optional<utility::DrawCommand> get_command(const handle::CommandKey& key);
 				
 			};

@@ -72,7 +72,7 @@ namespace render {
 			>
 			{
 			public:
-				/* ========== メンバー関数 ========== */
+				/* ========== クラス設定 ========== */
 
 				/// <summary>
 				/// コンストラクタ
@@ -85,7 +85,9 @@ namespace render {
 				~StaticDrawStateContainer() = default;
 
 
-				/* ===== 追加関数 ===== */
+				/* ========== Publicメンバー関数 ========== */
+
+				/* -- 追加関数 -- */
 				
 				/// <summary>
 				/// 描画設定作成関数
@@ -96,7 +98,7 @@ namespace render {
 				[[nodiscard]] bool create_draw_state(const handle::DrawStateKey& key, desc::DrawStateDesc& desc);
 
 
-				/* ===== 取得関数 ===== */
+				/* -- 取得関数 -- */
 
 				/// <summary>
 				/// ハンドル取得関数
@@ -113,6 +115,6 @@ namespace render {
 					return this->get_handle(handle::DrawStateKey(key_name));
 				}
 			};
-		};
-	};
-};
+		}
+	}
+}

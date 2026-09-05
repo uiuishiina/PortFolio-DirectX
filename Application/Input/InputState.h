@@ -15,7 +15,7 @@ namespace input {
 	template<HandyItems::Enum::concepts::EnumHasCount T>
 	struct InputState {
 		
-		/* ========== Publicメンバー変数 ========== */
+		/* ========== メンバー変数 ========== */
 
 		/// <summary>
 		/// キー状態保存変数
@@ -23,7 +23,7 @@ namespace input {
 		std::bitset<HandyItems::Enum::enum_to_index(T::Count)> key_{};
 
 
-		/* ========== Publicメンバー関数 ========== */
+		/* ========== メンバー関数 ========== */
 
 		/* -- 設定関数 -- */
 

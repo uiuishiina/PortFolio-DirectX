@@ -24,6 +24,8 @@ namespace render {
 			/// </summary>
 			struct DrawStateDesc {
 
+				/* ========== メンバー変数 ========== */
+
 				/// <summary>
 				/// ルートシグネチャークラス参照
 				/// </summary>

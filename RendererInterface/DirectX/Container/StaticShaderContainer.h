@@ -68,7 +68,7 @@ namespace render {
 			>
 			{
 			public:
-				/* ========== メンバー関数 ========== */
+				/* ========== クラス設定 ========== */
 
 				/// <summary>
 				/// コンストラクタ
@@ -80,6 +80,8 @@ namespace render {
 				/// </summary>
 				~StaticShaderContainer() = default;
 
+
+				/* ========== Publicメンバー関数 ========== */
 
 				/// <summary>
 				/// シェーダーコンパイル関数

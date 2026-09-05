@@ -2,14 +2,16 @@
 
 using namespace render::dx12::container;
 
-///====================================================================
-/// 初期化処理
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@breif	=== 描画パス作成関数 ===
-//@param	key_name	登録するキーの名前
-//@param	pass		登録するパスクラスインスタンス
-//@return	作成の成否
+/// <summary>
+/// 描画パス作成関数
+/// </summary>
+/// <param name="key">登録するキーの名前</param>
+/// <param name="pass">登録するパスクラスインスタンス</param>
+/// <returns>作成の成否</returns>
 [[nodiscard]] bool StaticDrawPassContainer::register_draw_pass(const handle::PassKey& key, std::unique_ptr<pass::PassBase> pass) {
 
 	//	mapに登録

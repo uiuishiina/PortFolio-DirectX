@@ -22,10 +22,15 @@ namespace render {
 			/// </summary>
 			struct CommandPassDesc {
 
+				/* ========== メンバー変数 ========== */
+
 				/// <summary>
 				/// 描画パスコマンドクラス参照
 				/// </summary>
 				command::DrawCommands* command_;
+
+
+				/* ========== メンバー関数 ========== */
 
 				/// <summary>
 				/// コンストラクタ

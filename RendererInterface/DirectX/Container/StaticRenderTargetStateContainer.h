@@ -72,7 +72,7 @@ namespace render {
 			>
 			{
 			public:
-				/* ========== メンバー関数 ========== */
+				/* ========== クラス設定 ========== */
 
 				/// <summary>
 				/// コンストラクタ
@@ -84,7 +84,10 @@ namespace render {
 				/// </summary>
 				~StaticRenderTargetStateContainer() = default;
 
-				/* ===== 追加関数 ===== */
+
+				/* ========== Publicメンバー関数 ========== */
+
+				/* -- 作成関数 -- */
 
 				/// <summary>
 				/// 描画パス用レンダーターゲット設定作成関数
@@ -96,7 +99,7 @@ namespace render {
 				[[nodiscard]] bool create_render_target_state(const handle::RenderTargetStateKey& key, const std::vector<RenderTargetSlot>& render_target_slots, std::optional<DepthSlot> depth_slot = std::nullopt);
 
 
-				/* ===== 取得関数 ===== */
+				/* -- 取得関数 -- */
 				
 				/// <summary>
 				/// ハンドル取得関数
@@ -113,6 +116,6 @@ namespace render {
 					return this->get_handle(handle::RenderTargetStateKey(key_name));
 				}
 			};
-		};
-	};
-};
+		}
+	}
+}

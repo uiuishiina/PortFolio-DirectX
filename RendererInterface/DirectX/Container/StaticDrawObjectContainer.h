@@ -70,7 +70,7 @@ namespace render {
 			>
 			{
 			public:
-				/* ========== メンバー関数 ========== */
+				/* ========== クラス設定 ========== */
 
 				/// <summary>
 				/// コンストラクタ
@@ -82,6 +82,9 @@ namespace render {
 				/// </summary>
 				~StaticDrawObjectContainer() = default;
 
+
+				/* ========== Publicメンバー関数 ========== */
+
 				/// <summary>
 				/// 描画オブジェクト登録関数
 				/// </summary>
@@ -91,6 +94,6 @@ namespace render {
 				[[nodiscard]] bool register_draw_object(const handle::DrawObjectKey key,std::unique_ptr<drawobject::DrawObjectBase> object);
 
 			};
-		};
-	};
-};
+		}
+	}
+}

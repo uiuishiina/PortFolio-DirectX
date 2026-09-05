@@ -68,7 +68,7 @@ namespace render {
 			>
 			{
 			public:
-				/* ========== メンバー関数 ========== */
+				/* ========== クラス設定 ========== */
 
 				/// <summary>
 				/// コンストラクタ
@@ -81,6 +81,8 @@ namespace render {
 				~StaticPiplineStateContainer() = default;
 
 
+				/* ========== Publicメンバー関数 ========== */
+
 				/// <summary>
 				/// パイプラインステート作成関数
 				/// </summary>
@@ -91,6 +93,6 @@ namespace render {
 				[[nodiscard]] HRESULT create_pipline_state(const handle::PiplineStateKey& key, ID3D12Device* device, desc::PipelineStateDesc& desc);
 
 			};
-		};
-	};
-};
+		}
+	}
+}

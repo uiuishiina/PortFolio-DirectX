@@ -71,7 +71,7 @@ namespace render {
 			>
 			{
 			public:
-				/* ========== メンバー関数 ========== */
+				/* ========== クラス設定 ========== */
 
 				/// <summary>
 				/// コンストラクタ
@@ -84,6 +84,8 @@ namespace render {
 				~StaticRootSignatureContainer() = default;
 
 
+				/* ========== Publicメンバー関数 ========== */
+
 				/// <summary>
 				/// ルートシグネチャー作成関数
 				/// </summary>
@@ -94,6 +96,6 @@ namespace render {
 				[[nodiscard]] HRESULT create_root_signature(const handle::RootSignatureKey& key, ID3D12Device* device, desc::RootSignatureDesc& desc);
 
 			};
-		};
-	};
-};
+		}
+	}
+}

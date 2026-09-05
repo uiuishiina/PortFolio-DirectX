@@ -26,7 +26,7 @@ namespace render {
 			class StaticHeapContainer final : others::NonCopyableBase
 			{
 			public:
-				/* ===== メンバー関数 ===== */
+				/* ===== クラス設定 ===== */
 				
 				/// <summary>
 				/// コンストラクタ
@@ -38,7 +38,11 @@ namespace render {
 				/// </summary>
 				~StaticHeapContainer() = default;
 
+
+				/* ===== Publicメンバー関数 ===== */
 				
+				/* -- 作成関数 -- */
+
 				/// <summary>
 				/// ディスクリプタヒープコンテナ作成関数
 				/// </summary>
@@ -46,6 +50,8 @@ namespace render {
 				/// <param name="desc">ディスクリプタヒープ設定配列</param>
 				/// <returns>作成の成否</returns>
 				[[nodiscard]] HRESULT create_static_heap_container(ID3D12Device* device, const std::vector<desc::DescriptorHeapDesc>& desc);
+
+				/* -- 取得関数 -- */
 
 				/// <summary>
 				/// ディスクリプタヒープ参照取得関数
@@ -55,7 +61,7 @@ namespace render {
 				[[nodiscard]] object::DescriptorHeap* get_discriptor_heap(D3D12_DESCRIPTOR_HEAP_TYPE type);
 
 			private:
-				/* ===== メンバー変数 ===== */
+				/* ===== Publicメンバー変数 ===== */
 
 				/// <summary>
 				/// ディスクリプタヒープマップ
