@@ -8,7 +8,6 @@
 
 /* -- 各Factory -- */
 #include"Factory&Builder&Helper/CommandObjectFactory.h"
-#include"Factory&Builder&Helper/FrameResourceFactory.h"
 
 /* -- 各ヘルパー -- */
 #include"Factory&Builder&Helper/PipelineStateHelper.h"
@@ -117,14 +116,66 @@ namespace {
 	}
 
 	//	フレームリソース生成
-	if (FAILED(factory::FrameResourceFactory::create_frame_resources(context, window_size, frame_resource_size, {}))) {
-		DEBUG_LOG("DirectXRenderer :: create_frame_resources() FAILED");
-		return false;
+	context->frame_resources.resize(frame_resource_size);
+	for (auto & p : context->frame_resources) {
+
+		p = std::make_unique<resources::FrameResource>();
+
+		//コマンドアロケーター作成
+		{
+			auto allocator = std::make_unique<object::CommandAllocator>();
+
+			const auto hr = factory::CommandObjectFactory::create_graphics_command_allocator(deviceP, *allocator);
+			if (FAILED(hr)) {
+				DEBUG_LOG("DirectXRenderer :: create_frame_resources() FAILED");
+				return false;
+			}
+
+			p->graphics_allocator = std::move(allocator);
+		}
+
+		 //  ディスクリプタヒープ作成
+		{
+			auto container = std::make_unique<container::StaticHeapContainer>();
+
+			std::vector<desc::DescriptorHeapDesc> heap = {
+				{ D3D12_DESCRIPTOR_HEAP_TYPE_DSV,1,D3D12_DESCRIPTOR_HEAP_FLAG_NONE }
+			};
+			
+			const auto hr = container->create_static_heap_container(deviceP, heap);
+			if (FAILED(hr)) {
+				DEBUG_LOG("DirectXRenderer :: create_frame_resources() FAILED");
+				return false;
+			}
+
+			p->frame_heap_container = std::move(container);
+		}
+
+		// デプスバッファ作成
+		{
+			auto depth = std::make_unique<object::DepthBuffer>();
+
+			desc::DepthBufferDesc depth_desc{};
+			depth_desc.width = window_size.width;
+			depth_desc.height = window_size.height;
+
+			const auto hr = depth->create_depth_buffer(
+				deviceP,
+				p->frame_heap_container->get_discriptor_heap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV)->get_cpu_descriptor_handle(0),
+				depth_desc);
+			if (FAILED(hr)) {
+				DEBUG_LOG("DirectXRenderer :: create_frame_resources() FAILED");
+				return false;
+			}
+
+			p->depth_buffer = std::move(depth);
+		}
 	}
+	
 
 	//	描画用コマンドリストインスタンス生成
 	if (FAILED(factory::CommandObjectFactory::create_graphics_command_list(deviceP,
-		context->frame_resources[0]->get_graphics_allocator()->get_command_allocator(), *context->graphics_list))) {
+		context->frame_resources[0]->graphics_allocator->get_command_allocator(), *context->graphics_list))) {
 		DEBUG_LOG("DirectXRenderer :: create_command_queue() FAILED");
 		return false;
 	}
@@ -234,7 +285,7 @@ namespace {
 	pipline_desc.depth_stencil_desc = helper::PipelineStateHelper::get_enable_depth();
 
 
-	auto depth_format = context->frame_resources[0]->get_deprh_buffer()->get_resource()->GetDesc().Format;
+	auto depth_format = context->frame_resources[0]->depth_buffer->get_resource()->GetDesc().Format;
 	//フォーマット指定
 	pipline_desc.dsv_format = depth_format;
 
@@ -293,7 +344,7 @@ namespace {
 
 	//	StaticBufferResourceクラスで作成するDefaultリソース等を作成
 
-	auto allocator = context->frame_resources[0]->get_graphics_allocator();
+	auto allocator = context->frame_resources[0]->graphics_allocator.get();
 
 	allocator->reset_command_allocator();
 	context->graphics_list->reset_command_list(allocator->get_command_allocator());
@@ -440,7 +491,7 @@ namespace {
 				auto* target = resource.get_render_target(RenderTargetSlot::BackBuffer);
 				resource.graphics_list->ClearRenderTargetView(target->get_rtv_handle(), back_ground_color, 0, nullptr);
 
-				auto* depth = resource.frame_resource->get_deprh_buffer();
+				auto* depth = resource.frame_resource->depth_buffer.get();
 				resource.graphics_list->ClearDepthStencilView(depth->get_dsv_handle(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 			})) {

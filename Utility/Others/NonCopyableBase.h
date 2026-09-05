@@ -5,10 +5,10 @@
 /// </summary>
 namespace others {
 
-	/* ========== [ コピー & ムーブ ] 禁止基底クラス定義 ========== */
+	/* ========== [ コピー ] 禁止基底クラス定義 ========== */
 
 	/// <summary>
-	/// [ コピー & ムーブ ] 禁止基底クラス
+	/// [ コピー ] 禁止基底クラス
 	/// </summary>
 	class NonCopyableBase
 	{
@@ -26,14 +26,8 @@ namespace others {
 		//	コピーコンストラクタ削除
 		NonCopyableBase(const NonCopyableBase&) = delete;
 
-		//	ムーブコンストラクタ削除
-		NonCopyableBase(NonCopyableBase&&) = delete;
-
 		//	コピー代入演算子削除
 		NonCopyableBase& operator=(const NonCopyableBase&) = delete;
-
-		//	ムーブ代入演算子削除
-		NonCopyableBase& operator=(NonCopyableBase&&) = delete;
 
 	protected:
 		/* ===== メンバー関数 ===== */

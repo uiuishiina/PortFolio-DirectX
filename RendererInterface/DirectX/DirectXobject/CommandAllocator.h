@@ -1,5 +1,5 @@
 #pragma once
-#include"NonMovable.h"
+#include"Others/NonCopyableBase.h"
 #include<d3d12.h>
 #include<wrl/client.h>
 
@@ -26,7 +26,7 @@ namespace render {
 			///====================================================================
 
 			//@brief	=== コマンドアロケータクラス ===
-			class CommandAllocator final : public NonMovableBase
+			class CommandAllocator final : public others::NonCopyableBase
 			{
 			public:
 				///====================================================================

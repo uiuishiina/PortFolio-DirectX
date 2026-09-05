@@ -13,7 +13,6 @@
 
 /* -- 各Factory -- */
 #include"DirectX/Factory&Builder&Helper/CommandObjectFactory.h"
-#include"DirectX/Factory&Builder&Helper/FrameResourceFactory.h"
 
 /* -- 各ヘルパー -- */
 #include"DirectX/Factory&Builder&Helper/PipelineStateHelper.h"

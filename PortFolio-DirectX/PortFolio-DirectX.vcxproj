@@ -191,14 +191,12 @@
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawRenderTargetState.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\DrawPass\DrawState.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\CommandObjectFactory.cpp" />
-    <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\FrameResourceFactory.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PipelineStateHelper.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceBarrierHelper.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceCreateDescHelper.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\RootSignatureDescBuilder.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ScissorRectHelper.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ViewportHelper.cpp" />
-    <ClCompile Include="..\RendererInterface\DirectX\FrameResource.cpp" />
     <ClCompile Include="..\RendererInterface\DirectX\HashAllocator.cpp" />
     <ClCompile Include="..\RendererInterface\RendererFactory.cpp" />
     <ClCompile Include="..\windowInterface\windowFactory.cpp" />
@@ -276,7 +274,6 @@
     <ClInclude Include="..\RendererInterface\DirectX\DrawPass\PassBase.h" />
     <ClInclude Include="..\RendererInterface\DirectX\DrawResouces.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\CommandObjectFactory.h" />
-    <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\FrameResourceFactory.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PipelineStateHelper.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceBarrierHelper.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\ResourceCreateDescHelper.h" />

@@ -135,9 +135,6 @@
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\SwapChain.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\FrameResource.cpp">
-      <Filter>RendererInterface\DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\DirectXobject\ShaderCompiler.cpp">
       <Filter>RendererInterface\DirectX\DirectXobject</Filter>
     </ClCompile>
@@ -163,9 +160,6 @@
       <Filter>RendererInterface\DirectX\Container</Filter>
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\CommandObjectFactory.cpp">
-      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
-    </ClCompile>
-    <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\FrameResourceFactory.cpp">
       <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
     </ClCompile>
     <ClCompile Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PipelineStateHelper.cpp">
@@ -387,9 +381,6 @@
       <Filter>RendererInterface\DirectX\Container</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\CommandObjectFactory.h">
-      <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\FrameResourceFactory.h">
       <Filter>RendererInterface\DirectX\Factory&amp;Builder&amp;Helper</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\Factory&amp;Builder&amp;Helper\PipelineStateHelper.h">

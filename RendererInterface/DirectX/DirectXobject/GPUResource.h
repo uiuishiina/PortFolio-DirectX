@@ -1,5 +1,5 @@
 #pragma once
-#include"NonMovable.h"
+#include"Others/NonCopyableBase.h"
 #include<dxgi1_6.h>
 #include<d3d12.h>
 #include<wrl/client.h>
@@ -54,7 +54,7 @@ namespace render {
 			///====================================================================
 
 			//@brief	=== GPUリソース基底クラス ===
-			class GPUResourceBase : public NonMovableBase
+			class GPUResourceBase : public others::NonCopyableBase
 			{
 			public:
 				///====================================================================

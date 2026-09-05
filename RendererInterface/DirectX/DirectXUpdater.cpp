@@ -92,7 +92,7 @@ void DirectXUpdater::sync_frame_resource() {
 void DirectXUpdater::reset_frame_resource() {
 
 	//コマンドアロケーター取得
-	auto allocator = context_->frame_resources[current_frame_index]->get_graphics_allocator();
+	auto allocator = context_->frame_resources[current_frame_index]->graphics_allocator.get();
 
 	// コマンドアロケータリセット
 	allocator->reset_command_allocator();
@@ -183,7 +183,7 @@ void DirectXUpdater::end_updater() {
 		//	フレームリソース待機インデックス確認
 		DEBUG_LOG(
 			"fence_value = ", 
-			context_->frame_resources[0]->get_frame_fence_value()," : ",
+			context_->frame_resources[0]->get_frame_fence_value(), " : ",
 			context_->frame_resources[1]->get_frame_fence_value()," : ",
 			context_->frame_resources[2]->get_frame_fence_value()
 		);
