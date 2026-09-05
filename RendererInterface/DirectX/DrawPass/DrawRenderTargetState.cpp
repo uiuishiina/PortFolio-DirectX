@@ -2,27 +2,35 @@
 
 using namespace render::dx12::state;
 
-///====================================================================
-/// 初期化時処理関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@brief	=== 描画先設定追加関数 ===
-//@param	slot	追加するターゲットの種類
+/* -- 設定関数 -- */
+
+/// <summary>
+/// 描画先設定追加関数
+/// </summary>
+/// <param name="slot">追加する描画先設定</param>
 void DrawRenderTargetState::add_render_target_slot(RenderTargetSlot slot) {
 	render_targets_slot.push_back(slot);
 }
 
-//@brief	=== デプスバッファ設定関数 ===
-//@param	slot	設定するDSVの種類
+/// <summary>
+/// デプスバッファ設定関数
+/// </summary>
+/// <param name="slot">設定するデプスバッファ設定</param>
 void DrawRenderTargetState::set_depth(DepthSlot slot) {
 	depth_slot = slot;
 }
 
-///====================================================================
-/// 実行時処理関数
-///====================================================================
 
-//@brief	=== 描画パス実行時レンダーターゲットバインド関数 ==
+/* -- 実行関数 -- */
+
+/// <summary>
+/// 描画パス実行時レンダーターゲットバインド関数
+/// </summary>
+/// <param name="resouce">描画リソース構造体参照</param>
 void DrawRenderTargetState::apply(resources::DrawResources& resouce) {
 
 	std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> handles_{};

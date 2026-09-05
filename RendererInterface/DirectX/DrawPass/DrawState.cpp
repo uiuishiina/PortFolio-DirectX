@@ -2,13 +2,15 @@
 
 using namespace render::dx12::state;
 
-///====================================================================
-/// 初期化関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@breif	=== 描画設定作成関数 ===
-//@param	desc	描画設定補助構造体
-//@return	作成の成否
+/// <summary>
+/// 描画設定作成関数
+/// </summary>
+/// <param name="desc">描画設定補助構造体</param>
+/// <returns>作成の成否</returns>
 [[nodiscard]] bool Drawstate::creaate_draw_state(desc::DrawStateDesc& desc)
 {
     if (!desc.root_signature || !desc.pipline_state) {
@@ -22,12 +24,10 @@ using namespace render::dx12::state;
     return true;
 }
 
-///====================================================================
-/// 実行時処理関数
-///====================================================================
-
-//@brief	=== 描画パス実行時バインド関数 ===
-//@param	resouce	描画リソース
+/// <summary>
+/// 描画パス実行時バインド関数
+/// </summary>
+/// <param name="resouce"></param>
 void Drawstate::apply(resources::DrawResources& resouce) {
 
     auto* list = resouce.graphics_list;

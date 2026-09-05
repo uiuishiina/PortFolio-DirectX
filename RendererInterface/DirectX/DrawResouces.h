@@ -54,6 +54,8 @@ namespace render {
 			/// </details>
 			struct DrawResources {
 
+				/* ========== メンバー変数 ========== */
+
 				/// <summary>
 				/// 描画用コマンドリスト参照
 				/// </summary>
@@ -78,6 +80,9 @@ namespace render {
 				/// 描画先参照保存配列
 				/// </summary>
 				std::array<object::RenderTarget*, HandyItems::Enum::enum_to_index(RenderTargetSlot::Count)> render_targets{};
+
+
+				/* ========== メンバー関数 ========== */
 
 				/// <summary>
 				/// 描画先参照取得補助関数

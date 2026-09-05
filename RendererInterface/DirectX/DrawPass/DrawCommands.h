@@ -4,98 +4,113 @@
 #include<functional>
 #include<vector>
 
-///====================================================================
-/// 描画名前空間
-///====================================================================
-
+/// <summary>
+/// 描画機能名前空間
+/// </summary>
 namespace render {
 
-	///====================================================================
+	/// <summary>
 	/// DirectX名前空間
-	///====================================================================
-
+	/// </summary>
 	namespace dx12 {
 
-		///====================================================================
+		/// <summary>
 		/// DirectXオブジェクト補助名前空間
-		///====================================================================
-
+		/// </summary>
 		namespace utility {
 
-			//@breif	== 可読性向上用名称定義 ==
+			/// <summary>
+			/// 可読性向上用名称定義
+			/// </summary>
 			using DrawCommand = std::function<void(resources::DrawResources&)>;
 
-		};
+		}
 
-		///====================================================================
+		/// <summary>
 		/// 描画設定名前空間
-		///====================================================================
-
+		/// </summary>
 		namespace command {
 
-			///====================================================================
-			/// DrawCommands クラス
-			///====================================================================
-
-			//@brief	=== 描画パスコマンドクラス ===
+			/// <summary>
+			/// 描画パスコマンドクラス
+			/// </summary>
 			class DrawCommands final : public NonMovableBase
 			{
 			public:
-				///====================================================================
-				/// クラス設定
-				///====================================================================
+				/* ========== クラス設定 ========== */
 
-				//コンストラクタ,デストラクタ
+				/// <summary>
+				/// コンストラクタ
+				/// </summary>
 				DrawCommands() = default;
+
+				/// <summary>
+				/// デストラクタ
+				/// </summary>
 				~DrawCommands() = default;
 
-				///====================================================================
-				/// Public メンバー関数
-				///====================================================================
+
+				/* ========== Publicメンバー関数 ========== */
 
 				/* -- 設定関数 -- */
 
-				//@param	=== Beginコマンド設定関数 ===
-				//@param	func	設定するコマンド
+				/// <summary>
+				/// Beginコマンド設定関数
+				/// </summary>
+				/// <param name="func">追加するコマンド</param>
 				void set_begin_command(const utility::DrawCommand& func);
 
-				//@brief	=== メイン描画コマンド追加関数 ===
-				//@param	func	追加するコマンド
+				/// <summary>
+				/// メイン描画コマンド追加関数
+				/// </summary>
+				/// <param name="func">追加するコマンド</param>
 				void add_apply_command(const utility::DrawCommand& func);
 
-				//@param	=== Endコマンド設定関数 ===
-				//@param	func	設定するコマンド
+				/// <summary>
+				/// Endコマンド設定関数
+				/// </summary>
+				/// <param name="func">追加するコマンド</param>
 				void set_end_command(const utility::DrawCommand& func);
 
 				/* -- 実行関数 -- */
 
-				//@brief	=== 描画パスBeginコマンド実行関数 ===
-				//@param	resouce	描画リソース
+				/// <summary>
+				/// 描画パスBeginコマンド実行関数
+				/// </summary>
+				/// <param name="resouce">描画リソース構造体参照</param>
 				void begin(resources::DrawResources& resouce);
 
-				//@brief	=== 描画パスメイン描画コマンド実行関数 ===
-				//@param	resouce	描画リソース
+				/// <summary>
+				/// 描画パスメイン描画コマンド実行関数
+				/// </summary>
+				/// <param name="resouce">描画リソース構造体参照</param>
 				void apply(resources::DrawResources& resouce);
 
-				//@brief	=== 描画パスEndコマンド実行関数 ===
-				//@param	resouce	描画リソース
+				/// <summary>
+				/// 描画パスEndコマンド実行関数
+				/// </summary>
+				/// <param name="resouce">描画リソース構造体参照</param>
 				void end(resources::DrawResources& resouce);
 
 			private:
-				///====================================================================
-				/// Private メンバー変数
-				///====================================================================
+				/* ========== Privateメンバー変数 ========== */
 
-				//@brief	== 描画パス開始時コマンド ==
+				/// <summary>
+				/// 描画パス開始時コマンド
+				/// </summary>
 				utility::DrawCommand begin_command{};
 
-				//@brief	== メイン描画コマンド保存配列 ==
+				/// <summary>
+				/// メイン描画コマンド保存配列
+				/// </summary>
 				std::vector<utility::DrawCommand> apply_commands{};
 
-				//@brief	== 描画パス終了時コマンド ==
+				/// <summary>
+				/// 描画パス終了時コマンド
+				/// </summary>
 				utility::DrawCommand end_command{};
 
 			};
-		};
-	};
-};
+		}
+	}
+}

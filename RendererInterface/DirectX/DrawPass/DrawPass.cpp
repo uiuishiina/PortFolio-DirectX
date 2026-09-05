@@ -2,13 +2,15 @@
 
 using namespace render::dx12::pass;
 
-///====================================================================
-/// 初期化間数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@brief	=== 描画パス初期化関数 ===
-//@param	desc	描画パス作成補助構造体
-//@return	作成の成否
+/// <summary>
+/// 描画パス初期化関数
+/// </summary>
+/// <param name="desc">描画パス作成補助構造体</param>
+/// <returns>初期化の成否</returns>
 [[nodiscard]] bool DrawPass::initialize_pass(desc::DrawPassDesc& desc) {
 
 	//	すべてNullptrではないか確認
@@ -25,14 +27,12 @@ using namespace render::dx12::pass;
 }
 
 
-///====================================================================
-/// 実行時関数
-///====================================================================
+/// <summary>
+/// 描画パス実行関数
+/// </summary>
+/// <param name="resource">描画リソース構造体参照</param>
+void DrawPass::apply(resources::DrawResources& resource) {
 
-//@brief	=== 描画パス実行関数 ===
-//@param	resouce	描画リソース
-void DrawPass::apply(resources::DrawResources& resource)
-{
 	//	描画パス開始
 	draw_commands->begin(resource);
 
