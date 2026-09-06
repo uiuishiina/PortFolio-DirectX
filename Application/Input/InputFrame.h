@@ -37,11 +37,13 @@ namespace input {
 		/// <returns>取得した参照</returns>
 		template<HandyItems::Enum::concepts::EnumHasCount T>
 		[[nodiscard]] InputState<T>& get_input_state() {
+
 			return input_tuple.get_value<InputState<T>>();
 		}
 
 		template<HandyItems::Enum::concepts::EnumHasCount T>
 		[[nodiscard]] const InputState<T>& get_input_state() const {
+
 			return input_tuple.get_value<InputState<T>>();
 		}
 

@@ -18,7 +18,12 @@ namespace {
     /// <param name="msg">ウィンドウメッセージ</param>
     /// <param name="wParam">wParam</param>
     /// <param name="lParam">lParam</param>
-    static LRESULT CALLBACK static_window_proc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+    static LRESULT CALLBACK static_window_proc(
+        HWND hwnd, 
+        UINT msg, 
+        WPARAM wParam, 
+        LPARAM lParam
+    ) {
         switch (msg)
         {
         case WM_NCCREATE: { //初期化
@@ -84,7 +89,10 @@ namespace {
 /// </summary>
 /// <param name="size">設定するウィンドウサイズ構造体</param>
 /// <returns>作成の成否</returns>
-[[nodiscard]] bool WindowsWindow::create_window(WindowSize size, input::InputStateManager* input_) {
+[[nodiscard]] bool WindowsWindow::create_window(
+    WindowSize size, 
+    input::InputStateManager* input_
+) {
 
     //  すでにインスタンスがあるなら作成せず失敗を返す
     if (hinstance_) {
@@ -217,7 +225,11 @@ void WindowsWindow::set_window_size(WindowSize new_size) {
 /// <param name="msg">ウィンドウメッセージ互換</param>
 /// <param name="wParam">wParam互換</param>
 /// <param name="lParam">lParam互換</param>
-void WindowsWindow::process_message(unsigned int msg, uintptr_t wParam, intptr_t lParam) {
+void WindowsWindow::process_message(
+    unsigned int msg, 
+    uintptr_t wParam, 
+    intptr_t lParam
+) {
     switch (msg)
     {
     case WM_KEYDOWN: {  //キー入力取得

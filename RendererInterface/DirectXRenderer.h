@@ -53,7 +53,10 @@ namespace render {
 		/// <param name="window">ウィンドウインターフェースクラス参照</param>
 		/// <param name="shared_datas">プリケーションデータシェアクラス参照</param>
 		/// <returns>作成の成否</returns>
-		[[nodiscard]] bool create_renderer(window::windowInterface* window, sharedData::ApplicationSharedData* shared_)override;
+		[[nodiscard]] bool create_renderer(
+			window::windowInterface* window, 
+			sharedData::ApplicationSharedData* shared_
+		)override;
 
 
 		/* ===== 制御関数 ===== */

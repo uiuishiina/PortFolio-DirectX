@@ -35,7 +35,10 @@ namespace render {
 		/// <param name="window">ウィンドウインターフェースクラス参照</param>
 		/// <param name="shared_datas">プリケーションデータシェアクラス参照</param>
 		/// <returns>作成の成否</returns>
-		virtual [[nodiscard]] bool create_renderer(window::windowInterface* window, sharedData::ApplicationSharedData* shared_) = 0;
+		[[nodiscard]] virtual bool create_renderer(
+			window::windowInterface* window, 
+			sharedData::ApplicationSharedData* shared_
+		) = 0;
 
 		/// <summary>
 		/// 描画更新関数

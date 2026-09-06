@@ -96,7 +96,11 @@ namespace render {
 				/// <param name="render_target_slots">設定する描画先配列</param>
 				/// <param name="depth_slot">設定するDepthBuffer</param>
 				/// <returns>作成の成否</returns>
-				[[nodiscard]] bool create_render_target_state(const handle::RenderTargetStateKey& key, const std::vector<RenderTargetSlot>& render_target_slots, std::optional<DepthSlot> depth_slot = std::nullopt);
+				[[nodiscard]] bool create_render_target_state(
+					const handle::RenderTargetStateKey& key, 
+					const std::vector<RenderTargetSlot>& render_target_slots, 
+					std::optional<DepthSlot> depth_slot = std::nullopt
+				);
 
 
 				/* -- 取得関数 -- */
@@ -115,6 +119,7 @@ namespace render {
 
 					return this->get_handle(handle::RenderTargetStateKey(key_name));
 				}
+
 			};
 		}
 	}

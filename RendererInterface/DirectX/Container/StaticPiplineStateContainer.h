@@ -90,7 +90,11 @@ namespace render {
 				/// <param name="device">DirectX12デバイスポインター</param>
 				/// <param name="desc">パイプラインステート設定</param>
 				/// <returns>作成の成否</returns>
-				[[nodiscard]] HRESULT create_pipline_state(const handle::PiplineStateKey& key, ID3D12Device* device, desc::PipelineStateDesc& desc);
+				[[nodiscard]] HRESULT create_pipline_state(
+					const handle::PiplineStateKey& key, 
+					ID3D12Device* device, 
+					desc::PipelineStateDesc& desc
+				);
 
 			};
 		}

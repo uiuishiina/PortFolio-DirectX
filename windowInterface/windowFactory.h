@@ -21,7 +21,10 @@ namespace window {
 		/// <param name="window_size">設定するウィンドウサイズ構造体</param>
 		/// <param name="input_">入力機能マネージャークラス参照</param>
 		/// <returns>ウィンドウインスタンス</returns>
-		static  std::unique_ptr<windowInterface> create_window(WindowSize window_size, input::InputStateManager* input_);
+		[[nodiscard]] static std::unique_ptr<windowInterface> create_window(
+			WindowSize window_size, 
+			input::InputStateManager* input_
+		);
 
 	private:
 		/* ========== クラス設定 ========== */

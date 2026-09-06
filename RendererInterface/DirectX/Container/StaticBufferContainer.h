@@ -108,7 +108,11 @@ namespace render {
 				/// <param name="buffer">設定する描画バッファ</param>
 				/// <returns>登録の成否</returns>
 				template<concepts::FromStaticBuffer T>
-				[[nodiscard]] bool register_buffer(const handle::StaticBufferKey& key, std::unique_ptr<T> buffer) {
+				[[nodiscard]] bool register_buffer(
+					const handle::StaticBufferKey& key, 
+					std::unique_ptr<T> buffer
+				) {
+
 					return add_value(key, std::move(buffer));
 				}
 

@@ -13,6 +13,7 @@ using namespace render::dx12::state;
 /// </summary>
 /// <param name="slot">追加する描画先設定</param>
 void DrawRenderTargetState::add_render_target_slot(RenderTargetSlot slot) {
+
 	render_targets_slot.push_back(slot);
 }
 
@@ -21,6 +22,7 @@ void DrawRenderTargetState::add_render_target_slot(RenderTargetSlot slot) {
 /// </summary>
 /// <param name="slot">設定するデプスバッファ設定</param>
 void DrawRenderTargetState::set_depth(DepthSlot slot) {
+
 	depth_slot = slot;
 }
 

@@ -49,7 +49,10 @@ namespace render {
 				/// <param name="device">デバイスインスタンス</param>
 				/// <param name="desc">ディスクリプタヒープ設定配列</param>
 				/// <returns>作成の成否</returns>
-				[[nodiscard]] HRESULT create_static_heap_container(ID3D12Device* device, const std::vector<desc::DescriptorHeapDesc>& desc);
+				[[nodiscard]] HRESULT create_static_heap_container(
+					ID3D12Device* device, 
+					const std::vector<desc::DescriptorHeapDesc>& desc
+				);
 
 				/* -- 取得関数 -- */
 

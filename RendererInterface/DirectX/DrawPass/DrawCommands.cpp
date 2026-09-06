@@ -13,6 +13,7 @@ using namespace render::dx12;
 /// </summary>
 /// <param name="func">追加するコマンド</param>
 void command::DrawCommands::set_begin_command(const utility::DrawCommand& func) {
+
 	begin_command = func;
 }
 
@@ -21,6 +22,7 @@ void command::DrawCommands::set_begin_command(const utility::DrawCommand& func) 
 /// </summary>
 /// <param name="func">追加するコマンド</param>
 void command::DrawCommands::add_apply_command(const utility::DrawCommand& func) {
+
 	apply_commands.push_back(func);
 }
 
@@ -29,6 +31,7 @@ void command::DrawCommands::add_apply_command(const utility::DrawCommand& func) 
 /// </summary>
 /// <param name="func">追加するコマンド</param>
 void command::DrawCommands::set_end_command(const utility::DrawCommand& func) {
+
 	end_command = func;
 }
 
@@ -40,6 +43,7 @@ void command::DrawCommands::set_end_command(const utility::DrawCommand& func) {
 /// </summary>
 /// <param name="resouce">描画リソース構造体参照</param>
 void command::DrawCommands::begin(resources::DrawResources& resouce) {
+
 	begin_command(resouce);
 }
 
@@ -48,6 +52,7 @@ void command::DrawCommands::begin(resources::DrawResources& resouce) {
 /// </summary>
 /// <param name="resouce">描画リソース構造体参照</param>
 void command::DrawCommands::apply(resources::DrawResources& resouce) {
+
 	for (auto& command : apply_commands) {
 		command(resouce);
 	}
@@ -58,5 +63,6 @@ void command::DrawCommands::apply(resources::DrawResources& resouce) {
 /// </summary>
 /// <param name="resouce">描画リソース構造体参照</param>
 void command::DrawCommands::end(resources::DrawResources& resouce) {
+
 	end_command(resouce);
 }

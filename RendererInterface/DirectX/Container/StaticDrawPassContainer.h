@@ -94,7 +94,10 @@ namespace render {
 				/// <param name="key">登録するキーの名前</param>
 				/// <param name="pass">登録するパスクラスインスタンス</param>
 				/// <returns>作成の成否</returns>
-				[[nodiscard]] bool register_draw_pass(const handle::PassKey& key, std::unique_ptr<pass::PassBase> pass);
+				[[nodiscard]] bool register_draw_pass(
+					const handle::PassKey& key, 
+					std::unique_ptr<pass::PassBase> pass
+				);
 
 
 				/* -- 取得関数 -- */
@@ -105,22 +108,31 @@ namespace render {
 				/// <param name="key">呼び出す描画パスに紐づいた倫理側キー</param>
 				/// <param name="resource">そのフレームで使う描画リソース参照構造体</param>
 				void apply_draw_pass(const handle::PassKey& key, resources::DrawResources& resource)const noexcept {
+
 					const auto handle = this->get_handle(key);
-					if (handle.handle_p != nullptr) {
-						handle.handle_p->apply(resource);
-					}
+					apply(handle,resource);
 				}
+
+				/// <summary>
+				/// 描画パス呼び出し関数
+				/// </summary>
+				/// <param name="key">呼び出す描画パスに紐づいた保存側キー</param>
+				/// <param name="resource">そのフレームで使う描画リソース参照構造体</param>
 				void apply_draw_pass(const handle::PassEncodeKey& encodekey, resources::DrawResources& resource)const noexcept {
+
 					const auto handle = this->get_handle(encodekey);
-					if (handle.handle_p != nullptr) {
-						handle.handle_p->apply(resource);
-					}
+					apply(handle, resource);
 				}
+
+				/// <summary>
+				/// 描画パス呼び出し関数
+				/// </summary>
+				/// <param name="key">呼び出す描画パスに紐づいた倫理側キーの名前</param>
+				/// <param name="resource">そのフレームで使う描画リソース参照構造体</param>
 				void apply_draw_pass(const char* key_name, resources::DrawResources& resource)const noexcept {
+
 					const auto handle = this->get_handle(handle::PassKey(key_name));
-					if (handle.handle_p != nullptr) {
-						handle.handle_p->apply(resource);
-					}
+					apply(handle, resource);
 				}
 
 			private:
@@ -130,6 +142,24 @@ namespace render {
 				/// ハンドルを取得できないように [ Private化 ]
 				/// </summary>
 				using UniqueptrKeyMap<handle::PassKey, handle::PassEncodeKey, pass::PassBase>::get_handle;
+
+
+				/* ========== Privateメンバー関数 ========== */
+
+				using Handle = handle::HandlePtrBase<pass::PassBase, handle::PassEncodeKey>;
+
+				/// <summary>
+				/// 描画パス呼び出し関数
+				/// </summary>
+				/// <param name="key">呼び出す描画パスハンドル</param>
+				/// <param name="resource">そのフレームで使う描画リソース参照構造体</param>
+				void apply(const Handle& handle, resources::DrawResources& resource)const noexcept {
+
+					//	nullチェック
+					if (handle.handle_p != nullptr) {
+						return handle.handle_p->apply(resource);
+					}
+				}
 
 			};
 		}

@@ -12,7 +12,10 @@ using namespace render::dx12::container;
 /// <param name="key">追加したい倫理側のキー</param>
 /// <param name="desc">設定する描画設定</param>
 /// <returns>作成の成否</returns>
-[[nodiscard]] bool StaticDrawStateContainer::create_draw_state(const handle::DrawStateKey& key, desc::DrawStateDesc& desc) {
+[[nodiscard]] bool StaticDrawStateContainer::create_draw_state(
+    const handle::DrawStateKey& key, 
+    desc::DrawStateDesc& desc
+) {
 
     //  描画設定作成
     auto state = std::make_unique<state::Drawstate>();

@@ -21,7 +21,10 @@ namespace render {
 		/// <param name="window">ウィンドウインターフェースクラス参照</param>
 		/// <param name="shared_datas">プリケーションデータシェアクラス参照</param>
 		/// <returns>作成した描画機能インスタンス</returns>
-		static std::unique_ptr<RendererInterface> create_renderer(window::windowInterface* window, sharedData::ApplicationSharedData* shared_datas);
+		[[nodiscard]] static std::unique_ptr<RendererInterface> create_renderer(
+			window::windowInterface* window, 
+			sharedData::ApplicationSharedData* shared_datas
+		);
 
 	private:
 		/* ========== クラス設定 ========== */

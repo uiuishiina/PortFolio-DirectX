@@ -1,53 +1,56 @@
 #pragma once
 #include<d3d12.h>
 
-///====================================================================
-/// 描画名前空間
-///====================================================================
-
+/// <summary>
+/// 描画機能名前空間
+/// </summary>
 namespace render {
 
-	///====================================================================
+	/// <summary>
 	/// DirectX名前空間
-	///====================================================================
-
+	/// </summary>
 	namespace dx12 {
 
-		///====================================================================
+		/// <summary>
 		/// Helper名前空間
-		///====================================================================
-
+		/// </summary>
 		namespace helper {
 
-			///====================================================================
-			/// ResourceBarrierHelper クラス
-			///====================================================================
-
-			//@brief	=== リソースバリア作成ヘルパークラス ===
+			/// <summary>
+			/// リソースバリア作成ヘルパークラス
+			/// </summary>
 			class ResourceBarrierHelper final
 			{
 			public:
-				///====================================================================
-				/// Public メンバー関数
-				///====================================================================
+				/* ========== Publicメンバー関数 ========== */
 
-				//@brief	=== リソースバリア作成関数 ===
-				//@param	resource	リソースバリアを作成するリソース
-				//@param	from	リソースの現在の状態
-				//@param	to		リソースの遷移先の状態
-				//@return	作成されたリソースバリア
-				static [[nodiscard]] D3D12_RESOURCE_BARRIER create_resource_barrier(ID3D12Resource* resource, D3D12_RESOURCE_STATES from, D3D12_RESOURCE_STATES to) noexcept;
+				/// <summary>
+				/// リソースバリア作成関数
+				/// </summary>
+				/// <param name="resource">リソースバリアを作成するリソース</param>
+				/// <param name="from">リソースの現在の状態</param>
+				/// <param name="to">リソースの遷移先の状態</param>
+				/// <returns>作成されたリソースバリア</returns>
+				[[nodiscard]] static D3D12_RESOURCE_BARRIER create_resource_barrier(
+					ID3D12Resource* resource,
+					D3D12_RESOURCE_STATES from, 
+					D3D12_RESOURCE_STATES to
+				) noexcept;
 
 			private:
-				///====================================================================
-				/// クラス設定
-				///====================================================================
+				/* ========== クラス設定 ========== */
 
-				//コンストラクタ,デストラクタ
+				/// <summary>
+				/// コンストラクタ
+				/// </summary>
 				ResourceBarrierHelper() = default;
+
+				/// <summary>
+				/// デストラクタ
+				/// </summary>
 				~ResourceBarrierHelper() = default;
 
 			};
-		};
-	};
-};
+		}
+	}
+}

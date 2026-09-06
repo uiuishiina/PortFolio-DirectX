@@ -121,4 +121,5 @@ private:
 	/// [ run_App() ] 終了時に呼び出す
 	/// </details>
 	void end_App();
+
 };

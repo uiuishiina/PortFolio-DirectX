@@ -37,8 +37,14 @@ namespace render {
 				/// <param name="min_depth">最小深度値設定</param>
 				/// <param name="max_depth">最大深度値設定</param>
 				/// <returns>作成されたビューポート</returns>
-				[[nodiscard]] static D3D12_VIEWPORT create_viewport(float width, float height,
-					float topX = 0.0f, float topY = 0.0f, float min_depth = 0.0f, float max_depth = 1.0f);
+				[[nodiscard]] static D3D12_VIEWPORT create_viewport(
+					float width, 
+					float height,
+					float topX = 0.0f,
+					float topY = 0.0f, 
+					float min_depth = 0.0f, 
+					float max_depth = 1.0f
+				);
 
 			private:
 				/* ========== クラス設定 ========== */

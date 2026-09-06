@@ -17,7 +17,12 @@ using namespace render::dx12::helper;
 /// <param name="left">[ X軸 ] 左側の値</param>
 /// <param name="top">[ Y軸 ] 上側の値</param>
 /// <returns>作成されたシザー短形</returns>
-[[nodiscard]] D3D12_RECT ScissorRectHelper::create_scissor_rect(long right, long bottom, long left, long top) {
+[[nodiscard]] D3D12_RECT ScissorRectHelper::create_scissor_rect(
+	long right,
+	long bottom,
+	long left,
+	long top
+) {
 
 	// シザー矩形作成
 	D3D12_RECT scissorRect{};

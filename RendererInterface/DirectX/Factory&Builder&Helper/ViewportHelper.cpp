@@ -19,8 +19,14 @@ using namespace render::dx12::helper;
 /// <param name="min_depth">最小深度値設定</param>
 /// <param name="max_depth">最大深度値設定</param>
 /// <returns>作成されたビューポート</returns>
-[[nodiscard]] D3D12_VIEWPORT ViewportHelper::create_viewport(float width, float height,
-	float topX, float topY, float min_depth, float max_depth) {
+[[nodiscard]] D3D12_VIEWPORT ViewportHelper::create_viewport(
+	float width, 
+	float height,
+	float topX, 
+	float topY, 
+	float min_depth, 
+	float max_depth
+) {
 
 	// ビューポート作成
 	D3D12_VIEWPORT viewport{};

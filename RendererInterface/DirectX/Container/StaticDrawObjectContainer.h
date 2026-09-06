@@ -91,7 +91,10 @@ namespace render {
 				/// <param name="key">登録したい倫理側のキー</param>
 				/// <param name="object">登録したいオブジェクト</param>
 				/// <returns>登録の成否</returns>
-				[[nodiscard]] bool register_draw_object(const handle::DrawObjectKey key,std::unique_ptr<drawobject::DrawObjectBase> object);
+				[[nodiscard]] bool register_draw_object(
+					const handle::DrawObjectKey key,
+					std::unique_ptr<drawobject::DrawObjectBase> object
+				);
 
 			};
 		}

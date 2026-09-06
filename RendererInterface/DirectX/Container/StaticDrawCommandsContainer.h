@@ -157,7 +157,10 @@ namespace render {
 				/// <param name="key">追加するコマンド名</param>
 				/// <param name="func">追加するコマンド</param>
 				/// <returns>追加の成否</returns>
-				[[nodiscard]] bool add_command_map(const handle::CommandKey& key, utility::DrawCommand&& func);
+				[[nodiscard]] bool add_command_map(
+					const handle::CommandKey& key, 
+					utility::DrawCommand&& func
+				);
 
 				/// <summary>
 				/// 描画パスコマンド作成関数
@@ -165,7 +168,10 @@ namespace render {
 				/// <param name="key">登録するキーの名前</param>
 				/// <param name="desc">描画パスコマンド作成構造体</param>
 				/// <returns>作成の成否</returns>
-				[[nodiscard]] bool create_draw_commands(const handle::DrawCommandsKey& key, desc::DrawCommandDesc& desc);
+				[[nodiscard]] bool create_draw_commands(
+					const handle::DrawCommandsKey& key, 
+					desc::DrawCommandDesc& desc
+				);
 
 
 				/* -- 取得関数 -- */

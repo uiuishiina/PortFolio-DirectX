@@ -59,8 +59,13 @@ namespace {
 /// <param name="hwnd">描画先ウィンドウハンドル</param>
 /// <param name="size">描画先ウィンドウサイズ構造体</param>
 /// <returns>初期化の成否</returns>
-[[nodiscard]] bool DirectXInitializer::initialze_graphics(DirectXRendererContext* context
-	, UINT back_buffe_size, UINT frame_resource_size, HWND hwnd, WindowSize size) {
+[[nodiscard]] bool DirectXInitializer::initialze_graphics(
+	DirectXRendererContext* context, 
+	UINT back_buffe_size, 
+	UINT frame_resource_size, 
+	HWND hwnd, 
+	WindowSize size
+) {
 
 	window_size = size;
 
@@ -689,7 +694,10 @@ namespace {
 /// <param name="context">描画機能インスタンス保存クラス参照</param>
 /// <param name="current_frame_index">使用するフレームリソースインデックス</param>
 /// <returns>描画リソース構造体</returns>
-[[nodiscard]] resources::DrawResources DirectXInitializer::create_draw_resources(DirectXRendererContext* context, UINT64 current_frame_index) {
+[[nodiscard]] resources::DrawResources DirectXInitializer::create_draw_resources(
+	DirectXRendererContext* context, 
+	UINT64 current_frame_index
+) {
 
 	//	描画先のバッファインデックスを取得
 	const auto backBufferIndex = context->swap_chain->get_swapchain()->GetCurrentBackBufferIndex();
@@ -704,5 +712,4 @@ namespace {
 	resources.render_targets[HandyItems::Enum::enum_to_index(RenderTargetSlot::BackBuffer)] = context->back_buffers[backBufferIndex].get();
 
 	return resources;
-
 }

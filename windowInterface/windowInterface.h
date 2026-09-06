@@ -30,7 +30,7 @@ namespace window {
 
 		/* ========== Publicメンバー関数 ========== */
 
-		/* === 純粋仮想関数 === */
+		/* -- 純粋仮想関数 -- */
 
 		/// <summary>
 		/// ウィンドウ作成関数
@@ -38,7 +38,10 @@ namespace window {
 		/// <param name="size">設定するウィンドウサイズ構造体</param>
 		/// <param name="input_">入力機能マネージャークラス参照</param>
 		/// <returns>作成の成否</returns>
-		[[nodiscard]] virtual bool create_window(WindowSize size,input::InputStateManager* input_) = 0;
+		[[nodiscard]] virtual bool create_window(
+			WindowSize size,
+			input::InputStateManager* input_
+		) = 0;
 
 		/// <summary>
 		/// OSイベント取得関数
@@ -68,7 +71,7 @@ namespace window {
 		virtual void set_window_size(WindowSize new_size) = 0;
 
 
-		/* === 共通フラグ & 変数 取得関数 === */
+		/* -- 共通フラグ & 変数 取得関数 -- */
 
 		/// <summary>
 		/// ウィンドウサイズ取得関数

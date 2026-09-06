@@ -50,7 +50,12 @@ namespace {
 	/// <param name="name">出力ウィンドウに出す名前</param>
 	/// <param name="before">計測したい区間の前</param>
 	/// <param name="after">計測したい区間の後ろ</param>
-	static void debug_timer(const std::string& name, std::chrono::steady_clock::time_point& before, std::chrono::steady_clock::time_point& after) {
+	static void debug_timer(
+		const std::string& name, 
+		std::chrono::steady_clock::time_point& before, 
+		std::chrono::steady_clock::time_point& after
+	) {
+
 		DEBUG_LOG(name, std::to_string(std::chrono::duration_cast<std::chrono::microseconds>(after - before).count()), "us");
 	}
 }
@@ -81,7 +86,10 @@ DirectXRenderer::~DirectXRenderer() = default;
 /// <param name="window">ウィンドウインターフェースクラス参照</param>
 /// <param name="shared_datas">プリケーションデータシェアクラス参照</param>
 /// <returns>作成の成否</returns>
-[[nodiscard]] bool DirectXRenderer::create_renderer(window::windowInterface* window, sharedData::ApplicationSharedData* shared_) {
+[[nodiscard]] bool DirectXRenderer::create_renderer(
+	window::windowInterface* window, 
+	sharedData::ApplicationSharedData* shared_
+) {
 
 	/* ==================== 作成前処理 ==================== */
 

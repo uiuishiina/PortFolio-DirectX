@@ -131,5 +131,5 @@ namespace render {
 			DirectXRendererContext* context_{};
 
 		};
-	};
-};
+	}
+}

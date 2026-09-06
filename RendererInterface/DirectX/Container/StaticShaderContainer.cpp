@@ -15,9 +15,12 @@ using namespace render::dx12::container;
 /// <param name="entry_point_name">シェーダー開始関数名</param>
 /// <param name="target_profile">シェーダータイプ</param>
 /// <returns>コンパイルの成否</returns>
-[[nodiscard]] HRESULT StaticShaderContainer::compile_shader(const handle::ShaderKey& key,
-   const std::wstring& path, const std::string& entry_point_name, const std::string& target_profile)
-{
+[[nodiscard]] HRESULT StaticShaderContainer::compile_shader(
+    const handle::ShaderKey& key,
+    const std::wstring& path, 
+    const std::string& entry_point_name,
+    const std::string& target_profile
+) {
    
     //  シェーダーコンパイル
     auto shader = std::make_unique<object::ShaderCompiler>();

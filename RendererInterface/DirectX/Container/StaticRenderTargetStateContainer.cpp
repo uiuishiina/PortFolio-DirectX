@@ -13,9 +13,12 @@ using namespace render::dx12::container;
 /// <param name="render_target_slots"></param>
 /// <param name="depth_slot"></param>
 /// <returns></returns>
-[[nodiscard]] bool StaticRenderTargetStateContainer::create_render_target_state(const handle::RenderTargetStateKey& key, const std::vector<RenderTargetSlot>& render_target_slots, std::optional<DepthSlot> depth_slot) {
+[[nodiscard]] bool StaticRenderTargetStateContainer::create_render_target_state(
+    const handle::RenderTargetStateKey& key, 
+    const std::vector<RenderTargetSlot>& render_target_slots, 
+    std::optional<DepthSlot> depth_slot
+) {
 
-    
     //  レンダーターゲット設定
     auto state = std::make_unique<state::DrawRenderTargetState>();
     for (auto& p : render_target_slots) {

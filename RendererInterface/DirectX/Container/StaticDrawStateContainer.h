@@ -95,7 +95,10 @@ namespace render {
 				/// <param name="key">追加したい倫理側のキー</param>
 				/// <param name="desc">設定する描画設定</param>
 				/// <returns>作成の成否</returns>
-				[[nodiscard]] bool create_draw_state(const handle::DrawStateKey& key, desc::DrawStateDesc& desc);
+				[[nodiscard]] bool create_draw_state(
+					const handle::DrawStateKey& key, 
+					desc::DrawStateDesc& desc
+				);
 
 
 				/* -- 取得関数 -- */
@@ -114,6 +117,7 @@ namespace render {
 
 					return this->get_handle(handle::DrawStateKey(key_name));
 				}
+
 			};
 		}
 	}

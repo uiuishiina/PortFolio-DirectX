@@ -82,6 +82,6 @@ namespace render {
 				UINT64 frame_fence_value{};
 
 			};
-		};
-	};
-};
+		}
+	}
+}

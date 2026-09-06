@@ -13,7 +13,11 @@ using namespace render::dx12::container;
 /// <param name="device">DirectX12デバイスポインター</param>
 /// <param name="desc">パイプラインステート設定</param>
 /// <returns>作成の成否</returns>
-[[nodiscard]] HRESULT StaticPiplineStateContainer::create_pipline_state(const handle::PiplineStateKey& key, ID3D12Device* device, desc::PipelineStateDesc& desc) {
+[[nodiscard]] HRESULT StaticPiplineStateContainer::create_pipline_state(
+    const handle::PiplineStateKey& key, 
+    ID3D12Device* device, 
+    desc::PipelineStateDesc& desc
+) {
     
     //  パイプラインステート作成
     auto pipline = std::make_unique<object::PipelineState>();

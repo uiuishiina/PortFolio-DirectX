@@ -36,7 +36,12 @@ namespace render {
 				/// <param name="left">[ X軸 ] 左側の値</param>
 				/// <param name="top">[ Y軸 ] 上側の値</param>
 				/// <returns>作成されたシザー短形</returns>
-				[[nodiscard]] static D3D12_RECT create_scissor_rect(long right, long bottom, long left = 0, long top = 0);
+				[[nodiscard]] static D3D12_RECT create_scissor_rect(
+					long right,
+					long bottom,
+					long left = 0,
+					long top = 0
+				);
 
 			private:
 				/* ========== クラス設定 ========== */

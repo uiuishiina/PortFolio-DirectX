@@ -11,8 +11,8 @@ using namespace render::dx12::state;
 /// </summary>
 /// <param name="desc">描画設定補助構造体</param>
 /// <returns>作成の成否</returns>
-[[nodiscard]] bool Drawstate::creaate_draw_state(desc::DrawStateDesc& desc)
-{
+[[nodiscard]] bool Drawstate::creaate_draw_state(desc::DrawStateDesc& desc) {
+
     if (!desc.root_signature || !desc.pipline_state) {
         return false;
     }

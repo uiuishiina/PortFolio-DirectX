@@ -2,12 +2,14 @@
 
 using namespace render::dx12::helper;
 
-///====================================================================
-/// 実行時処理関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@brief	=== ブレンド有効化設定作成関数 ===
-//@return	ブレンド有効化設定
+/// <summary>
+/// ブレンド有効化設定作成関数
+/// </summary>
+/// <returns>ブレンド有効化設定</returns>
 [[nodiscard]] D3D12_BLEND_DESC PipelineStateHelper::get_enable_blend() {
 	
     D3D12_BLEND_DESC desc = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
@@ -25,10 +27,11 @@ using namespace render::dx12::helper;
 	return desc;
 }
 
-//@brief	=== デプス有効化設定作成関数 ===
-//@return	デプス有効化設定
-[[nodiscard]] D3D12_DEPTH_STENCIL_DESC PipelineStateHelper::get_enable_depth()
-{
+/// <summary>
+/// デプス有効化設定作成関数
+/// </summary>
+/// <returns>デプス有効化設定</returns>
+[[nodiscard]] D3D12_DEPTH_STENCIL_DESC PipelineStateHelper::get_enable_depth() {
     D3D12_DEPTH_STENCIL_DESC desc =
         CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 
@@ -42,10 +45,8 @@ using namespace render::dx12::helper;
     // 小さい値ほど手前なので LESS_EQUAL が一般的
     desc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 
-
     // Stencilは使用しない
     desc.StencilEnable = FALSE;
-
 
     return desc;
 }

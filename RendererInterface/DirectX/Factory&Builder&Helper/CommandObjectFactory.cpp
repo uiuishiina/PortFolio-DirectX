@@ -3,31 +3,47 @@
 
 using namespace render::dx12::factory;
 
-///====================================================================
-/// 実行時処理関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@brief	=== 描画用コマンドキュー作成関数 ===
-//@param	device	DirectX12 デバイス
-//@param	out	受け渡すインスタンス
-//@return	作成の成否
-[[nodiscard]] HRESULT CommandObjectFactory::create_graphics_command_queue(ID3D12Device* device, object::CommandQueue& out) {
+/// <summary>
+/// 描画用コマンドキュー作成関数
+/// </summary>
+/// <param name="device"></param>
+/// <param name="out">受け渡すインスタンス参照</param>
+/// <returns>作成の成否</returns>
+[[nodiscard]] HRESULT CommandObjectFactory::create_graphics_command_queue(
+	ID3D12Device* device, 
+	object::CommandQueue& out
+) {
 	return out.create_command_queue(device, D3D12_COMMAND_LIST_TYPE_DIRECT);
 }
 
-//@brief	=== 描画用コマンドアロケーター作成関数 ===
-//@param	device	DirectX12 デバイス
-//@param	out	受け渡すインスタンス
-//@return	作成の成否
-[[nodiscard]] HRESULT CommandObjectFactory::create_graphics_command_allocator(ID3D12Device* device, object::CommandAllocator& out) {
+/// <summary>
+/// 描画用コマンドアロケーター作成関数
+/// </summary>
+/// <param name="device"></param>
+/// <param name="out">受け渡すインスタンス</param>
+/// <returns>作成の成否</returns>
+[[nodiscard]] HRESULT CommandObjectFactory::create_graphics_command_allocator(
+	ID3D12Device* device, 
+	object::CommandAllocator& out
+) {
 	return out.create_command_allocator(device, D3D12_COMMAND_LIST_TYPE_DIRECT);
 }
 
-//@brief	=== 描画用コマンドリスト作成関数 ===
-//@param	device	DirectX12 デバイス
-//@param	allocator	作成に利用する描画用アロケーター
-//@param	out	受け渡すインスタンス
-//@return	作成の成否
-[[nodiscard]] HRESULT CommandObjectFactory::create_graphics_command_list(ID3D12Device* device, ID3D12CommandAllocator* allocator, object::GraphicsCommandList& out) {
+/// <summary>
+/// 描画用コマンドリスト作成関数
+/// </summary>
+/// <param name="device">DirectX12デバイスポインター</param>
+/// <param name="allocator">作成に利用する描画用アロケーター</param>
+/// <param name="out">受け渡すインスタンス</param>
+/// <returns>作成の成否</returns>
+[[nodiscard]] HRESULT CommandObjectFactory::create_graphics_command_list(
+	ID3D12Device* device, 
+	ID3D12CommandAllocator* allocator, 
+	object::GraphicsCommandList& out
+) {
 	return out.create_graphics_command_list(device, D3D12_COMMAND_LIST_TYPE_DIRECT, allocator);
 }

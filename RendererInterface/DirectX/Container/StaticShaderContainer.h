@@ -91,7 +91,12 @@ namespace render {
 				/// <param name="entry_point_name">シェーダー開始関数名</param>
 				/// <param name="target_profile">シェーダータイプ</param>
 				/// <returns>コンパイルの成否</returns>
-				[[nodiscard]] HRESULT compile_shader(const handle::ShaderKey& key, const std::wstring& path, const std::string& entry_point_name, const std::string& target_profile);
+				[[nodiscard]] HRESULT compile_shader(
+					const handle::ShaderKey& key, 
+					const std::wstring& path, 
+					const std::string& entry_point_name, 
+					const std::string& target_profile
+				);
 
 			};
 		}

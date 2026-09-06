@@ -31,29 +31,34 @@ namespace render {
 			/// <param name="hwnd">描画先ウィンドウハンドル</param>
 			/// <param name="size">描画先ウィンドウサイズ構造体</param>
 			/// <returns>初期化の成否</returns>
-			static [[nodiscard]] bool initialze_graphics(DirectXRendererContext* context,
-				UINT back_buffe_size, UINT frame_resource_size, HWND hwnd, WindowSize size);
+			[[nodiscard]] static bool initialze_graphics(
+				DirectXRendererContext* context,
+				UINT back_buffe_size, 
+				UINT frame_resource_size, 
+				HWND hwnd, 
+				WindowSize size
+			);
 
 			/// <summary>
 			/// 描画機能リソース初期化関数
 			/// </summary>
 			/// <param name="context">描画機能インスタンス保存クラス参照</param>
 			/// <returns>初期化の成否</returns>
-			static [[nodiscard]] bool initialize_graphics_resource(DirectXRendererContext* context);
+			[[nodiscard]] static bool initialize_graphics_resource(DirectXRendererContext* context);
 
 			/// <summary>
 			/// GPUリソース初期化関数
 			/// </summary>
 			/// <param name="context">描画機能インスタンス保存クラス参照</param>
 			/// <returns>初期化の成否</returns>
-			static [[nodiscard]] bool initialize_GPU_resource(DirectXRendererContext* context);
+			[[nodiscard]] static bool initialize_GPU_resource(DirectXRendererContext* context);
 
 			/// <summary>
 			/// 描画パス初期化関数
 			/// </summary>
 			/// <param name="context">描画機能インスタンス保存クラス参照</param>
 			/// <returns>初期化の成否</returns>
-			static [[nodiscard]] bool initialize_draw_pass(DirectXRendererContext* context);
+			[[nodiscard]] static bool initialize_draw_pass(DirectXRendererContext* context);
 
 			/// <summary>
 			/// 描画パス順取得関数
@@ -62,7 +67,7 @@ namespace render {
 			/// 内部でグローバル変数で保持(この先設計変更になる可能性あり)
 			/// </details>
 			/// <returns>初期化時に作った描画パス順配列</returns>
-			static [[nodiscard]] std::vector<std::string> get_draw_pass_order() noexcept;
+			[[nodiscard]] static std::vector<std::string> get_draw_pass_order() noexcept;
 
 
 			/* -- 実行時 -- */
@@ -76,7 +81,10 @@ namespace render {
 			/// <param name="context">描画機能インスタンス保存クラス参照</param>
 			/// <param name="current_frame_index">使用するフレームリソースインデックス</param>
 			/// <returns>描画リソース構造体</returns>
-			static [[nodiscard]] resources::DrawResources create_draw_resources(DirectXRendererContext* context, UINT64 current_frame_index);
+			[[nodiscard]] static resources::DrawResources create_draw_resources(
+				DirectXRendererContext* context, 
+				UINT64 current_frame_index
+			);
 
 		private:
 			/* ========== クラス設定 ========== */

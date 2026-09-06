@@ -14,7 +14,11 @@ using namespace render::dx12::container;
 /// <param name="device">DirectX12デバイスポインター</param>
 /// <param name="desc">ルートシグネチャー設定</param>
 /// <returns>作成の成否</returns>
-[[nodiscard]] HRESULT StaticRootSignatureContainer::create_root_signature(const handle::RootSignatureKey& key, ID3D12Device* device, desc::RootSignatureDesc& desc) {
+[[nodiscard]] HRESULT StaticRootSignatureContainer::create_root_signature(
+    const handle::RootSignatureKey& key, 
+    ID3D12Device* device, 
+    desc::RootSignatureDesc& desc
+) {
 
     //  ルートシグネチャー作成
     auto root = std::make_unique<object::RootSignature>();

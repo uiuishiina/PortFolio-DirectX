@@ -43,6 +43,7 @@ namespace sharedData {
 		/// <returns>追加の成否</returns>
 		template<typename T>
 		bool add_share_data() {
+
 			return data_map.add_value(typeid(T), HandyItems::container::ReferenceVector<T>{});
 		}
 
@@ -74,4 +75,4 @@ namespace sharedData {
 		HandyItems::container::UnorderedMapBase<std::type_index, std::any> data_map{};
 
 	};
-};
+}

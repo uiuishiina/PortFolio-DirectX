@@ -15,7 +15,10 @@ using namespace render::dx12::container;
 /// <param name="key">追加するコマンド名</param>
 /// <param name="func">追加するコマンド</param>
 /// <returns>追加の成否</returns>
-[[nodiscard]] bool StaticDrawCommandsContainer::add_command_map(const handle::CommandKey& key, utility::DrawCommand&& func) {
+[[nodiscard]] bool StaticDrawCommandsContainer::add_command_map(
+	const handle::CommandKey& key, 
+	utility::DrawCommand&& func
+) {
 
 	//	登録済みか確認
 	return command_map.add_value(key, std::move(func));
@@ -27,9 +30,11 @@ using namespace render::dx12::container;
 /// <param name="key">登録するキーの名前</param>
 /// <param name="desc">描画パスコマンド作成構造体</param>
 /// <returns>作成の成否</returns>
-[[nodiscard]] bool StaticDrawCommandsContainer::create_draw_commands(const handle::DrawCommandsKey& key, desc::DrawCommandDesc& desc) {
+[[nodiscard]] bool StaticDrawCommandsContainer::create_draw_commands(
+	const handle::DrawCommandsKey& key, 
+	desc::DrawCommandDesc& desc
+) {
 
-	
 	//	インスタンス生成
 	auto commands = std::make_unique<command::DrawCommands>();
 
