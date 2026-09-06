@@ -21,7 +21,7 @@ using namespace render::dx12::helper;
 /// </summary>
 /// <param name="T_buffer_size">バッファメモリサイズ</param>
 /// <returns>作成したリソース設定</returns>
-[[nodiscard]] D3D12_RESOURCE_DESC ResourceCreateDescHelper::get_buffer_desc(UINT T_buffer_size) {
+[[nodiscard]] D3D12_RESOURCE_DESC ResourceCreateDescHelper::get_buffer_desc(UINT64 T_buffer_size) {
 	return CD3DX12_RESOURCE_DESC::Buffer(T_buffer_size);
 }
 

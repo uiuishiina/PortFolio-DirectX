@@ -2,25 +2,36 @@
 
 using namespace render::dx12::object;
 
-///====================================================================
-/// 初期化関数
-///====================================================================
+/* ==================================================================== */
+// Protectedメンバー関数
+/* ==================================================================== */
 
-//@brief	=== バッファリソースMap関数 ===
-//@param	ptr	Map先ポインター
-//@return	Mapの成否
+/* -- リソース利用関数 -- */
+
+/// <summary>
+/// バッファリソースMap関数
+/// </summary>
+/// <returns>Mapの成否</returns>
 [[nodiscard]] HRESULT UploadBufferResource::map_buffer() {
 
 	return resource_->Map(0, nullptr, &mapped_);
 }
 
-//@brief	=== バッファリソースUnmap関数 ===
+/// <summary>
+/// バッファリソースUnmap関数
+/// </summary>
 void UploadBufferResource::unmap_buffer() {
 
 	resource_->Unmap(0, nullptr);
 }
 
-//@brief	=== データUpload関数 ===
+/* -- 書き込み関数 -- */
+
+/// <summary>
+/// データUpload関数
+/// </summary>
+/// <param name="src">コピーするデータの先頭ポインター</param>
+/// <param name="size">コピーするメモリサイズ</param>
 void UploadBufferResource::Upload(const void* src, size_t size) {
 	memcpy(mapped_, src, size);
 }

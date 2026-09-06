@@ -3,14 +3,33 @@
 
 using namespace render::dx12::object;
 
-///====================================================================
-/// 初期化関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@brief	=== リソース作成関数 ===
-//@param	device	DirectX12 デバイス
-//@param	desc	GPUリソース設定構造体
-//@return	作成の成否
+
+/// <summary>
+/// リソース取得関数
+/// </summary>
+/// <returns>リソース参照</returns>
+[[nodiscard]] ID3D12Resource* GPUResourceBase::get_resource()const noexcept {
+	assert(resource_ && "GPUリソース nullptr");
+	return resource_.Get();
+}
+
+
+/* ==================================================================== */
+// Protectedメンバー関数
+/* ==================================================================== */
+
+/* -- 作成関数 -- */
+
+/// <summary>
+/// リソース作成関数
+/// </summary>
+/// <param name="device">DirectX12デバイス参照</param>
+/// <param name="desc">GPUリソース設定構造体</param>
+/// <returns>作成の成否</returns>
 [[nodiscard]] HRESULT GPUResourceBase::create_committed_resource(ID3D12Device* device, const desc::ResourceCreateDesc& desc) {
 
 	const auto hr = device->CreateCommittedResource(
@@ -23,45 +42,49 @@ using namespace render::dx12::object;
 	return hr;
 }
 
-//@brief	=== リソース作成オーバーロード関数 ===
-//@details	追加でリソースが必要な場合に [メンバー変数以外] のリソースを作成できる関数
-//@param	device		DirectX12 デバイス
-//@param	desc		GPUリソース設定構造体
-//@param	resource	作成するリソース先参照
-//@return	作成の成否
-[[nodiscard]] HRESULT GPUResourceBase::create_committed_resource(ID3D12Device* device, const desc::ResourceCreateDesc& desc, Microsoft::WRL::ComPtr<ID3D12Resource>& resource) {
+/// <summary>
+/// リソース作成関数 
+/// </summary>
+/// <details>
+/// 追加でリソースが必要な場合に [メンバー変数以外] のリソースを作成できる関数
+/// </details>
+/// <param name="device">DirectX12デバイス参照</param>
+/// <param name="desc">GPUリソース設定構造体</param>
+/// <param name="resource">作成するリソース先参照</param>
+/// <returns>作成の成否</returns>
+[[nodiscard]] HRESULT GPUResourceBase::create_committed_resource(
+	ID3D12Device* device, 
+	const desc::ResourceCreateDesc& desc, 
+	Microsoft::WRL::ComPtr<ID3D12Resource>& resource
+) {
 
-	const auto hr = device->CreateCommittedResource(
+	return device->CreateCommittedResource(
 		&desc.heap_properties,
 		desc.heap_flags,
 		&desc.resource_desc,
 		desc.initial_state,
 		desc.clear_value,
 		IID_PPV_ARGS(resource.ReleaseAndGetAddressOf()));
-	return hr;
 }
 
-///====================================================================
-/// 実行時処理関数
-///====================================================================
+/* -- 取得関数 -- */
 
-//@brief	=== リソース取得関数 ===
-//@return	リソース参照
-[[nodiscard]] ID3D12Resource* GPUResourceBase::get_resource()const noexcept {
-	assert(resource_ && "GPUリソース nullptr");
-	return resource_.Get();
-}
-
-//@brief	=== リソース設定取得関数 ===
-//@return	リソース設定
+/// <summary>
+/// リソース設定取得関数
+/// </summary>
+/// <returns>リソース設定</returns>
 [[nodiscard]] D3D12_RESOURCE_DESC GPUResourceBase::get_desc() const noexcept {
+
 	assert(resource_ && "GPUリソース nullptr");
 	return resource_->GetDesc();
 }
 
-//@brief	=== GPUアドレス取得関数 ===
-//@return	GPUアドレス
+/// <summary>
+/// GPUアドレス取得関数
+/// </summary>
+/// <returns>GPUアドレス</returns>
 [[nodiscard]] D3D12_GPU_VIRTUAL_ADDRESS GPUResourceBase::get_GPU_address() const noexcept {
+
 	assert(resource_ && "GPUリソース nullptr");
 	return resource_->GetGPUVirtualAddress();
 }

@@ -3,9 +3,11 @@
 
 using namespace render::dx12::object;
 
-///====================================================================
-/// 初期化関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
+
+/* -- 作成関数 -- */
 
 //@brief	=== スワップチェーン作成関数 ===
 //@param	factory		DirectX12 ファクトリ
@@ -14,8 +16,13 @@ using namespace render::dx12::object;
 //@param	hwnd		ウィンドウハンドル
 //@param	buffer_size	Sワップチェーンのバッファ数
 //@return	作成の成否
-[[nodiscard]] HRESULT SwapChain::create_swapchain(IDXGIFactory6* factory,
-	ID3D12CommandQueue* command_queue, WindowSize size, HWND hwnd, UINT buffer_size) {
+[[nodiscard]] HRESULT SwapChain::create_swapchain(
+	IDXGIFactory6* factory,
+	ID3D12CommandQueue* command_queue, 
+	WindowSize size, 
+	HWND hwnd, 
+	UINT buffer_size
+) {
 
 	//	スワップチェーンの設定
 	DXGI_SWAP_CHAIN_DESC1 swapchain_desc{};
@@ -43,12 +50,13 @@ using namespace render::dx12::object;
 	return swapchain1.As(&swapchain_);
 }
 
-///====================================================================
-/// 実行時処理関数
-///====================================================================
 
-//@brief	=== スワップチェーン取得関数 ===
-//@return	スワップチェーン参照
+/* -- 取得関数 -- */
+
+/// <summary>
+/// スワップチェーン取得関数
+/// </summary>
+/// <returns>スワップチェーン参照</returns>
 [[nodiscard]] IDXGISwapChain4* SwapChain::get_swapchain() const noexcept {
 	assert(swapchain_ && "スワップチェーン nullptr");
 	return swapchain_.Get();

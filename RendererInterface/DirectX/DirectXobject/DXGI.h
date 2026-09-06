@@ -1,85 +1,99 @@
 #pragma once
-#include"NonMovable.h"
+#include"Others/NonCopyableBase.h"
 #include<dxgi1_6.h>
 #include<d3d12.h>
 #include<wrl/client.h>
 
-///====================================================================
-/// 描画名前空間
-///====================================================================
-
+/// <summary>
+/// 描画機能名前空間
+/// </summary>
 namespace render {
 
-	///====================================================================
+	/// <summary>
 	/// DirectX名前空間
-	///====================================================================
-
+	/// </summary>
 	namespace dx12 {
 
-		///====================================================================
+		/// <summary>
 		/// DX12オブジェクトラッパークラス名前空間
-		///====================================================================
-
+		/// </summary>
 		namespace object {
 
-			///====================================================================
-			/// DXGIクラス
-			///====================================================================
-
-			//@brief	=== DirectX Graphics Interface ===
-			class DXGI final : public NonMovableBase
+			/// <summary>
+			/// DirectX Graphics Interface
+			/// </summary>
+			class DXGI final : public others::NonCopyableBase
 			{
 			public:
-				///====================================================================
-				/// クラス設定
-				///====================================================================
+				/* ========== クラス設定 ========== */
 
-				//コンストラクタ,デストラクタ
+				/// <summary>
+				/// コンストラクタ
+				/// </summary>
 				DXGI() = default;
+
+				/// <summary>
+				/// デストラクタ
+				/// </summary>
 				~DXGI() = default;
 
-				///====================================================================
-				/// Public メンバー関数
-				///====================================================================
 
-				//@brief	=== DXGI初期化関数 ===
-				//@return	初期化の成否
+				/* ========== Publicメンバー関数 ========== */
+
+				/* -- 初期化関数 -- */
+
+				/// <summary>
+				/// DXGI初期化関数
+				/// </summary>
+				/// <returns>初期化の成否</returns>
 				[[nodiscard]] HRESULT initialize_DXGI();
 
-				//@brief	=== DXGIファクトリー取得関数 ===
-				//@return	DXGIファクトリー参照
+				/* -- 取得関数 -- */
+
+				/// <summary>
+				/// DXGIファクトリー取得関数
+				/// </summary>
+				/// <returns>DXGIファクトリー参照</returns>
 				[[nodiscard]] IDXGIFactory6* get_DXGI_factory() const noexcept;
 
-				//@brief	=== DXGIアダプター取得関数 ===
-				//@return	DXGIアダプター参照
+				/// <summary>
+				/// DXGIアダプター取得関数
+				/// </summary>
+				/// <returns>DXGIアダプター参照</returns>
 				[[nodiscard]] IDXGIAdapter1* get_DXGI_adaptor() const noexcept;
 
 			private:
-				///====================================================================
-				/// Private メンバー変数
-				///====================================================================
+				/* ========== Privateメンバー変数 ========== */
 
-				//@brief	== DXGIファクトリーインスタンス ==
-				//@details	DirectXオブジェクトを生成するためのファクトリーインスタンス
+				/// <summary>
+				/// DXGIファクトリーインスタンス
+				/// </summary>
+				/// <details>
+				/// DirectXオブジェクトを生成するためのファクトリーインスタンス
+				/// </details>
 				Microsoft::WRL::ComPtr<IDXGIFactory6> factory_{};
 
-				//@brief	== DXGIアダプターインスタンス ==
-				//@details	
+				/// <summary>
+				/// DXGIアダプターインスタンス
+				/// </summary>
 				Microsoft::WRL::ComPtr<IDXGIAdapter1> adapter_{};
 
-				///====================================================================
-				/// Private メンバー関数
-				///====================================================================
 
-				//@brief	=== DXGIファクトリー作成関数 ===
-				//@return	作成の成否
+				/* ========== Privateメンバー関数 ========== */
+
+				/// <summary>
+				/// DXGIファクトリー作成関数
+				/// </summary>
+				/// <returns>作成の成否</returns>
 				[[nodiscard]] HRESULT create_DXGI_factory();
 
-				//@brief	=== DXGIアダプター作成関数 ===
-				//@return	作成の成否
+				/// <summary>
+				/// DXGIアダプター作成関数
+				/// </summary>
+				/// <returns>作成の成否</returns>
 				[[nodiscard]] HRESULT create_DXGI_adaptor();
 
 			};
-		};
-	};
-};
+		}
+	}
+}

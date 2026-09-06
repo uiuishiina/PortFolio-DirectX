@@ -1,7 +1,7 @@
 #pragma once
 #include"../windowInterface/windowInterface.h"
 #include"../Application/SharedData/ApplicationSharedData.h"
-#include"NonMovable.h"
+#include"Others/NonCopyableBase.h"
 
 /// <summary>
 /// 描画機能名前空間
@@ -11,7 +11,7 @@ namespace render {
 	/// <summary>
 	/// 描画機能インターフェース基底クラス
 	/// </summary>
-	class RendererInterface : public NonMovableBase
+	class RendererInterface : public others::NonCopyableBase
 	{
 	public:
 		/* ========== クラス設定 ========== */

@@ -73,7 +73,7 @@ namespace {
     /// <returns>補正したウィンドウサイズ構造体</returns>
     static WindowSize adjust_window_size(WindowSize new_size) {
 
-        RECT rc{ 0, 0, new_size.width,new_size.height };
+        RECT rc{ 0, 0, static_cast<long>(new_size.width), static_cast<long>(new_size.height)};
         AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
         return WindowSize(rc.right - rc.left, rc.bottom - rc.top);

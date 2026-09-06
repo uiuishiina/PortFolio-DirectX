@@ -12,7 +12,7 @@ using namespace render::dx12::container;
 /// <summary>
 /// ディスクリプタヒープコンテナ作成関数
 /// </summary>
-/// <param name="device">デバイスインスタンス</param>
+/// <param name="device">DirectX12デバイス参照</param>
 /// <param name="desc">ディスクリプタヒープ設定配列</param>
 /// <returns>作成の成否</returns>設定配列
 [[nodiscard]] HRESULT StaticHeapContainer::create_static_heap_container(
@@ -25,18 +25,17 @@ using namespace render::dx12::container;
 		return E_FAIL;
 	}
 
-	
 	//	設定分作成
 	for (auto& value : desc) {
-		
-		auto [type, num, flag] = value;
+
 		auto heap = std::make_unique<object::DescriptorHeap>();
 
-		const auto hr = heap->create_descriptor_heap(device, type, num, flag);
+		const auto hr = heap->create_descriptor_heap(device, value);
 		if (FAILED(hr)) {
 			return hr;
 		}
 
+		const auto [type, size, flag] = value;
 		heap_map.add_value(type, std::move(heap));
 	}
 

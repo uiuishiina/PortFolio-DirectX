@@ -46,7 +46,7 @@ namespace render {
 				/// <summary>
 				/// ディスクリプタヒープコンテナ作成関数
 				/// </summary>
-				/// <param name="device">デバイスインスタンス</param>
+				/// <param name="device">DirectX12デバイス参照</param>
 				/// <param name="desc">ディスクリプタヒープ設定配列</param>
 				/// <returns>作成の成否</returns>
 				[[nodiscard]] HRESULT create_static_heap_container(

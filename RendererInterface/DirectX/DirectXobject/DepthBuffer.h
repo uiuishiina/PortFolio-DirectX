@@ -1,95 +1,119 @@
 #pragma once
 #include"GPUResource.h"
 
-///====================================================================
-/// 描画名前空間
-///====================================================================
-
+/// <summary>
+/// 描画機能名前空間
+/// </summary>
 namespace render {
 
-	///====================================================================
+	/// <summary>
 	/// DirectX名前空間
-	///====================================================================
-
+	/// </summary>
 	namespace dx12 {
 
-
-		///====================================================================
+		/// <summary>
 		/// DX12オブジェクト設定名前空間
-		///====================================================================
-
+		/// </summary>
 		namespace desc {
+			
+			/// <summary>
+			/// デプスバッファ設定構造体
+			/// </summary>
+			struct DepthBufferDesc {
 
-			///====================================================================
-			/// DepthBufferDesc 構造体
-			///====================================================================
+				/* ========== メンバー変数 ========== */
 
-			//@brief	=== デプスバッファ設定構造体 ===
-			struct DepthBufferDesc
-			{
-				//@brief	== バッファの横幅 ==
+				/// <summary>
+				/// バッファの横幅
+				/// </summary>
 				UINT64 width = 1;
 
-				//@brief	== バッファの縦幅 ==
+				/// <summary>
+				/// バッファの縦幅
+				/// </summary>
 				UINT height = 1;
 
-				//@brief	== バッファのフォーマット ==
+				/// <summary>
+				/// バッファのフォーマット
+				/// </summary>
 				DXGI_FORMAT format = DXGI_FORMAT_D32_FLOAT;
 
-				//@brief	== ピクセルごとのサンプル数 ==
+				/// <summary>
+				/// ピクセルごとのサンプル数
+				/// </summary>
 				UINT sample_count = 1;
 
-				//@brief	== クリア時のデプス値 ==
+				/// <summary>
+				/// クリア時のデプス値
+				/// </summary>
 				float clear_depth = 1.0f;
 
-				//@brief	== クリア時のステンシル値 ==
+				/// <summary>
+				/// クリア時のステンシル値
+				/// </summary>
 				UINT8 clear_stencil = 0;
 
 			};
-		};
+		}
 
-		///====================================================================
+		/// <summary>
 		/// DX12オブジェクトラッパークラス名前空間
-		///====================================================================
-
+		/// </summary>
 		namespace object {
 
-			//@brief	=== デプスバッファクラス ===
+			/// <summary>
+			/// デプスバッファクラス
+			/// </summary>
 			class DepthBuffer final : public GPUResourceBase
 			{
 			public:
-				///====================================================================
-				/// クラス設定
-				///====================================================================
+				/* ========== クラス設定 ========== */
 
-				//コンストラクタ,デストラクタ
+				/// <summary>
+				/// コンストラクタ
+				/// </summary>
 				DepthBuffer() = default;
+
+				/// <summary>
+				/// デストラクタ
+				/// </summary>
 				~DepthBuffer() = default;
 
-				///====================================================================
-				/// Publuc メンバー関数
-				///====================================================================
+				
+				/* ========== Publicメンバー関数 ========== */
 
-				//@brief	=== デプスバッファ作成関数 ===
-				//@param	device	DirectX12 デバイス
-				//@param	handle	DSVディスクリプタヒープハンドル
-				//@param	desc	デプスバッファ設定
-				//@return	作成の成否
-				[[nodiscard]] HRESULT create_depth_buffer(ID3D12Device* device, D3D12_CPU_DESCRIPTOR_HANDLE handle, desc::DepthBufferDesc& desc);
+				/* -- 作成関数 -- */
 
-				//@brief	=== DSVハンドル取得関数 ===
-				//@return	DSV CPUハンドル
+				/// <summary>
+				/// デプスバッファ作成関数
+				/// </summary>
+				/// <param name="device">DirectX12デバイス参照</param>
+				/// <param name="handle">DSVディスクリプタヒープハンドル</param>
+				/// <param name="desc">デプスバッファ設定</param>
+				/// <returns>作成の成否</returns>
+				[[nodiscard]] HRESULT create_depth_buffer(
+					ID3D12Device* device, 
+					D3D12_CPU_DESCRIPTOR_HANDLE handle, 
+					desc::DepthBufferDesc& desc
+				);
+
+				/* -- 取得関数 -- */
+
+				/// <summary>
+				/// DSVハンドル取得関数
+				/// </summary>
+				/// <returns>DSV CPUハンドル</returns>
 				[[nodiscard]] D3D12_CPU_DESCRIPTOR_HANDLE get_dsv_handle()const noexcept;
 
 			private:
-				///====================================================================
-				/// Private メンバー変数
-				///====================================================================
+				/* ========== Privateメンバー変数 ========== */
 
-				//@brief	== デプスバッファディスクリプタピープハンドル ==
+				/// <summary>
+				/// デプスバッファディスクリプタピープハンドル
+				/// </summary>
 				D3D12_CPU_DESCRIPTOR_HANDLE	dsv_handle{};
 
 			};
-		};
-	};
-};
+		}
+	}
+}

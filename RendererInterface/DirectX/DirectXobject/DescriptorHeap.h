@@ -1,108 +1,151 @@
 #pragma once
-#include"NonMovable.h"
+#include"Others/NonCopyableBase.h"
 #include"ResourceUtility.h"
 #include<d3d12.h>
 #include<wrl/client.h>
 
-///====================================================================
-/// 描画名前空間
-///====================================================================
-
+/// <summary>
+/// 描画機能名前空間
+/// </summary>
 namespace render {
 
-	///====================================================================
+	/// <summary>
 	/// DirectX名前空間
-	///====================================================================
-
+	/// </summary>
 	namespace dx12 {
 
-		///====================================================================
+		/// <summary>
 		/// DX12オブジェクト設定名前空間
-		///====================================================================
-
+		/// </summary>
 		namespace desc {
 
-			///====================================================================
-			/// DescriptorHeapDesc 構造体
-			///====================================================================
+			/// <summary>
+			/// ディスクリプタヒープ作成補助構造体
+			/// </summary>
+			struct DescriptorHeapDesc {
 
-			//@brief	=== ディスクリプタヒープ作成補助構造体 ===
-			struct DescriptorHeapDesc
-			{
-				//@brief	== ディスクリプターヒープタイプ設定 ==
-				D3D12_DESCRIPTOR_HEAP_TYPE type;
+				/* ========== メンバー変数 ========== */
 
-				//@brief	== ディスクリプターヒープサイズ設定 ==
-				UINT numDescriptors;
+				/// <summary>
+				/// ディスクリプターヒープタイプ設定
+				/// </summary>
+				D3D12_DESCRIPTOR_HEAP_TYPE type_;
 
-				//@brief	== シェーダー可視設定 ==
-				D3D12_DESCRIPTOR_HEAP_FLAGS flags;
+				/// <summary>
+				/// ディスクリプターヒープサイズ設定
+				/// </summary>
+				UINT numDescriptors_;
+
+				/// <summary>
+				/// シェーダー可視設定
+				/// </summary>
+				D3D12_DESCRIPTOR_HEAP_FLAGS flags_;
+
+
+				/* ========== メンバー関数 ========== */
+
+				/// <summary>
+				/// コンストラクタ
+				/// </summary>
+				DescriptorHeapDesc() = default;
+
+				/// <summary>
+				/// 引数付きコンストラクタ
+				/// </summary>
+				/// <param name="type">ディスクリプターヒープタイプ設定</param>
+				/// <param name="size">ディスクリプターヒープサイズ設定</param>
+				/// <param name="flags">シェーダー可視設定</param>
+				DescriptorHeapDesc(
+					D3D12_DESCRIPTOR_HEAP_TYPE type,
+					UINT size,
+					D3D12_DESCRIPTOR_HEAP_FLAGS flags
+				) :type_{ type }, numDescriptors_{ size }, flags_{ flags } {}
+
 			};
-		};
+		}
 
-		///====================================================================
+		/// <summary>
 		/// DX12オブジェクトラッパークラス名前空間
-		///====================================================================
-
+		/// </summary>
 		namespace object {
 
-			///====================================================================
-			/// DescriptorHeap クラス
-			///====================================================================
-
-			//@brief	=== ディスクリプタヒープクラス ===
-			class DescriptorHeap final : public NonMovableBase
+			/// <summary>
+			/// ディスクリプタヒープクラス
+			/// </summary>
+			class DescriptorHeap final : public others::NonCopyableBase
 			{
 			public:
-				///====================================================================
-				/// クラス設定
-				///====================================================================
+				/* ========== クラス設定 ========== */
 
-				//コンストラクタ,デストラクタ
+				/// <summary>
+				/// コンストラクタ
+				/// </summary>
 				DescriptorHeap() = default;
+
+				/// <summary>
+				/// デストラクタ
+				/// </summary>
 				~DescriptorHeap() = default;
 
-				///====================================================================
-				/// Public メンバー関数
-				///====================================================================
 
-				//@brief	=== ディスクリプタヒープ作成関数 ===
-				//@param	device			DirectX12 デバイス
-				//@param	type			ディスクリプタヒープタイプ
-				//@param	num_descriptors	ディスクリプタ数
-				//@param	flags			ディスクリプタヒープフラグ
-				//@return	作成の成否
-				[[nodiscard]] HRESULT create_descriptor_heap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE type,
-					UINT num_descriptors, D3D12_DESCRIPTOR_HEAP_FLAGS flags);
+				/* ========== Publicメンバー関数 ========== */
 
-				//@brief	=== ディスクリプタヒープ取得関数 ===
-				//@return	ディスクリプタヒープ参照
+				/* -- 作成関数 -- */
+
+				/// <summary>
+				/// ディスクリプタヒープ作成関数
+				/// </summary>
+				/// <param name="device">DirectX12デバイス参照</param>
+				/// <param name="desc">ディスクリプタヒープ作成補助構造体参照</param>
+				/// <returns>作成の成否</returns>
+				[[nodiscard]] HRESULT create_descriptor_heap(
+					ID3D12Device* device, 
+					const desc::DescriptorHeapDesc& desc
+				);
+
+				/* -- 取得関数 -- */
+
+				/// <summary>
+				/// ディスクリプタヒープ取得関数
+				/// </summary>
+				/// <returns>ディスクリプタヒープ参照</returns>
 				[[nodiscard]] ID3D12DescriptorHeap* get_descriptor_heap() const noexcept;
 
-				//@brief	=== CPU ディスクリプタハンドル取得関数 ===
-				//@param	index	ディスクリプタインデックス
-				//@return	CPU ディスクリプタハンドル
+				/// <summary>
+				/// CPU ディスクリプタハンドル取得関数
+				/// </summary>
+				/// <param name="index">ディスクリプタインデックス</param>
+				/// <returns>CPU ディスクリプタハンドル</returns>
 				[[nodiscard]] D3D12_CPU_DESCRIPTOR_HANDLE get_cpu_descriptor_handle(UINT index) const noexcept;
 
-				//@brief	=== GPU ディスクリプタハンドル取得関数 ===
-				//@param	index	ディスクリプタインデックス
-				//@return	GPU ディスクリプタハンドル
+				/// <summary>
+				/// GPU ディスクリプタハンドル取得関数
+				/// </summary>
+				/// <param name="index">ディスクリプタインデックス</param>
+				/// <returns>GPU ディスクリプタハンドル</returns>
 				[[nodiscard]] D3D12_GPU_DESCRIPTOR_HANDLE get_gpu_descriptor_handle(UINT index) const noexcept;
 
+				/// <summary>
+				/// ディスクリプタヒープハンドルズ構造体取得関数
+				/// </summary>
+				/// <param name="index">ディスクリプタインデックス</param>
+				/// <returns>ディスクリプタヒープハンドルズ構造体</returns>
 				[[nodiscard]] utility::Descripter_Handles get_descriptor_handles(UINT index) const noexcept;
 
 			private:
-				///====================================================================
-				/// Private メンバー変数
-				///====================================================================
+				/* ========== Privateメンバー変数 ========== */
 
-				//@brief	== ディスクリプタヒープメモリサイズ ==
-				UINT descriptor_size_{};
+				/// <summary>
+				/// ディスクリプタヒープメモリサイズ
+				/// </summary>
+				UINT descriptor_size{};
 
-				//@brief	== ディスクリプタヒープインスタンス ==
+				/// <summary>
+				/// ディスクリプタヒープインスタンス
+				/// </summary>
 				Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> heap_{};
 
 			};
-		};
-	};
-};
+		}
+	}
+}

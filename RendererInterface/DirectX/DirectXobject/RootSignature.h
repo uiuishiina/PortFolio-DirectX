@@ -1,90 +1,105 @@
 #pragma once
-#include"NonMovable.h"
+#include"Others/NonCopyableBase.h"
 #include<d3d12.h>
 #include<wrl/client.h>
 #include<vector>
 
-///====================================================================
-/// 描画名前空間
-///====================================================================
-
+/// <summary>
+/// 描画機能名前空間
+/// </summary>
 namespace render {
 
-	///====================================================================
+	/// <summary>
 	/// DirectX名前空間
-	///====================================================================
-
+	/// </summary>
 	namespace dx12 {
 
-		///====================================================================
+		/// <summary>
 		/// DX12オブジェクト設定名前空間
-		///====================================================================
-
+		/// </summary>
 		namespace desc {
 
-			///====================================================================
-			/// RootSignatureDesc 構造体
-			///====================================================================
+			/// <summary>
+			/// ルートシグネチャ設定構造体
+			/// </summary>
+			struct RootSignatureDesc {
 
-			//@brief	=== ルートシグネチャ設定構造体 ===
-			struct RootSignatureDesc
-			{
-				//@brief	== ルートパラメーター設定配列 ==
+				/* ========== メンバー変数 ========== */
+
+				/// <summary>
+				/// ルートパラメーター設定配列
+				/// </summary>
 				std::vector<D3D12_ROOT_PARAMETER> parameters_;
 
-				//@brief	== サンプラー設定配列 ==
+				/// <summary>
+				/// サンプラー設定配列
+				/// </summary>
 				std::vector<D3D12_STATIC_SAMPLER_DESC> samplers_;
 
-				//@brief	== パイプラインステートフラグ ==
+				/// <summary>
+				/// パイプラインステートフラグ
+				/// </summary>
 				D3D12_ROOT_SIGNATURE_FLAGS flags_;
+
 			};
-		};
+		}
 
-		///====================================================================
+		/// <summary>
 		/// DX12オブジェクトラッパークラス名前空間
-		///====================================================================
-
+		/// </summary>
 		namespace object {
 
-			///====================================================================
-			/// RootSignature クラス
-			///====================================================================
-
-			//@brief	=== ルートシグネチャクラス ===
-			class RootSignature final : public NonMovableBase
+			/// <summary>
+			/// ルートシグネチャクラス
+			/// </summary>
+			class RootSignature final : public others::NonCopyableBase
 			{
 			public:
-				///====================================================================
-				/// クラス設定
-				///====================================================================
+				/* ========== クラス設定 ========== */
 
-				//コンストラクタ,デストラクタ
+				/// <summary>
+				/// コンストラクタ
+				/// </summary>
 				RootSignature() = default;
+
+				/// <summary>
+				/// デストラクタ
+				/// </summary>
 				~RootSignature() = default;
 
-				///====================================================================
-				/// Public メンバー関数
-				///====================================================================
 
-				//@brief	=== ルートシグネチャ作成関数 ===
-				//@param	device	DirectX12 デバイス
-				//@param	desc	ルートシグネチャー設定
-				//@return	作成の成否
-				[[nodiscard]] HRESULT create_root_signature(ID3D12Device* device, desc::RootSignatureDesc& desc);
+				/* ========== Publicメンバー関数 ========== */
 
-				//@brief	=== ルートシグネチャ取得関数 ===
-				//@return	ルートシグネチャ参照
+				/* -- 作成関数 -- */
+
+				/// <summary>
+				/// ルートシグネチャ作成関数
+				/// </summary>
+				/// <param name="device">DirectX12デバイス参照</param>
+				/// <param name="desc">ルートシグネチャー設定構造体参照</param>
+				/// <returns>作成の成否</returns>
+				[[nodiscard]] HRESULT create_root_signature(
+					ID3D12Device* device, 
+					desc::RootSignatureDesc& desc
+				);
+
+				/* -- 取得関数 -- */
+
+				/// <summary>
+				/// ルートシグネチャ取得関数
+				/// </summary>
+				/// <returns>ルートシグネチャ参照</returns>
 				[[nodiscard]] ID3D12RootSignature* get_root_signature() const noexcept;
 
 			private:
-				///====================================================================
-				/// Private メンバー変数
-				///====================================================================
+				/* ========== Privateメンバー変数 ========== */
 
-				//@brief	=== ルートシグネチャインスタンス ===
+				/// <summary>
+				/// ルートシグネチャインスタンス
+				/// </summary>
 				Microsoft::WRL::ComPtr<ID3D12RootSignature> root_signature{};
 
 			};
-		};
-	};
-};
+		}
+	}
+}

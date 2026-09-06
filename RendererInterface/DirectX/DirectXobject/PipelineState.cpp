@@ -4,11 +4,12 @@
 
 using namespace render::dx12::object;
 
-///====================================================================
-/// PipelineStateDesc 構造体
-///====================================================================
-
-//@brief    === コンストラクタ ===
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <details>
+/// パイプラインステート設定構造体コンストラクタ
+/// </details>
 render::dx12::desc::PipelineStateDesc::PipelineStateDesc() {
 
     //  デフォルトで埋める
@@ -17,16 +18,23 @@ render::dx12::desc::PipelineStateDesc::PipelineStateDesc() {
     depth_stencil_desc = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 }
 
-///====================================================================
-/// 初期化関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@breif	=== パイプラインステート作成関数 ===
-//@param	device	DirectX12 デバイス
-//@param	desc	パイプラインステート設定
-//@return	作成の成否
-[[nodiscard]] HRESULT PipelineState::create_piplinestate(ID3D12Device* device, desc::PipelineStateDesc& desc)
-{
+/* -- 作成関数 -- */
+
+/// <summary>
+/// パイプラインステート作成関数
+/// </summary>
+/// <param name="device">DirectX12デバイス参照</param>
+/// <param name="desc">パイプラインステート設定構造体参照</param>
+/// <returns>作成の成否</returns>
+[[nodiscard]] HRESULT PipelineState::create_piplinestate(
+    ID3D12Device* device, 
+    desc::PipelineStateDesc& desc
+) {
+
     D3D12_GRAPHICS_PIPELINE_STATE_DESC pipeline_desc{};
 
     // インプットレイアウト配列設定
@@ -87,12 +95,12 @@ render::dx12::desc::PipelineStateDesc::PipelineStateDesc() {
     return device->CreateGraphicsPipelineState(&pipeline_desc, IID_PPV_ARGS(&pipline_state));
 }
 
-///====================================================================
-/// 実行時処理関数
-///====================================================================
+/* -- 取得関数 -- */
 
-//@brief	=== パイプラインステート取得関数 ===
-//@return	パイプラインステート参照
+/// <summary>
+/// パイプラインステート取得関数
+/// </summary>
+/// <returns>パイプラインステート参照</returns>
 [[nodiscard]] ID3D12PipelineState* PipelineState::get_pipline_state()const noexcept {
     assert(pipline_state && "パイプラインステート nullptr");
     return pipline_state.Get();

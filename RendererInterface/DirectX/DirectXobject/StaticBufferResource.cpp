@@ -5,18 +5,26 @@
 
 using namespace render::dx12::object;
 
-///====================================================================
-/// 初期化関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@brief	=== 初期作成描画バッファリソース作成関数 ===
-//@param	device		DirectX12 デバイス
-//@param	commandList	描画用コマンドリスト参照
-//@param	upload_resource		Upload用リソース参照
-//@param	data		書き込むデータ参照
-//@return	作成の成否
-[[nodiscard]] HRESULT StaticBufferResource::create_static_buffer(ID3D12Device* device, ID3D12GraphicsCommandList* list,
-	Microsoft::WRL::ComPtr<ID3D12Resource>& upload_resource, const render::dx12::desc::StaticBufferCreateDesc& desc) {
+/* -- 作成関数 -- */
+
+/// <summary>
+/// 初期作成描画バッファリソース作成関数
+/// </summary>
+/// <param name="device">DirectX12デバイス参照</param>
+/// <param name="list">描画用コマンドリスト参照</param>
+/// <param name="upload_resource">Uploadリソース参照</param>
+/// <param name="desc">初期設定データ構造体参照</param>
+/// <returns>作成の成否</returns>
+[[nodiscard]] HRESULT StaticBufferResource::create_static_buffer(
+	ID3D12Device* device, 
+	ID3D12GraphicsCommandList* list,
+	Microsoft::WRL::ComPtr<ID3D12Resource>& upload_resource, 
+	const render::dx12::desc::StaticBufferCreateDesc& desc
+) {
 
 	//	バッファ作成
 	auto hr = create_buffers(device, upload_resource, desc);
@@ -43,13 +51,22 @@ using namespace render::dx12::object;
 }
 
 
-//@brief	=== バッファ作成関数 ===
-//@param	device		DirectX12 デバイス
-//@param	upload_		upload用リソース参照
-//@param	desc		初期作成バッファ設定
-//@return	作成の成否
-[[nodiscard]] HRESULT StaticBufferResource::create_buffers(ID3D12Device* device,
-	Microsoft::WRL::ComPtr<ID3D12Resource>& upload_resource, const desc::StaticBufferCreateDesc& desc) {
+/* ==================================================================== */
+// Privateメンバー関数
+/* ==================================================================== */
+
+/// <summary>
+/// バッファ作成関数
+/// </summary>
+/// <param name="device">DirectX12デバイス参照</param>
+/// <param name="upload_resource">uploadリソース参照</param>
+/// <param name="desc">初期作成バッファ設定</param>
+/// <returns>作成の成否</returns>
+[[nodiscard]] HRESULT StaticBufferResource::create_buffers(
+	ID3D12Device* device,
+	Microsoft::WRL::ComPtr<ID3D12Resource>& upload_resource, 
+	const desc::StaticBufferCreateDesc& desc
+) {
 
 	//	デフォルト作成( DefaultBuffer )
 	desc::ResourceCreateDesc create_desc{};
@@ -77,13 +94,18 @@ using namespace render::dx12::object;
 	return hr;
 }
 
-//@brief	=== データUpload関数 ===
-//@param	list	描画用コマンドリスト
-//@param	upload	upload用リソース参照(一時バッファ)
-//@param	data	Uploadするデータ参照
-//@return	Uploadの成否
-[[nodiscard]] HRESULT StaticBufferResource::upload_data(ID3D12GraphicsCommandList* list,
-	ID3D12Resource* upload_resource, const utility::InitialBufferData& data) {
+/// <summary>
+/// データUpload関数
+/// </summary>
+/// <param name="list">描画用コマンドリスト参照</param>
+/// <param name="upload_resource">uploadリソース参照(一時バッファ)</param>
+/// <param name="data">Uploadするデータ参照</param>
+/// <returns>Uploadの成否</returns>
+[[nodiscard]] HRESULT StaticBufferResource::upload_data(
+	ID3D12GraphicsCommandList* list,
+	ID3D12Resource* upload_resource, 
+	const utility::InitialBufferData& data
+) {
 	
 	assert(data.data_ && "StaticBufferResource initial_data Not Found");
 	assert(data.size_ > 0 && "StaticBufferResource initial_data.size Not Set or 0");
@@ -113,16 +135,19 @@ using namespace render::dx12::object;
 	return hr;
 }
 
-///====================================================================
-/// 実行時処理関数
-///====================================================================
+/// <summary>
+/// リソースバリア遷移関数
+/// </summary>
+/// <param name="list">描画用コマンドリスト参照</param>
+/// <param name="current_state">遷移前バリアステート</param>
+/// <param name="next_state">遷移先バリアステート</param>
+void StaticBufferResource::barrier_transition(
+	ID3D12GraphicsCommandList* list, 
+	D3D12_RESOURCE_STATES current_state, 
+	D3D12_RESOURCE_STATES next_state
+) {
 
-//@brief	=== リソースバリア遷移関数 ===
-//@param	list	描画用コマンドリスト
-//@param	current_state	遷移前バリアステート
-//@param	next_state	遷移先バリアステート
-void StaticBufferResource::barrier_transition(ID3D12GraphicsCommandList* list, D3D12_RESOURCE_STATES current_state, D3D12_RESOURCE_STATES next_state) {
-
+	//	リソースバリア遷移
 	auto barrier = helper::ResourceBarrierHelper::create_resource_barrier(resource_.Get(), current_state, next_state);
 	list->ResourceBarrier(1, &barrier);
 }

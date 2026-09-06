@@ -4,14 +4,22 @@
 
 using namespace render::dx12::object;
 
-///====================================================================
-/// 初期化関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@brief	=== ルートシグネチャ作成関数 ===
-//@param	device	DirectX12 デバイス
-//@return	作成の成否
-[[nodiscard]] HRESULT RootSignature::create_root_signature(ID3D12Device* device, desc::RootSignatureDesc& desc) {
+/* -- 作成関数 -- */
+
+/// <summary>
+/// ルートシグネチャ作成関数
+/// </summary>
+/// <param name="device">DirectX12デバイス参照</param>
+/// <param name="desc">ルートシグネチャー設定構造体参照</param>
+/// <returns>作成の成否</returns>
+[[nodiscard]] HRESULT RootSignature::create_root_signature(
+	ID3D12Device* device, 
+	desc::RootSignatureDesc& desc
+) {
 
 	//	ルートシグネチャの設定
 	D3D12_ROOT_SIGNATURE_DESC root_desc{};
@@ -46,9 +54,7 @@ using namespace render::dx12::object;
 	return hr;
 }
 
-///====================================================================
-/// 実行時処理関数
-///====================================================================
+/* -- 取得関数 -- */
 
 //@brief	=== ルートシグネチャ取得関数 ===
 //@return	ルートシグネチャ参照

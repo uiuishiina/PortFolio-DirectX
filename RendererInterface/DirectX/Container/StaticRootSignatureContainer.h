@@ -90,7 +90,7 @@ namespace render {
 				/// ルートシグネチャー作成関数
 				/// </summary>
 				/// <param name="key">追加したい倫理側のキー</param>
-				/// <param name="device">DirectX12デバイスポインター</param>
+				/// <param name="device">DirectX12デバイス参照</param>
 				/// <param name="desc">ルートシグネチャー設定</param>
 				/// <returns>作成の成否</returns>
 				[[nodiscard]] HRESULT create_root_signature(

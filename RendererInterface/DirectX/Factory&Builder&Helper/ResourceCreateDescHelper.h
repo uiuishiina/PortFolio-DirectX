@@ -36,7 +36,7 @@ namespace render {
 				/// </summary>
 				/// <param name="T_buffer_size">バッファメモリサイズ</param>
 				/// <returns>作成したリソース設定</returns>
-				[[nodiscard]] static D3D12_RESOURCE_DESC get_buffer_desc(UINT T_buffer_size);
+				[[nodiscard]] static D3D12_RESOURCE_DESC get_buffer_desc(UINT64 T_buffer_size);
 
 				/// <summary>
 				/// リソース設定作成関数

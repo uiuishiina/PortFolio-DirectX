@@ -8,17 +8,24 @@
 
 using namespace render::dx12::object;
 
-///====================================================================
-/// 初期化時関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@brief	=== HLSLシェーダーコンパイル関数 ===
-//@param	path	HLSLシェーダーのファイル位置を示すpath
-//@param	entry_point_name	HLSLシェーダーのエントリーポイントの名前
-//@param	target_profile	HLSLシェーダーのターゲットプロファイル(バージョン)
-//@return	コンパイルの成否
-[[nodiscard]] HRESULT ShaderCompiler::compile_shader(const std::wstring& path,
-	const std::string& entry_point_name, const std::string& target_profile) {
+/* -- 作成関数 -- */
+
+/// <summary>
+/// HLSLシェーダーコンパイル関数
+/// </summary>
+/// <param name="path">コンパイルするHLSLシェーダーの絶対パス</param>
+/// <param name="entry_point_name">HLSLシェーダーのエントリーポイントの名前</param>
+/// <param name="target_profile">HLSLシェーダーのターゲットプロファイル(バージョン)</param>
+/// <returns>コンパイルの成否</returns>
+[[nodiscard]] HRESULT ShaderCompiler::compile_shader(
+	const std::wstring& path,
+	const std::string& entry_point_name, 
+	const std::string& target_profile
+) {
 
 	//	デバッグ設定
 	UINT compile_flags = D3DCOMPILE_ENABLE_STRICTNESS;
@@ -38,12 +45,12 @@ using namespace render::dx12::object;
 	return hr;
 }
 
-///====================================================================
-/// 実行時処理関数
-///====================================================================
+/* -- 取得関数 -- */
 
-//@brief	=== HLSLシェーダー取得関数 ===
-//@return	HLSLシェーダー参照
+/// <summary>
+/// HLSLシェーダー取得関数
+/// </summary>
+/// <returns>HLSLシェーダー参照</returns>
 [[nodiscard]] ID3DBlob* ShaderCompiler::get_shader()const noexcept {
 	assert(shader_blob && "シェーダー nullptr");
 	return shader_blob.Get();

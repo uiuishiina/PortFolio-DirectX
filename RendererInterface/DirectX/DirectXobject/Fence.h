@@ -1,90 +1,109 @@
 #pragma once
-#include"NonMovable.h"
+#include"Others/NonCopyableBase.h"
 #include<d3d12.h>
 #include<wrl/client.h>
 
-///====================================================================
-/// 描画名前空間
-///====================================================================
-
+/// <summary>
+/// 描画機能名前空間
+/// </summary>
 namespace render {
 
-	///====================================================================
+	/// <summary>
 	/// DirectX名前空間
-	///====================================================================
-
+	/// </summary>
 	namespace dx12 {
 
-		///====================================================================
+		/// <summary>
 		/// DX12オブジェクトラッパークラス名前空間
-		///====================================================================
-
+		/// </summary>
 		namespace object {
 
-			///====================================================================
-			/// Fence クラス
-			///====================================================================
-
-			//@brief	=== フェンスクラス ===
-			class Fence final : public NonMovableBase
+			/// <summary>
+			/// フェンスクラス
+			/// </summary>
+			class Fence final : public others::NonCopyableBase
 			{
 			public:
-				///====================================================================
-				/// クラス設定
-				///====================================================================
+				/* ========== クラス設定 ========== */
 
-				//コンストラクタ,デストラクタ
+				/// <summary>
+				/// コンストラクタ
+				/// </summary>
 				Fence() = default;
+
+				/// <summary>
+				/// デストラクタ
+				/// </summary>
 				~Fence() = default;
 
-				///====================================================================
-				/// Public メンバー関数
-				///====================================================================
 
-				//@brief	=== フェンス作成関数 ===
-				//@param	device	DirectX12 デバイス
-				//@return	作成の成否
+				/* ========== Publicメンバー関数 ========== */
+
+				/* -- 作成関数 -- */
+
+				/// <summary>
+				/// フェンス作成関数
+				/// </summary>
+				/// <param name="device">DirectX12デバイス参照</param>
+				/// <returns>作成の成否</returns>
 				[[nodiscard]] HRESULT create_fence(ID3D12Device* device);
 
-				//@brief	=== フェンスシグナル関数 ===
-				//@param	command_queue	フェンスをシグナルするコマンドキュー
-				//@return	シグナルした値
+
+				/* -- フェンス利用関数 -- */
+
+				/// <summary>
+				/// フェンスシグナル関数
+				/// </summary>
+				/// <param name="command_queue">シグナルするコマンドキュー参照</param>
+				/// <returns>シグナルした値</returns>
 				[[nodiscard]] const UINT64 signal(ID3D12CommandQueue* command_queue);
 
-				//@brief	=== フェンス待機関数 ===
-				//@param	completed_value	待機するフェンスの値
+				/// <summary>
+				/// フェンス待機関数
+				/// </summary>
+				/// <param name="completed_value">待機するフェンスの値</param>
 				void wait_to_completed_value(UINT64 completed_value) const noexcept;
 
 
 				/* -- 取得関数 -- */
 
-				//@brief	=== フェンス値取得関数 ===
-				//@return	GPUが完了したフェンス値
+				/// <summary>
+				/// フェンス値取得関数
+				/// </summary>
+				/// <returns>動作完了したフェンス値</returns>
 				[[nodiscard]] const UINT64 get_completed_value() const noexcept;
 
-				//@brief	=== 現在シグナル値取得関数 ===
-				//@return	フェンスの値
+				/// <summary>
+				/// 現在シグナル値取得関数
+				/// </summary>
+				/// <returns>フェンスの値</returns>
 				[[nodiscard]] const UINT64 get_now_signal_value()const noexcept;
 
-				//@brief	=== フェンス取得関数 ===
-				//@return	フェンス参照
+				/// <summary>
+				/// フェンス取得関数
+				/// </summary>
+				/// <returns>フェンス参照</returns>
 				[[nodiscard]] ID3D12Fence* get_fence()const noexcept;
 
 			private:
-				///====================================================================
-				/// メンバー変数
-				///====================================================================
+				/* ========== Privateメンバー変数 ========== */
 
-				//@brief	== フェンスインスタンス ==
+				/// <summary>
+				/// フェンスインスタンス
+				/// </summary>
 				Microsoft::WRL::ComPtr<ID3D12Fence> fence_{};
 
-				//@brief	== フェンスイベント ==
+				/// <summary>
+				/// フェンスイベント
+				/// </summary>
 				HANDLE wait_event{};
 
-				//@brief	== フェンスの値 ==
+				/// <summary>
+				/// フェンスの値
+				/// </summary>
 				UINT64 fence_value{};
 
 			};
-		};
-	};
-};
+		}
+	}
+}

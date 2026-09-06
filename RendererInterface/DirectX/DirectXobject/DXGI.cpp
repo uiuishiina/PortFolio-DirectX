@@ -7,12 +7,16 @@
 
 using namespace render::dx12::object;
 
-///====================================================================
-/// 初期化関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@brief	=== DXGI初期化関数 ===
-//@return	初期化の成否
+/* -- 初期化関数 -- */
+
+/// <summary>
+/// DXGI初期化関数
+/// </summary>
+/// <returns>初期化の成否</returns>
 [[nodiscard]] HRESULT DXGI::initialize_DXGI() {
 	
 	// DXGIファクトリー作成
@@ -30,8 +34,35 @@ using namespace render::dx12::object;
 	return hr;
 }
 
-//@brief	=== DXGIファクトリー作成関数 ===
-//@return	作成の成否
+
+/* -- 取得関数 -- */
+
+/// <summary>
+/// DXGIファクトリー取得関数
+/// </summary>
+/// <returns>DXGIファクトリー参照</returns>
+[[nodiscard]] IDXGIFactory6* DXGI::get_DXGI_factory() const noexcept {
+	assert(factory_ && "DXGIファクトリー nullptr");
+	return factory_.Get();
+}
+
+/// <summary>
+/// DXGIアダプター取得関数
+/// </summary>
+/// <returns>DXGIアダプター参照</returns>
+[[nodiscard]] IDXGIAdapter1* DXGI::get_DXGI_adaptor() const noexcept {
+	assert(adapter_ && "DXGIアダプター nullptr");
+	return adapter_.Get();
+}
+
+/* ==================================================================== */
+// Privateメンバー関数
+/* ==================================================================== */
+
+/// <summary>
+/// DXGIファクトリー作成関数
+/// </summary>
+/// <returns>作成の成否</returns>
 [[nodiscard]] HRESULT DXGI::create_DXGI_factory() {
 
 #if _DEBUG
@@ -50,11 +81,15 @@ using namespace render::dx12::object;
 	return CreateDXGIFactory2(Flags, IID_PPV_ARGS(&factory_));
 }
 
-//@brief	=== DXGIアダプター作成関数 ===
-//@return	作成の成否
+/// <summary>
+/// DXGIアダプター作成関数
+/// </summary>
+/// <returns>作成の成否</returns>
 [[nodiscard]] HRESULT DXGI::create_DXGI_adaptor() {
+
 	Microsoft::WRL::ComPtr<IDXGIAdapter1> adapter{};
 	SIZE_T max_vram = 0;
+
 	// 最大VRAMを持つアダプターを選択
 	for (UINT i = 0; factory_->EnumAdapters1(i, &adapter) != DXGI_ERROR_NOT_FOUND; ++i) {
 		DXGI_ADAPTER_DESC1 desc{};
@@ -68,25 +103,7 @@ using namespace render::dx12::object;
 			adapter_ = adapter;
 		}
 	}
+
 	// アダプターが見つからなかった場合はエラーを返す
 	return adapter_ ? S_OK : E_FAIL;
-}
-
-
-///====================================================================
-///	実行時処理関数
-///====================================================================
-
-//@brief	=== DXGIファクトリー取得関数 ===
-//@return	DXGIファクトリー参照
-[[nodiscard]] IDXGIFactory6* DXGI::get_DXGI_factory() const noexcept {
-	assert(factory_ && "DXGIファクトリー nullptr");
-	return factory_.Get();
-}
-
-//@brief	=== DXGIアダプター取得関数 ===
-//@return	DXGIアダプター参照
-[[nodiscard]] IDXGIAdapter1* DXGI::get_DXGI_adaptor() const noexcept {
-	assert(adapter_ && "DXGIアダプター nullptr");
-	return adapter_.Get();
 }

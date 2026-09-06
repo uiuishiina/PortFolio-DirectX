@@ -4,18 +4,26 @@
 
 using namespace render::dx12::object;
 
-///====================================================================
-/// 初期化関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@brief	=== コンスタントバッファ作成関数 ===
-//@param	device	DirectX12 デバイス
-//@param	handles	CBVディスクリプタヒープハンドル構造体
-//@param	src		コピーするデータの先頭ポインター
-//@param	size	コピーするメモリサイズ
-//@return	作成の成否
-[[nodiscard]] HRESULT ConstantBuffer::create_constant_buffer(ID3D12Device* device, render::dx12::utility::Descripter_Handles& handles, size_t size) {
+/* -- 作成関数 -- */
 
+/// <summary>
+/// コンスタントバッファ作成関数
+/// </summary>
+/// <param name="device">DirectX12デバイス参照</param>
+/// <param name="handles">CBVディスクリプタヒープハンドル構造体</param>
+/// <param name="size">コピーするメモリサイズ</param>
+/// <returns>作成の成否</returns>
+[[nodiscard]] HRESULT ConstantBuffer::create_constant_buffer(
+	ID3D12Device* device, 
+	render::dx12::utility::Descripter_Handles& handles, 
+	size_t size
+) {
+
+	//	アラインメント
 	const auto size_ = (sizeof(size) + 255) & ~255;
 
 	desc::ResourceCreateDesc resource_desc{};
@@ -37,17 +45,18 @@ using namespace render::dx12::object;
 	//コンスタントバッファビューとディスクリプターヒープを紐づけ
 	device->CreateConstantBufferView(&Desc, handles.cpu_handle);
 
-	cbv_handle = handles.gpu_handle;
+	gbv_handle = handles.gpu_handle;
 
 	return hr;
 }
 
-///====================================================================
-/// 実行時処理関数
-///====================================================================
+/* -- 取得関数 -- */
 
-//@brief	=== CBVハンドル取得関数 ===
+/// <summary>
+/// CBVハンドル取得関数
+/// </summary>
+/// <returns>CBV CPUハンドル</returns>
 [[nodiscard]] D3D12_GPU_DESCRIPTOR_HANDLE ConstantBuffer::get_cbv_handle()const noexcept {
 	assert(resource_ && "CBVリソース nullptr");
-	return cbv_handle;
+	return gbv_handle;
 }

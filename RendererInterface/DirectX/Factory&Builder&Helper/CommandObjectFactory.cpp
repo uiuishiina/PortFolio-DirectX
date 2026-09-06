@@ -10,7 +10,7 @@ using namespace render::dx12::factory;
 /// <summary>
 /// 描画用コマンドキュー作成関数
 /// </summary>
-/// <param name="device"></param>
+/// <param name="device">DirectX12デバイス参照</param>
 /// <param name="out">受け渡すインスタンス参照</param>
 /// <returns>作成の成否</returns>
 [[nodiscard]] HRESULT CommandObjectFactory::create_graphics_command_queue(
@@ -23,7 +23,7 @@ using namespace render::dx12::factory;
 /// <summary>
 /// 描画用コマンドアロケーター作成関数
 /// </summary>
-/// <param name="device"></param>
+/// <param name="device">DirectX12デバイス参照</param>
 /// <param name="out">受け渡すインスタンス</param>
 /// <returns>作成の成否</returns>
 [[nodiscard]] HRESULT CommandObjectFactory::create_graphics_command_allocator(
@@ -36,7 +36,7 @@ using namespace render::dx12::factory;
 /// <summary>
 /// 描画用コマンドリスト作成関数
 /// </summary>
-/// <param name="device">DirectX12デバイスポインター</param>
+/// <param name="device">DirectX12デバイス参照</param>
 /// <param name="allocator">作成に利用する描画用アロケーター</param>
 /// <param name="out">受け渡すインスタンス</param>
 /// <returns>作成の成否</returns>

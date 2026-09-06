@@ -4,16 +4,24 @@
 
 using namespace render::dx12::object;
 
-///====================================================================
-/// 初期化関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@brief	=== デプスバッファ作成関数 ===
-//@param	device	DirectX12 デバイス
-//@param	handle	DSVディスクリプタヒープハンドル
-//@param	desc	デプスバッファ設定
-//@return	作成の成否
-[[nodiscard]] HRESULT DepthBuffer::create_depth_buffer(ID3D12Device* device, D3D12_CPU_DESCRIPTOR_HANDLE handle, render::dx12::desc::DepthBufferDesc& desc) {
+/* -- 作成関数 -- */
+
+/// <summary>
+/// デプスバッファ作成関数
+/// </summary>
+/// <param name="device">DirectX12デバイス参照</param>
+/// <param name="handle">DSVディスクリプタヒープハンドル</param>
+/// <param name="desc">デプスバッファ設定</param>
+/// <returns>作成の成否</returns>
+[[nodiscard]] HRESULT DepthBuffer::create_depth_buffer(
+	ID3D12Device* device, 
+	D3D12_CPU_DESCRIPTOR_HANDLE handle, 
+	render::dx12::desc::DepthBufferDesc& desc
+) {
 
 	desc::ResourceCreateDesc resource_desc{};
 	resource_desc.heap_properties = helper::ResourceCreateDescHelper::get_heap_properties(D3D12_HEAP_TYPE_DEFAULT);
@@ -45,12 +53,12 @@ using namespace render::dx12::object;
 	return hr;
 }
 
-///====================================================================
-/// 実行時処理関数
-///====================================================================
+/* -- 取得関数 -- */
 
-//@brief	=== DSVハンドル取得関数 ===
-//@return	DSV CPUハンドル
+/// <summary>
+/// DSVハンドル取得関数
+/// </summary>
+/// <returns>DSV CPUハンドル</returns>
 [[nodiscard]] D3D12_CPU_DESCRIPTOR_HANDLE DepthBuffer::get_dsv_handle()const noexcept {
 	assert(resource_ && "DSVリソース nullptr");
 	return dsv_handle;

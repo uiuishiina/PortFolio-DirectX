@@ -2,16 +2,24 @@
 
 using namespace render::dx12::object;
 
-///====================================================================
-/// 初期化関数
-///====================================================================
+/* ==================================================================== */
+// Publicメンバー関数
+/* ==================================================================== */
 
-//@brief	=== バックバッファ作成関数 ===
-//@param	swapchain	スワップチェインインスタンス
-//@param	handle	RTVディスクリプタヒープハンドル
-//@return	作成の成否
-[[nodiscard]] HRESULT BackBuffer::create_back_buffer(ID3D12Device* device, IDXGISwapChain4* swapchain,
-	D3D12_CPU_DESCRIPTOR_HANDLE handle, UINT buffer_index) {
+/// <summary>
+/// バックバッファ作成関数
+/// </summary>
+/// <param name="device">DirectX12デバイス参照</param>
+/// <param name="swapchain">スワップチェインインスタンス</param>
+/// <param name="handle">RTVディスクリプタヒープハンドル</param>
+/// <param name="buffer_index">対応するスワップチェーンバッファインデックス</param>
+/// <returns>作成の成否</returns>
+[[nodiscard]] HRESULT BackBuffer::create_back_buffer(
+	ID3D12Device* device, 
+	IDXGISwapChain4* swapchain,
+	D3D12_CPU_DESCRIPTOR_HANDLE handle, 
+	UINT buffer_index
+) {
 
 	rtv_handle = handle;
 
