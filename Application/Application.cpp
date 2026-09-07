@@ -44,10 +44,6 @@ Application::~Application() {
 	share_datas_ins = std::make_unique<sharedData::ApplicationSharedData>(input_manager_ins.get());
 	share_datas_ins->add_share_data<bool>();
 
-	share_datas_ins->get_share_data<bool>()->add_reference(right);
-	share_datas_ins->get_share_data<bool>()->add_reference(left);
-
-
 	//	メインウィンドウ作成
 	if (!initialize_window()) {
 		is_initialize_error = true;
@@ -116,14 +112,6 @@ void Application::run_App() {
 		if (input_manager_ins->is_down(input::InputKeyBoard::Esc)) {
 			main_window_ins->close_window();
 			continue;
-		}
-		if (input_manager_ins->is_down(input::InputKeyBoard::RightArrow)) {
-			DEBUG_LOG("Application :: RightArrow ");
-			right = !right;
-		}
-		if (input_manager_ins->is_down(input::InputKeyBoard::LeftArrow)) {
-			DEBUG_LOG("Application :: LeftArrow ");
-			left = !left;
 		}
 
 		//	描画更新

@@ -72,10 +72,6 @@ private:
 	/// </details>
 	bool is_active_app = true;
 
-	/* -- 連携お試し変数 -- */
-	bool right = true;
-	bool left = true;
-
 	/// <summary>
 	/// アプリケーションウィンドウインスタンス
 	/// </summary>

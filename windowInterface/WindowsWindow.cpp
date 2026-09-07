@@ -232,51 +232,57 @@ void WindowsWindow::process_message(
 ) {
     switch (msg)
     {
-        {   // キー入力取得
 
-            auto keyboard = input_manager->get_current_state().get_input_state<input::InputKeyBoard>();
+    /* ========== キー入力取得 ========== */
 
-            case WM_KEYDOWN: {  // 押されたとき
-                bool repeat = (lParam & (1 << 30)) != 0;
-                if (repeat) {
-                    break;
-                }
-                switch (wParam)
-                {
-                case VK_ESCAPE:
-                    keyboard.set_key(input::InputKeyBoard::Esc, true);
-                    break;
-                case VK_LEFT:
-                    keyboard.set_key(input::InputKeyBoard::LeftArrow, true);
-                    break;
-                case VK_RIGHT:
-                    keyboard.set_key(input::InputKeyBoard::RightArrow, true);
-                    break;
-                case '1':
-                    keyboard.set_key(input::InputKeyBoard::One, true);
-                    break;
-                }
-                break;
-            }
-            case WM_KEYUP: {    // 離されたとき
-                switch (wParam)
-                {
-                case VK_ESCAPE:
-                    keyboard.set_key(input::InputKeyBoard::Esc, false);
-                    break;
-                case VK_LEFT:
-                    keyboard.set_key(input::InputKeyBoard::LeftArrow, false);
-                    break;
-                case VK_RIGHT:
-                    keyboard.set_key(input::InputKeyBoard::RightArrow, false);
-                    break;
-                case '1':
-                    keyboard.set_key(input::InputKeyBoard::One, false);
-                    break;
-                }
-                break;
-            }
+    case WM_KEYDOWN: {  // 押されたとき
+        bool repeat = (lParam & (1 << 30)) != 0;
+        if (repeat) {
+            break;
         }
+        auto& keyboard = input_manager->get_current_state().get_input_state<input::InputKeyBoard>();
+
+        switch (wParam)
+        {
+        case VK_ESCAPE:
+            keyboard.set_key(input::InputKeyBoard::Esc, true);
+            break;
+        case VK_LEFT:
+            keyboard.set_key(input::InputKeyBoard::LeftArrow, true);
+            break;
+        case VK_RIGHT:
+            keyboard.set_key(input::InputKeyBoard::RightArrow, true);
+            break;
+        case '1':
+            keyboard.set_key(input::InputKeyBoard::One, true);
+            break;
+        }
+        break;
+    }
+    case WM_KEYUP: {    // 離されたとき
+
+        auto& keyboard = input_manager->get_current_state().get_input_state<input::InputKeyBoard>();
+
+        switch (wParam)
+        {
+        case VK_ESCAPE:
+            keyboard.set_key(input::InputKeyBoard::Esc, false);
+            break;
+        case VK_LEFT:
+            keyboard.set_key(input::InputKeyBoard::LeftArrow, false);
+            break;
+        case VK_RIGHT:
+            keyboard.set_key(input::InputKeyBoard::RightArrow, false);
+            break;
+        case '1':
+            keyboard.set_key(input::InputKeyBoard::One, false);
+            break;
+        }
+        break;
+    }
+
+    /* ========== ウィンドウフォーカス取得 ========== */
+
     case WM_SETFOCUS: {
         is_active = true;
         break;
@@ -285,6 +291,11 @@ void WindowsWindow::process_message(
         is_active = false;
         break;
     }
+
+    /* ==================================================================== */
+    // その他
+    /* ==================================================================== */
+
     case WM_SIZE: {
         //リサイズ時
         on_resize_window(WindowSize(LOWORD(lParam), HIWORD(lParam)));

@@ -182,32 +182,29 @@ void DirectXRenderer::update_renderer() {
 
 	/* ==================== 描画パス実行 ==================== */
 
-	const auto right = shared_datas->get_share_data<bool>()->get_reference_to_index(0);
-	const auto left = shared_datas->get_share_data<bool>()->get_reference_to_index(1);
+	const auto right = shared_datas->get_input()->is_pressed(input::InputKeyBoard::RightArrow);
+	const auto left = shared_datas->get_input()->is_pressed(input::InputKeyBoard::LeftArrow);
 
-	if (right.has_value() && left.has_value()) {
-
-		if (right.value() && left.value()) {
-			renderer_updater->apply_draw_pass(pass_order);
-		}
-		else if (right.value() && !left.value()) {
-			std::vector<std::string> v = { "Clear_pass","Back_pass","Normal_pass" };
-			renderer_updater->apply_draw_pass(v);
-		}
-		else if (!right.value() && left.value()) {
-			std::vector<std::string> v = { "Clear_pass","Back_pass","Color_pass" };
-			renderer_updater->apply_draw_pass(v);
-		}
-		else if(shared_datas->get_input()->is_pressed(input::InputKeyBoard::One)){
-			std::vector<std::string> v = { "Clear_pass","Back_pass","Cricul_pass" };
-			renderer_updater->apply_draw_pass(v);
-		}
-		else {
-			std::vector<std::string> v = { "Clear_pass","Back_pass" };
-			renderer_updater->apply_draw_pass(v);
-		}
-
+	if (right && left) {
+		renderer_updater->apply_draw_pass(pass_order);
 	}
+	else if (right && !left) {
+		std::vector<std::string> v = { "Clear_pass","Back_pass","Normal_pass" };
+		renderer_updater->apply_draw_pass(v);
+	}
+	else if (!right && left) {
+		std::vector<std::string> v = { "Clear_pass","Back_pass","Color_pass" };
+		renderer_updater->apply_draw_pass(v);
+	}
+	else if (shared_datas->get_input()->is_pressed(input::InputKeyBoard::One)) {
+		std::vector<std::string> v = { "Clear_pass","Back_pass","Cricul_pass" };
+		renderer_updater->apply_draw_pass(v);
+	}
+	else {
+		std::vector<std::string> v = { "Clear_pass","Back_pass" };
+		renderer_updater->apply_draw_pass(v);
+	}
+
 
 	/* ==================== 描画パス終了 ==================== */
 
