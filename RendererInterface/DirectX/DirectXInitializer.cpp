@@ -356,7 +356,7 @@ namespace {
 
 	//	Upload用リソース配列用意
 	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_resources{};
-	upload_resources.resize(6);
+	upload_resources.resize(8);
 
 	//	参照をキューに追加
 	HandyItems::container::ReferenceQueue<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_queue{};
@@ -457,6 +457,51 @@ namespace {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
+
+	/* ==================== CirculPolygon作成 ==================== */
+
+	auto Circul_Polygon = std::make_unique<drawobject::Mesh>();
+	constexpr auto index_ = 32;
+
+	//	頂点情報作成
+	drawobject::MeshDesc<normal_polygon> circul_mesh{};
+	circul_mesh.vertex_data.push_back({ 0.0f, 0.0f, 1.0f });
+
+	// 円周上の頂点
+	for (int i = 0; i < index_; ++i){
+
+		float angle = 2.0f * 3.14f * static_cast<float>(i) / index_;
+
+		circul_mesh.vertex_data.push_back({
+			std::cos(angle) * 0.5f,
+			std::sin(angle) * 0.5f,
+			1.0f
+			});
+	}
+
+	// 三角形のインデックスを作成
+	for (int i = 0; i < index_; ++i) {
+
+		uint32_t current = 1 + i;
+		uint32_t next = 1 + ((i + 1) % index_);
+
+		circul_mesh.index_data.push_back(0);
+		
+		circul_mesh.index_data.push_back(next);
+		circul_mesh.index_data.push_back(current);
+	}
+
+	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> cricul_resource = { upload_queue.get_front_reference().value(),upload_queue.get_front_reference().value() };
+	if (FAILED(Circul_Polygon->create_mesh(deviceP, context->graphics_list->get_graphics_command_list(), cricul_resource, circul_mesh))) {
+		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
+		return false;
+	}
+
+	if (!context->static_draw_object_container->register_draw_object(container::handle::DrawObjectKey(4), std::move(Circul_Polygon))) {
+		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
+		return false;
+	}
+
 
 	/* ==================== すべてまとめて作成 ==================== */
 
@@ -600,7 +645,7 @@ namespace {
 		if (!context->static_draw_commands_container->add_command_map(container::handle::CommandKey("draw_Normal_polygon"),
 			[](resources::DrawResources& resource) {
 
-				resource.static_draw_object_container->get_handle(container::handle::DrawObjectKey(1)).handle_p->draw(resource.graphics_list);
+				resource.static_draw_object_container->get_handle(container::handle::DrawObjectKey(4)).handle_p->draw(resource.graphics_list);
 
 			})) {
 			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");

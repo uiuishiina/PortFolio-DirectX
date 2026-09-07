@@ -146,6 +146,7 @@ void Application::run_App() {
 	//	適当にサイズを用意
 	auto A_window = WindowSize(1280, 720);
 	auto B_window = WindowSize(1920, 1080);
+	auto C_window = WindowSize(700, 700);
 
 	main_window_ins = window::windowFactory::create_window(A_window,input_manager_ins.get());
 	return main_window_ins != nullptr;
