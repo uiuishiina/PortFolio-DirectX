@@ -68,6 +68,15 @@ namespace render {
 		virtual void begin_update_renderer() = 0;
 
 		/// <summary>
+		/// 描画機能エラーチェック関数
+		/// </summary>
+		/// <details>
+		/// 描画機能を更新する際にエラーチェックを行う関数
+		/// </details>
+		/// <returns>致命的なエラーがあるなら [ false ]</returns>
+		[[nodiscard]] virtual bool check_error() = 0;
+
+		/// <summary>
 		/// 描画更新後関数
 		/// </summary>
 		/// <details>

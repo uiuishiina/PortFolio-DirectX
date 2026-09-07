@@ -341,8 +341,12 @@ namespace {
 /// GPUリソース初期化関数
 /// </summary>
 /// <param name="context">描画機能インスタンス保存クラス参照</param>
+/// <param name="shared_">アプリケーションデータシェアクラス参照</param>
 /// <returns>初期化の成否</returns>
-[[nodiscard]] bool DirectXInitializer::initialize_GPU_resource(DirectXRendererContext* context) {
+[[nodiscard]] bool DirectXInitializer::initialize_GPU_resource(
+	DirectXRendererContext* context,
+	sharedData::ApplicationSharedData* shared_
+) {
 
 	//キャッシュ
 	const auto deviceP = context->device_->get_device();
@@ -437,10 +441,10 @@ namespace {
 	
 	drawobject::MeshDesc<color_polygon> back_mesh{};
 	back_mesh.vertex_data = {
-		{{-1.0f, 1.0f, 1.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}},
-		{{ 1.0f, 1.0f, 1.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}},
-		{{-1.0f,-1.0f, 1.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}},
-		{{ 1.0f,-1.0f, 1.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}}
+		{{-1.0f, 1.0f, 1.0f},{ 0.0f, 0.0f, 0.8f, 0.5f}},
+		{{ 1.0f, 1.0f, 1.0f},{ 0.0f, 0.0f, 0.8f, 0.5f}},
+		{{-1.0f,-1.0f, 1.0f},{ 0.0f, 0.0f, 0.8f, 0.5f}},
+		{{ 1.0f,-1.0f, 1.0f},{ 0.0f, 0.0f, 0.8f, 0.5f}}
 	};
 	back_mesh.index_data = {
 		0,1,2,
@@ -645,7 +649,7 @@ namespace {
 		if (!context->static_draw_commands_container->add_command_map(container::handle::CommandKey("draw_Normal_polygon"),
 			[](resources::DrawResources& resource) {
 
-				resource.static_draw_object_container->get_handle(container::handle::DrawObjectKey(4)).handle_p->draw(resource.graphics_list);
+				resource.static_draw_object_container->get_handle(container::handle::DrawObjectKey(1)).handle_p->draw(resource.graphics_list);
 
 			})) {
 			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
@@ -677,6 +681,50 @@ namespace {
 		if (!context->static_draw_pass_container->register_draw_pass(container::handle::PassKey("Normal_pass"), std::move(normal_pass))) {
 			DEBUG_LOG("DirectXRenderer :: register_draw_pass() FAILED");
 			return false;
+		}
+
+		/* ==================== CirculPass作成 ==================== */
+
+		{
+			/* ==================== DrawCommands作成 ==================== */
+
+			//	コマンド作成
+
+			//	円形ポリゴン描画
+			if (!context->static_draw_commands_container->add_command_map(container::handle::CommandKey("draw_cricul_polygon"),
+				[](resources::DrawResources& resource) {
+
+					resource.static_draw_object_container->get_handle(container::handle::DrawObjectKey(4)).handle_p->draw(resource.graphics_list);
+
+				})) {
+				DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
+			}
+
+			//	DrawCommands作成
+			desc::DrawCommandDesc draw_cricul_desc{};
+			draw_cricul_desc.begin_name = "backbuffer_barrier_target";
+			draw_cricul_desc.apply_names = { "draw_cricul_polygon" };
+			draw_cricul_desc.end_name = "backbuffer_barrier_present";
+
+			if (!context->static_draw_commands_container->create_draw_commands(container::handle::DrawCommandsKey("Cricul_Commands"), draw_cricul_desc)) {
+				DEBUG_LOG("DirectXRenderer :: create_draw_commands() FAILED");
+				return false;
+			}
+
+			desc::DrawPassDesc cricul_pass_desc(
+				context->static_draw_state_container->get_handle_to_name("Normal_State").handle_p,
+				context->static_render_target_state_container->get_handle_to_name("Normal_Target").handle_p,
+				context->static_draw_commands_container->get_handle_to_name("Cricul_Commands").handle_p
+			);
+
+			auto cricul_pass = std::make_unique<pass::DrawPass>();
+			if (!cricul_pass->initialize_pass(cricul_pass_desc)) {
+				DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
+			}
+			if (!context->static_draw_pass_container->register_draw_pass(container::handle::PassKey("Cricul_pass"), std::move(cricul_pass))) {
+				DEBUG_LOG("DirectXRenderer :: register_draw_pass() FAILED");
+				return false;
+			}
 		}
 	}
 

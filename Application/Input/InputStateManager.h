@@ -40,7 +40,6 @@ namespace input {
 
 			//	キー状態更新
 			previous_state = current_state;
-			current_state = {};
 		}
 
 

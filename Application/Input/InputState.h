@@ -63,7 +63,6 @@ namespace input {
 			}
 		}
 
-
 		/* -- 取得関数 -- */
 
 		/// <summary>

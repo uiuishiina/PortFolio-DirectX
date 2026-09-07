@@ -1,6 +1,7 @@
 #pragma once
 #include"DirectXRendererContext.h"
 #include"WindowSize.h"
+#include"../../Application/SharedData/ApplicationSharedData.h"
 
 /// <summary>
 /// 描画機能名前空間
@@ -50,8 +51,12 @@ namespace render {
 			/// GPUリソース初期化関数
 			/// </summary>
 			/// <param name="context">描画機能インスタンス保存クラス参照</param>
+			/// <param name="shared_">アプリケーションデータシェアクラス参照</param>
 			/// <returns>初期化の成否</returns>
-			[[nodiscard]] static bool initialize_GPU_resource(DirectXRendererContext* context);
+			[[nodiscard]] static bool initialize_GPU_resource(
+				DirectXRendererContext* context,
+				sharedData::ApplicationSharedData* shared_
+			);
 
 			/// <summary>
 			/// 描画パス初期化関数

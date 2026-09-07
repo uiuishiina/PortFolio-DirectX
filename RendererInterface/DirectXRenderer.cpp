@@ -84,7 +84,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 /// 描画機能作成関数
 /// </summary>
 /// <param name="window">ウィンドウインターフェースクラス参照</param>
-/// <param name="shared_datas">プリケーションデータシェアクラス参照</param>
+/// <param name="shared_datas">アプリケーションデータシェアクラス参照</param>
 /// <returns>作成の成否</returns>
 [[nodiscard]] bool DirectXRenderer::create_renderer(
 	window::windowInterface* window, 
@@ -123,7 +123,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 	}
 
 	//	GPUリソース初期化
-	if (!DirectXInitializer::initialize_GPU_resource(renderer_context.get())) {
+	if (!DirectXInitializer::initialize_GPU_resource(renderer_context.get(),shared_datas)) {
 		return false;
 	}
 
@@ -163,6 +163,12 @@ void DirectXRenderer::update_renderer() {
 
 	/* ==================== 更新前処理 ==================== */
 
+	//	エラーチェック
+	if (!check_error()) {
+		DEBUG_LOG("DirectXRenderer :: update_renderer() has Critical error");
+		return;
+	}
+
 	//	更新前
 	begin_update_renderer();
 	
@@ -176,20 +182,24 @@ void DirectXRenderer::update_renderer() {
 
 	/* ==================== 描画パス実行 ==================== */
 
-	const auto value = shared_datas->get_share_data<bool>()->get_reference_to_index(0);
+	const auto right = shared_datas->get_share_data<bool>()->get_reference_to_index(0);
 	const auto left = shared_datas->get_share_data<bool>()->get_reference_to_index(1);
 
-	if (value.has_value() && left.has_value()) {
+	if (right.has_value() && left.has_value()) {
 
-		if (value.value() && left.value()) {
+		if (right.value() && left.value()) {
 			renderer_updater->apply_draw_pass(pass_order);
 		}
-		else if (value.value() && !left.value()) {
+		else if (right.value() && !left.value()) {
 			std::vector<std::string> v = { "Clear_pass","Back_pass","Normal_pass" };
 			renderer_updater->apply_draw_pass(v);
 		}
-		else if (!value.value() && left.value()) {
+		else if (!right.value() && left.value()) {
 			std::vector<std::string> v = { "Clear_pass","Back_pass","Color_pass" };
+			renderer_updater->apply_draw_pass(v);
+		}
+		else if(shared_datas->get_input()->is_pressed(input::InputKeyBoard::One)){
+			std::vector<std::string> v = { "Clear_pass","Back_pass","Cricul_pass" };
 			renderer_updater->apply_draw_pass(v);
 		}
 		else {
@@ -251,11 +261,27 @@ void DirectXRenderer::end_renderer() {
 /// </details>
 void DirectXRenderer::begin_update_renderer() {
 
+	
+}
+
+/// <summary>
+/// 描画機能エラーチェック関数
+/// </summary>
+/// <details>
+/// 描画機能を更新する際にエラーチェックを行う関数
+/// </details>
+/// <returns>致命的なエラーがあるなら [ false ]</returns>
+[[nodiscard]] bool DirectXRenderer::check_error() {
+
+	//	描画機能インスタンスチェック関数
 	if (!renderer_updater->begin_update_renderer()) {
 
-		//	ここにきているならエラー
-		return;
+		//	描画機能インスタンスが破棄されていたなら [ false ]
+		return false;
 	}
+	
+	//	異常なしなら [ true ]
+	return true;
 }
 
 /// <summary>

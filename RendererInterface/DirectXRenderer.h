@@ -51,7 +51,7 @@ namespace render {
 		/// 描画機能作成関数
 		/// </summary>
 		/// <param name="window">ウィンドウインターフェースクラス参照</param>
-		/// <param name="shared_datas">プリケーションデータシェアクラス参照</param>
+		/// <param name="shared_datas">アプリケーションデータシェアクラス参照</param>
 		/// <returns>作成の成否</returns>
 		[[nodiscard]] bool create_renderer(
 			window::windowInterface* window, 
@@ -89,6 +89,15 @@ namespace render {
 		void begin_update_renderer()override;
 
 		/// <summary>
+		/// 描画機能エラーチェック関数
+		/// </summary>
+		/// <details>
+		/// 描画機能を更新する際にエラーチェックを行う関数
+		/// </details>
+		/// <returns>致命的なエラーがあるなら [ false ]</returns>
+		[[nodiscard]] bool check_error() override;
+
+		/// <summary>
 		/// 描画更新後関数
 		/// </summary>
 		/// <details>
@@ -97,7 +106,7 @@ namespace render {
 		void end_update_renderer()override;
 
 	private:
-		/* ========== Protectedメンバー変数 ========== */
+		/* ========== Privateメンバー変数 ========== */
 
 		/* -- 設定 -- */
 

@@ -37,15 +37,16 @@ Application::~Application() {
 /// <returns>初期化の成否</returns>
 [[nodiscard]] bool Application::initialize_App() {
 	
+	//	入力機能作成
+	input_manager_ins = std::make_unique<input::InputStateManager>();
+
 	//	連携お試し
-	share_datas_ins = std::make_unique<sharedData::ApplicationSharedData>();
+	share_datas_ins = std::make_unique<sharedData::ApplicationSharedData>(input_manager_ins.get());
 	share_datas_ins->add_share_data<bool>();
 
 	share_datas_ins->get_share_data<bool>()->add_reference(right);
 	share_datas_ins->get_share_data<bool>()->add_reference(left);
 
-	//	入力機能作成
-	input_manager_ins = std::make_unique<input::InputStateManager>();
 
 	//	メインウィンドウ作成
 	if (!initialize_window()) {

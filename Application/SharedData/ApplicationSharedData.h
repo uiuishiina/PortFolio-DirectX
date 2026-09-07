@@ -1,8 +1,8 @@
 #pragma once
 #include"Container/ReferenceVector.h"
-#include"Tuple/TupleBase.h"
 #include"Others/NonCopyableBase.h"
 #include"Container/UnorderedMapBase.h"
+#include"../Input/InputStateManager.h"
 #include<any>
 #include<typeindex>
 
@@ -21,9 +21,16 @@ namespace sharedData {
 		/* ========== クラス設定 ========== */
 
 		/// <summary>
-		/// コンストラクタ
+		/// コンストラクタ削除
 		/// </summary>
-		ApplicationSharedData() = default;
+		ApplicationSharedData() = delete;
+
+		/// <summary>
+		/// 引数付きコンストラクタ
+		/// </summary>
+		/// <param name="input_">入力機能マネージャー参照</param>
+		ApplicationSharedData(input::InputStateManager* input_) :
+			input_manager{ input_ } {}
 
 		/// <summary>
 		/// デストラクタ
@@ -66,6 +73,14 @@ namespace sharedData {
 			return std::any_cast<HandyItems::container::ReferenceVector<T>>(data);
 		}
 
+		/// <summary>
+		/// 入力機能マネージャー取得関数
+		/// </summary>
+		/// <returns>入力機能マネージャークラス参照</returns>
+		[[nodiscard]] input::InputStateManager* get_input()const noexcept {
+			return input_manager;
+		}
+
 	private:
 		/* ========== メンバー変数 ========== */
 
@@ -73,6 +88,11 @@ namespace sharedData {
 		/// シェアデータ保存コンテナクラス
 		/// </summary>
 		HandyItems::container::UnorderedMapBase<std::type_index, std::any> data_map{};
+
+		/// <summary>
+		/// 入力機能マネージャークラス参照
+		/// </summary>
+		input::InputStateManager* input_manager{};
 
 	};
 }

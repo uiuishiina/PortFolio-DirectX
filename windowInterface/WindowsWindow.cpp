@@ -232,25 +232,51 @@ void WindowsWindow::process_message(
 ) {
     switch (msg)
     {
-    case WM_KEYDOWN: {  //キー入力取得
-        bool repeat = (lParam & (1 << 30)) != 0;
-        if (repeat) {
-            break;
+        {   // キー入力取得
+
+            auto keyboard = input_manager->get_current_state().get_input_state<input::InputKeyBoard>();
+
+            case WM_KEYDOWN: {  // 押されたとき
+                bool repeat = (lParam & (1 << 30)) != 0;
+                if (repeat) {
+                    break;
+                }
+                switch (wParam)
+                {
+                case VK_ESCAPE:
+                    keyboard.set_key(input::InputKeyBoard::Esc, true);
+                    break;
+                case VK_LEFT:
+                    keyboard.set_key(input::InputKeyBoard::LeftArrow, true);
+                    break;
+                case VK_RIGHT:
+                    keyboard.set_key(input::InputKeyBoard::RightArrow, true);
+                    break;
+                case '1':
+                    keyboard.set_key(input::InputKeyBoard::One, true);
+                    break;
+                }
+                break;
+            }
+            case WM_KEYUP: {    // 離されたとき
+                switch (wParam)
+                {
+                case VK_ESCAPE:
+                    keyboard.set_key(input::InputKeyBoard::Esc, false);
+                    break;
+                case VK_LEFT:
+                    keyboard.set_key(input::InputKeyBoard::LeftArrow, false);
+                    break;
+                case VK_RIGHT:
+                    keyboard.set_key(input::InputKeyBoard::RightArrow, false);
+                    break;
+                case '1':
+                    keyboard.set_key(input::InputKeyBoard::One, false);
+                    break;
+                }
+                break;
+            }
         }
-        switch (wParam)
-        {
-        case VK_ESCAPE:
-            input_manager->get_current_state().get_input_state<input::InputKeyBoard>().set_key(input::InputKeyBoard::Esc, true);
-            break;
-        case VK_LEFT:
-            input_manager->get_current_state().get_input_state<input::InputKeyBoard>().set_key(input::InputKeyBoard::LeftArrow, true);
-            break;
-        case VK_RIGHT:
-            input_manager->get_current_state().get_input_state<input::InputKeyBoard>().set_key(input::InputKeyBoard::RightArrow, true);
-            break;
-        }
-        break;
-    }
     case WM_SETFOCUS: {
         is_active = true;
         break;
