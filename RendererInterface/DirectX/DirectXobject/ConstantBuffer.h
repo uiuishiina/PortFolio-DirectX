@@ -48,7 +48,11 @@ namespace render {
 				/// <param name="handles">CBVディスクリプタヒープハンドル構造体</param>
 				/// <param name="size">コピーするメモリサイズ</param>
 				/// <returns>作成の成否</returns>
-				[[nodiscard]] HRESULT create_constant_buffer(ID3D12Device* device, utility::Descripter_Handles& handles, size_t size);
+				[[nodiscard]] HRESULT create_constant_buffer(
+					ID3D12Device* device, 
+					utility::Descripter_Handles& handles, 
+					size_t size
+				);
 
 
 				/* -- 取得関数 -- */
@@ -60,9 +64,7 @@ namespace render {
 				[[nodiscard]] D3D12_GPU_DESCRIPTOR_HANDLE get_cbv_handle()const noexcept;
 
 			private:
-				///====================================================================
-				/// Private メンバー変数
-				///====================================================================
+				/* ========== Privateメンバー変数 ========== */
 
 				/// <summary>
 				/// コンスタントバッファディスクリプターハンドル

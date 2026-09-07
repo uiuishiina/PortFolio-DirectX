@@ -135,7 +135,6 @@ DirectXRenderer::~DirectXRenderer() = default;
 	pass_order = DirectXInitializer::get_draw_pass_order();
 
 	//DirectX描画機能更新クラス作成
-
 	renderer_updater = std::make_unique<DirectXUpdater>(renderer_context.get());
 
 
@@ -186,15 +185,15 @@ void DirectXRenderer::update_renderer() {
 			renderer_updater->apply_draw_pass(pass_order);
 		}
 		else if (value.value() && !left.value()) {
-			std::vector<std::string> v = { "Clear_pass","Normal_pass" };
+			std::vector<std::string> v = { "Clear_pass","Back_pass","Normal_pass" };
 			renderer_updater->apply_draw_pass(v);
 		}
 		else if (!value.value() && left.value()) {
-			std::vector<std::string> v = { "Clear_pass","Color_pass" };
+			std::vector<std::string> v = { "Clear_pass","Back_pass","Color_pass" };
 			renderer_updater->apply_draw_pass(v);
 		}
 		else {
-			std::vector<std::string> v = { "Clear_pass" };
+			std::vector<std::string> v = { "Clear_pass","Back_pass" };
 			renderer_updater->apply_draw_pass(v);
 		}
 

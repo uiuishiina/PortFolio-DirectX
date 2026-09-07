@@ -53,7 +53,7 @@ namespace {
 /// <summary>
 /// 描画機能初期化関数
 /// </summary>
-/// <param name="context">描画機能インスタンス保存クラス参照</param>
+/// <param name="conte xt">描画機能インスタンス保存クラス参照</param>
 /// <param name="back_buffe_size">バックバッファサイズ</param>
 /// <param name="frame_resource_size">フレームリソースサイズ</param>
 /// <param name="hwnd">描画先ウィンドウハンドル</param>
@@ -356,7 +356,7 @@ namespace {
 
 	//	Upload用リソース配列用意
 	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_resources{};
-	upload_resources.resize(4);
+	upload_resources.resize(6);
 
 	//	参照をキューに追加
 	HandyItems::container::ReferenceQueue<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_queue{};
@@ -366,9 +366,9 @@ namespace {
 
 	/* ==================== NormalPolygon作成 ==================== */
 
-	//	ポリゴンインスタンス生成
+		//	ポリゴンインスタンス生成
 
-	//	描画オブジェクトクラス作成
+		//	描画オブジェクトクラス作成
 	auto Normal_Polygon = std::make_unique<drawobject::Mesh>();
 
 	//	頂点情報作成
@@ -378,9 +378,9 @@ namespace {
 	};
 	drawobject::MeshDesc<normal_polygon> polygon_desc{};
 	polygon_desc.vertex_data = {
-		{-0.5f,-1.0f, 0.5f},
-		{ 0.0f, 1.0f, 0.5f},
-		{ 0.5f,-1.0f, 0.5f}
+		{-0.5f,-1.0f, 1.0f},
+		{ 0.0f, 1.0f, 1.0f},
+		{ 0.5f,-1.0f, 1.0f}
 	};
 	polygon_desc.index_data = {
 		0,1,2
@@ -396,12 +396,11 @@ namespace {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
-
 	/* ==================== ColorPolygon作成 ==================== */
 
-	//	ポリゴンインスタンス生成
+		//	ポリゴンインスタンス生成
 
-	//	描画オブジェクトクラス作成
+		//	描画オブジェクトクラス作成
 	auto Color_Polygon = std::make_unique<drawobject::Mesh>();
 	struct color_polygon {
 		float pos_[3]{};
@@ -409,9 +408,9 @@ namespace {
 	};
 	drawobject::MeshDesc<color_polygon> color_mesh{};
 	color_mesh.vertex_data = {
-		{{ 0.5f, 1.0f, 1.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//右
-		{{ 0.0f, 0.0f, 1.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//真ん中
-		{{-0.5f, 1.0f, 1.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}}	//左
+		{{ 0.5f, 1.0f, 0.0f},{ 1.0f, 0.0f, 0.0f, 1.0f}},//右
+		{{ 0.0f, 0.0f, 0.0f},{ 0.0f, 1.0f, 0.0f, 1.0f}},//真ん中
+		{{-0.5f, 1.0f, 0.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}}	//左
 	};
 	color_mesh.index_data = {
 		0,1,2
@@ -424,6 +423,37 @@ namespace {
 	}
 
 	if (!context->static_draw_object_container->register_draw_object(container::handle::DrawObjectKey(2), std::move(Color_Polygon))) {
+		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
+		return false;
+	}
+
+
+	/* ==================== BackGroundPolygon作成 ==================== */
+
+		//	ポリゴンインスタンス生成
+
+		//	描画オブジェクトクラス作成
+	auto BackGround = std::make_unique<drawobject::Mesh>();
+	
+	drawobject::MeshDesc<color_polygon> back_mesh{};
+	back_mesh.vertex_data = {
+		{{-1.0f, 1.0f, 1.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}},
+		{{ 1.0f, 1.0f, 1.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}},
+		{{-1.0f,-1.0f, 1.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}},
+		{{ 1.0f,-1.0f, 1.0f},{ 0.0f, 0.0f, 1.0f, 1.0f}}
+	};
+	back_mesh.index_data = {
+		0,1,2,
+		1,3,2
+	};
+
+	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> back_resource = { upload_queue.get_front_reference().value(),upload_queue.get_front_reference().value() };
+	if (FAILED(BackGround->create_mesh(deviceP, context->graphics_list->get_graphics_command_list(), back_resource, back_mesh))) {
+		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
+		return false;
+	}
+
+	if (!context->static_draw_object_container->register_draw_object(container::handle::DrawObjectKey(3), std::move(BackGround))) {
 		DEBUG_LOG("DirectXRenderer :: create_polygon() FAILED");
 		return false;
 	}
@@ -665,8 +695,52 @@ namespace {
 			return false;
 		}
 	}
+	/* ==================== BackGroundPass作成 ==================== */
+	{
+		/* ==================== DrawCommands作成 ==================== */
 
-	pass_order = { "Clear_pass","Normal_pass","Color_pass" };
+		//	描画コマンド作成
+
+		//	色付きポリゴン描画
+		if (!context->static_draw_commands_container->add_command_map(container::handle::CommandKey("draw_Back_Ground"),
+			[](resources::DrawResources& resource) {
+
+				resource.static_draw_object_container->get_handle(container::handle::DrawObjectKey(3)).handle_p->draw(resource.graphics_list);
+
+			})) {
+			DEBUG_LOG("DirectXRenderer :: add_command_map() FAILED");
+		}
+
+		//	DrawCommands作成
+		desc::DrawCommandDesc draw_commands_desc{};
+		draw_commands_desc.begin_name = "backbuffer_barrier_target";
+		draw_commands_desc.apply_names = { "draw_Back_Ground" };
+		draw_commands_desc.end_name = "backbuffer_barrier_present";
+
+		if (!context->static_draw_commands_container->create_draw_commands(container::handle::DrawCommandsKey("Back_Ground"), draw_commands_desc)) {
+			DEBUG_LOG("DirectXRenderer :: create_draw_commands() FAILED");
+			return false;
+		}
+
+		/* ==================== DrawPass作成 ==================== */
+
+		desc::DrawPassDesc back_pass_desc(
+			context->static_draw_state_container->get_handle_to_name("Color_State").handle_p,
+			context->static_render_target_state_container->get_handle_to_name("Normal_Target").handle_p,
+			context->static_draw_commands_container->get_handle_to_name("Back_Ground").handle_p
+		);
+
+		auto back_pass = std::make_unique<pass::DrawPass>();
+		if (!back_pass->initialize_pass(back_pass_desc)) {
+			DEBUG_LOG("DirectXRenderer :: initialize_pass() FAILED");
+		}
+		if (!context->static_draw_pass_container->register_draw_pass(container::handle::PassKey("Back_pass"), std::move(back_pass))) {
+			DEBUG_LOG("DirectXRenderer :: register_draw_pass() FAILED");
+			return false;
+		}
+	}
+
+	pass_order = { "Clear_pass","Back_pass","Normal_pass","Color_pass" };
 	
 	return true;
 }

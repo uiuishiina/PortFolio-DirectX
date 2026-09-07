@@ -110,7 +110,6 @@ void DirectXUpdater::reset_frame_resource() {
 /// <param name="pass_order">描画パス呼び出し順保存配列参照</param>
 void DirectXUpdater::apply_draw_pass(std::vector<std::string>& pass_order) {
 
-
 	//	描画リソース作成
 	auto resources = DirectXInitializer::create_draw_resources(context_, current_frame_index);
 
