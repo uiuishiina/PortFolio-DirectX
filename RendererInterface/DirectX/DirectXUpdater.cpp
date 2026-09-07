@@ -91,13 +91,13 @@ void DirectXUpdater::sync_frame_resource() {
 /// </summary>
 void DirectXUpdater::reset_frame_resource() {
 
-	//コマンドアロケーター取得
+	//	コマンドアロケーター取得
 	auto allocator = context_->frame_resources[current_frame_index]->graphics_allocator.get();
 
-	// コマンドアロケータリセット
+	//	コマンドアロケータリセット
 	allocator->reset_command_allocator();
 
-	// コマンドリストリセット
+	//	コマンドリストリセット
 	context_->graphics_list->reset_command_list(allocator->get_command_allocator());
 }
 
@@ -127,10 +127,10 @@ void DirectXUpdater::apply_draw_pass(std::vector<std::string>& pass_order) {
 /// </details>
 void DirectXUpdater::execute_command_lists() {
 
-	// コマンドリストをクローズ
+	//	コマンドリストをクローズ
 	context_->graphics_list->get_graphics_command_list()->Close();
 
-	// コマンドキューにコマンドリストを送信
+	//	コマンドキューにコマンドリストを送信
 	ID3D12CommandList* ppCommandLists[] = { context_->graphics_list->get_graphics_command_list() };
 	context_->graphics_queue->get_command_queue()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
@@ -182,8 +182,8 @@ void DirectXUpdater::end_updater() {
 		//	フレームリソース待機インデックス確認
 		DEBUG_LOG(
 			"fence_value = ", 
-			context_->frame_resources[0]->get_frame_fence_value(), " : ",
-			context_->frame_resources[1]->get_frame_fence_value()," : ",
+			context_->frame_resources[0]->get_frame_fence_value(),	" : ",
+			context_->frame_resources[1]->get_frame_fence_value(),	" : ",
 			context_->frame_resources[2]->get_frame_fence_value()
 		);
 		//	上記の値の最大値より [ 1 ] 上なら正常

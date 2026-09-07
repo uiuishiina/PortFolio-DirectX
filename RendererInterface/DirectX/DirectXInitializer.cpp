@@ -226,7 +226,8 @@ namespace {
 /// <returns>初期化の成否</returns>
 [[nodiscard]] bool DirectXInitializer::compile_shader(DirectXRendererContext* context) {
 
-	//	シェーダーコンテナインスタンス生成&登録
+	/* ==================== シェーダーコンテナインスタンス生成 & 登録 ==================== */
+
 	if (FAILED(context->shader_container->compile_shader(container::handle::ShaderKey(1), L"../RendererInterface/HLSLshader/NormalVertexShader.hlsl", "main", "vs_5_0"))) {
 		DEBUG_LOG("DirectXRenderer :: compile_shader() FAILED : Normal_vs");
 		return false;
@@ -376,7 +377,6 @@ namespace {
 	auto Normal_Polygon = std::make_unique<drawobject::Mesh>();
 
 	//	頂点情報作成
-
 	struct normal_polygon {
 		float pos_[3]{};
 	};
@@ -406,6 +406,7 @@ namespace {
 
 		//	描画オブジェクトクラス作成
 	auto Color_Polygon = std::make_unique<drawobject::Mesh>();
+
 	struct color_polygon {
 		float pos_[3]{};
 		float color_[4]{};
@@ -509,7 +510,7 @@ namespace {
 
 	/* ==================== すべてまとめて作成 ==================== */
 
-	//	リソース作成
+	//	コマンドリスト Close
 	context->graphics_list->get_graphics_command_list()->Close();
 
 	//	コマンドリスト送信

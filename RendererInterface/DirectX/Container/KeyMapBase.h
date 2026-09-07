@@ -99,6 +99,7 @@ namespace render {
 					/// ハンドルキー
 					/// </summary>
 					Key handle_key{};
+
 				};
 			}
 

@@ -20,7 +20,7 @@ namespace render {
 		namespace resources {
 
 			/// <summary>
-			/// フレームリソースクラス
+			/// フレームリソース構造体
 			/// </summary>
 			struct FrameResource {
 

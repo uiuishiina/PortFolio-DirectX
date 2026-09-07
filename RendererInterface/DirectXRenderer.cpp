@@ -258,7 +258,7 @@ void DirectXRenderer::end_renderer() {
 /// </details>
 void DirectXRenderer::begin_update_renderer() {
 
-	
+	//	何かしら更新
 }
 
 /// <summary>
