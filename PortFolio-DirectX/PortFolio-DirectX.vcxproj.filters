@@ -458,7 +458,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\DirectXobject\ResourceUtility.h">
       <Filter>RendererInterface\DirectX\DirectXobject\GPUResource</Filter>
     </ClInclude>
-    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticBufferContainer.h">
+    <ClInclude Include="..\RendererInterface\DirectX\Container\GPUBufferContainer.h">
       <Filter>RendererInterface\DirectX\Container</Filter>
     </ClInclude>
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticDrawCommandsContainer.h">

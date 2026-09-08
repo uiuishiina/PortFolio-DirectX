@@ -1,5 +1,5 @@
 #pragma once
-#include"../DirectXobject/StaticBufferResource.h"
+#include"../DirectXobject/GPUResource.h"
 #include"UniqueptrKeyMap.h"
 
 /// <summary>
@@ -21,7 +21,7 @@ namespace render {
 			/// 初期作成描画バッファ継承コンセプト
 			/// </summary>
 			template<typename T>
-			concept FromStaticBuffer = std::derived_from<T, object::StaticBufferResource>;
+			concept FromGPUBuffer = std::derived_from<T, object::GPUResourceBase>;
 		};
 
 
@@ -40,48 +40,48 @@ namespace render {
 				/// <summary>
 				/// 描画バッファ設定用倫理側派生キー
 				/// </summary>
-				struct StaticBufferKey : public LogicalKey {
+				struct GPUBufferKey : public LogicalKey {
 
 					/// <summary>
 					/// コンストラクタ
 					/// </summary>
-					StaticBufferKey() = default;
+					GPUBufferKey() = default;
 
 					/// <summary>
 					/// 引数付きコンストラクタ
 					/// </summary>
 					/// <param name="key">キーに入れる値</param>
-					explicit StaticBufferKey(std::uint32_t key) :
+					explicit GPUBufferKey(std::uint32_t key) :
 						LogicalKey{ key } {}
 
 					/// <summary>
 					/// 引数付きコンストラクタ
 					/// </summary>
 					/// <param name="key">キーに入れる値</param>
-					explicit StaticBufferKey(const char* key_name) :
-						LogicalKey{ static_cast<std::uint32_t>(HandyItems::id::get_id::get_name_id<StaticBufferKey>(key_name)) } {}
+					explicit GPUBufferKey(const char* key_name) :
+						LogicalKey{ static_cast<std::uint32_t>(HandyItems::id::get_id::get_name_id<GPUBufferKey>(key_name)) } {}
 				};
 
 				/// <summary>
 				/// 描画バッファ設定用保存側派生キー
 				/// </summary>
-				struct StaticBufferEncodeKey : public EncodeKey {
+				struct GPUBufferEncodeKey : public EncodeKey {
 
 					/// <summary>
 					/// コンストラクタ
 					/// </summary>
-					StaticBufferEncodeKey() = default;
+					GPUBufferEncodeKey() = default;
 				};
 			}
 
 
 			/// <summary>
-			/// 初期作成描画バッファリソースコンテナクラス
+			/// 描画バッファリソースコンテナクラス
 			/// </summary>
-			class StaticBufferContainer final : public UniqueptrKeyMap<
-				handle::StaticBufferKey,
-				handle::StaticBufferEncodeKey,
-				object::StaticBufferResource
+			class GPUBufferContainer final : public UniqueptrKeyMap<
+				handle::GPUBufferKey,
+				handle::GPUBufferEncodeKey,
+				object::GPUResourceBase
 			>
 			{
 			public:
@@ -90,12 +90,12 @@ namespace render {
 				/// <summary>
 				/// コンストラクタ
 				/// </summary>
-				StaticBufferContainer() = default;
+				GPUBufferContainer() = default;
 
 				/// <summary>
 				/// デストラクタ
 				/// </summary>
-				~StaticBufferContainer() = default;
+				~GPUBufferContainer() = default;
 
 
 				/* ========== Publicメンバー関数 ========== */
@@ -107,9 +107,9 @@ namespace render {
 				/// <param name="key">追加したい倫理側のキー</param>
 				/// <param name="buffer">設定する描画バッファ</param>
 				/// <returns>登録の成否</returns>
-				template<concepts::FromStaticBuffer T>
+				template<concepts::FromGPUBuffer T>
 				[[nodiscard]] bool register_buffer(
-					const handle::StaticBufferKey& key, 
+					const handle::GPUBufferKey& key, 
 					std::unique_ptr<T> buffer
 				) {
 

@@ -234,7 +234,7 @@
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticHeapContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticPiplineStateContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticRenderTargetStateContainer.h" />
-    <ClInclude Include="..\RendererInterface\DirectX\Container\StaticBufferContainer.h" />
+    <ClInclude Include="..\RendererInterface\DirectX\Container\GPUBufferContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticRootSignatureContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\StaticShaderContainer.h" />
     <ClInclude Include="..\RendererInterface\DirectX\Container\UniqueptrKeyMap.h" />

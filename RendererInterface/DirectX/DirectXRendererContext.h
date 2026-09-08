@@ -30,7 +30,7 @@
 #include"Container/StaticShaderContainer.h"
 #include"Container/StaticRootSignatureContainer.h"
 #include"Container/StaticPiplineStateContainer.h"
-#include"Container/StaticBufferContainer.h"
+#include"Container/GPUBufferContainer.h"
 #include"Container/StaticDrawStateContainer.h"
 #include"Container/StaticRenderTargetStateContainer.h"
 #include"Container/StaticDrawCommandsContainer.h"
@@ -167,7 +167,7 @@ namespace render {
 			/// <summary>
 			/// 描画バッファリソースコンテナインスタンス
 			/// </summary>
-			std::unique_ptr<container::StaticBufferContainer> static_buffer_container{};
+			std::unique_ptr<container::GPUBufferContainer> static_buffer_container{};
 
 		};
 	}

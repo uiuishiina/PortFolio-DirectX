@@ -2,6 +2,7 @@
 #include"DirectXobject/CommandAllocator.h"
 #include"DirectXobject/DepthBuffer.h"
 #include"Container/StaticHeapContainer.h"
+#include"Container/GPUBufferContainer.h"
 #include<memory>
 
 /// <summary>
@@ -40,6 +41,11 @@ namespace render {
 				/// ディスクリプタヒープコンテナクラスインスタンス
 				/// </summary>
 				std::unique_ptr<container::StaticHeapContainer> frame_heap_container{};
+
+				/// <summary>
+				/// 描画バッファリソースコンテナクラスインスタンス
+				/// </summary>
+				std::unique_ptr<container::GPUBufferContainer> frame_GPU_buffer_container{};
 		
 				/* ========== クラス設定 ========== */
 

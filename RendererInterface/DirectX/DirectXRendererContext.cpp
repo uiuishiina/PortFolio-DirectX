@@ -29,7 +29,7 @@ DirectXRendererContext::DirectXRendererContext() {
 	shader_container = std::make_unique<container::StaticShaderContainer>();
 	root_signature_container = std::make_unique<container::StaticRootSignatureContainer>();
 	pipline_container = std::make_unique<container::StaticPiplineStateContainer>();
-	static_buffer_container = std::make_unique<container::StaticBufferContainer>();
+	static_buffer_container = std::make_unique<container::GPUBufferContainer>();
 
 	static_draw_state_container = std::make_unique<container::StaticDrawStateContainer>();
 	static_render_target_state_container = std::make_unique<container::StaticRenderTargetStateContainer>();
