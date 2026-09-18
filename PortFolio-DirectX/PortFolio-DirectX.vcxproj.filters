@@ -46,10 +46,28 @@
     <Filter Include="ヘッダー ファイル\HandyItems\Bit">
       <UniqueIdentifier>{94eeaede-e7f7-481e-8f57-de949b709555}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\HandyItems\Debug">
+      <UniqueIdentifier>{dbf7d7c8-cc34-4aa6-9618-0d44585f11fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\HandyItems\Container">
+      <UniqueIdentifier>{8bce5276-2b30-4e32-83f6-3131217de00b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Entry\Entry.cpp">
       <Filter>ソース ファイル\Entry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\HandyItems\Debug\DebugLogBuilder.cpp">
+      <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\HandyItems\Debug\DebugLogOutPut.cpp">
+      <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\HandyItems\Debug\DebugLogSystem.cpp">
+      <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\HandyItems\Debug\DebugLogThread.cpp">
+      <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +136,21 @@
     </ClInclude>
     <ClInclude Include="..\HandyItems\Bit\BitFlag.h">
       <Filter>ヘッダー ファイル\HandyItems\Bit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Debug\DebugLogBuilder.h">
+      <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Debug\DebugLogOutPut.h">
+      <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Debug\DebugLogSystem.h">
+      <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Debug\DebugLogThread.h">
+      <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Debug\LogObject.h">
+      <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

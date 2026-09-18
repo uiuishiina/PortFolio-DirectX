@@ -20,10 +20,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Entry\Entry.cpp" />
+    <ClCompile Include="..\HandyItems\Debug\DebugLogBuilder.cpp" />
+    <ClCompile Include="..\HandyItems\Debug\DebugLogOutPut.cpp" />
+    <ClCompile Include="..\HandyItems\Debug\DebugLogSystem.cpp" />
+    <ClCompile Include="..\HandyItems\Debug\DebugLogThread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Application\Application.h" />
     <ClInclude Include="..\HandyItems\Bit\BitFlag.h" />
+    <ClInclude Include="..\HandyItems\Debug\DebugLogBuilder.h" />
+    <ClInclude Include="..\HandyItems\Debug\DebugLogOutPut.h" />
+    <ClInclude Include="..\HandyItems\Debug\DebugLogSystem.h" />
+    <ClInclude Include="..\HandyItems\Debug\DebugLogThread.h" />
+    <ClInclude Include="..\HandyItems\Debug\LogObject.h" />
     <ClInclude Include="..\HandyItems\Enum\EnumArray.h" />
     <ClInclude Include="..\HandyItems\Enum\EnumToIndex.h" />
     <ClInclude Include="..\HandyItems\ID\IDBase.h" />
