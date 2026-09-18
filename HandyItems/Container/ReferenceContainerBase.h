@@ -49,9 +49,14 @@ namespace HandyItems {
 			/// <param name="value">追加する配列</param>
 			template<std::ranges::range R>
 				requires std::same_as<std::remove_cvref_t<std::ranges::range_reference_t<R>>, T>
-			virtual void add_references(
+			void add_references(
 				R& value
-			);
+			) {
+			
+				for (auto& p : value) {
+					add_reference(p);
+				}
+			}
 
 			/* =============== 取得純粋仮想関数 =============== */
 

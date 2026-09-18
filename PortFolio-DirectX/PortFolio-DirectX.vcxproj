@@ -29,13 +29,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Application\Application.h" />
+    <ClInclude Include="..\Application\ApplicationDataShare.h" />
     <ClInclude Include="..\HandyItems\Bit\BitFlag.h" />
     <ClInclude Include="..\HandyItems\Container\KeyMap.h" />
     <ClInclude Include="..\HandyItems\Container\KeyMapBase.h" />
     <ClInclude Include="..\HandyItems\Container\ReferenceContainerBase.h" />
     <ClInclude Include="..\HandyItems\Container\ReferenceQueue.h" />
+    <ClInclude Include="..\HandyItems\Container\ReferenceVector.h" />
     <ClInclude Include="..\HandyItems\Container\UniqueptrKeyMap.h" />
     <ClInclude Include="..\HandyItems\Container\UnorderedMapBase.h" />
+    <ClInclude Include="..\HandyItems\DataShare\DataShare.h" />
     <ClInclude Include="..\HandyItems\Debug\DebugLogBuilder.h" />
     <ClInclude Include="..\HandyItems\Debug\DebugLogOutPut.h" />
     <ClInclude Include="..\HandyItems\Debug\DebugLogSystem.h" />
@@ -44,6 +47,10 @@
     <ClInclude Include="..\HandyItems\Enum\EnumArray.h" />
     <ClInclude Include="..\HandyItems\Enum\EnumToIndex.h" />
     <ClInclude Include="..\HandyItems\ID\IDBase.h" />
+    <ClInclude Include="..\HandyItems\Input\InputEnum.h" />
+    <ClInclude Include="..\HandyItems\Input\InputFrame.h" />
+    <ClInclude Include="..\HandyItems\Input\InputState.h" />
+    <ClInclude Include="..\HandyItems\Input\InputStateManager.h" />
     <ClInclude Include="..\HandyItems\Key\FeistelKeyConverter.h" />
     <ClInclude Include="..\HandyItems\Key\KeyConverterBase.h" />
     <ClInclude Include="..\HandyItems\Math\BaseStruct\Float2.h" />
@@ -61,6 +68,7 @@
     <ClInclude Include="..\HandyItems\Others\CircularIndex.h" />
     <ClInclude Include="..\HandyItems\Others\NonCopyableBase.h" />
     <ClInclude Include="..\HandyItems\Others\UniquePtr.h" />
+    <ClInclude Include="..\HandyItems\Tuple\TupleBase.h" />
     <ClInclude Include="..\Windows\Window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -42,7 +42,7 @@ namespace HandyItems {
 		/// <param name="value">変換する列挙体変数</param>
 		/// <returns>変換した値</returns>
 		template<concepts::IsEnum T>
-		[[nodiscard]] static size_t enum_to_index(
+		[[nodiscard]] constexpr size_t enum_to_index(
 			const T& value
 		) {
 

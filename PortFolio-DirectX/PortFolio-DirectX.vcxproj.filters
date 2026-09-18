@@ -61,6 +61,15 @@
     <Filter Include="ソース ファイル\Windows">
       <UniqueIdentifier>{19a38bc5-250a-47fe-a5ce-166ae8bf96fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\HandyItems\Input">
+      <UniqueIdentifier>{c3e134bf-0991-4d90-8d3a-46f01812f19a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\HandyItems\DataShare">
+      <UniqueIdentifier>{ecb00a58-f9ca-4dfb-82d9-f645ab191d46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\HandyItems\Tuple">
+      <UniqueIdentifier>{6cac336e-f1f2-4af7-a273-9a348f57b8cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Entry\Entry.cpp">
@@ -187,6 +196,30 @@
     </ClInclude>
     <ClInclude Include="..\Windows\Window.h">
       <Filter>ヘッダー ファイル\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Input\InputEnum.h">
+      <Filter>ヘッダー ファイル\HandyItems\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Input\InputFrame.h">
+      <Filter>ヘッダー ファイル\HandyItems\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Input\InputState.h">
+      <Filter>ヘッダー ファイル\HandyItems\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Input\InputStateManager.h">
+      <Filter>ヘッダー ファイル\HandyItems\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\DataShare\DataShare.h">
+      <Filter>ヘッダー ファイル\HandyItems\DataShare</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Container\ReferenceVector.h">
+      <Filter>ヘッダー ファイル\HandyItems\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\ApplicationDataShare.h">
+      <Filter>ヘッダー ファイル\Applicaton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Tuple\TupleBase.h">
+      <Filter>ヘッダー ファイル\HandyItems\Tuple</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

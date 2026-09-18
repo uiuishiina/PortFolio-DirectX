@@ -13,6 +13,10 @@ namespace {
 
 	/* ========== Includeファイル ========== */
 
+	/* ========== 名前空間 ========== */
+
+	/* ========== 前方宣言 ========== */
+
 	/* ===== 初期化関数 ===== */
 
 	/* ===== 実行関数 ===== */
@@ -26,12 +30,9 @@ int main() {
 
 	App::Application App{};
 
-	if (!App.initialize_app()) {
+	if (!App.start_app()) {
 		return 1;
 	}
-	else {
-		App.run_app();
-	}
-
+	
 	return 0;
 }
