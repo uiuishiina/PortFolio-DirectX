@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\Entry">
+      <UniqueIdentifier>{f2d9cc24-ad9e-4a88-9ada-be210e9a81cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Applicaton">
+      <UniqueIdentifier>{792a78cd-840b-4506-ba13-3bd21a4f599f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\HandyItems">
+      <UniqueIdentifier>{1e954408-ce0f-422d-aa3a-427a41539734}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\HandyItems\Others">
+      <UniqueIdentifier>{cf29659a-73f2-4c4b-812e-b0525f2cd2cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\HandyItems\Math">
+      <UniqueIdentifier>{5643a04b-c872-460a-8d2e-21f2155bda7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\HandyItems\Math\BaseStruct">
+      <UniqueIdentifier>{14392ca2-a86d-49eb-adbd-2579cf36ca64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\HandyItems\Math\Function">
+      <UniqueIdentifier>{5cccf911-4dd0-48e2-a4bc-f98f686098c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\HandyItems\Key">
+      <UniqueIdentifier>{68e5d376-e255-43c6-a087-774515f14b11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\HandyItems\ID">
+      <UniqueIdentifier>{a76bb030-140f-4e8e-bf67-274e7dcbeab7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\HandyItems\Enum">
+      <UniqueIdentifier>{5c37f87c-5ef5-4161-9aff-997c1c5f28ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\HandyItems\Bit">
+      <UniqueIdentifier>{94eeaede-e7f7-481e-8f57-de949b709555}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Entry\Entry.cpp">
+      <Filter>ソース ファイル\Entry</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Application\Application.h">
+      <Filter>ヘッダー ファイル\Applicaton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Others\CircularIndex.h">
+      <Filter>ヘッダー ファイル\HandyItems\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Others\NonCopyableBase.h">
+      <Filter>ヘッダー ファイル\HandyItems\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Others\UniquePtr.h">
+      <Filter>ヘッダー ファイル\HandyItems\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Math\BaseStruct\Float2.h">
+      <Filter>ヘッダー ファイル\HandyItems\Math\BaseStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Math\BaseStruct\Float3.h">
+      <Filter>ヘッダー ファイル\HandyItems\Math\BaseStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Math\BaseStruct\Float4.h">
+      <Filter>ヘッダー ファイル\HandyItems\Math\BaseStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Math\BaseStruct\Matrix.h">
+      <Filter>ヘッダー ファイル\HandyItems\Math\BaseStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Math\BaseStruct\Quaternion.h">
+      <Filter>ヘッダー ファイル\HandyItems\Math\BaseStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Math\BaseStruct\Transform.h">
+      <Filter>ヘッダー ファイル\HandyItems\Math\BaseStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Math\Function\MathF.h">
+      <Filter>ヘッダー ファイル\HandyItems\Math\Function</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Math\Function\MathFFloat2.h">
+      <Filter>ヘッダー ファイル\HandyItems\Math\Function</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Math\Function\MathFFloat3.h">
+      <Filter>ヘッダー ファイル\HandyItems\Math\Function</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Math\Function\MathFFloat4.h">
+      <Filter>ヘッダー ファイル\HandyItems\Math\Function</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Math\Function\MathFMatrix.h">
+      <Filter>ヘッダー ファイル\HandyItems\Math\Function</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Math\Function\MathFQuaternion.h">
+      <Filter>ヘッダー ファイル\HandyItems\Math\Function</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Key\FeistelKeyConverter.h">
+      <Filter>ヘッダー ファイル\HandyItems\Key</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Key\KeyConverterBase.h">
+      <Filter>ヘッダー ファイル\HandyItems\Key</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\ID\IDBase.h">
+      <Filter>ヘッダー ファイル\HandyItems\ID</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Enum\EnumArray.h">
+      <Filter>ヘッダー ファイル\HandyItems\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Enum\EnumToIndex.h">
+      <Filter>ヘッダー ファイル\HandyItems\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Bit\BitFlag.h">
+      <Filter>ヘッダー ファイル\HandyItems\Bit</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="PortFolio-DirectX/PortFolio-DirectX.vcxproj" Id="28bad707-b1a3-4f51-8d07-e1ab970093cf" />
+</Solution>
