@@ -19,15 +19,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Application\Application.cpp" />
     <ClCompile Include="..\Entry\Entry.cpp" />
     <ClCompile Include="..\HandyItems\Debug\DebugLogBuilder.cpp" />
     <ClCompile Include="..\HandyItems\Debug\DebugLogOutPut.cpp" />
     <ClCompile Include="..\HandyItems\Debug\DebugLogSystem.cpp" />
     <ClCompile Include="..\HandyItems\Debug\DebugLogThread.cpp" />
+    <ClCompile Include="..\Windows\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Application\Application.h" />
     <ClInclude Include="..\HandyItems\Bit\BitFlag.h" />
+    <ClInclude Include="..\HandyItems\Container\KeyMap.h" />
+    <ClInclude Include="..\HandyItems\Container\KeyMapBase.h" />
+    <ClInclude Include="..\HandyItems\Container\ReferenceContainerBase.h" />
+    <ClInclude Include="..\HandyItems\Container\ReferenceQueue.h" />
+    <ClInclude Include="..\HandyItems\Container\UniqueptrKeyMap.h" />
+    <ClInclude Include="..\HandyItems\Container\UnorderedMapBase.h" />
     <ClInclude Include="..\HandyItems\Debug\DebugLogBuilder.h" />
     <ClInclude Include="..\HandyItems\Debug\DebugLogOutPut.h" />
     <ClInclude Include="..\HandyItems\Debug\DebugLogSystem.h" />
@@ -53,6 +61,7 @@
     <ClInclude Include="..\HandyItems\Others\CircularIndex.h" />
     <ClInclude Include="..\HandyItems\Others\NonCopyableBase.h" />
     <ClInclude Include="..\HandyItems\Others\UniquePtr.h" />
+    <ClInclude Include="..\Windows\Window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
@@ -148,7 +157,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\Utility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)../HandyItems</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -168,6 +177,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(ProjectDir)../HandyItems</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

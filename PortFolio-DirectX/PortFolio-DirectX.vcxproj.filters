@@ -52,6 +52,15 @@
     <Filter Include="ヘッダー ファイル\HandyItems\Container">
       <UniqueIdentifier>{8bce5276-2b30-4e32-83f6-3131217de00b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Application">
+      <UniqueIdentifier>{5a009834-2cdd-44aa-97e3-900ec9849b14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Windows">
+      <UniqueIdentifier>{9b26dae6-34a6-441a-ba8e-35be97df3ec7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Windows">
+      <UniqueIdentifier>{19a38bc5-250a-47fe-a5ce-166ae8bf96fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Entry\Entry.cpp">
@@ -68,6 +77,12 @@
     </ClCompile>
     <ClCompile Include="..\HandyItems\Debug\DebugLogThread.cpp">
       <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Application\Application.cpp">
+      <Filter>ソース ファイル\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Windows\Window.cpp">
+      <Filter>ソース ファイル\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +166,27 @@
     </ClInclude>
     <ClInclude Include="..\HandyItems\Debug\LogObject.h">
       <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Container\KeyMap.h">
+      <Filter>ヘッダー ファイル\HandyItems\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Container\KeyMapBase.h">
+      <Filter>ヘッダー ファイル\HandyItems\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Container\ReferenceContainerBase.h">
+      <Filter>ヘッダー ファイル\HandyItems\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Container\ReferenceQueue.h">
+      <Filter>ヘッダー ファイル\HandyItems\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Container\UniqueptrKeyMap.h">
+      <Filter>ヘッダー ファイル\HandyItems\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Container\UnorderedMapBase.h">
+      <Filter>ヘッダー ファイル\HandyItems\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Windows\Window.h">
+      <Filter>ヘッダー ファイル\Windows</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

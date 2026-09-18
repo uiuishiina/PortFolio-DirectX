@@ -2,7 +2,6 @@
 #include<unordered_map>
 #include<optional>
 
-
 /// <summary>
 /// 便利アイテム名前空間
 /// </summary>
