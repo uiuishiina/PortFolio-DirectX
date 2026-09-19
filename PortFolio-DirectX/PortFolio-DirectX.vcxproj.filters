@@ -70,28 +70,58 @@
     <Filter Include="ヘッダー ファイル\HandyItems\Tuple">
       <UniqueIdentifier>{6cac336e-f1f2-4af7-a273-9a348f57b8cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\HandyItems">
+      <UniqueIdentifier>{0161377c-1c77-48aa-ac1c-643fb0f863df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\HandyItems\Debug">
+      <UniqueIdentifier>{a0383f87-67a2-4a08-aeb5-8a23549b3549}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\DirectX">
+      <UniqueIdentifier>{35a81dd1-d34b-4bfd-8462-7151688423b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\DirectX">
+      <UniqueIdentifier>{facff6d5-64f7-474b-91af-cef040449cfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\DirectX\Initializer">
+      <UniqueIdentifier>{8956044c-3186-41b8-bb2f-a8f2205ee7a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\DirectX\ClassObject">
+      <UniqueIdentifier>{ff90d1ed-4184-4a5d-82d0-b8eba393c8ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\DirectX\ClassObject">
+      <UniqueIdentifier>{30ff92fb-8611-4dd1-92f5-5c64b7c1f771}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Entry\Entry.cpp">
       <Filter>ソース ファイル\Entry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\HandyItems\Debug\DebugLogBuilder.cpp">
-      <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="..\HandyItems\Debug\DebugLogOutPut.cpp">
-      <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="..\HandyItems\Debug\DebugLogSystem.cpp">
-      <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="..\HandyItems\Debug\DebugLogThread.cpp">
-      <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
     </ClCompile>
     <ClCompile Include="..\Application\Application.cpp">
       <Filter>ソース ファイル\Application</Filter>
     </ClCompile>
     <ClCompile Include="..\Windows\Window.cpp">
       <Filter>ソース ファイル\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\HandyItems\Debug\DebugLogOutPut.cpp">
+      <Filter>ソース ファイル\HandyItems\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\HandyItems\Debug\DebugLogSystem.cpp">
+      <Filter>ソース ファイル\HandyItems\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DirectX\DirectXRenderer.cpp">
+      <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DirectX\DirectXInitializer.cpp">
+      <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DirectX\ClassObject\DXGI.cpp">
+      <Filter>ソース ファイル\DirectX\ClassObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DirectX\DirectXContext.cpp">
+      <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DirectX\ClassObject\Device.cpp">
+      <Filter>ソース ファイル\DirectX\ClassObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -220,6 +250,27 @@
     </ClInclude>
     <ClInclude Include="..\HandyItems\Tuple\TupleBase.h">
       <Filter>ヘッダー ファイル\HandyItems\Tuple</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\DirectXRenderer.h">
+      <Filter>ヘッダー ファイル\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\DirectXContext.h">
+      <Filter>ヘッダー ファイル\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\DirectXInitializer.h">
+      <Filter>ヘッダー ファイル\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\DXGI.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Initializer\InitializeCore.h">
+      <Filter>ヘッダー ファイル\DirectX\Initializer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Debug\HRESULTToString.h">
+      <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\Device.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

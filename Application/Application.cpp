@@ -2,7 +2,7 @@
 /* ========== Includeファイル ========== */
 
 #include"Application.h"
-#include"./Debug/DebugLogSystem.h"
+#include"Debug/DebugLogSystem.h"
 
 using namespace App;
 
@@ -42,7 +42,15 @@ Application::~Application() {
 
 [[nodiscard]] bool Application::initialize_app() {
 
+    DEBUG_LOG(
+        HandyItems::Debug::const_str::LineBreak,
+        "========== initialize =========="
+        );
+
     if (!initialize_window({ 1280,720 })) {
+        return false;
+    }
+    if (!initialize_renderer()) {
         return false;
     }
 
@@ -52,6 +60,11 @@ Application::~Application() {
 
 
 void Application::run_app() {
+
+    DEBUG_LOG(
+        HandyItems::Debug::const_str::LineBreak,
+        "========== run =========="
+    );
 
     while (true)
     {
@@ -70,6 +83,8 @@ void Application::run_app() {
         if (!main_window.get_focus()) {
             continue;
         }
+
+        main_renderer.update_renderer();
     }
 }
 
@@ -78,14 +93,45 @@ void Application::run_app() {
     const Windows::WindowSize& size
 ) {
 
-    return main_window.initialize_window(size, &data_share);
+    const auto value = main_window.initialize_window(
+        size,
+        &data_share
+    );
+
+    DEBUG_LOG(
+        "Window :: initialize_window() = ",
+        value ? "true" : "false"
+    );
+    return value;
 }
+
+[[nodiscard]] bool Application::initialize_renderer() {
+
+    const auto value = main_renderer.initialize_renderer(
+        main_window.get_hwnd(),
+        &data_share
+    );
+
+    DEBUG_LOG(
+        "DirectXRenderer :: initialize_renderer() = ",
+        value ? "true" : "false"
+        );
+    return value;
+}
+    
 
 /* ===== 終了時関数 ===== */
 
 void Application::end_app() {
 
+    DEBUG_LOG(
+        HandyItems::Debug::const_str::LineBreak,
+        "========== end =========="
+    );
+
     do {
         main_window.pull_event();
     } while (!main_window.completed_destroy());
+
+    main_renderer.end_renderer();
 }

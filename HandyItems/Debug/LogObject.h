@@ -1,5 +1,7 @@
 #pragma once
 
+/* ========== Includeファイル ========== */
+
 //	構造体用
 #include<string>
 #include<string_view>
@@ -12,37 +14,50 @@
 /* ==================================================================== */
 
 /// <summary>
-/// ログデータ構造体
+/// 便利アイテム名前空間
 /// </summary>
-struct LogObject {
-
-	/* ========== Publicメンバー変数 ========== */
+namespace HandyItems {
 
 	/// <summary>
-	/// ログデータ
+	/// デバッグ名前空間
 	/// </summary>
-	std::string LogData{};
+	namespace Debug {
+
+		/// <summary>
+		/// ログデータ構造体
+		/// </summary>
+		struct LogObject {
+
+			/* ========== Publicメンバー変数 ========== */
+
+			/// <summary>
+			/// ログデータ
+			/// </summary>
+			std::string Log_data{};
 
 
-	/* ========== クラス設定 ========== */
+			/* ========== Publicメンバー関数 ========== */
 
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	LogObject() = default;
+			/// <summary>
+			/// コンストラクタ
+			/// </summary>
+			LogObject() = default;
 
-	/// <summary>
-	/// 引数付きコンストラクタ
-	/// </summary>
-	/// <param name="str">設定する文字列</param>
-	LogObject(const std::string& str) :
-		LogData(str) {};
-};
+			/// <summary>
+			/// 引数付きコンストラクタ
+			/// </summary>
+			/// <param name="str">設定する文字列</param>
+			LogObject(
+				const std::string& str
+			) :
+				Log_data(str) {};
+		};
 
-
-/// <summary>
-/// ログデーターレベル列挙体
-/// </summary>
-enum class LogLevel {
-	Info,Error
-};
+		/// <summary>
+		/// ログデーターレベル列挙体
+		/// </summary>
+		enum class LogLevel {
+			Info, Error
+		};
+	}
+}

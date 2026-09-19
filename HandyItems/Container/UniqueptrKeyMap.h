@@ -29,7 +29,7 @@ namespace HandyItems {
 		/// 派生キーの型チェック
 		/// </summary>
 			requires
-		std::derived_from<KeyT, handle::LogicalKey>&&
+			std::derived_from<KeyT, handle::LogicalKey>&&
 			std::derived_from<EncodeKeyT, handle::EncodeKey>
 			class UniqueptrKeyMap : public KeyMapBase<
 			KeyT,

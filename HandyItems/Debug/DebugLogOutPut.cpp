@@ -1,29 +1,55 @@
+
+/* ========== Includeファイル ========== */
+
 #include"DebugLogOutPut.h"
+#include"HRESULTToString.h"
 #include<iostream>
 
-//出力用
-#define WIN32_LEAN_AND_MEAN	//軽量化マクロ
-#include <windows.h>
+using namespace HandyItems::Debug;
 
-///====================================================================
-/// Publicメンバー関数
-///====================================================================
+/* ========== Publicメンバー関数 ========== */
 
-//@brief	=== 出力文字列受付関数 ===
-//@param	log	LogObject構造体
-void DebugLogOutPut:: ReceptionLog(const LogObject& log) {
+/// <summary>
+/// 出力文字列受付関数
+/// </summary>
+/// <param name="log">LogObject構造体</param>
+void DebugLogOutPut::reception_log(
+	const LogObject& log
+) {
 
 	//末尾改行を追加して出力
-	OutPutLog(log.LogData + "\n");
+	OutPutLog(log.Log_data + "\n");
 }
 
-///====================================================================
-/// Privateメンバー関数
-///====================================================================
+/* ========== Privateメンバー関数 ========== */
 
-//@brief	=== 出力本体関数 ===
-//@param	log	Log文字列
-void DebugLogOutPut:: OutPutLog(const std::string& log) {
-	OutputDebugStringA(log.c_str());
-	std::cout << log.c_str();
+/* ===== 実行関数 ===== */
+
+/// <summary>
+/// 出力本体関数
+/// </summary>
+/// <param name="log">Log用文字列</param>
+void DebugLogOutPut::OutPutLog(
+	const std::string& log
+) {
+
+	const auto c = from_utf8(log);
+
+    //  デバッグ出力
+	OutputDebugStringW(c.c_str());
+
+    // コンソール出力
+    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    if (console != INVALID_HANDLE_VALUE && console != nullptr) {
+        DWORD written = 0;
+
+        WriteConsoleW(
+            console,
+            c.data(),
+            static_cast<DWORD>(c.size()),
+            &written,
+            nullptr
+        );
+    }
 }

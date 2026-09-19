@@ -17,6 +17,9 @@ namespace {
 
     unsigned long style_ = WS_OVERLAPPEDWINDOW;
 
+    const wchar_t* class_name = L"main_window";
+    const wchar_t* window_name = L"MainWindow";
+
     /// <summary>
    /// ウィンドウプロシージャ関数
    /// </summary>
@@ -99,22 +102,14 @@ namespace {
 
 /* ========== Publicメンバー関数 ========== */
 
-/// <summary>
-/// コンストラクタ
-/// </summary>
-Window::Window() {
-    DEBUG_LOG("Window :: Window()");
-}
-
-/// <summary>
-/// デストラクタ
-/// </summary>
-Window::~Window() {
-    DEBUG_LOG("Window :: ~Window()");
-}
-
 /* ===== 初期化関数 ===== */
 
+/// <summary>
+/// ウィンドウ初期化関数
+/// </summary>
+/// <param name="size">ウィンドウサイズ構造体</param>
+/// <param name="share">アプリケーションデータシェアクラス参照</param>
+/// <returns>初期化の成否</returns>
 [[nodiscard]] bool Window::initialize_window(
     const WindowSize& size,
     App::ApplicationDataShare* share
@@ -138,7 +133,7 @@ Window::~Window() {
     //  ウィンドウクラス登録
     WNDCLASS wc{};
     wc.lpfnWndProc = static_window_proc;
-    wc.lpszClassName = L"main_window";
+    wc.lpszClassName = class_name;
     wc.hInstance = hInstance_;
     wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 
@@ -151,8 +146,8 @@ Window::~Window() {
     //  ウィンドウ作成
     hwnd_ = CreateWindow(
         wc.lpszClassName,
-        wc.lpszClassName,
-        WS_OVERLAPPEDWINDOW,
+        window_name,
+        style_,
         CW_USEDEFAULT, CW_USEDEFAULT,
         adjust.width_,
         adjust.height_,
@@ -172,6 +167,7 @@ Window::~Window() {
     //  ウィンドウ開始
     UpdateWindow(hwnd_);
 
+    //  ウィンドウフォーカス
     SetForegroundWindow(hwnd_);
     SetFocus(hwnd_);
 
@@ -180,6 +176,9 @@ Window::~Window() {
 
 /* ===== 実行関数 ===== */
 
+/// <summary>
+/// イベント取得関数
+/// </summary>
 void Window::pull_event() {
 
     //  メッセージループ処理開始
@@ -197,6 +196,9 @@ void Window::pull_event() {
     }
 }
 
+/// <summary>
+/// ウィンドウ破棄命令関数
+/// </summary>
 void Window::close_window() {
 
     if (is_closed) { return; }
@@ -204,12 +206,12 @@ void Window::close_window() {
     DestroyWindow(hwnd_);
 }
 
-void Window::destroy_window() {
-
-    complete_destroy = true;
-    PostQuitMessage(0);
-}
-
+/// <summary>
+/// ウィンドウイベント振り分け関数
+/// </summary>
+/// <param name="msg">イベント識別変数</param>
+/// <param name="wParam">イベント詳細</param>
+/// <param name="lParam">イベント詳細</param>
 void Window::process_message(
     unsigned int msg,
     uintptr_t wParam,
@@ -278,4 +280,15 @@ void Window::process_message(
     default:
         break;
     }
+}
+
+/* ===== 終了関数 ===== */
+
+/// <summary>
+/// ウィンドウ破棄完了関数
+/// </summary>
+void Window::destroy_window() {
+
+    complete_destroy = true;
+    PostQuitMessage(0);
 }

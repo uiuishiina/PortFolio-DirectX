@@ -4,6 +4,7 @@
 
 #include"../Windows/Window.h"
 #include"ApplicationDataShare.h"
+#include"../DirectX/DirectXRenderer.h"
 
 /// <summary>
 /// アプリケーション名前空間
@@ -37,6 +38,8 @@ namespace App {
 
 		ApplicationDataShare data_share{};
 
+		DirectX::DirectXRenderer main_renderer{};
+
 		/* ========== Privateメンバー関数 ========== */
 
 		/* ===== 初期化関数 ===== */
@@ -46,6 +49,8 @@ namespace App {
 		[[nodiscard]] bool initialize_window(
 			const Windows::WindowSize& size
 		);
+
+		[[nodiscard]] bool initialize_renderer();
 
 		/* ===== 実行関数 ===== */
 

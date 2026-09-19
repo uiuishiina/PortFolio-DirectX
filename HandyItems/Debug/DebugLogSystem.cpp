@@ -1,26 +1,35 @@
+
+/* ========== Includeファイル ========== */
+
 #include"DebugLogThread.h"	//	DebugLogThread用
 #include"DebugLogSystem.h"
 
-///====================================================================
-/// クラス設定
-///====================================================================
+using namespace HandyItems::Debug;
 
-//	コンストラクタ
-DebugLogSystem :: DebugLogSystem() {
-	log_thread = std::make_unique<DebugLogThread>();
-}
+/* ========== Publicメンバー関数 ========== */
 
-//	デストラクタ
-DebugLogSystem :: ~DebugLogSystem() = default;
-
-///====================================================================
-/// Publicメンバー関数
-///====================================================================
-
-//@breif	=== ログ送信関数 ===
-//@param	data	送るログデータ
-void DebugLogSystem :: send2thread(const LogObject& data) {
+/// <summary>
+/// ログ送信関数
+/// </summary>
+/// <param name="data">送るログデータ</param
+void DebugLogSystem::send_to_thread(
+	const LogObject& data
+) {
 
 	//	ログスレッドに送信
 	log_thread->insert_LogObject(data);
 }
+
+/* ========== Privateメンバー関数 ========== */
+
+/// <summary>
+///	コンストラクタ
+/// </summary>
+DebugLogSystem :: DebugLogSystem() {
+	log_thread = std::make_unique<DebugLogThread>();
+}
+
+/// <summary>
+/// デストラクタ
+/// </summary>
+DebugLogSystem :: ~DebugLogSystem() = default;

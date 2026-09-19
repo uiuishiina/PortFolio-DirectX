@@ -1,5 +1,9 @@
 #pragma once
+
+/* ========== Includeファイル ========== */
+
 #include<memory>
+#include"Debug/DebugLogSystem.h"
 
 /// <summary>
 /// 便利アイテム名前空間
@@ -223,6 +227,26 @@ namespace HandyItems {
 				unique_ = nullptr;
 				block_->delete_unique();
 				block_ = nullptr;
+			}
+
+			/// <summary>
+			/// unique_ptr本体参照取得関数
+			/// </summary>
+			/// <returns>本体参照</returns>
+			[[nodiscard]] T* get() const noexcept {
+
+				if (!block_->has_unique()) {
+					DEBUG_ERROR_LOG("Not Found Unique");
+				}
+				return unique_.get();
+			}
+
+			/// <summary>
+			/// unique_ptr本体参照ポインター演算子オーバーロード
+			/// </summary>
+			/// <returns>本体参照</returns>
+			[[nodiscard]] T* operator -> () const noexcept {
+				return get();
 			}
 
 		private:

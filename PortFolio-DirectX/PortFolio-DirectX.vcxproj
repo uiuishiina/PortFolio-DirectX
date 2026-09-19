@@ -20,16 +20,25 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\Application.cpp" />
+    <ClCompile Include="..\DirectX\ClassObject\Device.cpp" />
+    <ClCompile Include="..\DirectX\ClassObject\DXGI.cpp" />
+    <ClCompile Include="..\DirectX\DirectXContext.cpp" />
+    <ClCompile Include="..\DirectX\DirectXInitializer.cpp" />
+    <ClCompile Include="..\DirectX\DirectXRenderer.cpp" />
     <ClCompile Include="..\Entry\Entry.cpp" />
-    <ClCompile Include="..\HandyItems\Debug\DebugLogBuilder.cpp" />
     <ClCompile Include="..\HandyItems\Debug\DebugLogOutPut.cpp" />
     <ClCompile Include="..\HandyItems\Debug\DebugLogSystem.cpp" />
-    <ClCompile Include="..\HandyItems\Debug\DebugLogThread.cpp" />
     <ClCompile Include="..\Windows\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Application\Application.h" />
     <ClInclude Include="..\Application\ApplicationDataShare.h" />
+    <ClInclude Include="..\DirectX\ClassObject\Device.h" />
+    <ClInclude Include="..\DirectX\ClassObject\DXGI.h" />
+    <ClInclude Include="..\DirectX\DirectXContext.h" />
+    <ClInclude Include="..\DirectX\DirectXInitializer.h" />
+    <ClInclude Include="..\DirectX\DirectXRenderer.h" />
+    <ClInclude Include="..\DirectX\Initializer\InitializeCore.h" />
     <ClInclude Include="..\HandyItems\Bit\BitFlag.h" />
     <ClInclude Include="..\HandyItems\Container\KeyMap.h" />
     <ClInclude Include="..\HandyItems\Container\KeyMapBase.h" />
@@ -43,6 +52,7 @@
     <ClInclude Include="..\HandyItems\Debug\DebugLogOutPut.h" />
     <ClInclude Include="..\HandyItems\Debug\DebugLogSystem.h" />
     <ClInclude Include="..\HandyItems\Debug\DebugLogThread.h" />
+    <ClInclude Include="..\HandyItems\Debug\HRESULTToString.h" />
     <ClInclude Include="..\HandyItems\Debug\LogObject.h" />
     <ClInclude Include="..\HandyItems\Enum\EnumArray.h" />
     <ClInclude Include="..\HandyItems\Enum\EnumToIndex.h" />

@@ -92,15 +92,21 @@ namespace Windows {
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		Window();
+		Window() = default;
 
 		/// <summary>
 		/// デストラクタ
 		/// </summary>
-		~Window();
+		~Window() = default;
 
 		/* ===== 初期化関数 ===== */
 
+		/// <summary>
+		/// ウィンドウ初期化関数
+		/// </summary>
+		/// <param name="size">ウィンドウサイズ構造体</param>
+		/// <param name="share">アプリケーションデータシェアクラス参照</param>
+		/// <returns>初期化の成否</returns>
 		[[nodiscard]] bool initialize_window(
 			const WindowSize& size,
 			App::ApplicationDataShare* share
@@ -108,32 +114,65 @@ namespace Windows {
 
 		/* ===== 実行関数 ===== */
 
+		/// <summary>
+		/// イベント取得関数
+		/// </summary>
 		void pull_event();
 
+		/// <summary>
+		/// ウィンドウ破棄命令関数
+		/// </summary>
 		void close_window();
 
-		void destroy_window();
-
+		/// <summary>
+		/// ウィンドウイベント振り分け関数
+		/// </summary>
+		/// <param name="msg">イベント識別変数</param>
+		/// <param name="wParam">イベント詳細</param>
+		/// <param name="lParam">イベント詳細</param>
 		void process_message(
 			unsigned int msg,
 			uintptr_t wParam,
 			intptr_t lParam
 		);
 
+		/* ===== 終了関数 ===== */
+
+		/// <summary>
+		/// ウィンドウ破棄完了関数
+		/// </summary>
+		void destroy_window();
+
 		/* ===== 取得関数 ===== */
 
+		/// <summary>
+		/// ウィンドウハンドル取得関数
+		/// </summary>
+		/// <returns></returns>
 		[[nodiscard]] HWND get_hwnd() const noexcept {
 			return hwnd_;
 		}
 
+		/// <summary>
+		/// ウィンドウフォーカスフラグ取得関数
+		/// </summary>
+		/// <returns>ウィンドウフォーカスフラグ</returns>
 		[[nodiscard]] bool get_focus() const noexcept {
 			return is_focus;
 		}
 
+		/// <summary>
+		/// ウィンドウ破棄フラグ取得関数
+		/// </summary>
+		/// <returns>ウィンドウ破棄フラグ</returns>
 		[[nodiscard]] bool get_closed() const noexcept {
 			return is_closed;
 		}
 
+		/// <summary>
+		/// ウィンドウ破棄完了フラグ取得関数
+		/// </summary>
+		/// <returns>ウィンドウ破棄完了フラグ</returns>
 		[[nodiscard]] bool completed_destroy() const noexcept {
 			return complete_destroy;
 		}
@@ -141,22 +180,42 @@ namespace Windows {
 	private:
 		/* ========== Privateメンバー変数 ========== */
 
+		/// <summary>
+		/// ウィンドウサイズ
+		/// </summary>
 		WindowSize size_{};
 
+		/// <summary>
+		/// ウィンドウインスタンス
+		/// </summary>
 		HINSTANCE hInstance_{};
 
+		/// <summary>
+		/// ウィンドウハンドル
+		/// </summary>
 		HWND hwnd_{};
 
+		/// <summary>
+		/// アプリケーションデータシェアクラス参照
+		/// </summary>
 		App::ApplicationDataShare* shera_p{};
 
+		/// <summary>
+		/// ウィンドウフォーカスフラグ
+		/// </summary>
 		bool is_focus = true;
 
+		/// <summary>
+		/// ウィンドウ破棄フラグ
+		/// </summary>
 		bool is_closed = false;
 
+		/// <summary>
+		/// ウィンドウ破棄完了フラグ
+		/// </summary>
 		bool complete_destroy = false;
 
 		/* ========== Privateメンバー関数 ========== */
-
 
 	};
 }

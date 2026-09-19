@@ -1,62 +1,119 @@
 #pragma once
+
+/* ========== Includeファイル ========== */
+
 //	補助関数用
 #include<concepts>
-#include <sstream>
+#include<sstream>
 
 #include"LogObject.h"	//LogObject
 
-///====================================================================
-/// LogObject構造体作成補助関数
-///====================================================================
+/// <summary>
+/// 便利アイテム名前空間
+/// </summary>
+namespace HandyItems {
 
-//@brief	===  "<<" 変換可能コンセプト ===
-template<typename T>
-concept stream_insert_able = requires(std::ostream & os, const T & value) {
+	/// <summary>
+	/// デバッグ名前空間
+	/// </summary>
+	namespace Debug {
 
-	//	os << value が std::ostream になるか
-	{ os << value } -> std::same_as<std::ostream&>;
-};
+		/// <summary>
+		/// テンプレートコンセプト定義用名前空間
+		/// </summary>
+		namespace concepts {
 
-//@brief	=== string作成補助関数 ===
-template<stream_insert_able... Args>
-static [[nodiscard]] std::string create_string(Args&&... args) {
+			/// <summary>
+			/// "<<" 変換可能コンセプト
+			/// </summary>
+			template<typename T>
+			concept stream_insert_able = requires(
+				std::ostream & os, 
+				const T & value
+				) {
 
-	//中央展開
-	std::ostringstream oss;
-	(oss << ... << std::forward<Args>(args));
-	return oss.str();
+				//	os << value が std::ostream になるか
+				{ os << value } -> std::same_as<std::ostream&>;
+			};
+		}
+
+		/// <summary>
+		/// string作成補助関数
+		/// </summary>
+		/// <typeparam name="...Args">文字列にする型... [ "<<" 変換可能指定 ]</typeparam>
+		/// <param name="...args">文字列にする値</param>
+		/// <returns>すべてまとめた文字列</returns>
+		template<concepts::stream_insert_able... Args>
+		[[nodiscard]] static std::string create_string(Args&&... args) {
+
+			//中央展開
+			std::ostringstream oss;
+			(oss << ... << std::forward<Args>(args));
+			return oss.str();
+		}
+
+
+		namespace const_str {
+
+			//	罫線
+			const std::string Gridlines = std::string(100, '-');
+
+			//	改行
+			const std::string LineBreak = "\n";
+
+			//	見やすくするようまとめ
+			const std::string ErrorLine = Gridlines + LineBreak;
+		}
+
+		/// <summary>
+		/// デバッグログ構造体作成クラス
+		/// </summary>
+		class DebugLogBuilder final
+		{
+		public:
+			/* ========== Publicメンバー関数 ========== */
+
+			/// <summary>
+			/// LogObject構造体作成関数
+			/// </summary>
+			/// <param name="data">ログデータにしたい文字列</param>
+			/// <param name="level">ログデータレベル</param>
+			/// <returns>作成されたLogObject</returns>
+			[[nodiscard]] static LogObject create_LogObject(
+				const std::string& data,
+				LogLevel level = LogLevel::Info
+			) {
+
+				//	エラーログなら
+				if (level == LogLevel::Error) {
+
+					const auto str = create_string(
+						const_str::ErrorLine +
+						data +
+						const_str::LineBreak +
+						const_str::Gridlines
+					);
+					return LogObject(str);
+				}
+				else {
+					//	そのまま作成
+					return LogObject(data);
+				}
+			}
+
+		private:
+			/* ========== Privateメンバー関数 ========== */
+
+			/// <summary>
+			/// コンストラクタ
+			/// </summary>
+			DebugLogBuilder() = default;
+
+			/// <summary>
+			/// デストラクタ
+			/// </summary>
+			~DebugLogBuilder() = default;
+
+		};
+	}
 }
-
-
-///====================================================================
-/// DebugLogBuilderクラス
-///====================================================================
-
-//@brief	=== デバッグログ構造体作成クラス ===
-class DebugLogBuilder final
-{
-public:
-	///====================================================================
-	/// Publicメンバー関数
-	///====================================================================
-
-	//@brief	=== LogObject作成関数 ===
-	//@param	data	データにしたい文字列
-	//@return	作成されたLogObject
-	static [[nodiscard]] LogObject create_LogObject(const std::string& data, LogLevel level = LogLevel::Info);
-
-private:
-	///====================================================================
-	/// クラス設定
-	///====================================================================
-
-	//	コンストラクタ,デストラクタ
-	DebugLogBuilder() = default;
-	~DebugLogBuilder() = default;
-
-	//	コピー,ムーブ禁止
-	DebugLogBuilder(const DebugLogBuilder&) = delete;
-	DebugLogBuilder& operator=(const DebugLogBuilder&) = delete;
-	DebugLogBuilder(const DebugLogBuilder&&) = delete;
-	DebugLogBuilder& operator=(const DebugLogBuilder&&) = delete;
-};
