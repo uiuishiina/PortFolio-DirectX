@@ -22,9 +22,9 @@
     <ClCompile Include="..\Application\Application.cpp" />
     <ClCompile Include="..\DirectX\ClassObject\Device.cpp" />
     <ClCompile Include="..\DirectX\ClassObject\DXGI.cpp" />
-    <ClCompile Include="..\DirectX\DirectXContext.cpp" />
     <ClCompile Include="..\DirectX\DirectXInitializer.cpp" />
     <ClCompile Include="..\DirectX\DirectXRenderer.cpp" />
+    <ClCompile Include="..\DirectX\DirectXUpdater.cpp" />
     <ClCompile Include="..\DirectX\Initializer\InitializeCore.cpp" />
     <ClCompile Include="..\Entry\Entry.cpp" />
     <ClCompile Include="..\HandyItems\Debug\DebugLogOutPut.cpp" />
@@ -48,8 +48,10 @@
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\ResourceBarrier.h" />
     <ClInclude Include="..\DirectX\ClassObject\SwapChain.h" />
     <ClInclude Include="..\DirectX\DirectXContext.h" />
+    <ClInclude Include="..\DirectX\DirectXEnder.h" />
     <ClInclude Include="..\DirectX\DirectXInitializer.h" />
     <ClInclude Include="..\DirectX\DirectXRenderer.h" />
+    <ClInclude Include="..\DirectX\DirectXUpdater.h" />
     <ClInclude Include="..\DirectX\Initializer\InitializeCore.h" />
     <ClInclude Include="..\HandyItems\Bit\BitFlag.h" />
     <ClInclude Include="..\HandyItems\Container\KeyMap.h" />

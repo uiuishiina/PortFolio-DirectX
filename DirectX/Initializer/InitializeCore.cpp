@@ -3,18 +3,6 @@
 
 #include "InitializeCore.h"
 
-
-//	DirectX... [ 初期化するオブジェクトのみ #include ]
-#include"../ClassObject/DXGI.h"
-#include"../ClassObject/Device.h"
-#include"../ClassObject/CommandQueue.h"
-#include"../ClassObject/CommandList.h"
-#include"../ClassObject/SwapChain.h"
-#include"../ClassObject/DescriptorHeap.h"
-#include"../ClassObject/GPUResource/RenderTarget/BackBuffer.h"
-
-#include"../ClassModule/FrameResource.h"
-
 using namespace DirectX;
 
 /* ========== Publicメンバー関数 ========== */
@@ -29,39 +17,26 @@ using namespace DirectX;
 	HWND hwnd,
 	std::uint32_t width,
 	std::uint32_t height,
-	UINT back_buffer_size
+	std::uint32_t back_buffer_size
 ) {
-
-	//	インスタンスチェック
-	bool value[2] = {
-		context->get_dxgi().check(),
-		context->get_device().check()
-	};
-
-	for (auto p : value) {
-		if (!p) {
-			return E_FAIL;
-		}
-	}
-
 
 	HRESULT hr{};
 
 	//	DXGI作成
-	hr = context->get_dxgi()->initialize_DXGI();
+	hr = context->dxgi_->initialize_DXGI();
 	if (FAILED(hr)) {
 		return hr;
 	}
 
 	//	Device作成
-	hr = context->get_device()->create_device(context->get_dxgi()->get_adapter());
+	hr = context->device_->create_device(context->dxgi_->get_adapter());
 	if (FAILED(hr)) {
 		return hr;
 	}
 
 	//	描画用コマンドキュー作成
-	hr = context->get_queue()->create_queue(
-		context->get_device()->get(),
+	hr = context->graphic_queue->create_queue(
+		context->device_->get(),
 		D3D12_COMMAND_LIST_TYPE_DIRECT
 	);
 	if (FAILED(hr)) {
@@ -69,10 +44,10 @@ using namespace DirectX;
 	}
 
 	//	描画用コマンドアロケーター作成
-	for (auto& resource : context->get_frame_resources()) {
+	for (auto& resource : context->frame_resources) {
 
 		hr = resource->get_allocator()->create_allocator(
-			context->get_device()->get(),
+			context->device_->get(),
 			D3D12_COMMAND_LIST_TYPE_DIRECT
 		);
 		if (FAILED(hr)) {
@@ -81,9 +56,9 @@ using namespace DirectX;
 	}
 
 	//	描画用コマンドリスト作成
-	hr = context->get_list()->create_list(
-		context->get_device()->get(),
-		context->get_frame_resource(0).value()->get_allocator()->get(),
+	hr = context->graphic_list->create_list(
+		context->device_->get(),
+		context->frame_resources[0]->get_allocator()->get(),
 		D3D12_COMMAND_LIST_TYPE_DIRECT
 	);
 	if (FAILED(hr)) {
@@ -91,17 +66,17 @@ using namespace DirectX;
 	}
 
 	//	フェンス作成
-	hr = context->get_fence()->create_fence(
-		context->get_device()->get()
+	hr = context->fence_->create_fence(
+		context->device_->get()
 	);
 	if (FAILED(hr)) {
 		return hr;
 	}
 
 	//	スワップチェーン作成
-	hr = context->get_swapchain()->create_swapchain(
-		context->get_dxgi()->get_factory(),
-		context->get_queue()->get(),
+	hr = context->swapchain_->create_swapchain(
+		context->dxgi_->get_factory(),
+		context->graphic_queue->get(),
 		hwnd,
 		width,
 		height,
@@ -112,8 +87,8 @@ using namespace DirectX;
 	}
 
 	//	ディスクリプタヒープ作成
-	hr = context->get_heap()->create_descriptor_heap(
-		context->get_device()->get(),
+	hr = context->heap_->create_descriptor_heap(
+		context->device_->get(),
 		{ D3D12_DESCRIPTOR_HEAP_TYPE_RTV ,2,D3D12_DESCRIPTOR_HEAP_FLAG_NONE }
 	);
 	if (FAILED(hr)) {
@@ -121,14 +96,14 @@ using namespace DirectX;
 	}
 
 	//	バックバッファ作成
-	auto buffers = context->get_back_buffers();
+	auto& buffers = context->back_buffers;
 	for (std::size_t i = 0; i < buffers.size(); ++i) {
 
 		hr = buffers[i]->create_back_buffer(
-			context->get_device()->get(),
-			context->get_swapchain()->get(),
-			context->get_heap()->get_CPU_handle(static_cast<UINT>(i)),
-			i
+			context->device_->get(),
+			context->swapchain_->get(),
+			context->heap_->get_CPU_handle(static_cast<UINT>(i)),
+			static_cast<UINT>(i)
 		);
 		if (FAILED(hr)) {
 			return hr;

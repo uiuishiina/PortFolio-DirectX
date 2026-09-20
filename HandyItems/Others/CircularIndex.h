@@ -2,112 +2,118 @@
 #include<cassert>
 
 /// <summary>
-/// その他名前空間
+/// 便利アイテム名前空間
 /// </summary>
-namespace others {
-
-	/* ========== 循環インデックスクラス定義 ========== */
+namespace HandyItems {
 
 	/// <summary>
-	/// 循環インデックスクラス
+	/// その他名前空間
 	/// </summary>
-	class CircularIndex
-	{
-	public:
-		/* ===== メンバー関数 ===== */
+	namespace others {
 
-		//	通常コンストラクタ削除
-		CircularIndex() = delete;
+		/* ========== 循環インデックスクラス定義 ========== */
 
 		/// <summary>
-		/// 引数付きコンストラクタ
+		/// 循環インデックスクラス
 		/// </summary>
-		/// <param name="size">インデックスサイズ</param>
-		CircularIndex(
-			size_t size
-		) :
-			circle_size{ size } {
-			assert(circle_size > 0 && "circle_size Error");
-		}
+		class CircularIndex
+		{
+		public:
+			/* ===== メンバー関数 ===== */
 
-		/// <summary>
-		/// デストラクタ
-		/// </summary>
-		~CircularIndex() = default;
+			//	通常コンストラクタ削除
+			CircularIndex() = delete;
 
-		/// <summary>
-		/// 前置インクリメントオペレーター
-		/// </summary>
-		/// <returns>インクリメントした後の自身の参照</returns>
-		CircularIndex& operator ++ () noexcept {
-			
-			++circle_index;
-			circle_index = circle_index % circle_size;
-			
-			return *this;
-		}
-
-		/// <summary>
-		/// 前置デクリメントオペレーター
-		/// </summary>
-		/// <returns>デクリメントした後の自身の参照</returns>
-		CircularIndex& operator -- () noexcept {
-
-			if (circle_index == 0) {
-				circle_index = circle_size - 1;
-			}
-			else {
-				--circle_index;
+			/// <summary>
+			/// 引数付きコンストラクタ
+			/// </summary>
+			/// <param name="size">インデックスサイズ</param>
+			CircularIndex(
+				size_t size
+			) :
+				circle_size{ size } {
+				assert(circle_size > 0 && "circle_size Error");
 			}
 
-			return *this;
-		}
+			/// <summary>
+			/// デストラクタ
+			/// </summary>
+			~CircularIndex() = default;
 
-		/// <summary>
-		/// 後置インクリメントオペレーター
-		/// </summary>
-		/// <returns>インクリメントする前の自身の参照</returns>
-		CircularIndex operator ++ (int) noexcept {
+			/// <summary>
+			/// 前置インクリメントオペレーター
+			/// </summary>
+			/// <returns>インクリメントした後の自身の参照</returns>
+			CircularIndex& operator ++ () noexcept {
 
-			auto old = *this;
-			++(*this);
+				++circle_index;
+				circle_index = circle_index % circle_size;
 
-			return old;
-		}
+				return *this;
+			}
 
-		/// <summary>
-		/// 後置デンクリメントオペレーター
-		/// </summary>
-		/// <returns>デンクリメントする前の自身の参照</returns>
-		CircularIndex operator -- (int) noexcept {
+			/// <summary>
+			/// 前置デクリメントオペレーター
+			/// </summary>
+			/// <returns>デクリメントした後の自身の参照</returns>
+			CircularIndex& operator -- () noexcept {
 
-			auto old = *this;
-			--(*this);
+				if (circle_index == 0) {
+					circle_index = circle_size - 1;
+				}
+				else {
+					--circle_index;
+				}
 
-			return old;
-		}
-		
-		/// <summary>
-		/// インデックス取得オペレーター
-		/// </summary>
-		/// <returns>インデックス</returns>
-		operator size_t()const noexcept {
+				return *this;
+			}
 
-			return circle_index;
-		}
+			/// <summary>
+			/// 後置インクリメントオペレーター
+			/// </summary>
+			/// <returns>インクリメントする前の自身の参照</returns>
+			CircularIndex operator ++ (int) noexcept {
 
-	private:
-		/* ===== メンバー変数 ===== */
+				auto old = *this;
+				++(*this);
 
-		/// <summary>
-		/// 循環する長さ
-		/// </summary>
-		const size_t circle_size{};
+				return old;
+			}
 
-		/// <summary>
-		/// 循環させるインデックス
-		/// </summary>
-		size_t circle_index{};
+			/// <summary>
+			/// 後置デンクリメントオペレーター
+			/// </summary>
+			/// <returns>デンクリメントする前の自身の参照</returns>
+			CircularIndex operator -- (int) noexcept {
 
-	};
+				auto old = *this;
+				--(*this);
+
+				return old;
+			}
+
+			/// <summary>
+			/// インデックス取得オペレーター
+			/// </summary>
+			/// <returns>インデックス</returns>
+			operator size_t()const noexcept {
+
+				return circle_index;
+			}
+
+		private:
+			/* ===== メンバー変数 ===== */
+
+			/// <summary>
+			/// 循環する長さ
+			/// </summary>
+			const size_t circle_size{};
+
+			/// <summary>
+			/// 循環させるインデックス
+			/// </summary>
+			size_t circle_index{};
+
+		};
+	}
 }

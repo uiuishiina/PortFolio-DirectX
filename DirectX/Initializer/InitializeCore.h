@@ -33,12 +33,12 @@ namespace DirectX {
 			/// </summary>
 			/// <param name="context">DirectXオブジェクトインスタンス構造体参照</param>
 			/// <returns>初期化の成否</returns>
-			[[nodiscard]] virtual HRESULT initialize_core(
+			[[nodiscard]] HRESULT initialize_core(
 				DirectXContext* context,
 				HWND hwnd,
 				std::uint32_t width,
 				std::uint32_t height,
-				UINT back_buffer_size
+				std::uint32_t back_buffer_size
 			);
 
 		};

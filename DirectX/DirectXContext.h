@@ -7,38 +7,31 @@
 #include"Others/UniquePtr.h"
 
 //	DirectX
-#include<d3d12.h>
+#include"ClassObject/DXGI.h"
+#include"ClassObject/Device.h"
+#include"ClassObject/CommandQueue.h"
+#include"ClassObject/CommandList.h"
+#include"ClassObject/Fence.h"
+#include"ClassObject/SwapChain.h"
+#include"ClassObject/DescriptorHeap.h"
+#include"ClassObject/GPUResource/RenderTarget/BackBuffer.h"
+
+#include"ClassModule/FrameResource.h"
 
 //	その他
 #include<vector>
 #include<optional>
+#include<cstdint>
 
 /// <summary>
 /// DirectX名前空間
 /// </summary>
 namespace DirectX {
 
-	/* ========== 前方宣言 ========== */
-
-	namespace ClassObject {
-		class DXGI;
-		class Device;
-		class CommandQueue;
-		class CommandList;
-		class Fence;
-		class SwapChain;
-		class DescriptorHeap;
-		class BackBuffer;
-	}
-
-	namespace ClassModule {
-		class FrameResource;
-	}
-
 	/// <summary>
-	/// DirectXオブジェクトインスタンス構造体
+	/// DirectXオブジェクトインスタンスまとめクラス
 	/// </summary>
-	class DirectXContext final : HandyItems::others::NonCopyableMovableBase
+	struct DirectXContext final : HandyItems::others::NonCopyableMovableBase
 	{
 
 		template<typename T>
@@ -50,103 +43,51 @@ namespace DirectX {
 	public:
 		/* ========== Publicメンバー関数 ========== */
 
+		//	コンストラクタ削除
+		DirectXContext() = delete;
+
 		/// <summary>
-		/// コンストラクタ
+		/// 引数付きコンストラクタ
 		/// </summary>
-		DirectXContext();
+		/// <param name="back_buffer_size">バックバッファサイズ</param>
+		/// <param name="frame_resource_size">フレームリソースサイズ</param>
+		DirectXContext(
+			std::uint32_t back_buffer_size,
+			std::uint32_t frame_resource_size
+		) {
+
+			/* -- Core -- */
+
+			dxgi_.register_unique(std::make_unique<ClassObject::DXGI>());
+			device_.register_unique(std::make_unique<ClassObject::Device>());
+			graphic_queue.register_unique(std::make_unique<ClassObject::CommandQueue>());
+			graphic_list.register_unique(std::make_unique<ClassObject::CommandList>());
+			fence_.register_unique(std::make_unique<ClassObject::Fence>());
+
+			frame_resources.resize(frame_resource_size);
+
+			for (auto& resource : frame_resources) {
+				resource.register_unique(std::make_unique<ClassModule::FrameResource>(
+					HandyItems::others::make_unique_weak(fence_)
+				));
+			}
+
+			swapchain_.register_unique(std::make_unique<ClassObject::SwapChain>());
+			heap_.register_unique(std::make_unique<ClassObject::DescriptorHeap>());
+
+			back_buffers.resize(back_buffer_size);
+
+			for (auto& buffer : back_buffers) {
+				buffer.register_unique(std::make_unique<ClassObject::BackBuffer>());
+			}
+		}
 
 		/// <summary>
 		/// デストラクタ
 		/// </summary>
-		~DirectXContext();
+		~DirectXContext() = default;
 
-		/* ===== 取得関数 ===== */
-
-		[[nodiscard]] WeakPtr<ClassObject::DXGI> get_dxgi() const noexcept {
-
-			return HandyItems::others::make_unique_weak(dxgi_);
-		}
-
-		[[nodiscard]] WeakPtr<ClassObject::Device> get_device() const noexcept {
-
-			return HandyItems::others::make_unique_weak(device_);
-		}
-
-		[[nodiscard]] WeakPtr<ClassObject::CommandQueue> get_queue() const noexcept {
-
-			return HandyItems::others::make_unique_weak(graphic_queue);
-		}
-
-		[[nodiscard]] WeakPtr<ClassObject::CommandList> get_list() const noexcept {
-
-			return HandyItems::others::make_unique_weak(graphic_list);
-		}
-
-		[[nodiscard]] WeakPtr<ClassObject::Fence> get_fence() const noexcept {
-
-			return HandyItems::others::make_unique_weak(fence_);
-		}
-
-		[[nodiscard]] std::optional<WeakPtr<ClassModule::FrameResource>> get_frame_resource(
-			std::size_t index
-		) const noexcept {
-
-			if (frame_resources.size() <= index) {
-				return std::nullopt;
-			}
-
-			return HandyItems::others::make_unique_weak(frame_resources[index]);
-		}
-
-		[[nodiscard]] std::vector<WeakPtr<ClassModule::FrameResource>> get_frame_resources() const noexcept {
-
-			std::vector<WeakPtr<ClassModule::FrameResource>> array_{};
-
-			for (auto& resource : frame_resources) {
-				array_.push_back(HandyItems::others::make_unique_weak(resource));
-			}
-
-			return array_;
-		}
-
-		[[nodiscard]] WeakPtr<ClassObject::SwapChain> get_swapchain() const noexcept {
-
-			return HandyItems::others::make_unique_weak(swapchain_);
-		}
-
-		[[nodiscard]] WeakPtr<ClassObject::DescriptorHeap> get_heap() const noexcept {
-
-			return HandyItems::others::make_unique_weak(heap_);
-		}
-
-		[[nodiscard]] std::optional<WeakPtr<ClassObject::BackBuffer>> get_back_buffer(
-			std::size_t index
-		) const noexcept {
-
-			if (back_buffers.size() <= index) {
-				return std::nullopt;
-			}
-			return HandyItems::others::make_unique_weak(back_buffers[index]);
-		}
-
-		[[nodiscard]] std::vector<WeakPtr<ClassObject::BackBuffer>> get_back_buffers() const noexcept {
-
-			std::vector<WeakPtr<ClassObject::BackBuffer>> array_{};
-
-			for (auto& buffer : back_buffers) {
-				array_.push_back(HandyItems::others::make_unique_weak(buffer));
-			}
-
-			return array_;
-		}
-
-	private:
-		/* ========== Privateメンバー変数 ========== */
-
-		/* -- 設定 -- */
-
-		const UINT back_buffer_size = 2;
-		const UINT frame_resource_size = 3;
+		/* ========== Publicメンバー変数 ========== */
 
 		/* -- Core -- */
 

@@ -129,14 +129,14 @@
     <ClCompile Include="..\DirectX\ClassObject\DXGI.cpp">
       <Filter>ソース ファイル\DirectX\ClassObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX\DirectXContext.cpp">
-      <Filter>ソース ファイル\DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="..\DirectX\ClassObject\Device.cpp">
       <Filter>ソース ファイル\DirectX\ClassObject</Filter>
     </ClCompile>
     <ClCompile Include="..\DirectX\Initializer\InitializeCore.cpp">
       <Filter>ソース ファイル\DirectX\Initializer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DirectX\DirectXUpdater.cpp">
+      <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +319,12 @@
     </ClInclude>
     <ClInclude Include="..\DirectX\ClassModule\FrameResource.h">
       <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\DirectXUpdater.h">
+      <Filter>ヘッダー ファイル\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\DirectXEnder.h">
+      <Filter>ヘッダー ファイル\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -110,6 +110,9 @@ namespace DirectX {
 
 					return;
 				}
+				else if(completed_value == 0){
+					return;
+				}
 
 				const auto hr = fence_->SetEventOnCompletion(completed_value, wait_event);
 				if (FAILED(hr)) {

@@ -28,7 +28,8 @@ namespace DirectX {
 
 	/* ========== 前方宣言 ========== */
 
-	class DirectXContext;
+	struct DirectXContext;
+	class DirectXUpdator;
 
 	/// <summary>
 	/// DirectX描画機能クラス
@@ -78,7 +79,8 @@ namespace DirectX {
 		/// </summary>
 		App::ApplicationDataShare* shera_p{};
 
-		HandyItems::others::UniquePtr<DirectXContext> context_{};
+		HandyItems::others::UniquePtr<DirectXContext> context_;
+		HandyItems::others::UniquePtr<DirectXUpdator> updator_;
 
 		const std::uint32_t back_buffer_size = 2;
 		const std::uint32_t frame_resource_size = 3;

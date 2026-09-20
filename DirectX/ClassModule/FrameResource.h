@@ -76,6 +76,15 @@ namespace DirectX {
 			/* ===== 取得関数 ===== */
 
 			/// <summary>
+			/// フェンス値取得関数
+			/// </summary>
+			/// <returns>フェンス値</returns>
+			[[nodiscard]] UINT64 get_frame_value() const noexcept {
+
+				return frame_fence_value;
+			}
+
+			/// <summary>
 			/// コマンドアロケーターWeak参照取得関数
 			/// </summary>
 			/// <returns>コマンドアロケーターWeak参照</returns>

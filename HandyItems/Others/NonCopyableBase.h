@@ -28,6 +28,19 @@ namespace HandyItems {
 			//	コピー代入演算子削除
 			NonCopyableBase& operator=(const NonCopyableBase&) = delete;
 
+			/// <summary>
+			/// ムーブコンストラクタ
+			/// </summary>
+			/// <param name="">右辺値</param>
+			NonCopyableBase(NonCopyableBase&&) = default;
+
+			/// <summary>
+			/// ムーブ代入演算子
+			/// </summary>
+			/// <param name="">右辺値</param>
+			/// <returns>自身参照</returns>
+			NonCopyableBase& operator=(NonCopyableBase&&) = default;
+
 		protected:
 			/* ===== Protectedメンバー関数 ===== */
 
@@ -53,6 +66,19 @@ namespace HandyItems {
 		{
 		public:
 			/* ===== Publicメンバー関数 ===== */
+
+			/// <summary>
+			/// コピーコンストラクタ
+			/// </summary>
+			/// <param name="">左辺値</param>
+			NonMovableBase(const NonMovableBase&) = default;
+
+			/// <summary>
+			/// コピー代入演算子
+			/// </summary>
+			/// <param name="">左辺値</param>
+			/// <returns>自身参照</returns>
+			NonMovableBase& operator=(const NonMovableBase&) = default;
 
 			//	ムーブコンストラクタ削除
 			NonMovableBase(NonMovableBase&&) = delete;

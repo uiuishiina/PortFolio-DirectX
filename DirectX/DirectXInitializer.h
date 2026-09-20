@@ -13,14 +13,6 @@
 #include<concepts>
 #include<cstdint>
 
-/* ========== 前方宣言 ========== */
-
-/// <summary>
-/// HWND用前方宣言
-/// </summary>
-struct HWND__;
-using HWND = HWND__*;
-
 /// <summary>
 /// DirectX名前空間
 /// </summary>
