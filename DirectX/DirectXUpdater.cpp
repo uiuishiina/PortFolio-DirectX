@@ -2,6 +2,7 @@
 /* ========== Includeファイル ========== */
 
 #include"DirectXUpdater.h"
+#include"ClassModule/FrameContext.h"
 
 using namespace DirectX;
 
@@ -39,12 +40,14 @@ void DirectXUpdator::update() {
 
 	const auto buffer_index = context_->swapchain_->get()->GetCurrentBackBufferIndex();
 
-	auto* back = context_->back_buffers[buffer_index].get();
-	back->barrier_transition(context_->graphic_list->get(), D3D12_RESOURCE_STATE_RENDER_TARGET);
+	auto frame = ClassModule::FrameContext(context_.get(), buffer_index, current_index);
+
+
+	auto* back = frame.back_buffer.get();
+	back->barrier_transition(frame.graphic_list->get(), D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	float color[4] = { 1,1,1,1 };
-	context_->graphic_list->get()->ClearRenderTargetView(back->get_RTV_handle(), color, 0, nullptr);
-
+	frame.graphic_list->get()->ClearRenderTargetView(back->get_RTV_handle(), color, 0, nullptr);
 
 	back->barrier_transition(context_->graphic_list->get(), D3D12_RESOURCE_STATE_PRESENT);
 

@@ -33,7 +33,7 @@ namespace DirectX {
 	/// </summary>
 	struct DirectXContext final : HandyItems::others::NonCopyableMovableBase
 	{
-
+		
 		template<typename T>
 		using UniquePtr = HandyItems::others::UniquePtr<T>;
 

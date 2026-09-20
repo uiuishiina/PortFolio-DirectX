@@ -326,5 +326,8 @@
     <ClInclude Include="..\DirectX\DirectXEnder.h">
       <Filter>ヘッダー ファイル\DirectX</Filter>
     </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\FrameContext.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
