@@ -30,6 +30,8 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 [[nodiscard]] bool DirectXRenderer::initialize_renderer(
     HWND hwnd,
+    std::uint32_t width,
+    std::uint32_t height,
     App::ApplicationDataShare* shera
 ) {
 
@@ -40,7 +42,14 @@ DirectXRenderer::~DirectXRenderer() = default;
 
     DirectXInitializer initializer{};
 
-    if (!initializer.initialize(context_.get())) {
+    if (!initializer.initialize(
+        context_.get(),
+        hwnd_,
+        width,
+        height,
+        back_buffer_size,
+        frame_resource_size
+    )) {
         return false;
     }
 

@@ -91,6 +91,18 @@
     <Filter Include="ソース ファイル\DirectX\ClassObject">
       <UniqueIdentifier>{30ff92fb-8611-4dd1-92f5-5c64b7c1f771}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\DirectX\Initializer">
+      <UniqueIdentifier>{ce880941-32ec-4f12-a7de-8ae674bfbf15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\DirectX\ClassObject\GPUResource">
+      <UniqueIdentifier>{12dec8c0-573b-4618-b211-a1c1b54073d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\DirectX\ClassObject\GPUResource\RenderTarget">
+      <UniqueIdentifier>{860a0b53-ddc4-4a37-80ec-89adb4a6d00b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\DirectX\ClassModule">
+      <UniqueIdentifier>{00f30a17-773e-49a3-b47f-be213ef5b190}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Entry\Entry.cpp">
@@ -122,6 +134,9 @@
     </ClCompile>
     <ClCompile Include="..\DirectX\ClassObject\Device.cpp">
       <Filter>ソース ファイル\DirectX\ClassObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DirectX\Initializer\InitializeCore.cpp">
+      <Filter>ソース ファイル\DirectX\Initializer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -271,6 +286,39 @@
     </ClInclude>
     <ClInclude Include="..\DirectX\ClassObject\Device.h">
       <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\CommandQueue.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\CommandAllocator.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\CommandList.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\ResourceBarrier.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\GPUResourceBase.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\RenderTarget.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\RenderTarget\BackBuffer.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject\GPUResource\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\DescriptorHeap.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\SwapChain.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\Fence.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\FrameResource.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

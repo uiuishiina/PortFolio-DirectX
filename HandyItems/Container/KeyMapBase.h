@@ -116,7 +116,7 @@ namespace HandyItems {
 			typename Converter = key::FeistelKeyConverter<Key, EncodedKey>
 		>
 			requires key::concepts::KeyConverter<Converter, Key, EncodedKey>
-		class KeyMapBase : others::NonCopyableBase
+		class KeyMapBase : others::NonCopyableMovableBase
 		{
 		public:
 			/* ========== クラス設定 ========== */

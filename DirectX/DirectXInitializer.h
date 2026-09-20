@@ -11,6 +11,15 @@
 
 //	その他
 #include<concepts>
+#include<cstdint>
+
+/* ========== 前方宣言 ========== */
+
+/// <summary>
+/// HWND用前方宣言
+/// </summary>
+struct HWND__;
+using HWND = HWND__*;
 
 /// <summary>
 /// DirectX名前空間
@@ -65,7 +74,7 @@ namespace DirectX {
 	>
 	requires
 	std::derived_from<Core, Initialize::InitializeCore>
-	class DirectXInitializer final : HandyItems::others::NonCopyableBase 
+	class DirectXInitializer final : HandyItems::others::NonCopyableMovableBase 
 	{
 	public:
 		/* ========== Publicメンバー関数 ========== */
@@ -83,11 +92,22 @@ namespace DirectX {
 		/* ===== 初期化関数 ===== */
 
 		[[nodiscard]] bool initialize(
-			DirectXContext* context
+			DirectXContext* context,
+			HWND hwnd,
+			std::uint32_t width,
+			std::uint32_t height,
+			UINT back_buffer_size,
+			UINT frame_resource_size
 		) {
 			Core core{};
 
-			auto hr = core.initialize_core(context);
+			auto hr = core.initialize_core(
+				context,
+				hwnd,
+				width,
+				height,
+				back_buffer_size
+			);
 			if (FAILED(hr)) {
 
 				InitializeLog::hresult_error_log(hr);

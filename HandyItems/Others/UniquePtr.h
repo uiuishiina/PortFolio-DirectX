@@ -242,11 +242,19 @@ namespace HandyItems {
 			}
 
 			/// <summary>
-			/// unique_ptr本体参照ポインター演算子オーバーロード
+			/// unique_ptr本体参照アロー演算子オーバーロード
 			/// </summary>
 			/// <returns>本体参照</returns>
 			[[nodiscard]] T* operator -> () const noexcept {
 				return get();
+			}
+
+			/// <summary>
+			/// unique_ptr生存フラグ取得関数
+			/// </summary>
+			/// <returns>unique_ptr生存フラグ</returns>
+			[[nodiscard]] bool has_unique() const noexcept {
+				return block_->has_unique();
 			}
 
 		private:
@@ -296,7 +304,7 @@ namespace HandyItems {
 			/// </summary>
 			/// <param name="p">Uniqueインスタンス保存クラス参照</param>
 			UniqueWeakPtr(
-				UniquePtr<T>* p
+				const UniquePtr<T>* p
 			) :
 				block_{ 
 				p ? p->get_block() : nullptr 
@@ -313,11 +321,6 @@ namespace HandyItems {
 					block_->delete_weak();
 				}
 			}
-
-			UniqueWeakPtr(const UniqueWeakPtr&) = delete;
-			UniqueWeakPtr& operator=(const UniqueWeakPtr&) = delete;
-			UniqueWeakPtr(UniqueWeakPtr&&) = delete;
-			UniqueWeakPtr& operator=(UniqueWeakPtr&&) = delete;
 
 			/// <summary>
 			/// unique生存チェック関数
@@ -358,6 +361,10 @@ namespace HandyItems {
 				return block_ ? block_->get_unique() : nullptr;
 			}
 
+			[[nodiscard]] T* operator -> () const {
+				return get();
+			}
+
 		private:
 			/* ========== Privateメンバー変数 ========== */
 
@@ -383,7 +390,7 @@ namespace HandyItems {
 		/// <param name="unique">Uniqueインスタンス保存クラス参照</param>
 		/// <returns>作成したUnique参照保存クラス</returns>
 		template<typename T>
-		[[nodiscard]] static UniqueWeakPtr<T> make_unique_weak(UniquePtr<T>& unique) {
+		[[nodiscard]] static UniqueWeakPtr<T> make_unique_weak(const UniquePtr<T>& unique) {
 			return UniqueWeakPtr<T>{&unique};
 		}
 

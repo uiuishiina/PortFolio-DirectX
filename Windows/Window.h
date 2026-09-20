@@ -4,7 +4,7 @@
 
 #include"Others/NonCopyableBase.h"
 #include<cstdint>
-#include<memory>
+#include<utility>
 
 /* ========== 前方宣言 ========== */
 
@@ -69,14 +69,15 @@ namespace Windows {
 			width_{ w },
 			height_{ h } {}
 
-		/* ===== 演算子オーバーロード ===== */
-
 		/// <summary>
-		/// [ () ] 演算子オーバーロード
+		/// 関数呼び出し演算子オーバーロード
 		/// </summary>
 		/// <returns>[ 横幅 ][ 縦幅 ] の構造化束縛</returns>
-		[[nodiscard]] auto operator () () const {
-			return std::make_pair(width_, height_);
+		[[nodiscard]] std::pair<
+			std::uint32_t, 
+			std::uint32_t
+		> operator () () const {
+			return { width_, height_ };
 		}
 	};
 
@@ -84,7 +85,7 @@ namespace Windows {
 	/// <summary>
 	/// ウィンドウクラス
 	/// </summary>
-	class Window final : public HandyItems::others::NonCopyableBase
+	class Window final : public HandyItems::others::NonCopyableMovableBase
 	{
 	public:
 		/* ========== Publicメンバー関数 ========== */
@@ -151,6 +152,14 @@ namespace Windows {
 		/// <returns></returns>
 		[[nodiscard]] HWND get_hwnd() const noexcept {
 			return hwnd_;
+		}
+
+		/// <summary>
+		/// ウィンドウサイズ取得関数
+		/// </summary>
+		/// <returns></returns>
+		[[nodiscard]] WindowSize get_size() const noexcept {
+			return size_;
 		}
 
 		/// <summary>

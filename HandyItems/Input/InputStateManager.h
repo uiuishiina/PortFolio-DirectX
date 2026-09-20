@@ -15,7 +15,7 @@ namespace HandyItems {
 		/// <summary>
 		/// 入力機能マネージャークラス
 		/// </summary>
-		class InputStateManager final : public others::NonCopyableBase
+		class InputStateManager final : public others::NonCopyableMovableBase
 		{
 		public:
 			/* ========== クラス設定 ========== */

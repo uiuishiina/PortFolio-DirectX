@@ -24,7 +24,7 @@ namespace HandyItems {
 		/// <details>
 		/// 共有するデータの [ 参照 ] をまとめるクラス
 		/// </details>
-		class DataShare : public others::NonCopyableBase
+		class DataShare : public others::NonCopyableMovableBase
 		{
 		public:
 			/* ========== Publicメンバー関数 ========== */

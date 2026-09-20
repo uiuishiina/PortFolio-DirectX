@@ -2,7 +2,10 @@
 
 /* ========== Includeファイル ========== */
 
+//	HandyItems
 #include"Others/NonCopyableBase.h"
+
+//	DirectX
 #include<dxgi1_6.h>
 #include<d3d12.h>
 #include<wrl/client.h>
@@ -17,8 +20,10 @@ namespace DirectX {
 	/// </summary>
 	namespace ClassObject {
 
-
-		class DXGI final : HandyItems::others::NonCopyableBase
+		/// <summary>
+		/// DXGIクラス
+		/// </summary>
+		class DXGI final : HandyItems::others::NonCopyableMovableBase
 		{
 		public:
 			/* ========== Publicメンバー関数 ========== */
@@ -63,6 +68,7 @@ namespace DirectX {
 			/// </summary>
 			/// <returns>DXGIファクトリー参照</returns>
 			[[nodiscard]] IDXGIFactory6* get_factory() const noexcept {
+
 				return factory_.Get();
 			}
 
@@ -71,6 +77,7 @@ namespace DirectX {
 			/// </summary>
 			/// <returns>DXGIアダプター参照</returns>
 			[[nodiscard]] IDXGIAdapter1* get_adapter() const noexcept {
+
 				return adapter_.Get();
 			}
 

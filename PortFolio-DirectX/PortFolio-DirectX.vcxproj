@@ -25,6 +25,7 @@
     <ClCompile Include="..\DirectX\DirectXContext.cpp" />
     <ClCompile Include="..\DirectX\DirectXInitializer.cpp" />
     <ClCompile Include="..\DirectX\DirectXRenderer.cpp" />
+    <ClCompile Include="..\DirectX\Initializer\InitializeCore.cpp" />
     <ClCompile Include="..\Entry\Entry.cpp" />
     <ClCompile Include="..\HandyItems\Debug\DebugLogOutPut.cpp" />
     <ClCompile Include="..\HandyItems\Debug\DebugLogSystem.cpp" />
@@ -33,8 +34,19 @@
   <ItemGroup>
     <ClInclude Include="..\Application\Application.h" />
     <ClInclude Include="..\Application\ApplicationDataShare.h" />
+    <ClInclude Include="..\DirectX\ClassModule\FrameResource.h" />
+    <ClInclude Include="..\DirectX\ClassObject\CommandAllocator.h" />
+    <ClInclude Include="..\DirectX\ClassObject\CommandList.h" />
+    <ClInclude Include="..\DirectX\ClassObject\CommandQueue.h" />
+    <ClInclude Include="..\DirectX\ClassObject\DescriptorHeap.h" />
     <ClInclude Include="..\DirectX\ClassObject\Device.h" />
     <ClInclude Include="..\DirectX\ClassObject\DXGI.h" />
+    <ClInclude Include="..\DirectX\ClassObject\Fence.h" />
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\GPUResourceBase.h" />
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\RenderTarget.h" />
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\RenderTarget\BackBuffer.h" />
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\ResourceBarrier.h" />
+    <ClInclude Include="..\DirectX\ClassObject\SwapChain.h" />
     <ClInclude Include="..\DirectX\DirectXContext.h" />
     <ClInclude Include="..\DirectX\DirectXInitializer.h" />
     <ClInclude Include="..\DirectX\DirectXRenderer.h" />

@@ -28,12 +28,12 @@ namespace DirectX {
 
 	/* ========== 前方宣言 ========== */
 
-	struct DirectXContext;
+	class DirectXContext;
 
 	/// <summary>
 	/// DirectX描画機能クラス
 	/// </summary>
-	class DirectXRenderer final : HandyItems::others::NonCopyableBase
+	class DirectXRenderer final : HandyItems::others::NonCopyableMovableBase
 	{
 	public:
 		/* ========== Publicメンバー関数 ========== */
@@ -52,6 +52,8 @@ namespace DirectX {
 
 		[[nodiscard]] bool initialize_renderer(
 			HWND hwnd,
+			std::uint32_t width,
+			std::uint32_t height,
 			App::ApplicationDataShare* shera
 		);
 
@@ -77,6 +79,9 @@ namespace DirectX {
 		App::ApplicationDataShare* shera_p{};
 
 		HandyItems::others::UniquePtr<DirectXContext> context_{};
+
+		const std::uint32_t back_buffer_size = 2;
+		const std::uint32_t frame_resource_size = 3;
 
 		/* ========== Privateメンバー関数 ========== */
 

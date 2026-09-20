@@ -34,6 +34,8 @@ Application::~Application() {
     run_app();
 
     end_app();
+
+    return true;
 }
 
 /* ========== Privateメンバー関数 ========== */
@@ -107,8 +109,12 @@ void Application::run_app() {
 
 [[nodiscard]] bool Application::initialize_renderer() {
 
+    const auto [w, h] = main_window.get_size();
+
     const auto value = main_renderer.initialize_renderer(
         main_window.get_hwnd(),
+        w,
+        h,
         &data_share
     );
 

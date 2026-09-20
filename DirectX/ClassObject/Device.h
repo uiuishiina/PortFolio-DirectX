@@ -2,10 +2,15 @@
 
 /* ========== Includeファイル ========== */
 
+//	HandyItems
 #include"Others/NonCopyableBase.h"
+
+//	DirectX
 #include<dxgi1_6.h>
 #include<d3d12.h>
 #include<wrl/client.h>
+
+//	その他
 #include<utility>
 
 /// <summary>
@@ -18,8 +23,10 @@ namespace DirectX {
 	/// </summary>
 	namespace ClassObject {
 
-
-		class Device final : HandyItems::others::NonCopyableBase
+		/// <summary>
+		/// Deviceクラス
+		/// </summary>
+		class Device final : HandyItems::others::NonCopyableMovableBase
 		{
 		public:
 			/* ========== Publicメンバー関数 ========== */
@@ -51,8 +58,18 @@ namespace DirectX {
 			/// デバイス参照取得関数
 			/// </summary>
 			/// <returns>デバイス参照</returns>
-			[[nodiscard]] ID3D12Device* get_device() const noexcept {
+			[[nodiscard]] ID3D12Device* get() const noexcept {
+
 				return device_.Get();
+			}
+
+			/// <summary>
+			/// デバイス参照アロー演算子オーバーロード
+			/// </summary>
+			/// <returns>デバイス参照</returns>
+			[[nodiscard]] ID3D12Device* operator -> () const noexcept {
+
+				return get();
 			}
 
 		private:
