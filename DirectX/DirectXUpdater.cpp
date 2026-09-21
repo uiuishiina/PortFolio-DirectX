@@ -43,7 +43,7 @@ void DirectXUpdator::update() {
 	auto frame = ClassModule::FrameContext(context_.get(), buffer_index, current_index);
 
 
-	auto* back = frame.back_buffer.get();
+	auto* back = frame.back_buffer;
 	back->barrier_transition(frame.graphic_list->get(), D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	float color[4] = { 1,1,1,1 };

@@ -85,6 +85,8 @@ namespace DirectX {
 		const std::uint32_t back_buffer_size = 2;
 		const std::uint32_t frame_resource_size = 3;
 
+		std::uint64_t frame_count{};
+
 		/* ========== Privateメンバー関数 ========== */
 
 	};

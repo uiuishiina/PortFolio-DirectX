@@ -34,8 +34,10 @@
   <ItemGroup>
     <ClInclude Include="..\Application\Application.h" />
     <ClInclude Include="..\Application\ApplicationDataShare.h" />
+    <ClInclude Include="..\DirectX\ClassModule\CommandPass.h" />
     <ClInclude Include="..\DirectX\ClassModule\FrameContext.h" />
     <ClInclude Include="..\DirectX\ClassModule\FrameResource.h" />
+    <ClInclude Include="..\DirectX\ClassModule\PassBase.h" />
     <ClInclude Include="..\DirectX\ClassObject\CommandAllocator.h" />
     <ClInclude Include="..\DirectX\ClassObject\CommandList.h" />
     <ClInclude Include="..\DirectX\ClassObject\CommandQueue.h" />

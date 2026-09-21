@@ -5,8 +5,6 @@
 //	DirectX
 #include"../DirectXContext.h"
 
-#include<functional>
-
 /// <summary>
 /// DirectX名前空間
 /// </summary>
@@ -33,70 +31,75 @@ namespace DirectX {
 			/* -- Core -- */
 
 			/// <summary>
-			/// DXGIインスタンス
+			/// DXGI
 			/// </summary>
-			WeakPtr<ClassObject::DXGI> dxgi_;
+			ClassObject::DXGI* dxgi_;
 
 			/// <summary>
 			/// Deviceインスタンス
 			/// </summary>
-			WeakPtr<ClassObject::Device> device_;
+			ClassObject::Device* device_;
 
 			/// <summary>
 			/// 描画用コマンドキューインスタンス
 			/// </summary>
-			WeakPtr<ClassObject::CommandQueue> graphic_queue;
+			ClassObject::CommandQueue* graphic_queue;
 
 			/// <summary>
 			/// 描画用コマンドリストインスタンス
 			/// </summary>
-			WeakPtr<ClassObject::CommandList> graphic_list;
+			ClassObject::CommandList* graphic_list;
 
 			/// <summary>
 			/// フェンスインスタンス
 			/// </summary>
-			WeakPtr<ClassObject::Fence> fence_;
+			ClassObject::Fence* fence_;
 
 			/// <summary>
 			/// フレームリソースインスタンス配列
 			/// </summary>
-			WeakPtr<ClassModule::FrameResource> frame_resource;
+			ClassModule::FrameResource* frame_resource;
 
 			/// <summary>
 			/// スワップチェーンインスタンス
 			/// </summary>
-			WeakPtr<ClassObject::SwapChain> swapchain_;
+			ClassObject::SwapChain* swapchain_;
 
 			/// <summary>
 			/// ディスクリプタヒープインスタンス
 			/// </summary>
-			WeakPtr<ClassObject::DescriptorHeap> heap_;
+			ClassObject::DescriptorHeap* heap_;
 
 			/// <summary>
 			/// バックバッファインスタンス配列
 			/// </summary>
-			WeakPtr<ClassObject::BackBuffer> back_buffer;
+			ClassObject::BackBuffer* back_buffer;
 
 			/* ========== Publicメンバー関数 ========== */
 
 			//	コンストラクタ削除
 			FrameContext() = delete;
 
+			/// <summary>
+			/// 引数付きコンストラクタ
+			/// </summary>
+			/// <param name="context"></param>
+			/// <param name="current_back_buffer"></param>
+			/// <param name="current_resource"></param>
 			FrameContext(
 				DirectXContext* context,
 				UINT current_back_buffer,
 				size_t current_resource
 			) :
-				dxgi_{ HandyItems::others::make_unique_weak(context->dxgi_) },
-				device_{ HandyItems::others::make_unique_weak(context->device_) },
-				graphic_queue{ HandyItems::others::make_unique_weak(context->graphic_queue) },
-				graphic_list{ HandyItems::others::make_unique_weak(context->graphic_list) },
-				fence_{ HandyItems::others::make_unique_weak(context->fence_) },
-				frame_resource{ HandyItems::others::make_unique_weak(context->frame_resources[current_resource]) },
-				swapchain_{ HandyItems::others::make_unique_weak(context->swapchain_) },
-				heap_{ HandyItems::others::make_unique_weak(context->heap_) },
-				back_buffer{ HandyItems::others::make_unique_weak(context->back_buffers[current_back_buffer]) } {}
-
+				dxgi_{ context->dxgi_.get() },
+				device_{ context->device_.get() },
+				graphic_queue{ context->graphic_queue.get() },
+				graphic_list{ context->graphic_list.get() },
+				fence_{ context->fence_.get() },
+				frame_resource{ context->frame_resources[current_resource].get() },
+				swapchain_{ context->swapchain_.get() },
+				heap_{ context->heap_.get() },
+				back_buffer{ context->back_buffers[current_back_buffer].get() } {}
 
 			/// <summary>
 			/// デストラクタ

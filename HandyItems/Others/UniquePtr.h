@@ -237,6 +237,7 @@ namespace HandyItems {
 
 				if (!block_->has_unique()) {
 					DEBUG_ERROR_LOG("Not Found Unique");
+					return nullptr;
 				}
 				return unique_.get();
 			}

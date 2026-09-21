@@ -329,5 +329,11 @@
     <ClInclude Include="..\DirectX\ClassModule\FrameContext.h">
       <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
     </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\PassBase.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\CommandPass.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

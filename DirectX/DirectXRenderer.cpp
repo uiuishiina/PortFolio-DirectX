@@ -75,6 +75,8 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 void DirectXRenderer::update_renderer() {
 
+    frame_count++;
+
     if (!updator_->begin_update()) {
         DEBUG_ERROR_LOG("DirectXRenderer :: update_renderer :: begin_update() = false");
     }
@@ -98,4 +100,6 @@ void DirectXRenderer::update_renderer() {
 void DirectXRenderer::end_renderer() {
 
     DirectXEnder::end(context_.get());
+
+    DEBUG_LOG("Frame_Count = ", frame_count);
 }
