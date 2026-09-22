@@ -9,15 +9,20 @@
 /// </summary>
 namespace DirectX {
 
-
+	/// <summary>
+	/// DirectX描画機能終了クラス
+	/// </summary>
 	class DirectXEnder final
 	{
 	public:
 		/* ========== Publicメンバー関数 ========== */
 
-
 		/* ===== 終了関数 ===== */
 
+		/// <summary>
+		/// 描画機能終了関数
+		/// </summary>
+		/// <param name="context">DirectXオブジェクトインスタンスまとめクラス参照</param>
 		static void end(
 			DirectXContext* context
 		) {
@@ -28,7 +33,6 @@ namespace DirectX {
 			const auto signal = context->fence_->signal(context->graphic_queue->get());
 			context->fence_->wait_to_completed_value(signal);
 		}
-
 
 	private:
 		/* ========== Privateメンバー関数 ========== */

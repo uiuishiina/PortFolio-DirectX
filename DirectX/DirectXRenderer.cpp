@@ -23,16 +23,16 @@ using namespace DirectX;
 /// </summary>
 DirectXRenderer::DirectXRenderer() {
 
-    context_.register_unique(std::make_unique<DirectXContext>(
-        back_buffer_size, 
+    context_ = std::make_unique<DirectXContext>(
+        back_buffer_size,
         frame_resource_size
-    ));
+    );
 
-    updator_.register_unique(std::make_unique<DirectXUpdator>(
+    updator_ = std::make_unique<DirectXUpdator>(
         frame_resource_size,
-        HandyItems::others::make_unique_weak(context_),
+        context_.get(),
         shera_p
-    ));
+    );
 }
 
 /// <summary>
@@ -55,15 +55,24 @@ DirectXRenderer::~DirectXRenderer() = default;
     hwnd_ = hwnd;
     shera_p = shera;
 
+    if (!hwnd_ || !shera_p) {
+        return false;
+    }
+
     DirectXInitializer initializer{};
 
+    desc::InitializeDesc desc_{};
+
+    desc_.context_ = context_.get();
+    desc_.share_p = shera_p;
+    desc_.back_buffer_size = back_buffer_size;
+    desc_.frame_resource_size = frame_resource_size;
+    desc_.core_ = Initialize::desc::CoreDesc{ hwnd_ ,width,height };
+    //desc_.pass_ = Initialize::desc::PassDesc{
+    //};
+
     if (!initializer.initialize(
-        context_.get(),
-        hwnd_,
-        width,
-        height,
-        back_buffer_size,
-        frame_resource_size
+        desc_
     )) {
         return false;
     }

@@ -40,7 +40,7 @@ void DirectXUpdator::update() {
 
 	const auto buffer_index = context_->swapchain_->get()->GetCurrentBackBufferIndex();
 
-	auto frame = ClassModule::FrameContext(context_.get(), buffer_index, current_index);
+	auto frame = ClassModule::FrameContext{ context_, buffer_index, current_index };
 
 
 	auto* back = frame.back_buffer;
@@ -50,6 +50,10 @@ void DirectXUpdator::update() {
 	frame.graphic_list->get()->ClearRenderTargetView(back->get_RTV_handle(), color, 0, nullptr);
 
 	back->barrier_transition(context_->graphic_list->get(), D3D12_RESOURCE_STATE_PRESENT);
+
+	//for (auto& pass : pass_order) {
+	//	pass->apply_pass(frame);
+	//}
 
 }
 

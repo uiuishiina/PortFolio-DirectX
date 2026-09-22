@@ -14,10 +14,8 @@ using namespace DirectX;
 /// <returns>初期化の成否</returns>
 [[nodiscard]] HRESULT Initialize::InitializeCore::initialize_core(
 	DirectXContext* context,
-	HWND hwnd,
-	std::uint32_t width,
-	std::uint32_t height,
-	std::uint32_t back_buffer_size
+	std::uint32_t back_buffer_size,
+	desc::CoreDesc& desc
 ) {
 
 	HRESULT hr{};
@@ -77,9 +75,9 @@ using namespace DirectX;
 	hr = context->swapchain_->create_swapchain(
 		context->dxgi_->get_factory(),
 		context->graphic_queue->get(),
-		hwnd,
-		width,
-		height,
+		desc.hwnd,
+		desc.width,
+		desc.height,
 		back_buffer_size
 	);
 	if (FAILED(hr)) {

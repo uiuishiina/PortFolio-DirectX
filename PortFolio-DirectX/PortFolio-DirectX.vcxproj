@@ -50,12 +50,14 @@
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\RenderTarget\BackBuffer.h" />
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\ResourceBarrier.h" />
     <ClInclude Include="..\DirectX\ClassObject\SwapChain.h" />
+    <ClInclude Include="..\DirectX\Container\PassContainer.h" />
     <ClInclude Include="..\DirectX\DirectXContext.h" />
     <ClInclude Include="..\DirectX\DirectXEnder.h" />
     <ClInclude Include="..\DirectX\DirectXInitializer.h" />
     <ClInclude Include="..\DirectX\DirectXRenderer.h" />
     <ClInclude Include="..\DirectX\DirectXUpdater.h" />
     <ClInclude Include="..\DirectX\Initializer\InitializeCore.h" />
+    <ClInclude Include="..\DirectX\Initializer\InitializePass.h" />
     <ClInclude Include="..\HandyItems\Bit\BitFlag.h" />
     <ClInclude Include="..\HandyItems\Container\KeyMap.h" />
     <ClInclude Include="..\HandyItems\Container\KeyMapBase.h" />

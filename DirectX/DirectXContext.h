@@ -4,7 +4,6 @@
 
 //	HandyItems
 #include"Others/NonCopyableBase.h"
-#include"Others/UniquePtr.h"
 
 //	DirectX
 #include"ClassObject/DXGI.h"
@@ -18,10 +17,12 @@
 
 #include"ClassModule/FrameResource.h"
 
+
 //	その他
 #include<vector>
 #include<optional>
 #include<cstdint>
+#include<memory>
 
 /// <summary>
 /// DirectX名前空間
@@ -33,12 +34,9 @@ namespace DirectX {
 	/// </summary>
 	struct DirectXContext final : HandyItems::others::NonCopyableMovableBase
 	{
-		
-		template<typename T>
-		using UniquePtr = HandyItems::others::UniquePtr<T>;
 
 		template<typename T>
-		using WeakPtr = HandyItems::others::UniqueWeakPtr<T>;
+		using UniquePtr = std::unique_ptr<T>;
 
 	public:
 		/* ========== Publicメンバー関数 ========== */
@@ -58,28 +56,31 @@ namespace DirectX {
 
 			/* -- Core -- */
 
-			dxgi_.register_unique(std::make_unique<ClassObject::DXGI>());
-			device_.register_unique(std::make_unique<ClassObject::Device>());
-			graphic_queue.register_unique(std::make_unique<ClassObject::CommandQueue>());
-			graphic_list.register_unique(std::make_unique<ClassObject::CommandList>());
-			fence_.register_unique(std::make_unique<ClassObject::Fence>());
+			dxgi_ = std::make_unique<ClassObject::DXGI>();
+			device_ = std::make_unique<ClassObject::Device>();
+			graphic_queue = std::make_unique<ClassObject::CommandQueue>();
+			graphic_list = std::make_unique<ClassObject::CommandList>();
+			fence_ = std::make_unique<ClassObject::Fence>();
 
 			frame_resources.resize(frame_resource_size);
 
 			for (auto& resource : frame_resources) {
-				resource.register_unique(std::make_unique<ClassModule::FrameResource>(
-					HandyItems::others::make_unique_weak(fence_)
-				));
+				resource = std::make_unique<ClassModule::FrameResource>(fence_.get());
 			}
 
-			swapchain_.register_unique(std::make_unique<ClassObject::SwapChain>());
-			heap_.register_unique(std::make_unique<ClassObject::DescriptorHeap>());
+			swapchain_ = std::make_unique<ClassObject::SwapChain>();
+			heap_ = std::make_unique<ClassObject::DescriptorHeap>();
 
 			back_buffers.resize(back_buffer_size);
 
-			for (auto& buffer : back_buffers) {
-				buffer.register_unique(std::make_unique<ClassObject::BackBuffer>());
+			for (auto& back_buffer : back_buffers) {
+				back_buffer = std::make_unique<ClassObject::BackBuffer>();
 			}
+
+
+			/* -- Container -- */
+
+			//pass_container = std::make_unique<Container::PassContainer>();
 		}
 
 		/// <summary>
@@ -134,7 +135,15 @@ namespace DirectX {
 		/// <summary>
 		/// バックバッファインスタンス配列
 		/// </summary>
-		std::vector< UniquePtr<ClassObject::BackBuffer>> back_buffers{};
+		std::vector<UniquePtr<ClassObject::BackBuffer>> back_buffers{};
+
+
+		/* -- Container -- */
+
+		/// <summary>
+		/// 描画パスコンテナインスタンス
+		/// </summary>
+		//UniquePtr<Container::PassContainer> pass_container{};
 
 	};
 }

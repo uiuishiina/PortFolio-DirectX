@@ -103,6 +103,9 @@
     <Filter Include="ヘッダー ファイル\DirectX\ClassModule">
       <UniqueIdentifier>{00f30a17-773e-49a3-b47f-be213ef5b190}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\DirectX\Container">
+      <UniqueIdentifier>{f508d1a4-6236-4d4d-953f-bbd69bed9699}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Entry\Entry.cpp">
@@ -334,6 +337,12 @@
     </ClInclude>
     <ClInclude Include="..\DirectX\ClassModule\CommandPass.h">
       <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Container\PassContainer.h">
+      <Filter>ヘッダー ファイル\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Initializer\InitializePass.h">
+      <Filter>ヘッダー ファイル\DirectX\Initializer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

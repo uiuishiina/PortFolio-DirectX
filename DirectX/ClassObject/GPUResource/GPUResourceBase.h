@@ -15,49 +15,49 @@
 namespace DirectX {
 
 	/// <summary>
-	/// DirectXオブジェクト設定構造体名前空間
-	/// </summary>
-	namespace desc {
-
-		/// <summary>
-		/// GPUリソース設定構造体
-		/// </summary>
-		struct GPUResourceDesc {
-
-			/* ========== メンバー変数 ========== */
-
-			/// <summary>
-			/// ヒーププロパティ設定
-			/// </summary>
-			D3D12_HEAP_PROPERTIES heap_properties{};
-
-			/// <summary>
-			/// ヒープフラグ設定
-			/// </summary>
-			D3D12_HEAP_FLAGS heap_flags = D3D12_HEAP_FLAG_NONE;
-
-			/// <summary>
-			/// リソース設定
-			/// </summary>
-			D3D12_RESOURCE_DESC resource_desc{};
-
-			/// <summary>
-			/// 初期リソースステート
-			/// </summary>
-			D3D12_RESOURCE_STATES initial_state = D3D12_RESOURCE_STATE_COMMON;
-
-			/// <summary>
-			/// クリア値設定
-			/// </summary>
-			const D3D12_CLEAR_VALUE* clear_value = nullptr;
-
-		};
-	}
-
-	/// <summary>
 	/// DirectXオブジェクト名前空間
 	/// </summary>
 	namespace ClassObject {
+
+		/// <summary>
+		/// DirectXオブジェクト設定構造体名前空間
+		/// </summary>
+		namespace desc {
+
+			/// <summary>
+			/// GPUリソース設定構造体
+			/// </summary>
+			struct GPUResourceDesc {
+
+				/* ========== メンバー変数 ========== */
+
+				/// <summary>
+				/// ヒーププロパティ設定
+				/// </summary>
+				D3D12_HEAP_PROPERTIES heap_properties{};
+
+				/// <summary>
+				/// ヒープフラグ設定
+				/// </summary>
+				D3D12_HEAP_FLAGS heap_flags = D3D12_HEAP_FLAG_NONE;
+
+				/// <summary>
+				/// リソース設定
+				/// </summary>
+				D3D12_RESOURCE_DESC resource_desc{};
+
+				/// <summary>
+				/// 初期リソースステート
+				/// </summary>
+				D3D12_RESOURCE_STATES initial_state = D3D12_RESOURCE_STATE_COMMON;
+
+				/// <summary>
+				/// クリア値設定
+				/// </summary>
+				const D3D12_CLEAR_VALUE* clear_value = nullptr;
+
+			};
+		}
 
 		/// <summary>
 		/// GPUリソース基底クラス

@@ -15,8 +15,6 @@ namespace DirectX {
 	/// </summary>
 	namespace ClassModule {
 
-		
-
 		struct FrameContext final : HandyItems::others::NonCopyableMovableBase {
 
 			template<typename T>

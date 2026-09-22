@@ -44,11 +44,11 @@ namespace DirectX {
 			/// </summary>
 			/// <param name="fence">フェンスインスタンスWeak参照</param>
 			FrameResource(
-				const WeakPtr<ClassObject::Fence>& fence
+				ClassObject::Fence* fence
 			):
 				fence_{ fence } {
 
-				graphic_allocatpor.register_unique(std::make_unique<ClassObject::CommandAllocator>());
+				graphic_allocatpor = std::make_unique<ClassObject::CommandAllocator>();
 			}
 
 			/// <summary>
@@ -65,10 +65,6 @@ namespace DirectX {
 			void end_frame_signal(
 				ID3D12CommandQueue* queue_
 			) {
-
-				if (!fence_.check()) {
-					return;
-				}
 
 				frame_fence_value = fence_->signal(queue_);
 			}
@@ -88,9 +84,9 @@ namespace DirectX {
 			/// コマンドアロケーターWeak参照取得関数
 			/// </summary>
 			/// <returns>コマンドアロケーターWeak参照</returns>
-			[[nodiscard]] WeakPtr<ClassObject::CommandAllocator> get_allocator() const noexcept {
+			[[nodiscard]] ClassObject::CommandAllocator* get_allocator() const noexcept {
 
-				return HandyItems::others::make_unique_weak(graphic_allocatpor);
+				return graphic_allocatpor.get();
 			}
 
 		private:
@@ -104,12 +100,12 @@ namespace DirectX {
 			/// <summary>
 			/// フェンスインスタンスWeak参照
 			/// </summary>
-			WeakPtr<ClassObject::Fence> fence_;
+			ClassObject::Fence* fence_;
 
 			/// <summary>
 			/// 描画用コマンドアロケーターインスタンス
 			/// </summary>
-			UniquePtr<ClassObject::CommandAllocator> graphic_allocatpor{};
+			std::unique_ptr<ClassObject::CommandAllocator> graphic_allocatpor{};
 
 		};
 	}

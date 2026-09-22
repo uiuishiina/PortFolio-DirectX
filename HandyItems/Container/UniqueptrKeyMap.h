@@ -1,6 +1,6 @@
 #pragma once
 #include"KeyMapBase.h"
-#include"../Others/UniquePtr.h"
+#include<memory>
 
 /// <summary>
 /// 便利アイテム名前空間
@@ -31,15 +31,15 @@ namespace HandyItems {
 			requires
 			std::derived_from<KeyT, handle::LogicalKey>&&
 			std::derived_from<EncodeKeyT, handle::EncodeKey>
-			class UniqueptrKeyMap : public KeyMapBase<
+			class UniqueptrKeyMap : KeyMapBase<
 			KeyT,
 			EncodeKeyT,
-			handle::HandlePtrBase<others::UniqueWeakPtr<Object>, EncodeKeyT>,	///Ptr指定
-			others::UniquePtr<Object>
+			handle::HandlePtrBase<Object, EncodeKeyT>,	///Ptr指定
+			std::unique_ptr<Object>
 			>
 		{
 		public:
-			using Handle = handle::HandlePtrBase<others::UniqueWeakPtr<Object>, EncodeKeyT>;
+			using Handle = handle::HandlePtrBase<Object, EncodeKeyT>;
 
 			/* ========== メンバー関数 ========== */
 

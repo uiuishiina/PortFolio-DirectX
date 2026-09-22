@@ -23,8 +23,10 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
+			/* ===== 実行関数 ===== */
+
 			/// <summary>
-			/// 描画パス純粋仮想関数
+			/// 描画パス呼び出し純粋仮想関数
 			/// </summary>
 			/// <param name="context"></param>
 			virtual void apply_pass(

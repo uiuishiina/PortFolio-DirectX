@@ -19,7 +19,9 @@ namespace DirectX {
 	/// </summary>
 	namespace ClassModule {
 
-
+		/// <summary>
+		/// 描画コマンドクラス
+		/// </summary>
 		struct CommandPass : PassBase
 		{
 			using Command = std::function<void(FrameContext&)>;
@@ -36,6 +38,12 @@ namespace DirectX {
 			/// </summary>
 			~CommandPass() = default;
 
+			/* ===== 実行関数 ===== */
+
+			/// <summary>
+			/// 描画パス呼び出し関数
+			/// </summary>
+			/// <param name="context"></param>
 			void apply_pass(
 				FrameContext& context
 			) override {
@@ -49,6 +57,10 @@ namespace DirectX {
 				}
 			}
 
+			/// <summary>
+			/// コマンド追加関数
+			/// </summary>
+			/// <param name="command">追加するコマンド</param>
 			void add_command(
 				const Command& command
 			) {
@@ -56,6 +68,11 @@ namespace DirectX {
 				commands_.push_back(command);
 			}
 
+			/// <summary>
+			/// コマンド配列追加関数
+			/// </summary>
+			/// <typeparam name="R">追加するコマンド配列型</typeparam>
+			/// <param name="value">追加するコマンド配列</param>
 			template<std::ranges::range R>
 				requires std::same_as<std::remove_cvref_t<std::ranges::range_reference_t<R>>, Command>
 			void add_commands(
@@ -67,6 +84,9 @@ namespace DirectX {
 				}
 			}
 
+			/// <summary>
+			/// コマンド全消去関数
+			/// </summary>
 			void claer_command() {
 
 				commands_.clear();
@@ -75,6 +95,9 @@ namespace DirectX {
 		private:
 			/* ========== Privateメンバー変数 ========== */
 
+			/// <summary>
+			///	呼び出しコマンド配列
+			/// </summary>
 			std::vector<Command> commands_{};
 
 		};

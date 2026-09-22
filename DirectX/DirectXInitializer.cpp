@@ -1,13 +1,18 @@
 
 /* ========== Includeファイル ========== */
 
+//	DirectX
 #include"DirectXInitializer.h"
+
+//	HandyItems
 #include"Debug/DebugLogSystem.h"
 #include"Debug/HRESULTToString.h"
 
 using namespace DirectX;
 
 /* ========== Publicメンバー関数 ========== */
+
+/* ===== 実行関数 ===== */
 
 /// <summary>
 /// HRESULTログ出力関数

@@ -9,6 +9,9 @@
 //	DirectX
 #include"DirectXContext.h"
 
+//	その他
+#include<vector>
+
 /* ========== 前方宣言 ========== */
 
 namespace App {
@@ -24,13 +27,11 @@ namespace App {
 /// </summary>
 namespace DirectX {
 
-
+	/// <summary>
+	/// DirectX描画更新クラス
+	/// </summary>
 	class DirectXUpdator final : HandyItems::others::NonCopyableMovableBase 
 	{
-
-		template<typename T>
-		using WeakPtr = HandyItems::others::UniqueWeakPtr<T>;
-
 	public:
 		/* ========== Publicメンバー関数 ========== */
 
@@ -43,7 +44,7 @@ namespace DirectX {
 		/// <param name="context">DirectXオブジェクトインスタンスまとめクラスWeak参照</param>
 		DirectXUpdator(
 			std::size_t size,
-			const WeakPtr<DirectXContext>& context,
+			DirectXContext* context,
 			App::ApplicationDataShare* share
 		) :
 			current_index{ size },
@@ -56,7 +57,6 @@ namespace DirectX {
 		~DirectXUpdator() = default;
 
 		/* ===== 実行関数 ===== */
-
 
 		[[nodiscard]] bool begin_update();
 
@@ -73,6 +73,7 @@ namespace DirectX {
 
 		void end_update();
 
+		//std::vector<ClassModule::PassBase*> pass_order{};
 	private:
 		/* ========== Privateメンバー変数 ========== */
 
@@ -81,9 +82,11 @@ namespace DirectX {
 		/// <summary>
 		/// DirectXオブジェクトインスタンスまとめクラスWeak参照
 		/// </summary>
-		WeakPtr<DirectXContext> context_;
+		DirectXContext* context_;
 
 		App::ApplicationDataShare* share_p;
+
+		
 
 	};
 }

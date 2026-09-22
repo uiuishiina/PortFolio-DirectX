@@ -11,6 +11,17 @@ namespace DirectX {
 
 	namespace Initialize {
 
+		namespace desc {
+
+			struct CoreDesc {
+
+				HWND hwnd;
+				std::uint32_t width;
+				std::uint32_t height;
+				
+			};
+		}
+
 		class InitializeCore
 		{
 		public:
@@ -35,10 +46,8 @@ namespace DirectX {
 			/// <returns>初期化の成否</returns>
 			[[nodiscard]] HRESULT initialize_core(
 				DirectXContext* context,
-				HWND hwnd,
-				std::uint32_t width,
-				std::uint32_t height,
-				std::uint32_t back_buffer_size
+				std::uint32_t back_buffer_size,
+				desc::CoreDesc& desc
 			);
 
 		};

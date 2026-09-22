@@ -5,9 +5,13 @@
 //	HandyItems
 #include"Others/NonCopyableBase.h"
 
+//	App
+#include"../Application/ApplicationDataShare.h"
+
 //	DirectX
 #include"DirectXContext.h"
 #include"Initializer/InitializeCore.h"
+//#include"Initializer/InitializePass.h"
 
 //	その他
 #include<concepts>
@@ -25,6 +29,8 @@ namespace DirectX {
 	{
 	public:
 		/* ========== Publicメンバー関数 ========== */
+
+		/* ===== 実行関数 ===== */
 
 		/// <summary>
 		/// HRESULTログ出力関数
@@ -57,6 +63,38 @@ namespace DirectX {
 
 	};
 
+
+	/// <summary>
+	/// 
+	/// </summary>
+	namespace desc {
+
+		struct InitializeDesc {
+
+			/* ========== メンバー変数 ========== */
+
+			/* -- Common -- */
+
+			DirectXContext* context_;
+			App::ApplicationDataShare* share_p;
+			UINT back_buffer_size;
+			UINT frame_resource_size;
+
+			/* -- Core -- */
+
+			Initialize::desc::CoreDesc core_{};
+
+			/* -- Pass -- */
+
+			//Initialize::desc::PassDesc pass_{};
+
+		};
+	}
+
+	/* ========== 前方宣言 ========== */
+
+	class DirectXUpdator;
+
 	/// <summary>
 	/// DirectX初期化クラス
 	/// </summary>
@@ -83,22 +121,28 @@ namespace DirectX {
 
 		/* ===== 初期化関数 ===== */
 
+		/// <summary>
+		/// DirectX初期化フロー呼び出し関数
+		/// </summary>
+		/// <param name="context">DirectXオブジェクトインスタンスまとめクラス参照</param>
+		/// <param name="share">アプリケーションデータシェアクラス参照</param>
+		/// <param name="hwnd">ウィンドウハンドル</param>
+		/// <param name="width">ウィンドウの横幅</param>
+		/// <param name="height">ウィンドウの縦幅</param>
+		/// <param name="back_buffer_size">描画バッファリングサイズ</param>
+		/// <param name="frame_resource_size">リソースバッファリングサイズ</param>
+		/// <returns>初期化の成否</returns>
 		[[nodiscard]] bool initialize(
-			DirectXContext* context,
-			HWND hwnd,
-			std::uint32_t width,
-			std::uint32_t height,
-			UINT back_buffer_size,
-			UINT frame_resource_size
+			desc::InitializeDesc& desc
 		) {
-			Core core{};
 
+			//	コア機能初期化
+
+			Core core{};
 			auto hr = core.initialize_core(
-				context,
-				hwnd,
-				width,
-				height,
-				back_buffer_size
+				desc.context_,
+				desc.back_buffer_size,
+				desc.core_
 			);
 			if (FAILED(hr)) {
 
@@ -106,8 +150,16 @@ namespace DirectX {
 				return false;
 			}
 
+			//Initialize::InitializePass pass{};
+			//pass_list = pass.initialize_pass(
+			//	desc.context_,
+			//	desc.pass_
+			//);
+
 			return true;
 		}
+
+		std::vector<std::string> pass_list{};
 
 	};
 

@@ -2,8 +2,11 @@
 
 /* ========== Includeファイル ========== */
 
+//	HandyItems
 #include"Others/NonCopyableBase.h"
-#include"Others/UniquePtr.h"
+
+//	その他
+#include<memory>
 
 /* ========== 前方宣言 ========== */
 
@@ -32,7 +35,7 @@ namespace DirectX {
 	class DirectXUpdator;
 
 	/// <summary>
-	/// DirectX描画機能クラス
+	/// DirectX描画機能集約クラス
 	/// </summary>
 	class DirectXRenderer final : HandyItems::others::NonCopyableMovableBase
 	{
@@ -79,15 +82,20 @@ namespace DirectX {
 		/// </summary>
 		App::ApplicationDataShare* shera_p{};
 
-		HandyItems::others::UniquePtr<DirectXContext> context_;
-		HandyItems::others::UniquePtr<DirectXUpdator> updator_;
+		/// <summary>
+		/// DirectXオブジェクトインスタンスまとめクラス
+		/// </summary>
+		std::unique_ptr<DirectXContext> context_;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		std::unique_ptr<DirectXUpdator> updator_;
 
 		const std::uint32_t back_buffer_size = 2;
 		const std::uint32_t frame_resource_size = 3;
 
 		std::uint64_t frame_count{};
-
-		/* ========== Privateメンバー関数 ========== */
 
 	};
 }
