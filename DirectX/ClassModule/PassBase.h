@@ -23,19 +23,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/* ===== 実行関数 ===== */
-
-			/// <summary>
-			/// 描画パス呼び出し純粋仮想関数
-			/// </summary>
-			/// <param name="context"></param>
-			virtual void apply_pass(
-				FrameContext& context
-			) = 0;
-
-		protected:
-			/* ========== Protectedメンバー関数 ========== */
-
 			/// <summary>
 			/// コンストラクタ
 			/// </summary>
@@ -45,6 +32,16 @@ namespace DirectX {
 			/// デストラクタ
 			/// </summary>
 			~PassBase() = default;
+
+			/* ===== 実行関数 ===== */
+
+			/// <summary>
+			/// 描画パス呼び出し純粋仮想関数
+			/// </summary>
+			/// <param name="context"></param>
+			virtual void apply_pass(
+				FrameContext& context
+			) = 0;
 
 		};
 	}

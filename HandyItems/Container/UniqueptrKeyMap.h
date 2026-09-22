@@ -30,7 +30,7 @@ namespace HandyItems {
 		/// </summary>
 			requires
 			std::derived_from<KeyT, handle::LogicalKey>&&
-			std::derived_from<EncodeKeyT, handle::EncodeKey>
+			std::derived_from<EncodeKeyT, handle::EncodedKey>
 			class UniqueptrKeyMap : KeyMapBase<
 			KeyT,
 			EncodeKeyT,

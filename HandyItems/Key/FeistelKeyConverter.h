@@ -95,7 +95,7 @@ namespace HandyItems {
 			[[nodiscard]] constexpr std::uint16_t round_func(
 				const std::uint16_t value, 
 				const std::uint32_t round_key
-			) noexcept {
+			) const noexcept {
 
 				std::uint32_t x = value;
 

@@ -38,7 +38,7 @@ void DirectXUpdator::reset_frame_resource() {
 
 void DirectXUpdator::update() {
 
-	const auto buffer_index = context_->swapchain_->get()->GetCurrentBackBufferIndex();
+	auto buffer_index = context_->swapchain_->get()->GetCurrentBackBufferIndex();
 
 	auto frame = ClassModule::FrameContext{ context_, buffer_index, current_index };
 
@@ -51,9 +51,9 @@ void DirectXUpdator::update() {
 
 	back->barrier_transition(context_->graphic_list->get(), D3D12_RESOURCE_STATE_PRESENT);
 
-	//for (auto& pass : pass_order) {
-	//	pass->apply_pass(frame);
-	//}
+	for (auto& pass : pass_order) {
+		pass->apply_pass(frame);
+	}
 
 }
 

@@ -8,6 +8,7 @@
 
 //	DirectX
 #include"DirectXContext.h"
+#include"ClassModule/PassBase.h"
 
 //	その他
 #include<vector>
@@ -73,7 +74,7 @@ namespace DirectX {
 
 		void end_update();
 
-		//std::vector<ClassModule::PassBase*> pass_order{};
+		std::vector<ClassModule::PassBase*> pass_order{};
 	private:
 		/* ========== Privateメンバー変数 ========== */
 

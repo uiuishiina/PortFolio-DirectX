@@ -22,6 +22,7 @@
     <ClCompile Include="..\Application\Application.cpp" />
     <ClCompile Include="..\DirectX\ClassObject\Device.cpp" />
     <ClCompile Include="..\DirectX\ClassObject\DXGI.cpp" />
+    <ClCompile Include="..\DirectX\DirectXContext.cpp" />
     <ClCompile Include="..\DirectX\DirectXInitializer.cpp" />
     <ClCompile Include="..\DirectX\DirectXRenderer.cpp" />
     <ClCompile Include="..\DirectX\DirectXUpdater.cpp" />

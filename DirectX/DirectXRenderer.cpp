@@ -56,6 +56,7 @@ DirectXRenderer::~DirectXRenderer() = default;
     shera_p = shera;
 
     if (!hwnd_ || !shera_p) {
+        DEBUG_ERROR_LOG("DirectXRenderer :: initialize_renderer() pointer nullptr");
         return false;
     }
 

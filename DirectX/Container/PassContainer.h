@@ -21,7 +21,9 @@ namespace DirectX {
 		/// <summary>
 		/// 描画パス倫理キー
 		/// </summary>
-		struct PassKey : HandyItems::container::handle::LogicalKey {
+		struct PassKey : public HandyItems::container::handle::LogicalKey {
+
+			PassKey() = default;
 
 			explicit PassKey(const char* key_name) :
 
@@ -37,7 +39,7 @@ namespace DirectX {
 		/// <summary>
 		/// 描画パス保存キー
 		/// </summary>
-		struct PassEncodeKey : HandyItems::container::handle::EncodeKey {};
+		struct PassEncodeKey : public HandyItems::container::handle::EncodedKey {};
 
 		/// <summary>
 		/// 描画パスコンテナ
@@ -76,19 +78,7 @@ namespace DirectX {
 
 
 		private:
-			/* ========== Privateメンバー変数 ========== */
-
-			/// <summary>
-			/// ハンドルを取得できないように [ Private化 ]
-			/// </summary>
-			using UniqueptrKeyMap<PassKey, PassEncodeKey, ClassModule::PassBase>::get_handle;
-
-
-			/* ========== Privateメンバー関数 ========== */
-
-			using Handle = HandyItems::container::handle::HandlePtrBase<PassKey, PassEncodeKey>;
-
-
+			
 		};
 	}
 }

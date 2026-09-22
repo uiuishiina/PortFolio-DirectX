@@ -85,19 +85,19 @@ namespace DirectX {
 			/// <param name="current_back_buffer"></param>
 			/// <param name="current_resource"></param>
 			FrameContext(
-				DirectXContext* context,
+				DirectXContext* context_,
 				UINT current_back_buffer,
-				size_t current_resource
+				std::size_t current_resource
 			) :
-				dxgi_{ context->dxgi_.get() },
-				device_{ context->device_.get() },
-				graphic_queue{ context->graphic_queue.get() },
-				graphic_list{ context->graphic_list.get() },
-				fence_{ context->fence_.get() },
-				frame_resource{ context->frame_resources[current_resource].get() },
-				swapchain_{ context->swapchain_.get() },
-				heap_{ context->heap_.get() },
-				back_buffer{ context->back_buffers[current_back_buffer].get() } {}
+				dxgi_{ context_->dxgi_.get() },
+				device_{ context_->device_.get() },
+				graphic_queue{ context_->graphic_queue.get() },
+				graphic_list{ context_->graphic_list.get() },
+				fence_{ context_->fence_.get() },
+				frame_resource{ context_->frame_resources[current_resource].get() },
+				swapchain_{ context_->swapchain_.get() },
+				heap_{ context_->heap_.get() },
+				back_buffer{ context_->back_buffers[current_back_buffer].get() }{}
 
 			/// <summary>
 			/// デストラクタ
