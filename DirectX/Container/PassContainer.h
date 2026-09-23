@@ -66,16 +66,19 @@ namespace DirectX {
 			
 			/* ===== 追加関数 ===== */
 
-			template<typename Pass>
-			requires std::derived_from<Pass, ClassModule::PassBase>
 			[[nodiscard]] bool add_pass(
 				PassKey key,
-				const Pass& pass
+				std::unique_ptr<ClassModule::PassBase>&& pass
 			) {
 
-				return add_value(key, pass);
+				return add_value(key, std::move(pass));
 			}
 
+			[[nodiscard]] ClassModule::PassBase* get_pass(PassKey key)const noexcept {
+
+				const auto* value = this->get_value_p(key);
+				return value->get();
+			}
 
 		private:
 			

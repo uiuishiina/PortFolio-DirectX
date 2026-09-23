@@ -31,7 +31,7 @@ namespace DirectX {
 			/// <summary>
 			/// デストラクタ
 			/// </summary>
-			~PassBase() = default;
+			virtual ~PassBase() = default;
 
 			/* ===== 実行関数 ===== */
 

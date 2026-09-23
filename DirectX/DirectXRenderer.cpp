@@ -12,6 +12,8 @@
 #include"DirectXUpdater.h"
 #include"DirectXEnder.h"
 
+#include"ClassModule/CommandPass.h"
+
 #include"Debug/DebugLogSystem.h"
 
 using namespace DirectX;
@@ -69,13 +71,30 @@ DirectXRenderer::~DirectXRenderer() = default;
     desc_.back_buffer_size = back_buffer_size;
     desc_.frame_resource_size = frame_resource_size;
     desc_.core_ = Initialize::desc::CoreDesc{ hwnd_ ,width,height };
-    //desc_.pass_ = Initialize::desc::PassDesc{
-    //};
+
+    auto A = std::make_unique<ClassModule::CommandPass>();
+    A->add_command([](ClassModule::FrameContext& frame) {
+        auto* back = frame.back_buffer;
+        back->barrier_transition(frame.graphic_list->get(), D3D12_RESOURCE_STATE_RENDER_TARGET);
+
+        float color[4] = { 1,1,1,1 };
+        frame.graphic_list->get()->ClearRenderTargetView(back->get_RTV_handle(), color, 0, nullptr);
+
+        back->barrier_transition(frame.graphic_list->get(), D3D12_RESOURCE_STATE_PRESENT);
+        });
+
+    desc_.pass_.pass_.emplace_back(std::move(A), "A");
 
     if (!initializer.initialize(
         desc_
     )) {
         return false;
+    }
+
+    for (auto& name : initializer.pass_list) {
+        updator_->set_pass(context_->pass_container->get_pass(
+            Container::PassKey(name.c_str())
+        ));
     }
 
     return true;

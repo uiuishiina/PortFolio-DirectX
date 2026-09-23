@@ -3,6 +3,7 @@
 /* ========== Includeファイル ========== */
 
 #include"../DirectXContext.h"
+#include"../Container/PassContainer.h"
 
 #include<vector>
 #include<utility>
@@ -19,7 +20,7 @@ namespace DirectX {
 
 			struct PassDesc {
 
-				std::vector<std::pair<ClassModule::PassBase, std::string>> pass_{};
+				std::vector<std::pair<std::unique_ptr<ClassModule::PassBase>, std::string>> pass_{};
 			};
 		}
 
@@ -47,19 +48,20 @@ namespace DirectX {
 
 				std::vector<std::string> pass_list{};
 
-				//for (auto& [pass,name] : value.pass_) {
+				for (auto& [pass,name] : value.pass_) {
 
-				//	if (context->pass_container->add_pass(
-				//		Container::PassKey{ name.c_str() },
-				//		pass
-				//	)) {
-				//		pass_list.push_back(name);
-				//	}
-				//}
+					if (context->pass_container->add_pass(
+						Container::PassKey{ name.c_str() },
+						std::move(pass)
+					)) {
+						pass_list.push_back(name);
+					}
+				}
 
 				return pass_list;
 			}
 
 		};
+
 	}
 }

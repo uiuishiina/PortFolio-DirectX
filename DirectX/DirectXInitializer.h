@@ -11,7 +11,7 @@
 //	DirectX
 #include"DirectXContext.h"
 #include"Initializer/InitializeCore.h"
-//#include"Initializer/InitializePass.h"
+#include"Initializer/InitializePass.h"
 
 //	その他
 #include<concepts>
@@ -86,7 +86,7 @@ namespace DirectX {
 
 			/* -- Pass -- */
 
-			//Initialize::desc::PassDesc pass_{};
+			Initialize::desc::PassDesc pass_{};
 
 		};
 	}
@@ -150,11 +150,11 @@ namespace DirectX {
 				return false;
 			}
 
-			//Initialize::InitializePass pass{};
-			//pass_list = pass.initialize_pass(
-			//	desc.context_,
-			//	desc.pass_
-			//);
+			Initialize::InitializePass pass{};
+			pass_list = pass.initialize_pass(
+				desc.context_,
+				desc.pass_
+			);
 
 			return true;
 		}

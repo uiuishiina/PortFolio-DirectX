@@ -74,6 +74,11 @@ namespace DirectX {
 
 		void end_update();
 
+		void set_pass(ClassModule::PassBase* pass) {
+
+			pass_order.push_back(pass);
+		}
+
 		std::vector<ClassModule::PassBase*> pass_order{};
 	private:
 		/* ========== Privateメンバー変数 ========== */
