@@ -12,7 +12,7 @@
 #include"DirectXUpdater.h"
 #include"DirectXEnder.h"
 
-#include"ClassModule/CommandPass.h"
+#include"Resource/PassList.h"
 
 #include"Debug/DebugLogSystem.h"
 
@@ -72,18 +72,14 @@ DirectXRenderer::~DirectXRenderer() = default;
     desc_.frame_resource_size = frame_resource_size;
     desc_.core_ = Initialize::desc::CoreDesc{ hwnd_ ,width,height };
 
-    auto A = std::make_unique<ClassModule::CommandPass>();
-    A->add_command([](ClassModule::FrameContext& frame) {
-        auto* back = frame.back_buffer;
-        back->barrier_transition(frame.graphic_list->get(), D3D12_RESOURCE_STATE_RENDER_TARGET);
 
-        float color[4] = { 1,1,1,1 };
-        frame.graphic_list->get()->ClearRenderTargetView(back->get_RTV_handle(), color, 0, nullptr);
-
-        back->barrier_transition(frame.graphic_list->get(), D3D12_RESOURCE_STATE_PRESENT);
-        });
-
-    desc_.pass_.pass_.emplace_back(std::move(A), "A");
+    desc_.pass_.emplace(
+        make_command_pass(
+            "A",
+            {
+                Resource::Test
+            }
+        ));
 
     if (!initializer.initialize(
         desc_

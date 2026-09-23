@@ -21,6 +21,10 @@ namespace DirectX {
 			struct PassDesc {
 
 				std::vector<std::pair<std::unique_ptr<ClassModule::PassBase>, std::string>> pass_{};
+
+				void emplace(std::pair<std::unique_ptr<ClassModule::PassBase>, std::string>&& pass) {
+					pass_.emplace_back(std::move(pass));
+				}
 			};
 		}
 

@@ -59,6 +59,7 @@
     <ClInclude Include="..\DirectX\DirectXUpdater.h" />
     <ClInclude Include="..\DirectX\Initializer\InitializeCore.h" />
     <ClInclude Include="..\DirectX\Initializer\InitializePass.h" />
+    <ClInclude Include="..\DirectX\Resource\PassList.h" />
     <ClInclude Include="..\HandyItems\Bit\BitFlag.h" />
     <ClInclude Include="..\HandyItems\Container\KeyMap.h" />
     <ClInclude Include="..\HandyItems\Container\KeyMapBase.h" />
