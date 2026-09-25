@@ -29,7 +29,7 @@ namespace DirectX {
 			/// </summary>
 			struct GPUResourceDesc {
 
-				/* ========== メンバー変数 ========== */
+				/* ========== Publicメンバー変数 ========== */
 
 				/// <summary>
 				/// ヒーププロパティ設定

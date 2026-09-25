@@ -21,7 +21,6 @@ void DirectXUpdator::sync_frame_resource() {
 
 	//	使えるまで待機
 	context_->fence_->wait_to_completed_value(wait);
-
 }
 
 void DirectXUpdator::reset_frame_resource() {
@@ -38,6 +37,11 @@ void DirectXUpdator::reset_frame_resource() {
 
 void DirectXUpdator::update() {
 
+
+}
+
+void DirectXUpdator::apply_pass() {
+
 	auto buffer_index = context_->swapchain_->get()->GetCurrentBackBufferIndex();
 
 	auto frame = ClassModule::FrameContext{ context_, buffer_index, current_index };
@@ -45,7 +49,6 @@ void DirectXUpdator::update() {
 	for (auto& pass : pass_order) {
 		pass->apply_pass(frame);
 	}
-
 }
 
 void DirectXUpdator::execute_command_lists() {
@@ -59,13 +62,11 @@ void DirectXUpdator::execute_command_lists() {
 
 	//	シグナルを送って配列に保存
 	context_->frame_resources[current_index]->end_frame_signal(context_->graphic_queue->get());
-
 }
 
 void DirectXUpdator::present() {
 
 	context_->swapchain_->get()->Present(1, 0);
-
 }
 
 void DirectXUpdator::end_update() {

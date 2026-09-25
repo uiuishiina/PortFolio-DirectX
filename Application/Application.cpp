@@ -56,7 +56,6 @@ Application::~Application() {
         return false;
     }
 
-    DEBUG_LOG("Application :: initialize_app() = true");
     return true;
 }
 
@@ -99,11 +98,10 @@ void Application::run_app() {
         size,
         &data_share
     );
+    if (!value) {
+        DEBUG_LOG("Window :: initialize_window() = false");
+    }
 
-    DEBUG_LOG(
-        "Window :: initialize_window() = ",
-        value ? "true" : "false"
-    );
     return value;
 }
 
@@ -117,11 +115,10 @@ void Application::run_app() {
         h,
         &data_share
     );
+    if (!value) {
+        DEBUG_LOG("DirectXRenderer :: initialize_renderer() = false");
+    }
 
-    DEBUG_LOG(
-        "DirectXRenderer :: initialize_renderer() = ",
-        value ? "true" : "false"
-        );
     return value;
 }
     

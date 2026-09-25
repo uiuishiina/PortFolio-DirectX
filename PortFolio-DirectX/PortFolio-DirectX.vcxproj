@@ -22,12 +22,17 @@
     <ClCompile Include="..\Application\Application.cpp" />
     <ClCompile Include="..\DirectX\ClassObject\Device.cpp" />
     <ClCompile Include="..\DirectX\ClassObject\DXGI.cpp" />
+    <ClCompile Include="..\DirectX\ClassObject\PiplineState.cpp" />
+    <ClCompile Include="..\DirectX\ClassObject\ShaderCompiler.cpp" />
     <ClCompile Include="..\DirectX\DirectXContext.cpp" />
     <ClCompile Include="..\DirectX\DirectXInitializer.cpp" />
     <ClCompile Include="..\DirectX\DirectXRenderer.cpp" />
     <ClCompile Include="..\DirectX\DirectXUpdater.cpp" />
+    <ClCompile Include="..\DirectX\Helpers\PiplineReference.cpp" />
+    <ClCompile Include="..\DirectX\Helpers\PiplineStateHelper.cpp" />
     <ClCompile Include="..\DirectX\Initializer\InitializeCore.cpp" />
     <ClCompile Include="..\Entry\Entry.cpp" />
+    <ClCompile Include="..\HandyItems\Debug\ConvertString.cpp" />
     <ClCompile Include="..\HandyItems\Debug\DebugLogOutPut.cpp" />
     <ClCompile Include="..\HandyItems\Debug\DebugLogSystem.cpp" />
     <ClCompile Include="..\Windows\Window.cpp" />
@@ -50,16 +55,40 @@
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\RenderTarget.h" />
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\RenderTarget\BackBuffer.h" />
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\ResourceBarrier.h" />
+    <ClInclude Include="..\DirectX\ClassObject\PiplineState.h" />
+    <ClInclude Include="..\DirectX\ClassObject\RootSignature.h" />
+    <ClInclude Include="..\DirectX\ClassObject\ShaderCompiler.h" />
     <ClInclude Include="..\DirectX\ClassObject\SwapChain.h" />
     <ClInclude Include="..\DirectX\Container\PassContainer.h" />
+    <ClInclude Include="..\DirectX\Container\PiplineStateContainer.h" />
+    <ClInclude Include="..\DirectX\Container\RootSignatureContainer.h" />
+    <ClInclude Include="..\DirectX\Container\ShaderContainer.h" />
     <ClInclude Include="..\DirectX\DirectXContext.h" />
     <ClInclude Include="..\DirectX\DirectXEnder.h" />
     <ClInclude Include="..\DirectX\DirectXInitializer.h" />
     <ClInclude Include="..\DirectX\DirectXRenderer.h" />
     <ClInclude Include="..\DirectX\DirectXUpdater.h" />
+    <ClInclude Include="..\DirectX\External\d3dx12.h" />
+    <ClInclude Include="..\DirectX\External\d3dx12_barriers.h" />
+    <ClInclude Include="..\DirectX\External\d3dx12_check_feature_support.h" />
+    <ClInclude Include="..\DirectX\External\d3dx12_core.h" />
+    <ClInclude Include="..\DirectX\External\d3dx12_default.h" />
+    <ClInclude Include="..\DirectX\External\d3dx12_pipeline_state_stream.h" />
+    <ClInclude Include="..\DirectX\External\d3dx12_property_format_table.h" />
+    <ClInclude Include="..\DirectX\External\d3dx12_render_pass.h" />
+    <ClInclude Include="..\DirectX\External\d3dx12_resource_helpers.h" />
+    <ClInclude Include="..\DirectX\External\d3dx12_root_signature.h" />
+    <ClInclude Include="..\DirectX\External\d3dx12_state_object.h" />
+    <ClInclude Include="..\DirectX\Helpers\PiplineReference.h" />
+    <ClInclude Include="..\DirectX\Helpers\PiplineStateHelper.h" />
+    <ClInclude Include="..\DirectX\Helpers\RootSignatureHelper.h" />
     <ClInclude Include="..\DirectX\Initializer\InitializeCore.h" />
     <ClInclude Include="..\DirectX\Initializer\InitializePass.h" />
+    <ClInclude Include="..\DirectX\Initializer\InitializePipline.h" />
+    <ClInclude Include="..\DirectX\Initializer\InitializeShader.h" />
     <ClInclude Include="..\DirectX\Resource\PassList.h" />
+    <ClInclude Include="..\DirectX\Resource\PiplineList.h" />
+    <ClInclude Include="..\DirectX\Resource\ShaderList.h" />
     <ClInclude Include="..\HandyItems\Bit\BitFlag.h" />
     <ClInclude Include="..\HandyItems\Container\KeyMap.h" />
     <ClInclude Include="..\HandyItems\Container\KeyMapBase.h" />
@@ -69,6 +98,7 @@
     <ClInclude Include="..\HandyItems\Container\UniqueptrKeyMap.h" />
     <ClInclude Include="..\HandyItems\Container\UnorderedMapBase.h" />
     <ClInclude Include="..\HandyItems\DataShare\DataShare.h" />
+    <ClInclude Include="..\HandyItems\Debug\ConvertString.h" />
     <ClInclude Include="..\HandyItems\Debug\DebugLogBuilder.h" />
     <ClInclude Include="..\HandyItems\Debug\DebugLogOutPut.h" />
     <ClInclude Include="..\HandyItems\Debug\DebugLogSystem.h" />
@@ -101,6 +131,30 @@
     <ClInclude Include="..\HandyItems\Others\UniquePtr.h" />
     <ClInclude Include="..\HandyItems\Tuple\TupleBase.h" />
     <ClInclude Include="..\Windows\Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\DirectX\Resource\HLSL\StructHeader.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\DirectX\Resource\HLSL\NormalPixel.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\DirectX\Resource\HLSL\NormalVertex.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>

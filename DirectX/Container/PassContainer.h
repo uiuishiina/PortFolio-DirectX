@@ -18,6 +18,8 @@ namespace DirectX {
 	/// </summary>
 	namespace Container {
 
+		/* ========== ハッシュキー ========== */
+
 		/// <summary>
 		/// 描画パス倫理キー
 		/// </summary>
@@ -34,17 +36,18 @@ namespace DirectX {
 				} {}
 		};
 
-		
-
 		/// <summary>
 		/// 描画パス保存キー
 		/// </summary>
 		struct PassEncodeKey : public HandyItems::container::handle::EncodedKey {};
 
+
+		/* ========== コンテナ ========== */
+
 		/// <summary>
 		/// 描画パスコンテナ
 		/// </summary>
-		class PassContainer : public HandyItems::container::UniqueptrKeyMap
+		class PassContainer : HandyItems::container::UniqueptrKeyMap
 			<
 			PassKey,
 			PassEncodeKey,
@@ -66,6 +69,12 @@ namespace DirectX {
 			
 			/* ===== 追加関数 ===== */
 
+			/// <summary>
+			/// 描画パス追加関数
+			/// </summary>
+			/// <param name="key">紐づける描画パス倫理キー</param>
+			/// <param name="pass">追加する描画パスインスタンス</param>
+			/// <returns>追加の成否</returns>
 			[[nodiscard]] bool add_pass(
 				PassKey key,
 				std::unique_ptr<ClassModule::PassBase>&& pass
@@ -74,13 +83,19 @@ namespace DirectX {
 				return add_value(key, std::move(pass));
 			}
 
-			[[nodiscard]] ClassModule::PassBase* get_pass(PassKey key)const noexcept {
+			/* ===== 取得関数 ===== */
 
-				const auto* value = this->get_value_p(key);
-				return value->get();
+			/// <summary>
+			/// 描画パス参照取得関数
+			/// </summary>
+			/// <param name="key">紐づいた描画パス倫理キー</param>
+			/// <returns>描画パス参照</returns>
+			[[nodiscard]] ClassModule::PassBase* get_pass(
+				const PassKey& key
+			) const noexcept {
+
+				return get_unique(key);
 			}
-
-		private:
 			
 		};
 	}

@@ -7,7 +7,7 @@
 
 #include<functional>
 #include<vector>
-#include<ranges>
+#include<span>
 
 /// <summary>
 /// DirectX名前空間
@@ -73,13 +73,11 @@ namespace DirectX {
 			/// </summary>
 			/// <typeparam name="R">追加するコマンド配列型</typeparam>
 			/// <param name="value">追加するコマンド配列</param>
-			template<std::ranges::range R>
-				requires std::same_as<std::remove_cvref_t<std::ranges::range_reference_t<R>>, Command>
 			void add_commands(
-				R& value
+				std::span<const Command> commands
 			) {
 
-				for (auto& v : value) {
+				for (auto& v : commands) {
 					add_command(v);
 				}
 			}

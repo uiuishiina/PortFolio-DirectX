@@ -33,7 +33,7 @@ void DebugLogOutPut::OutPutLog(
 	const std::string& log
 ) {
 
-	const auto c = from_utf8(log);
+	const auto c = HandyItems::Debug::ConvertString::from_utf8(log);
 
     //  デバッグ出力
 	OutputDebugStringW(c.c_str());

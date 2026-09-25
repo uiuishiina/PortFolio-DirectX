@@ -68,6 +68,8 @@ namespace DirectX {
 
 		void update();
 
+		void apply_pass();
+
 		void execute_command_lists();
 
 		void present();
@@ -79,10 +81,12 @@ namespace DirectX {
 			pass_order.push_back(pass);
 		}
 
-		std::vector<ClassModule::PassBase*> pass_order{};
 	private:
 		/* ========== Privateメンバー変数 ========== */
 
+		/// <summary>
+		/// フレームリソースインデックス循環クラス
+		/// </summary>
 		HandyItems::others::CircularIndex current_index;
 
 		/// <summary>
@@ -90,9 +94,15 @@ namespace DirectX {
 		/// </summary>
 		DirectXContext* context_;
 
+		/// <summary>
+		/// アプリケーションデータシェアクラス参照
+		/// </summary>
 		App::ApplicationDataShare* share_p;
 
-		
+		/// <summary>
+		/// 描画パス実行順参照配列
+		/// </summary>
+		std::vector<ClassModule::PassBase*> pass_order{};
 
 	};
 }

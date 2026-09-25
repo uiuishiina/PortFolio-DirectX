@@ -34,6 +34,9 @@ namespace DirectX {
 	namespace Container {
 
 		class PassContainer;
+		class ShaderContainer;
+		class RootSignatureContainer;
+		class PiplineStateContainer;
 	}
 
 
@@ -123,6 +126,21 @@ namespace DirectX {
 		/// 描画パスコンテナインスタンス
 		/// </summary>
 		UniquePtr<Container::PassContainer> pass_container{};
+
+		/// <summary>
+		/// HLSLシェーダーコンテナインスタンス
+		/// </summary>
+		UniquePtr<Container::ShaderContainer> shader_container{};
+		
+		/// <summary>
+		/// ルートシグネチャーコンテナインスタンス
+		/// </summary>
+		UniquePtr<Container::RootSignatureContainer> root_signature_container{};
+
+		/// <summary>
+		/// パイプラインステートコンテナインスタンス
+		/// </summary>
+		UniquePtr<Container::PiplineStateContainer> pipline_state_container{};
 
 	};
 }

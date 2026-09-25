@@ -7,6 +7,7 @@
 #include<sstream>
 
 #include"LogObject.h"	//LogObject
+#include"ConvertString.h"
 
 /// <summary>
 /// 便利アイテム名前空間
@@ -51,7 +52,6 @@ namespace HandyItems {
 			(oss << ... << std::forward<Args>(args));
 			return oss.str();
 		}
-
 
 		namespace const_str {
 

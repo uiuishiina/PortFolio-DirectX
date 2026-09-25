@@ -2,6 +2,7 @@
 
 /* ========== Includeファイル ========== */
 
+//	DirectX
 #include"../DirectXContext.h"
 
 /// <summary>
@@ -9,19 +10,44 @@
 /// </summary>
 namespace DirectX {
 
+	/// <summary>
+	/// 初期化名前空間
+	/// </summary>
 	namespace Initialize {
 
+		/// <summary>
+		/// 設定名前空間
+		/// </summary>
 		namespace desc {
 
+			/// <summary>
+			/// コア機能設定構造体
+			/// </summary>
 			struct CoreDesc {
+				
+				/* ========== Publicメンバー変数 ========== */
 
+				/// <summary>
+				/// ウィンドウハンドル
+				/// </summary>
 				HWND hwnd;
+
+				/// <summary>
+				/// 横幅
+				/// </summary>
 				std::uint32_t width;
+
+				/// <summary>
+				/// 縦幅
+				/// </summary>
 				std::uint32_t height;
 				
 			};
 		}
 
+		/// <summary>
+		/// コア機能初期化クラス
+		/// </summary>
 		class InitializeCore
 		{
 		public:

@@ -109,6 +109,18 @@
     <Filter Include="ヘッダー ファイル\DirectX\Resource">
       <UniqueIdentifier>{812a1238-c8cd-4573-9fae-7880e5103545}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\DirectX\External">
+      <UniqueIdentifier>{108ddf68-b8a5-404c-b634-03b4099f6212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\DirectX\Helpers">
+      <UniqueIdentifier>{942db7c8-f3c9-4ab7-8dc8-a6ad1bae79f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\DirectX\Heplers">
+      <UniqueIdentifier>{2423729c-522e-47bf-8988-96eb91cebf41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\DirectX\Resource\HLSL">
+      <UniqueIdentifier>{3aa73294-5ae9-4281-b9b7-cd17ffcb50f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Entry\Entry.cpp">
@@ -144,7 +156,22 @@
     <ClCompile Include="..\DirectX\DirectXUpdater.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
+    <ClCompile Include="..\DirectX\ClassObject\ShaderCompiler.cpp">
+      <Filter>ソース ファイル\DirectX\ClassObject</Filter>
+    </ClCompile>
     <ClCompile Include="..\DirectX\DirectXContext.cpp">
+      <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DirectX\ClassObject\PiplineState.cpp">
+      <Filter>ソース ファイル\DirectX\ClassObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DirectX\Helpers\PiplineStateHelper.cpp">
+      <Filter>ソース ファイル\DirectX\Heplers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\HandyItems\Debug\ConvertString.cpp">
+      <Filter>ソース ファイル\HandyItems\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DirectX\Helpers\PiplineReference.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -353,5 +380,93 @@
     <ClInclude Include="..\DirectX\Resource\PassList.h">
       <Filter>ヘッダー ファイル\DirectX\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\ShaderCompiler.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\RootSignature.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\External\d3dx12.h">
+      <Filter>ヘッダー ファイル\DirectX\External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\External\d3dx12_barriers.h">
+      <Filter>ヘッダー ファイル\DirectX\External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\External\d3dx12_check_feature_support.h">
+      <Filter>ヘッダー ファイル\DirectX\External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\External\d3dx12_core.h">
+      <Filter>ヘッダー ファイル\DirectX\External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\External\d3dx12_default.h">
+      <Filter>ヘッダー ファイル\DirectX\External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\External\d3dx12_pipeline_state_stream.h">
+      <Filter>ヘッダー ファイル\DirectX\External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\External\d3dx12_property_format_table.h">
+      <Filter>ヘッダー ファイル\DirectX\External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\External\d3dx12_render_pass.h">
+      <Filter>ヘッダー ファイル\DirectX\External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\External\d3dx12_resource_helpers.h">
+      <Filter>ヘッダー ファイル\DirectX\External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\External\d3dx12_root_signature.h">
+      <Filter>ヘッダー ファイル\DirectX\External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\External\d3dx12_state_object.h">
+      <Filter>ヘッダー ファイル\DirectX\External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Helpers\RootSignatureHelper.h">
+      <Filter>ヘッダー ファイル\DirectX\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\PiplineState.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Helpers\PiplineStateHelper.h">
+      <Filter>ヘッダー ファイル\DirectX\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Container\ShaderContainer.h">
+      <Filter>ヘッダー ファイル\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Initializer\InitializeShader.h">
+      <Filter>ヘッダー ファイル\DirectX\Initializer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Debug\ConvertString.h">
+      <Filter>ヘッダー ファイル\HandyItems\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Resource\ShaderList.h">
+      <Filter>ヘッダー ファイル\DirectX\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Initializer\InitializePipline.h">
+      <Filter>ヘッダー ファイル\DirectX\Initializer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Container\PiplineStateContainer.h">
+      <Filter>ヘッダー ファイル\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Container\RootSignatureContainer.h">
+      <Filter>ヘッダー ファイル\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Resource\PiplineList.h">
+      <Filter>ヘッダー ファイル\DirectX\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Helpers\PiplineReference.h">
+      <Filter>ヘッダー ファイル\DirectX\Helpers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\DirectX\Resource\HLSL\StructHeader.hlsli">
+      <Filter>ヘッダー ファイル\DirectX\Resource\HLSL</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\DirectX\Resource\HLSL\NormalVertex.hlsl">
+      <Filter>ヘッダー ファイル\DirectX\Resource\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="..\DirectX\Resource\HLSL\NormalPixel.hlsl">
+      <Filter>ヘッダー ファイル\DirectX\Resource\HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

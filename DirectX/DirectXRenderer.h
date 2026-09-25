@@ -88,13 +88,23 @@ namespace DirectX {
 		std::unique_ptr<DirectXContext> context_;
 
 		/// <summary>
-		/// 
+		/// DirectX描画機能更新クラス
 		/// </summary>
 		std::unique_ptr<DirectXUpdator> updator_;
 
+		/// <summary>
+		/// 最終描画先バッファリングサイズ
+		/// </summary>
 		const std::uint32_t back_buffer_size = 2;
+
+		/// <summary>
+		/// フレームリソースサイズ
+		/// </summary>
 		const std::uint32_t frame_resource_size = 3;
 
+		/// <summary>
+		/// 経過フレーム
+		/// </summary>
 		std::uint64_t frame_count{};
 
 	};

@@ -123,6 +123,22 @@ namespace HandyItems {
 				return handle;
 			}
 
+			[[nodiscard]] Object* get_unique(
+				const KeyT& key
+			) {
+
+				const auto* value = this->get_value_p(key);
+				return value->get();
+			}
+
+			[[nodiscard]] Object* get_unique(
+				const KeyT& key
+			) const {
+
+				const auto* value = this->get_value_p(key);
+				return value->get();
+			}
+
 		};
 	}
 }

@@ -12,6 +12,8 @@
 #include"DirectXContext.h"
 #include"Initializer/InitializeCore.h"
 #include"Initializer/InitializePass.h"
+#include"Initializer/InitializeShader.h"
+#include"Initializer/InitializePipline.h"
 
 //	その他
 #include<concepts>
@@ -84,6 +86,14 @@ namespace DirectX {
 
 			Initialize::desc::CoreDesc core_{};
 
+			/* -- Shader -- */
+
+			Initialize::desc::ShaderDesc shader_{};
+
+			/* -- Pipline -- */
+
+			Initialize::desc::PiplineDesc pipline_{};
+
 			/* -- Pass -- */
 
 			Initialize::desc::PassDesc pass_{};
@@ -107,6 +117,9 @@ namespace DirectX {
 	class DirectXInitializer final : HandyItems::others::NonCopyableMovableBase 
 	{
 	public:
+
+		std::vector<std::string> pass_list{};
+
 		/* ========== Publicメンバー関数 ========== */
 
 		/// <summary>
@@ -150,6 +163,37 @@ namespace DirectX {
 				return false;
 			}
 
+
+			//	シェーダー初期化
+
+			Initialize::InitializeShader shader{};
+
+			hr = shader.initialize_shader(
+				desc.context_,
+				desc.shader_
+			);
+			if (FAILED(hr)) {
+
+				InitializeLog::hresult_error_log(hr);
+				return false;
+			}
+
+			//	描画パイプライン初期化
+
+			Initialize::InitializePipline pipline{};
+
+			hr = pipline.initialize_pipline(
+				desc.context_,
+				desc.pipline_
+			);
+			if (FAILED(hr)) {
+
+				InitializeLog::hresult_error_log(hr);
+				return false;
+			}
+
+			//	パス初期化
+
 			Initialize::InitializePass pass{};
 			pass_list = pass.initialize_pass(
 				desc.context_,
@@ -159,8 +203,5 @@ namespace DirectX {
 			return true;
 		}
 
-		std::vector<std::string> pass_list{};
-
 	};
-
 }
