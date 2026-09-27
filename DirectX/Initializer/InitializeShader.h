@@ -63,16 +63,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			InitializeShader() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~InitializeShader() = default;
-
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>
@@ -85,6 +75,8 @@ namespace DirectX {
 				DirectXContext* context,
 				desc::ShaderDesc& desc_
 			) {
+
+				std::vector<std::string> shader_list{};
 
 				for (auto& [name,desc] : desc_.shader_) {
 
@@ -118,10 +110,34 @@ namespace DirectX {
 						);
 						return E_FAIL;
 					}
+					else {
+						shader_list.push_back(name);
+					}
+				}
+
+				DEBUG_LOG(
+					HandyItems::Debug::const_str::LineBreak,
+					"========== ShaderName =========="
+				);
+				for (auto& name : shader_list) {
+					DEBUG_LOG(name);
 				}
 
 				return S_OK;
 			}
+
+		private:
+			/* ========== Privateメンバー関数 ========== */
+
+			/// <summary>
+			/// コンストラクタ
+			/// </summary>
+			InitializeShader() = default;
+
+			/// <summary>
+			/// デストラクタ
+			/// </summary>
+			~InitializeShader() = default;
 
 		};
 	}

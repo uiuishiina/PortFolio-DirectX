@@ -12,9 +12,10 @@
 #include"DirectXUpdater.h"
 #include"DirectXEnder.h"
 
-#include"Resource/PassList.h"
+#include"Resource/CommandList.h"
 #include"Resource/ShaderList.h"
-#include"Resource/PiplineList.h"
+#include"Resource/PiplineStateList.h"
+#include"Resource/PiplinePassList.h"
 
 #include"Debug/DebugLogSystem.h"
 
@@ -64,21 +65,21 @@ DirectXRenderer::~DirectXRenderer() = default;
         return false;
     }
 
-    //  描画機能初期化
 
+    /* ========== 描画機能初期化 ========== */
+    
     DirectXInitializer initializer{};
 
     desc::InitializeDesc desc_{};
 
-
-    /* -- Core -- */
+    /* ===== Core ===== */
     desc_.context_ = context_.get();
     desc_.share_p = shera_p;
     desc_.back_buffer_size = back_buffer_size;
     desc_.frame_resource_size = frame_resource_size;
     desc_.core_ = Initialize::desc::CoreDesc{ hwnd_ ,width,height };
 
-    /* -- Shader -- */
+    /* ===== Shader ===== */
     desc_.shader_.emplace(
         make_shader_desc(
             Resource::Shaders::NormalVertex
@@ -88,7 +89,7 @@ DirectXRenderer::~DirectXRenderer() = default;
             Resource::Shaders::NormalPixel
         ));
 
-    /* -- Pipline -- */
+    /* ===== Pipline ===== */
     desc_.pipline_.emplace_root(
         make_root_desc(
             Resource::RootSignatures::Test
@@ -99,30 +100,7 @@ DirectXRenderer::~DirectXRenderer() = default;
         ));
 
 
-    /* -- Pass -- */
-    Initialize::desc::PassDesc passDesc{};
-
-    passDesc.emplace(
-        make_command_pass(
-            "Begin",
-            Resource::Pass::Commands::Begin
-        ));
-
-    passDesc.emplace(
-        make_command_pass(
-            "Clear",
-            {
-                Resource::Pass::Commands::BackBuffer::ClearRed
-            }
-        ));
-
-    passDesc.emplace(
-        make_command_pass(
-            "End",
-            Resource::Pass::Commands::End
-        ));
-
-    desc_.pass_ = passDesc;
+    /* ===== 機能初期化 ===== */
 
     if (!initializer.initialize(
         desc_
@@ -130,7 +108,38 @@ DirectXRenderer::~DirectXRenderer() = default;
         return false;
     }
 
-    //  描画パス設定
+
+    /* ========== 描画パス初期化 ========== */
+
+    /* ===== Pass ===== */
+    Initialize::desc::PassDesc passDesc{};
+
+    passDesc.emplace_command_pass(
+        Resource::Pass::Commands::Begin
+    );
+
+    passDesc.emplace_command_pass(
+        Resource::Pass::Commands::Clear
+    );
+
+    passDesc.emplace_command_pass(
+        Resource::Pass::Commands::End
+    );
+
+    passDesc.emplace_pipline_pass(
+        Resource::Pass::Piplines::Test
+    );
+
+
+    /* ===== パス初期化 ===== */
+
+    initializer.initialize_pass(
+        desc_.context_,
+        passDesc
+    );
+
+
+    /* ========== 描画パス設定 ========== */
 
     DEBUG_LOG(
         HandyItems::Debug::const_str::LineBreak, 

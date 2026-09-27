@@ -94,10 +94,6 @@ namespace DirectX {
 
 			Initialize::desc::PiplineDesc pipline_{};
 
-			/* -- Pass -- */
-
-			Initialize::desc::PassDesc pass_{};
-
 		};
 	}
 
@@ -166,9 +162,7 @@ namespace DirectX {
 
 			//	シェーダー初期化
 
-			Initialize::InitializeShader shader{};
-
-			hr = shader.initialize_shader(
+			hr = Initialize::InitializeShader::initialize_shader(
 				desc.context_,
 				desc.shader_
 			);
@@ -178,11 +172,10 @@ namespace DirectX {
 				return false;
 			}
 
+
 			//	描画パイプライン初期化
 
-			Initialize::InitializePipline pipline{};
-
-			hr = pipline.initialize_pipline(
+			hr = Initialize::InitializePipline::initialize_pipline(
 				desc.context_,
 				desc.pipline_
 			);
@@ -192,15 +185,19 @@ namespace DirectX {
 				return false;
 			}
 
-			//	パス初期化
-
-			Initialize::InitializePass pass{};
-			pass_list = pass.initialize_pass(
-				desc.context_,
-				desc.pass_
-			);
-
 			return true;
+		}
+
+		void initialize_pass(
+			DirectXContext* context_,
+			Initialize::desc::PassDesc& pass_
+		) {
+
+			//	パス初期化
+			pass_list = Initialize::InitializePass::initialize_pass(
+				context_,
+				pass_
+			);
 		}
 
 	};

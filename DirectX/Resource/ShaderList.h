@@ -12,41 +12,6 @@
 namespace DirectX {
 
 	/// <summary>
-	/// シェーダー設定構造体作成補助関数
-	/// </summary>
-	/// <param name="name">シェーダー名称</param>
-	/// <param name="desc">HLSLシェーダー設定構造体</param>
-	/// <returns>作成したシェーダー設定構造体の要素</returns>
-	[[nodiscard]] inline std::pair<
-		std::string,
-		ClassObject::desc::ShaderDesc
-	> make_shader_desc(
-		std::string name,
-		const ClassObject::desc::ShaderDesc& desc
-	) {
-
-		return { name,desc };
-	}
-
-	/// <summary>
-	/// シェーダー設定構造体作成補助関数オーバーロード
-	/// </summary>
-	/// <param name="desc_">下部名前空間等で事前作成した要素</param>
-	/// <returns>作成したシェーダー設定構造体の要素</returns>
-	[[nodiscard]] inline std::pair<
-		std::string,
-		ClassObject::desc::ShaderDesc
-	> make_shader_desc(
-		const std::pair<
-		std::string,
-		ClassObject::desc::ShaderDesc
-		>& desc_
-	) {
-
-		return { desc_ };
-	}
-
-	/// <summary>
 	/// リソース名前空間
 	/// </summary>
 	namespace Resource {
@@ -80,5 +45,38 @@ namespace DirectX {
 			};
 
 		}
+	}
+
+
+	/// <summary>
+	/// シェーダー設定構造体作成補助関数
+	/// </summary>
+	/// <param name="name">シェーダー名称</param>
+	/// <param name="desc">HLSLシェーダー設定構造体</param>
+	/// <returns>作成したシェーダー設定構造体の要素</returns>
+	[[nodiscard]] inline std::pair<
+		std::string,
+		ClassObject::desc::ShaderDesc
+	> make_shader_desc(
+		std::string name,
+		const ClassObject::desc::ShaderDesc& desc
+	) {
+
+		return { name,desc };
+	}
+
+	/// <summary>
+	/// シェーダー設定構造体作成補助関数オーバーロード
+	/// </summary>
+	/// <param name="desc_">上部名前空間等で事前作成した要素</param>
+	/// <returns>作成したシェーダー設定構造体の要素</returns>
+	[[nodiscard]] inline std::pair<
+		std::string,
+		ClassObject::desc::ShaderDesc
+	> make_shader_desc(
+		const Resource::Shaders::UsingShader& desc_
+	) {
+
+		return { desc_ };
 	}
 }

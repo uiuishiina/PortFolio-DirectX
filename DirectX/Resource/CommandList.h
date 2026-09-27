@@ -2,7 +2,7 @@
 
 /* ========== Includeファイル ========== */
 
-#include"../ClassModule/CommandPass.h"
+#include"../Helpers/CommandPassDesc.h"
 
 #include<vector>
 
@@ -10,26 +10,6 @@
 /// DirectX名前空間
 /// </summary>
 namespace DirectX {
-
-	/// <summary>
-	/// コマンドパス作成構造体補助関数
-	/// </summary>
-	/// <param name="name">コマンドパス名称</param>
-	/// <param name="vector">コマンド配列</param>
-	/// <returns>作成したコマンドパス</returns>
-	[[nodiscard]] inline std::pair<
-		std::string,
-		std::unique_ptr<ClassModule::PassBase>
-	> make_command_pass(
-		std::string name,
-		const std::vector<std::function<void(ClassModule::FrameContext&)>>& vector
-	) {
-
-		auto pass = std::make_unique<ClassModule::CommandPass>();
-		pass->add_commands(vector);
-
-		return { name,std::move(pass) };
-	}
 
 	/// <summary>
 	/// リソース名前空間
@@ -47,8 +27,6 @@ namespace DirectX {
 			namespace Commands {
 
 				/* ===== 単体コマンド ===== */
-
-				using Command = std::function<void(ClassModule::FrameContext&)>;
 
 				/// <summary>
 				/// バックバッファ用名前空間
@@ -142,20 +120,33 @@ namespace DirectX {
 
 				/* ===== コマンド配列 ===== */
 
-				const std::vector<
-					std::function<void(ClassModule::FrameContext&)>
-				> Begin = {
-					BackBuffer::TransitionTarget,
-					BackBuffer::Set
+				const CommandPassDesc Begin{
+					"Begin",
+					{
+						BackBuffer::TransitionTarget,
+						BackBuffer::Set
+					},
+					false
 				};
 
-				const std::vector<
-					std::function<void(ClassModule::FrameContext&)>
-				> End = {
-					BackBuffer::TransitionPresent
+				const CommandPassDesc Clear{
+					"Clear",
+					{
+						BackBuffer::ClearBlack
+					},
+					false
+				};
+
+				const CommandPassDesc End{
+					"End",
+					{
+						BackBuffer::TransitionPresent
+					},
+					false
 				};
 
 			}
 		}
 	}
+
 }

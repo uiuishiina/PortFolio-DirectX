@@ -1,7 +1,7 @@
 
 /* ========== Includeファイル ========== */
 
-#include "PiplineReference.h"
+#include"PiplineStateReference.h"
 
 #include"../DirectXContext.h"
 
@@ -20,7 +20,7 @@ using namespace DirectX::ClassObject;
 /// </details>
 /// <param name="context">DirectXオブジェクトインスタンス構造体参照</param>
 /// <param name="desc">パイプラインステート設定構造体参照</param>
-void desc::PiplineReferenceName::set(
+void desc::PiplineStateReferenceName::set(
 	DirectXContext* context, 
 	ClassObject::desc::PipelineStateDesc& desc
 ) const {

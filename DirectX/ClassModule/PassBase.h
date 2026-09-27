@@ -18,7 +18,7 @@ namespace DirectX {
 		/// <summary>
 		/// 描画パス基底クラス
 		/// </summary>
-		struct PassBase : HandyItems::others::NonCopyableMovableBase
+		class PassBase : HandyItems::others::NonCopyableMovableBase
 		{
 		public:
 			/* ========== Publicメンバー関数 ========== */

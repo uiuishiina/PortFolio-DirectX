@@ -67,6 +67,8 @@ void Application::run_app() {
         "========== run =========="
     );
 
+    bool foucs_{};
+
     while (true)
     {
         data_share.get_input()->update_frame();
@@ -81,8 +83,16 @@ void Application::run_app() {
             break;
         }
 
-        if (!main_window.get_focus()) {
-            continue;
+
+        {
+            auto foucs = main_window.get_focus();
+            if (foucs_ != foucs) {
+                DEBUG_LOG("Window Foucs = ", (foucs ? "ON" : "OFF"));
+                foucs_ = foucs;
+            }
+            if (!foucs) {
+                continue;
+            }
         }
 
         main_renderer.update_renderer();

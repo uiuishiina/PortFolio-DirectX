@@ -377,7 +377,7 @@
     <ClInclude Include="..\DirectX\Initializer\InitializePass.h">
       <Filter>ヘッダー ファイル\DirectX\Initializer</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX\Resource\PassList.h">
+    <ClInclude Include="..\DirectX\Resource\CommandList.h">
       <Filter>ヘッダー ファイル\DirectX\Resource</Filter>
     </ClInclude>
     <ClInclude Include="..\DirectX\ClassObject\ShaderCompiler.h">
@@ -449,10 +449,22 @@
     <ClInclude Include="..\DirectX\Container\RootSignatureContainer.h">
       <Filter>ヘッダー ファイル\DirectX\Container</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX\Resource\PiplineList.h">
+    <ClInclude Include="..\DirectX\Resource\PiplineStateList.h">
       <Filter>ヘッダー ファイル\DirectX\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX\Helpers\PiplineReference.h">
+    <ClInclude Include="..\DirectX\Helpers\PiplineStateReference.h">
+      <Filter>ヘッダー ファイル\DirectX\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\PiplinePass.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Resource\PiplinePassList.h">
+      <Filter>ヘッダー ファイル\DirectX\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Helpers\PiplinePassDesc.h">
+      <Filter>ヘッダー ファイル\DirectX\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Helpers\CommandPassDesc.h">
       <Filter>ヘッダー ファイル\DirectX\Helpers</Filter>
     </ClInclude>
   </ItemGroup>

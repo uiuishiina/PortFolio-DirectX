@@ -26,7 +26,7 @@ namespace DirectX {
 			/// <summary>
 			/// パイプラインステート外部参照補助構造体
 			/// </summary>
-			struct PiplineReferenceName {
+			struct PiplineStateReferenceName {
 
 				/* ========== Publicメンバー変数 ========== */
 

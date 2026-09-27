@@ -22,7 +22,7 @@ namespace DirectX {
 		/// <summary>
 		/// 描画コマンドクラス
 		/// </summary>
-		struct CommandPass : PassBase
+		class CommandPass : public PassBase
 		{
 			using Command = std::function<void(FrameContext&)>;
 		public:
@@ -38,24 +38,7 @@ namespace DirectX {
 			/// </summary>
 			~CommandPass() = default;
 
-			/* ===== 実行関数 ===== */
-
-			/// <summary>
-			/// 描画パス呼び出し関数
-			/// </summary>
-			/// <param name="context"></param>
-			void apply_pass(
-				FrameContext& context
-			) override {
-
-				if (commands_.empty()) {
-					return;
-				}
-
-				for (auto& c : commands_) {
-					c(context);
-				}
-			}
+			/* ===== 初期化関数 ===== */
 
 			/// <summary>
 			/// コマンド追加関数
@@ -90,6 +73,21 @@ namespace DirectX {
 				commands_.clear();
 			}
 
+			/* ===== 実行関数 ===== */
+
+			/// <summary>
+			/// 描画パス呼び出し関数
+			/// </summary>
+			/// <param name="context">DirectXオブジェクトインスタンス構造体参照</param>
+			void apply_pass(
+				FrameContext& context
+			) override {
+
+				for (auto& c : commands_) {
+					c(context);
+				}
+			}
+			
 		private:
 			/* ========== Privateメンバー変数 ========== */
 
