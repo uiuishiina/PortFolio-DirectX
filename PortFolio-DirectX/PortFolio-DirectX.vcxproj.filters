@@ -485,6 +485,9 @@
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\VertexBuffer.h">
       <Filter>ヘッダー ファイル\DirectX\ClassObject\GPUResource</Filter>
     </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\Mesh.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\DirectX\Resource\HLSL\StructHeader.hlsli">

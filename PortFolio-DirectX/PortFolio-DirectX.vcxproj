@@ -44,6 +44,7 @@
     <ClInclude Include="..\DirectX\ClassModule\CommandPass.h" />
     <ClInclude Include="..\DirectX\ClassModule\FrameContext.h" />
     <ClInclude Include="..\DirectX\ClassModule\FrameResource.h" />
+    <ClInclude Include="..\DirectX\ClassModule\Mesh.h" />
     <ClInclude Include="..\DirectX\ClassModule\PassBase.h" />
     <ClInclude Include="..\DirectX\ClassModule\PiplinePass.h" />
     <ClInclude Include="..\DirectX\ClassObject\CommandAllocator.h" />

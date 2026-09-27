@@ -33,16 +33,17 @@ namespace DirectX {
 			/// </summary>
 			~VertexBuffer() = default;
 
+
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>
-			/// インデックスバッファ作成関数
+			/// 頂点バッファ作成関数
 			/// </summary>
-			/// <typeparam name="T">インデックスバッファデータ型</typeparam>
+			/// <typeparam name="T">頂点バッファデータ型</typeparam>
 			/// <param name="device_">Device参照</param>
 			/// <param name="list_">コマンドリスト参照</param>
 			/// <param name="upload_resource">Upload用GPU_Resource参照</param>
-			/// <param name="buffer_data">インデックスバッファデータ配列</param>
+			/// <param name="buffer_data">頂点バッファデータ配列</param>
 			/// <returns></returns>
 			template<typename T>
 			[[nodiscard]] HRESULT create_vertex_buffer(
@@ -75,23 +76,6 @@ namespace DirectX {
 			}
 
 
-			/* ===== 初期化補助関数 ===== */
-
-			/// <summary>
-			/// 派生先別リソース作成関数
-			/// </summary>
-			/// <returns>作成の成否</returns>
-			[[nodiscard]] HRESULT create_resource_object() override {
-
-				//	VertexBufferViweを作成
-				vertex_buffer_view.BufferLocation = get_GPU_address();
-				vertex_buffer_view.StrideInBytes = class_size;
-				vertex_buffer_view.SizeInBytes = static_cast<UINT>(buffer_size);
-
-				return S_OK;
-			}
-
-
 			/* ===== 取得関数 ===== */
 
 			/// <summary>
@@ -120,6 +104,25 @@ namespace DirectX {
 			/// バッファデータ型メモリサイズ
 			/// </summary>
 			UINT class_size{};
+
+
+			/* ========== Privateメンバー関数 ========== */
+
+			/* ===== 初期化補助関数 ===== */
+
+			/// <summary>
+			/// 派生先別リソース作成関数
+			/// </summary>
+			/// <returns>作成の成否</returns>
+			[[nodiscard]] HRESULT create_resource_object() override {
+
+				//	VertexBufferViweを作成
+				vertex_buffer_view.BufferLocation = get_GPU_address();
+				vertex_buffer_view.StrideInBytes = class_size;
+				vertex_buffer_view.SizeInBytes = static_cast<UINT>(buffer_size);
+
+				return S_OK;
+			}
 
 		};
 	}

@@ -33,6 +33,7 @@ namespace DirectX {
 			/// </summary>
 			~IndexBuffer() = default;
 
+
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>
@@ -74,23 +75,6 @@ namespace DirectX {
 			}
 
 
-			/* ===== 初期化補助関数 ===== */
-
-			/// <summary>
-			/// 派生先別リソース作成関数
-			/// </summary>
-			/// <returns>作成の成否</returns>
-			[[nodiscard]] HRESULT create_resource_object() override {
-
-				//	IndexBufferView作成
-				index_buffer_view.BufferLocation = get_GPU_address();
-				index_buffer_view.SizeInBytes = static_cast<UINT>(buffer_size);
-				index_buffer_view.Format = format_;
-
-				return S_OK;
-			}
-
-
 			/* ===== 取得関数 ===== */
 
 			/// <summary>
@@ -120,7 +104,27 @@ namespace DirectX {
 			/// </summary>
 			DXGI_FORMAT format_{};
 
+
 			/* ========== Privateメンバー関数 ========== */
+
+			/* ===== 初期化補助関数 ===== */
+
+			/// <summary>
+			/// 派生先別リソース作成関数
+			/// </summary>
+			/// <returns>作成の成否</returns>
+			[[nodiscard]] HRESULT create_resource_object() override {
+
+				//	IndexBufferView作成
+				index_buffer_view.BufferLocation = get_GPU_address();
+				index_buffer_view.SizeInBytes = static_cast<UINT>(buffer_size);
+				index_buffer_view.Format = format_;
+
+				return S_OK;
+			}
+
+
+			/* ===== 取得関数 ===== */
 
 			/// <summary>
 			/// インデックスバッファ用フォーマット取得関数
