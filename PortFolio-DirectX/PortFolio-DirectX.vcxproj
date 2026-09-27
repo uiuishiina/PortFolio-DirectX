@@ -28,7 +28,6 @@
     <ClCompile Include="..\DirectX\DirectXInitializer.cpp" />
     <ClCompile Include="..\DirectX\DirectXRenderer.cpp" />
     <ClCompile Include="..\DirectX\DirectXUpdater.cpp" />
-    <ClCompile Include="..\DirectX\Helpers\PiplineReference.cpp" />
     <ClCompile Include="..\DirectX\Helpers\PiplineStateHelper.cpp" />
     <ClCompile Include="..\DirectX\Initializer\InitializeCore.cpp" />
     <ClCompile Include="..\Entry\Entry.cpp" />

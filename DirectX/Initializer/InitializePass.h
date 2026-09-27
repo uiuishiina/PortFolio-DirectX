@@ -9,11 +9,6 @@
 #include"../Helpers/CommandPassDesc.h"
 #include"../Helpers/PiplinePassDesc.h"
 
-//	その他
-#include<vector>
-#include<utility>
-#include<string>
-
 /// <summary>
 /// DirectX名前空間
 /// </summary>
@@ -48,10 +43,17 @@ namespace DirectX {
 				/* ========== Publicメンバー関数 ========== */
 
 				/// <summary>
+				/// 
+				/// </summary>
+				/// <param name="name"></param>
+				/// <param name="vector"></param>
+				
+				/// <summary>
 				/// コマンドパス作成構造体補助関数
 				/// </summary>
 				/// <param name="name">コマンドパス名称</param>
 				/// <param name="vector">コマンド配列</param>
+				/// <param name="flag">描画パス呼び出しフラグ</param>
 				void emplace_command_pass(
 					std::string name,
 					const std::vector<std::function<void(ClassModule::FrameContext&)>>& vector,
@@ -76,8 +78,8 @@ namespace DirectX {
 				/// パイプラインパス作成構造体補助関数
 				/// </summary>
 				/// <param name="name">パイプライン名称</param>
-				/// <param name="vector">コマンド配列</param>
-				/// <returns>作成したコマンドパス</returns>
+				/// <param name="desc">パイプラインパス外部参照補助構造体</param>
+				/// <param name="flag">描画パス呼び出しフラグ</param>
 				void emplace_pipline_pass(
 					std::string name,
 					Resource::Pass::Piplines::PiplinePassReference desc,
@@ -90,8 +92,7 @@ namespace DirectX {
 				/// <summary>
 				/// コマンドパス作成構造体補助関数オーバーロード
 				/// </summary>
-				/// <param name="desc_">下部名前空間等で事前作成した要素</param>
-				/// <returns>作成したコマンドパス作成構造体の要素</returns>
+				/// <param name="desc_">事前作成した要素</param>
 				void emplace_pipline_pass(
 					const Resource::Pass::Piplines::PiplinePassDesc& desc_
 				) {
@@ -143,7 +144,7 @@ namespace DirectX {
 
 				for (auto& [name, ref, flag] : desc.pipline_pass) {
 
-					auto pass = ref.set(context);
+					auto pass = Resource::Pass::Piplines::make_pipline_pass(context, ref);
 
 					if (context->pass_container->add_pass(
 						Container::PassKey{ name.c_str() },

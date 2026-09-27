@@ -1,11 +1,9 @@
 #pragma once
 
-
 /* ========== Includeファイル ========== */
 
+//	DirectX
 #include"../ClassModule/CommandPass.h"
-
-#include<vector>
 
 /// <summary>
 /// DirectX名前空間
@@ -27,8 +25,14 @@ namespace DirectX {
 			/// </summary>
 			namespace Commands {
 
+				/// <summary>
+				/// コマンド定義
+				/// </summary>
 				using Command = std::function<void(ClassModule::FrameContext&)>;
 
+				/// <summary>
+				/// コマンドパス設定定義
+				/// </summary>
 				using CommandPassDesc = std::tuple<
 					std::string,
 					std::vector<Command>,

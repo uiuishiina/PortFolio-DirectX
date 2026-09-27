@@ -132,7 +132,7 @@ namespace DirectX {
 				const CommandPassDesc Clear{
 					"Clear",
 					{
-						BackBuffer::ClearBlack
+						BackBuffer::ClearGreen
 					},
 					false
 				};
