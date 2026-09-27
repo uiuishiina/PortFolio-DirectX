@@ -28,6 +28,8 @@
     <ClCompile Include="..\DirectX\DirectXInitializer.cpp" />
     <ClCompile Include="..\DirectX\DirectXRenderer.cpp" />
     <ClCompile Include="..\DirectX\DirectXUpdater.cpp" />
+    <ClCompile Include="..\DirectX\Helpers\GPUResourceDescHelper.cpp" />
+    <ClCompile Include="..\DirectX\Helpers\GPUResourceHelper.cpp" />
     <ClCompile Include="..\DirectX\Helpers\PiplineStateHelper.cpp" />
     <ClCompile Include="..\DirectX\Initializer\InitializeCore.cpp" />
     <ClCompile Include="..\Entry\Entry.cpp" />
@@ -52,9 +54,12 @@
     <ClInclude Include="..\DirectX\ClassObject\DXGI.h" />
     <ClInclude Include="..\DirectX\ClassObject\Fence.h" />
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\GPUResourceBase.h" />
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\IndexBuffer.h" />
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\RenderTarget.h" />
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\RenderTarget\BackBuffer.h" />
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\ResourceBarrier.h" />
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\StaticResourceBase.h" />
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\VertexBuffer.h" />
     <ClInclude Include="..\DirectX\ClassObject\PiplineState.h" />
     <ClInclude Include="..\DirectX\ClassObject\RootSignature.h" />
     <ClInclude Include="..\DirectX\ClassObject\ShaderCompiler.h" />
@@ -80,6 +85,8 @@
     <ClInclude Include="..\DirectX\External\d3dx12_root_signature.h" />
     <ClInclude Include="..\DirectX\External\d3dx12_state_object.h" />
     <ClInclude Include="..\DirectX\Helpers\CommandPassDesc.h" />
+    <ClInclude Include="..\DirectX\Helpers\GPUResourceDescHelper.h" />
+    <ClInclude Include="..\DirectX\Helpers\GPUResourceHelper.h" />
     <ClInclude Include="..\DirectX\Helpers\PiplinePassDesc.h" />
     <ClInclude Include="..\DirectX\Helpers\PiplineStateReference.h" />
     <ClInclude Include="..\DirectX\Helpers\PiplineStateHelper.h" />

@@ -130,7 +130,6 @@ DirectXRenderer::~DirectXRenderer() = default;
         Resource::Pass::Piplines::Test
     );
 
-
     /* ===== パス初期化 ===== */
 
     initializer.initialize_pass(

@@ -171,6 +171,12 @@
     <ClCompile Include="..\HandyItems\Debug\ConvertString.cpp">
       <Filter>ソース ファイル\HandyItems\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="..\DirectX\Helpers\GPUResourceDescHelper.cpp">
+      <Filter>ソース ファイル\DirectX\Heplers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DirectX\Helpers\GPUResourceHelper.cpp">
+      <Filter>ソース ファイル\DirectX\Heplers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Application\Application.h">
@@ -463,6 +469,21 @@
     </ClInclude>
     <ClInclude Include="..\DirectX\Helpers\CommandPassDesc.h">
       <Filter>ヘッダー ファイル\DirectX\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\StaticResourceBase.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Helpers\GPUResourceDescHelper.h">
+      <Filter>ヘッダー ファイル\DirectX\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Helpers\GPUResourceHelper.h">
+      <Filter>ヘッダー ファイル\DirectX\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\IndexBuffer.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\VertexBuffer.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject\GPUResource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
