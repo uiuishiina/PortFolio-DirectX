@@ -121,6 +121,9 @@
     <Filter Include="ヘッダー ファイル\DirectX\Resource\HLSL">
       <UniqueIdentifier>{3aa73294-5ae9-4281-b9b7-cd17ffcb50f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\DirectX\ClassModule\DrawObject">
+      <UniqueIdentifier>{39fc520e-e963-42eb-8a87-c038438d3969}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Entry\Entry.cpp">
@@ -485,7 +488,22 @@
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\VertexBuffer.h">
       <Filter>ヘッダー ファイル\DirectX\ClassObject\GPUResource</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX\ClassModule\Mesh.h">
+    <ClInclude Include="..\DirectX\ClassModule\DrawObject\Mesh.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule\DrawObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\DrawObject\DrawObjectBase.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule\DrawObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Container\DrawObjectConteiner.h">
+      <Filter>ヘッダー ファイル\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Initializer\InitializeResource.h">
+      <Filter>ヘッダー ファイル\DirectX\Initializer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Helpers\MeshResourceDesc.h">
+      <Filter>ヘッダー ファイル\DirectX\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\UploadResources.h">
       <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
     </ClInclude>
   </ItemGroup>

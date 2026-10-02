@@ -7,6 +7,7 @@
 #include"Container/ShaderContainer.h"
 #include"Container/RootSignatureContainer.h"
 #include"Container/PiplineStateContainer.h"
+#include"Container/DrawObjectConteiner.h"
 
 using namespace DirectX;
 
@@ -42,6 +43,7 @@ DirectXContext::DirectXContext(std::uint32_t back_buffer_size, std::uint32_t fra
 		shader_container = std::make_unique<Container::ShaderContainer>();
 		root_signature_container = std::make_unique<Container::RootSignatureContainer>();
 		pipline_state_container = std::make_unique<Container::PiplineStateContainer>();
+		draw_object_container = std::make_unique<Container::DrawObjectContainer>();
 }
 
 DirectXContext::~DirectXContext() = default;

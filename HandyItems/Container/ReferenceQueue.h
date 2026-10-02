@@ -81,6 +81,10 @@ namespace HandyItems {
 				return value;
 			}
 
+			void clear() {
+				reference_queue = {};
+			}
+
 		private:
 			/* ===== メンバー関数 ===== */
 

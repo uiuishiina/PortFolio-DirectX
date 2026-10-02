@@ -37,6 +37,7 @@ namespace DirectX {
 		class ShaderContainer;
 		class RootSignatureContainer;
 		class PiplineStateContainer;
+		class DrawObjectContainer;
 	}
 
 
@@ -141,6 +142,11 @@ namespace DirectX {
 		/// パイプラインステートコンテナインスタンス
 		/// </summary>
 		UniquePtr<Container::PiplineStateContainer> pipline_state_container{};
+
+		/// <summary>
+		/// 描画オブジェクトコンテナインスタンス
+		/// </summary>
+		UniquePtr<Container::DrawObjectContainer> draw_object_container{};
 
 	};
 }

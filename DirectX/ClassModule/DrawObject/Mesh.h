@@ -3,8 +3,10 @@
 /* ========== Includeファイル ========== */
 
 //	DirectX
-#include"../ClassObject/GPUResource/VertexBuffer.h"
-#include"../ClassObject/GPUResource/IndexBuffer.h"
+#include"../../ClassObject/GPUResource/VertexBuffer.h"
+#include"../../ClassObject/GPUResource/IndexBuffer.h"
+
+#include"DrawObjectBase.h"
 
 /// <summary>
 /// DirectX名前空間
@@ -15,6 +17,8 @@ namespace DirectX {
 	/// オブジェクト機能統合名前空間
 	/// </summary>
 	namespace ClassModule {
+
+
 
 		/// <summary>
 		/// オブジェクト機能統合設定名前空間
@@ -35,6 +39,8 @@ namespace DirectX {
 				/// </summary>
 				std::vector<T> vertex_{};
 
+				/* ========== Publicメンバー変数 ========== */
+
 				/// <summary>
 				/// インデックスデータ配列
 				/// </summary>
@@ -47,11 +53,12 @@ namespace DirectX {
 
 			};
 		}
-		
+
+
 		/// <summary>
 		/// メッシュクラス
 		/// </summary>
-		class Mesh final : HandyItems::others::NonCopyableBase
+		class Mesh final : DrawObjectBase
 		{
 		public:
 			/* ========== Publicメンバー関数 ========== */
@@ -83,7 +90,7 @@ namespace DirectX {
 				ID3D12Device* device_,
 				ID3D12GraphicsCommandList* list_,
 				std::span<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_resources,
-				const desc::MeshDesc<T> desc
+				const desc::MeshDesc<T>& desc
 			) {
 
 				//	Upload用Resourceが足りないなら失敗
@@ -127,9 +134,9 @@ namespace DirectX {
 			/// メッシュ描画関数
 			/// </summary>
 			/// <param name="list_">コマンドリスト参照</param>
-			void draw_mesh(
+			void draw(
 				ID3D12GraphicsCommandList* list_
-			) const noexcept {
+			) const noexcept override {
 
 				//	VertexBuffer設定
 				list_->IASetVertexBuffers(0, 1, &vertex_.get_vertex_buffer_view());
@@ -169,5 +176,6 @@ namespace DirectX {
 			D3D_PRIMITIVE_TOPOLOGY topology_{};
 
 		};
+
 	}
 }

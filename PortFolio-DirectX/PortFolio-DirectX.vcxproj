@@ -42,11 +42,13 @@
     <ClInclude Include="..\Application\Application.h" />
     <ClInclude Include="..\Application\ApplicationDataShare.h" />
     <ClInclude Include="..\DirectX\ClassModule\CommandPass.h" />
+    <ClInclude Include="..\DirectX\ClassModule\DrawObject\DrawObjectBase.h" />
+    <ClInclude Include="..\DirectX\ClassModule\DrawObject\Mesh.h" />
     <ClInclude Include="..\DirectX\ClassModule\FrameContext.h" />
     <ClInclude Include="..\DirectX\ClassModule\FrameResource.h" />
-    <ClInclude Include="..\DirectX\ClassModule\Mesh.h" />
     <ClInclude Include="..\DirectX\ClassModule\PassBase.h" />
     <ClInclude Include="..\DirectX\ClassModule\PiplinePass.h" />
+    <ClInclude Include="..\DirectX\ClassModule\UploadResources.h" />
     <ClInclude Include="..\DirectX\ClassObject\CommandAllocator.h" />
     <ClInclude Include="..\DirectX\ClassObject\CommandList.h" />
     <ClInclude Include="..\DirectX\ClassObject\CommandQueue.h" />
@@ -65,6 +67,7 @@
     <ClInclude Include="..\DirectX\ClassObject\RootSignature.h" />
     <ClInclude Include="..\DirectX\ClassObject\ShaderCompiler.h" />
     <ClInclude Include="..\DirectX\ClassObject\SwapChain.h" />
+    <ClInclude Include="..\DirectX\Container\DrawObjectConteiner.h" />
     <ClInclude Include="..\DirectX\Container\PassContainer.h" />
     <ClInclude Include="..\DirectX\Container\PiplineStateContainer.h" />
     <ClInclude Include="..\DirectX\Container\RootSignatureContainer.h" />
@@ -88,6 +91,7 @@
     <ClInclude Include="..\DirectX\Helpers\CommandPassDesc.h" />
     <ClInclude Include="..\DirectX\Helpers\GPUResourceDescHelper.h" />
     <ClInclude Include="..\DirectX\Helpers\GPUResourceHelper.h" />
+    <ClInclude Include="..\DirectX\Helpers\MeshResourceDesc.h" />
     <ClInclude Include="..\DirectX\Helpers\PiplinePassDesc.h" />
     <ClInclude Include="..\DirectX\Helpers\PiplineStateReference.h" />
     <ClInclude Include="..\DirectX\Helpers\PiplineStateHelper.h" />
@@ -95,6 +99,7 @@
     <ClInclude Include="..\DirectX\Initializer\InitializeCore.h" />
     <ClInclude Include="..\DirectX\Initializer\InitializePass.h" />
     <ClInclude Include="..\DirectX\Initializer\InitializePipline.h" />
+    <ClInclude Include="..\DirectX\Initializer\InitializeResource.h" />
     <ClInclude Include="..\DirectX\Initializer\InitializeShader.h" />
     <ClInclude Include="..\DirectX\Resource\CommandList.h" />
     <ClInclude Include="..\DirectX\Resource\PiplinePassList.h" />
