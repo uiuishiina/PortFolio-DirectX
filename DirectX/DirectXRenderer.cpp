@@ -90,20 +90,40 @@ DirectXRenderer::~DirectXRenderer() = default;
         make_shader_desc(
             Resource::Shaders::NormalPixel
         ));
+    desc_.shader_.emplace(
+        make_shader_desc(
+            Resource::Shaders::ColorVertex
+        ));
+    desc_.shader_.emplace(
+        make_shader_desc(
+            Resource::Shaders::ColorPixel
+        ));
 
     /* ===== Pipline ===== */
     desc_.pipline_.emplace_root(
         make_root_desc(
-            Resource::RootSignatures::Test
+            Resource::RootSignatures::Normal
+        ));
+    desc_.pipline_.emplace_root(
+        make_root_desc(
+            Resource::RootSignatures::Color
+        ));
+
+    desc_.pipline_.emplace_pipline(
+        make_pipline_desc(
+            Resource::PiplineStates::Normal
         ));
     desc_.pipline_.emplace_pipline(
         make_pipline_desc(
-            Resource::PiplineStates::Test
+            Resource::PiplineStates::Color
         ));
 
     /* ===== Resources ===== */
     desc_.resource_.emplace_mesh_desc(
-        std::move(Resource::DrawObject::Mesh::Test)
+        std::move(Resource::DrawObject::Mesh::NormalMesh)
+    );
+    desc_.resource_.emplace_mesh_desc(
+        std::move(Resource::DrawObject::Mesh::ColorMesh)
     );
 
 
@@ -129,17 +149,20 @@ DirectXRenderer::~DirectXRenderer() = default;
         Resource::Pass::Commands::Clear
     );
 
-
     passDesc.emplace_command_pass(
         Resource::Pass::Commands::SetView
     );
 
     passDesc.emplace_draw_object_pass(
-        Resource::Pass::DrawObject::Test
+        Resource::Pass::DrawObject::NormalTest
+    );
+    passDesc.emplace_draw_object_pass(
+        Resource::Pass::DrawObject::ColorTest
     );
 
+
     passDesc.emplace_pipline_pass(
-        Resource::Pass::Piplines::Test
+        Resource::Pass::Piplines::ColorTest
     );
 
 

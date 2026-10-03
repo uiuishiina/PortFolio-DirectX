@@ -25,17 +25,33 @@ namespace DirectX {
 			/// </summary>
 			namespace Piplines {
 
-				const PiplinePassDesc Test{
-					"Pipline_Test",
+				const PiplinePassDesc NormalTest{
+					"Pipline_NormalTest",
 					{
-						.root_name = "Test",
+						.root_name = "Normal",
 						.root_state = ClassModule::RootState::Graphics,
-						.pipline_name = "Test",
+						.pipline_name = "Normal",
 						.command_pass_names{
 							"Begin",
 							"Clear",
 							"SetView",
-							"DrawMesh",
+							"DrawNormalObject",
+							"End"
+						}
+					},
+					true
+				};
+				const PiplinePassDesc ColorTest{
+					"Pipline_ColorTest",
+					{
+						.root_name = "Color",
+						.root_state = ClassModule::RootState::Graphics,
+						.pipline_name = "Color",
+						.command_pass_names{
+							"Begin",
+							"Clear",
+							"SetView",
+							"DrawColorObject",
 							"End"
 						}
 					},

@@ -1,11 +1,10 @@
-
 #include"StructHeader.hlsli"
 
-PS_OutPut main()
+PS_OutPut main(VS_OutPutColor input)
 {
     PS_OutPut output;
 	
-    output.color = float4(1.0f, 1.0f, 1.0f, 1.0f);
+    output.color = input.color;
     
     return output;
 }

@@ -36,13 +36,33 @@ namespace DirectX {
 					float pos[3] = {};
 				};
 
-				inline MeshResourceDesc Test{
-					"TestMesh",
+				struct CVer {
+					float pos[3] = {};
+					float color[4] = {};
+				};
+
+				inline MeshResourceDesc NormalMesh{
+					"NormalMesh",
 					make_create_mesh_desc<NVer>({
 						.vertex_ = {
-							{	-1,	-1, 0},
-							{	 0,	 1, 0},
-							{	 1,	-1, 0}
+							{	-0.5f,	-0.5f,	0},
+							{		0,	 0.5f,	0},
+							{	 0.5f,	-0.5f,	0}
+						},
+						.index_ = {
+							0,1,2
+						}
+					})
+
+				};
+
+				inline MeshResourceDesc ColorMesh{
+					"ColorMesh",
+					make_create_mesh_desc<CVer>({
+						.vertex_ = {
+							{{	-0.5f,	-0.5f,	0},{	1,	0,	0,	1}},
+							{{		0,	 0.5f,	0},{	0,	1,	0,	1}},
+							{{	 0.5f,	-0.5f,	0},{	0,	0,	1,	1}}
 						},
 						.index_ = {
 							0,1,2

@@ -531,5 +531,11 @@
     <FxCompile Include="..\DirectX\Resource\HLSL\NormalPixel.hlsl">
       <Filter>ヘッダー ファイル\DirectX\Resource\HLSL</Filter>
     </FxCompile>
+    <FxCompile Include="..\DirectX\Resource\HLSL\ColorVertex.hlsl">
+      <Filter>ヘッダー ファイル\DirectX\Resource\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="..\DirectX\Resource\HLSL\ColorPixel.hlsl">
+      <Filter>ヘッダー ファイル\DirectX\Resource\HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

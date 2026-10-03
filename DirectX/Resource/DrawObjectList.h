@@ -24,11 +24,21 @@ namespace DirectX {
 			/// </summary>
 			namespace DrawObject {
 
-				const DrwObjectPassDesc Test = {
-					"DrawMesh",
+				const DrwObjectPassDesc NormalTest = {
+					"DrawNormalObject",
 					{
 						{
-							"TestMesh"
+							"NormalMesh"
+						}
+					},
+					false
+				};
+
+				const DrwObjectPassDesc ColorTest = {
+					"DrawColorObject",
+					{
+						{
+							"ColorMesh"
 						}
 					},
 					false

@@ -33,8 +33,15 @@ namespace DirectX {
 				ClassObject::desc::RootSignatureDesc
 			>;
 
-			const UsingRootSignature Test{
-				"Test",
+			const UsingRootSignature Normal{
+				"Normal",
+				{
+					.flags_ = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT
+				}
+			};
+
+			const UsingRootSignature Color{
+				"Color",
 				{
 					.flags_ = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT
 				}
@@ -68,10 +75,10 @@ namespace DirectX {
 				return value;
 			}
 
-			const UsingPiplineState Test{
-				"Test",
+			const UsingPiplineState Normal{
+				"Normal",
 				{
-					.root_name = "Test",
+					.root_name = "Normal",
 					.vs_name = "NormalVertex",
 					.ps_name = "NormalPixel"
 				},
@@ -85,6 +92,28 @@ namespace DirectX {
 							desc.FillMode = static_cast<D3D12_FILL_MODE>(3);
 						}),
 					.blend_desc = Helper::PiplineStateHelper::default_blend(),
+					.depth_stencil_desc = Helper::PiplineStateHelper::default_depth()
+				}
+			};
+
+			const UsingPiplineState Color{
+				"Color",
+				{
+					.root_name = "Color",
+					.vs_name = "ColorVertex",
+					.ps_name = "ColorPixel"
+				},
+				{
+					.input_elements = {
+						{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+						{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+					},
+					.rasterizer_desc = Override(
+						Helper::PiplineStateHelper::default_rasterizer(),
+						[](auto& desc) {
+							desc.FillMode = static_cast<D3D12_FILL_MODE>(3);
+						}),
+					.blend_desc = Helper::PiplineStateHelper::enable_blend(),
 					.depth_stencil_desc = Helper::PiplineStateHelper::default_depth()
 				}
 			};

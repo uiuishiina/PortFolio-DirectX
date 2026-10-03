@@ -44,6 +44,24 @@ namespace DirectX {
 				}
 			};
 
+			const UsingShader ColorVertex{
+				"ColorVertex",
+				{
+					L"../DirectX/Resource/HLSL/ColorVertex.hlsl",
+					"main",
+					"vs_5_0"
+				}
+			};
+
+			const UsingShader ColorPixel{
+				"ColorPixel",
+				{
+					L"../DirectX/Resource/HLSL/ColorPixel.hlsl",
+					"main",
+					"ps_5_0"
+				}
+			};
+
 		}
 	}
 
