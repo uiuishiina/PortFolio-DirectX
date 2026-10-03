@@ -62,7 +62,7 @@ namespace DirectX {
 				desc::StaticResourceDesc desc{};
 
 				//	バッファサイズをデータサイズ分用意
-				desc.resource_desc = Helper::GPUResourceDescHelper::get_buffer_desc(buffer_data);
+				desc.resource_desc = Helper::GPUResourceDescHelper::get_buffer_desc(buffer_size);
 
 				//	初期データ作成
 				desc.add_buffer_data(buffer_data);
@@ -81,7 +81,7 @@ namespace DirectX {
 			/// インデックスバッファビュー取得関数
 			/// </summary>
 			/// <returns>インデックスバッファビュー</returns>
-			[[nodiscard]] const D3D12_INDEX_BUFFER_VIEW get_index_buffer_view()const noexcept {
+			[[nodiscard]] const D3D12_INDEX_BUFFER_VIEW& get_index_buffer_view()const noexcept {
 
 				return index_buffer_view;
 			}

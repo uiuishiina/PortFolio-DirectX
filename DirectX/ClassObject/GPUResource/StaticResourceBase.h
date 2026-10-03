@@ -252,7 +252,7 @@ namespace DirectX {
 				create_desc.heap_properties = Helper::GPUResourceDescHelper::get_heap_properties(D3D12_HEAP_TYPE_DEFAULT);
 				create_desc.heap_flags = D3D12_HEAP_FLAG_NONE;
 				create_desc.resource_desc = desc.resource_desc;
-				create_desc.initial_state = D3D12_RESOURCE_STATE_COPY_DEST;
+				create_desc.initial_state = D3D12_RESOURCE_STATE_COMMON;
 
 				return create_committed_resource(
 					device_,

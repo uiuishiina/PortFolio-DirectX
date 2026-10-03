@@ -42,6 +42,7 @@
     <ClInclude Include="..\Application\Application.h" />
     <ClInclude Include="..\Application\ApplicationDataShare.h" />
     <ClInclude Include="..\DirectX\ClassModule\CommandPass.h" />
+    <ClInclude Include="..\DirectX\ClassModule\DrawObjectPass.h" />
     <ClInclude Include="..\DirectX\ClassModule\DrawObject\DrawObjectBase.h" />
     <ClInclude Include="..\DirectX\ClassModule\DrawObject\Mesh.h" />
     <ClInclude Include="..\DirectX\ClassModule\FrameContext.h" />
@@ -89,6 +90,7 @@
     <ClInclude Include="..\DirectX\External\d3dx12_root_signature.h" />
     <ClInclude Include="..\DirectX\External\d3dx12_state_object.h" />
     <ClInclude Include="..\DirectX\Helpers\CommandPassDesc.h" />
+    <ClInclude Include="..\DirectX\Helpers\DrawObjectPassDesc.h" />
     <ClInclude Include="..\DirectX\Helpers\GPUResourceDescHelper.h" />
     <ClInclude Include="..\DirectX\Helpers\GPUResourceHelper.h" />
     <ClInclude Include="..\DirectX\Helpers\MeshResourceDesc.h" />
@@ -102,6 +104,8 @@
     <ClInclude Include="..\DirectX\Initializer\InitializeResource.h" />
     <ClInclude Include="..\DirectX\Initializer\InitializeShader.h" />
     <ClInclude Include="..\DirectX\Resource\CommandList.h" />
+    <ClInclude Include="..\DirectX\Resource\DrawObjectList.h" />
+    <ClInclude Include="..\DirectX\Resource\MeshList.h" />
     <ClInclude Include="..\DirectX\Resource\PiplinePassList.h" />
     <ClInclude Include="..\DirectX\Resource\PiplineStateList.h" />
     <ClInclude Include="..\DirectX\Resource\ShaderList.h" />

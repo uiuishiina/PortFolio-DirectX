@@ -62,7 +62,7 @@ namespace DirectX {
 				desc::StaticResourceDesc desc{};
 
 				//	バッファをデータサイズ分用意
-				desc.resource_desc = Helper::GPUResourceDescHelper::get_buffer_desc(buffer_data);
+				desc.resource_desc = Helper::GPUResourceDescHelper::get_buffer_desc(buffer_size);
 
 				//	初期データ作成
 				desc.add_buffer_data(buffer_data);
@@ -82,7 +82,7 @@ namespace DirectX {
 			/// 頂点バッファビュー取得関数
 			/// </summary>
 			/// <returns>頂点バッファビュー</returns>
-			[[nodiscard]] const D3D12_VERTEX_BUFFER_VIEW get_vertex_buffer_view()const noexcept {
+			[[nodiscard]] const D3D12_VERTEX_BUFFER_VIEW& get_vertex_buffer_view()const noexcept {
 
 				return vertex_buffer_view;
 			}

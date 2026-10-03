@@ -53,7 +53,6 @@ namespace HandyItems {
 			/// </summary>
 			virtual ~UniqueptrKeyMap() = default;
 
-
 			/* ===== 取得関数 ===== */
 
 			/// <summary>

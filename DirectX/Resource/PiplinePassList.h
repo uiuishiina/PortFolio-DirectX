@@ -26,7 +26,7 @@ namespace DirectX {
 			namespace Piplines {
 
 				const PiplinePassDesc Test{
-					"Test",
+					"Pipline_Test",
 					{
 						.root_name = "Test",
 						.root_state = ClassModule::RootState::Graphics,
@@ -34,6 +34,8 @@ namespace DirectX {
 						.command_pass_names{
 							"Begin",
 							"Clear",
+							"SetView",
+							"DrawMesh",
 							"End"
 						}
 					},

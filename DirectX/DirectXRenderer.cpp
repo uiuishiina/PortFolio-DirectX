@@ -16,6 +16,8 @@
 #include"Resource/ShaderList.h"
 #include"Resource/PiplineStateList.h"
 #include"Resource/PiplinePassList.h"
+#include"Resource/MeshList.h"
+#include"Resource/DrawObjectList.h"
 
 #include"Debug/DebugLogSystem.h"
 
@@ -99,6 +101,11 @@ DirectXRenderer::~DirectXRenderer() = default;
             Resource::PiplineStates::Test
         ));
 
+    /* ===== Resources ===== */
+    desc_.resource_.emplace_mesh_desc(
+        std::move(Resource::DrawObject::Mesh::Test)
+    );
+
 
     /* ===== 機能初期化 ===== */
 
@@ -122,12 +129,22 @@ DirectXRenderer::~DirectXRenderer() = default;
         Resource::Pass::Commands::Clear
     );
 
+
     passDesc.emplace_command_pass(
-        Resource::Pass::Commands::End
+        Resource::Pass::Commands::SetView
+    );
+
+    passDesc.emplace_draw_object_pass(
+        Resource::Pass::DrawObject::Test
     );
 
     passDesc.emplace_pipline_pass(
         Resource::Pass::Piplines::Test
+    );
+
+
+    passDesc.emplace_command_pass(
+        Resource::Pass::Commands::End
     );
 
     /* ===== パス初期化 ===== */

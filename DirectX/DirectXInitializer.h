@@ -14,6 +14,7 @@
 #include"Initializer/InitializePass.h"
 #include"Initializer/InitializeShader.h"
 #include"Initializer/InitializePipline.h"
+#include"Initializer/InitializeResource.h"
 
 //	その他
 #include<concepts>
@@ -93,6 +94,10 @@ namespace DirectX {
 			/* -- Pipline -- */
 
 			Initialize::desc::PiplineDesc pipline_{};
+
+			/* -- Resources -- */
+
+			Initialize::desc::ResourceDesc resource_{};
 
 		};
 	}
@@ -178,6 +183,16 @@ namespace DirectX {
 			hr = Initialize::InitializePipline::initialize_pipline(
 				desc.context_,
 				desc.pipline_
+			);
+			if (FAILED(hr)) {
+
+				InitializeLog::hresult_error_log(hr);
+				return false;
+			}
+
+			hr = Initialize::InitializeResource::initialize_resource(
+				desc.context_,
+				desc.resource_
 			);
 			if (FAILED(hr)) {
 

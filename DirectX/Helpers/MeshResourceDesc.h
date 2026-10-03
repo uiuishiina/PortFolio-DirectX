@@ -29,26 +29,41 @@ namespace DirectX {
 
 
 				struct MeshCreateDescBase {
+				protected:
+					using Resource = Microsoft::WRL::ComPtr<ID3D12Resource>;
+				public:
+
+					MeshCreateDescBase() = default;
+					virtual ~MeshCreateDescBase() = default;
 
 					[[nodiscard]] virtual std::unique_ptr<ClassModule::DrawObjectBase> make_mesh_object(
 						ID3D12Device* device_,
 						ID3D12GraphicsCommandList* list_,
-						std::span<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_resources
-					) = 0;
+						std::span<std::reference_wrapper<Resource>> upload_resources
+					) {
+
+						return nullptr;
+					};
 				};
 
 				template<typename T>
-				struct MeshCreateDesc {
+				struct MeshCreateDesc : public MeshCreateDescBase {
 
-					desc::MeshDesc<T> desc_{};
+					MeshCreateDesc() = delete;
+					MeshCreateDesc(ClassModule::desc::MeshDesc<T> desc) :
+						desc_{ std::move(desc)} { }
 
-					[[nodiscard]] std::unique_ptr<DrawObjectBase> make_mesh_object(
+					~MeshCreateDesc() = default;
+
+					ClassModule::desc::MeshDesc<T> desc_{};
+
+					[[nodiscard]] std::unique_ptr<ClassModule::DrawObjectBase> make_mesh_object(
 						ID3D12Device* device_,
 						ID3D12GraphicsCommandList* list_,
-						std::span<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_resources
+						std::span<std::reference_wrapper<Resource>> upload_resources
 					) override {
 
-						auto mesh = std::make_unique<Mesh>();
+						auto mesh = std::make_unique<ClassModule::Mesh>();
 
 						const auto hr = mesh->create_mesh(
 							device_,
@@ -61,7 +76,7 @@ namespace DirectX {
 							return nullptr;
 						}
 
-						return std::move(mesh);
+						return mesh;
 					}
 				};
 

@@ -8,6 +8,7 @@
 
 #include"../Helpers/CommandPassDesc.h"
 #include"../Helpers/PiplinePassDesc.h"
+#include"../Helpers/DrawObjectPassDesc.h"
 
 /// <summary>
 /// DirectX名前空間
@@ -35,6 +36,10 @@ namespace DirectX {
 
 				std::vector<Resource::Pass::Commands::CommandPassDesc> command_pass{};
 
+				/* -- DrawObject -- */
+
+				std::vector<Resource::Pass::DrawObject::DrwObjectPassDesc> draw_object_pass{};
+
 				/* -- Pipline -- */
 
 				std::vector<Resource::Pass::Piplines::PiplinePassDesc> pipline_pass{};
@@ -42,12 +47,6 @@ namespace DirectX {
 
 				/* ========== Publicメンバー関数 ========== */
 
-				/// <summary>
-				/// 
-				/// </summary>
-				/// <param name="name"></param>
-				/// <param name="vector"></param>
-				
 				/// <summary>
 				/// コマンドパス作成構造体補助関数
 				/// </summary>
@@ -73,6 +72,25 @@ namespace DirectX {
 
 					command_pass.push_back(desc_);
 				}
+
+
+
+				void emplace_draw_object_pass(
+					std::string name,
+					Resource::Pass::DrawObject::DrawObjectPassReference desc,
+					bool flag
+				) {
+
+					draw_object_pass.push_back({ name,desc,flag });
+				}
+
+				void emplace_draw_object_pass(
+					const Resource::Pass::DrawObject::DrwObjectPassDesc& desc_
+				) {
+
+					draw_object_pass.push_back(desc_);
+				}
+
 
 				/// <summary>
 				/// パイプラインパス作成構造体補助関数
@@ -100,7 +118,6 @@ namespace DirectX {
 					pipline_pass.push_back(desc_);
 				}
 				
-
 			};
 		}
 
@@ -141,6 +158,21 @@ namespace DirectX {
 						}
 					}
 				}
+
+				for (auto& [name, ref, flag] : desc.draw_object_pass) {
+
+					auto pass = Resource::Pass::DrawObject::make_draw_object_pass(context, ref);
+
+					if (context->pass_container->add_pass(
+						Container::PassKey{ name.c_str() },
+						std::move(pass)
+					)) {
+						if (flag) {
+							pass_list.push_back(name);
+						}
+					}
+				}
+
 
 				for (auto& [name, ref, flag] : desc.pipline_pass) {
 

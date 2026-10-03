@@ -13,6 +13,61 @@ namespace HandyItems {
 	/// </summary>
 	namespace container {
 
+		/// <summary>
+		/// ハンドル名前空間
+		/// </summary>
+		namespace handle {
+
+			/* ========== 汎用基底ハンドル定義 ========== */
+
+			/// <summary>
+			/// ハンドル基底構造体
+			/// </summary>
+			/// <typeparam name="T">保存している型</typeparam>
+			/// <typeparam name="Key">保存側派生キーの型</typeparam>
+			template<typename T, typename Key>
+				requires std::derived_from<Key, EncodedKey>
+			struct HandleBase {
+
+				/* ========== メンバー変数 ========== */
+
+				/// <summary>
+				/// ハンドル本体
+				/// </summary>
+				T handle_{};
+
+				/// <summary>
+				/// ハンドル識別キー
+				/// </summary>
+				Key handle_key{};
+
+			};
+
+			/// <summary>
+			/// ポインターハンドル基底構造体
+			/// </summary>
+			/// <typeparam name="T">保存している型</typeparam>
+			/// <typeparam name="Key">保存側派生キーの型</typeparam>
+			template<typename T, typename Key>
+				requires std::derived_from<Key, EncodedKey>
+			struct HandlePtrBase {
+
+				/* ========== メンバー変数 ========== */
+
+				/// <summary>
+				/// ハンドル本体
+				/// </summary>
+				T* handle_p{};
+
+				/// <summary>
+				/// ハンドル識別キー
+				/// </summary>
+				Key handle_key{};
+
+			};
+
+		}
+
 		/* ========== 汎用キーマップ基底クラス定義 ========== */
 
 		/// <summary>

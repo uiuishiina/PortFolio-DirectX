@@ -18,8 +18,6 @@ namespace DirectX {
 	/// </summary>
 	namespace ClassModule {
 
-
-
 		/// <summary>
 		/// オブジェクト機能統合設定名前空間
 		/// </summary>
@@ -58,8 +56,9 @@ namespace DirectX {
 		/// <summary>
 		/// メッシュクラス
 		/// </summary>
-		class Mesh final : DrawObjectBase
+		class Mesh final : public DrawObjectBase
 		{
+			using Resource = Microsoft::WRL::ComPtr<ID3D12Resource>;
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
@@ -89,12 +88,12 @@ namespace DirectX {
 			[[nodiscard]] HRESULT create_mesh(
 				ID3D12Device* device_,
 				ID3D12GraphicsCommandList* list_,
-				std::span<Microsoft::WRL::ComPtr<ID3D12Resource>> upload_resources,
+				std::span<std::reference_wrapper<Resource>>& upload_resources,
 				const desc::MeshDesc<T>& desc
 			) {
 
 				//	Upload用Resourceが足りないなら失敗
-				if (upload_resources.size() >= 2) {
+				if (upload_resources.size() < 2) {
 					return E_INVALIDARG;
 				}
 
@@ -102,19 +101,19 @@ namespace DirectX {
 				auto hr = vertex_.create_vertex_buffer(
 					device_,
 					list_,
-					upload_resources[0],
-					desc.vertex_
+					upload_resources[0].get(),
+					std::span<const T>{desc.vertex_}
 				);
 				if (FAILED(hr)) {
 					return hr;
 				}
 
 				//	インデクスバッファ作成
-				auto hr = index_.create_index_buffer(
+				hr = index_.create_index_buffer(
 					device_,
 					list_,
-					upload_resources[1],
-					desc.index_
+					upload_resources[1].get(),
+					std::span<const UINT16>{desc.index_}
 				);
 				if (FAILED(hr)) {
 					return hr;
@@ -122,7 +121,7 @@ namespace DirectX {
 
 				//	変数取得
 				topology_ = desc.topology_;
-				index_count = desc.index_.size();
+				index_count = static_cast<UINT>(desc.index_.size());
 
 				return hr;
 			}
@@ -139,7 +138,7 @@ namespace DirectX {
 			) const noexcept override {
 
 				//	VertexBuffer設定
-				list_->IASetVertexBuffers(0, 1, &vertex_.get_vertex_buffer_view());
+				list_->IASetVertexBuffers(0, 1,&vertex_.get_vertex_buffer_view());
 
 				//	IndexBuffer設定
 				list_->IASetIndexBuffer(&index_.get_index_buffer_view());

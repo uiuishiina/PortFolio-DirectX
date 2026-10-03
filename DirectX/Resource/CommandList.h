@@ -117,6 +117,34 @@ namespace DirectX {
 
 				}
 
+				namespace View {
+
+					const Command ViewPort = [](ClassModule::FrameContext& frame) {
+							
+						D3D12_VIEWPORT viewport{};
+						viewport.TopLeftX = 0;
+						viewport.TopLeftY = 0;
+						viewport.Width = 1280;
+						viewport.Height = 720;
+						viewport.MinDepth = 0;
+						viewport.MaxDepth = 1;
+
+						frame.graphic_list->get()->RSSetViewports(1, &viewport);
+						
+					};
+
+					const Command ScissorRect = [](ClassModule::FrameContext& frame) {
+
+						D3D12_RECT scissorRect{};
+						scissorRect.left = 0;
+						scissorRect.top = 0;
+						scissorRect.right = 1280;
+						scissorRect.bottom = 720;
+
+						frame.graphic_list->get()->RSSetScissorRects(1, &scissorRect);
+					};
+
+				}
 
 				/* ===== コマンド配列 ===== */
 
@@ -132,7 +160,16 @@ namespace DirectX {
 				const CommandPassDesc Clear{
 					"Clear",
 					{
-						BackBuffer::ClearGreen
+						BackBuffer::ClearBlack
+					},
+					false
+				};
+
+				const CommandPassDesc SetView{
+					"SetView",
+					{
+						View::ViewPort,
+						View::ScissorRect
 					},
 					false
 				};

@@ -9,6 +9,8 @@
 //	DirectX
 #include"../ClassObject/CommandAllocator.h"
 
+#include"../ClassModule/UploadResources.h"
+
 
 #include"../ClassObject/Fence.h"
 
@@ -49,6 +51,7 @@ namespace DirectX {
 				fence_{ fence } {
 
 				graphic_allocatpor = std::make_unique<ClassObject::CommandAllocator>();
+				upload_resources = std::make_unique<ClassModule::UploadResources>();
 			}
 
 			/// <summary>
@@ -69,6 +72,14 @@ namespace DirectX {
 				frame_fence_value = fence_->signal(queue_);
 			}
 
+			/// <summary>
+			/// フレームリソースリセット関数
+			/// </summary>
+			void reset_frame_resource() {
+
+				upload_resources->clear();
+			}
+
 			/* ===== 取得関数 ===== */
 
 			/// <summary>
@@ -81,12 +92,21 @@ namespace DirectX {
 			}
 
 			/// <summary>
-			/// コマンドアロケーターWeak参照取得関数
+			/// コマンドアロケーター参照取得関数
 			/// </summary>
-			/// <returns>コマンドアロケーターWeak参照</returns>
+			/// <returns>コマンドアロケーター参照</returns>
 			[[nodiscard]] ClassObject::CommandAllocator* get_allocator() const noexcept {
 
 				return graphic_allocatpor.get();
+			}
+
+			/// <summary>
+			/// UploadResources参照取得関数
+			/// </summary>
+			/// <returns>UploadResources参照</returns>
+			[[nodiscard]] ClassModule::UploadResources* get_upload_resources() const noexcept {
+
+				return upload_resources.get();
 			}
 
 		private:
@@ -106,6 +126,11 @@ namespace DirectX {
 			/// 描画用コマンドアロケーターインスタンス
 			/// </summary>
 			std::unique_ptr<ClassObject::CommandAllocator> graphic_allocatpor{};
+
+			/// <summary>
+			/// UploadResourcesインスタンス
+			/// </summary>
+			std::unique_ptr<ClassModule::UploadResources> upload_resources{};
 
 		};
 	}

@@ -24,43 +24,56 @@ namespace DirectX {
 
 		class UploadResources final : HandyItems::others::NonCopyableBase
 		{
+			using Resource = Microsoft::WRL::ComPtr<ID3D12Resource>;
 		public:
 
-			UploadResources() = delete;
+			UploadResources() = default;
 
 			UploadResources(
 				std::size_t size
-			) :
-				upload_{ upload_ = std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>>(size) }
-			{
+			) {
+				add_upload(size);
 				reference_.add_references(upload_);
 			}
 
 
 			~UploadResources() = default;
 
-			[[nodiscard]] ID3D12Resource* allocate_reference() {
+			[[nodiscard]] std::reference_wrapper<Resource> allocate_reference() {
 
 				if (auto value = reference_.get_reference();
 					value.has_value()
 					) {
-					return value->get().Get();
+					return value->get();
+				}
+				else {
+					add_upload(1);
+					return allocate_reference();
 				}
 
-				return nullptr;
 			}
 
-			[[nodiscard]] std::vector<ID3D12Resource*> allocate_references(
+			[[nodiscard]] std::vector<std::reference_wrapper<Resource>> allocate_references(
 				std::size_t size
 			) {
 				
-				std::vector<ID3D12Resource*> vec{};
+				std::vector<std::reference_wrapper<Resource>> vec{};
 
 				for (std::size_t i = 0; i < size; i++) {
 					vec.push_back(allocate_reference());
 				}
 
 				return vec;
+			}
+
+			void add_upload(std::size_t size) {
+
+				upload_.reserve(size);
+				for (std::size_t i = 0;i < size;i++) {
+					auto ins = Microsoft::WRL::ComPtr<ID3D12Resource>();
+					upload_.emplace_back(ins);
+					reference_.add_reference(upload_.back());
+				}
 			}
 
 			void clear() {

@@ -49,9 +49,6 @@
     <Filter Include="ヘッダー ファイル\HandyItems\Debug">
       <UniqueIdentifier>{dbf7d7c8-cc34-4aa6-9618-0d44585f11fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\HandyItems\Container">
-      <UniqueIdentifier>{8bce5276-2b30-4e32-83f6-3131217de00b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Application">
       <UniqueIdentifier>{5a009834-2cdd-44aa-97e3-900ec9849b14}</UniqueIdentifier>
     </Filter>
@@ -123,6 +120,9 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\DirectX\ClassModule\DrawObject">
       <UniqueIdentifier>{39fc520e-e963-42eb-8a87-c038438d3969}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\HandyItems\Container">
+      <UniqueIdentifier>{8bce5276-2b30-4e32-83f6-3131217de00b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -295,9 +295,6 @@
     </ClInclude>
     <ClInclude Include="..\HandyItems\Input\InputStateManager.h">
       <Filter>ヘッダー ファイル\HandyItems\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\HandyItems\DataShare\DataShare.h">
-      <Filter>ヘッダー ファイル\HandyItems\DataShare</Filter>
     </ClInclude>
     <ClInclude Include="..\HandyItems\Container\ReferenceVector.h">
       <Filter>ヘッダー ファイル\HandyItems\Container</Filter>
@@ -505,6 +502,21 @@
     </ClInclude>
     <ClInclude Include="..\DirectX\ClassModule\UploadResources.h">
       <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Resource\MeshList.h">
+      <Filter>ヘッダー ファイル\DirectX\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\DataShare\DataShare.h">
+      <Filter>ヘッダー ファイル\HandyItems\DataShare</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\DrawObjectPass.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Helpers\DrawObjectPassDesc.h">
+      <Filter>ヘッダー ファイル\DirectX\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Resource\DrawObjectList.h">
+      <Filter>ヘッダー ファイル\DirectX\Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
