@@ -34,7 +34,11 @@ namespace DirectX {
 
 				/* -- Command -- */
 
+				std::vector<Resource::Pass::Commands::CommandPassDesc> begin_pass{};
+
 				std::vector<Resource::Pass::Commands::CommandPassDesc> command_pass{};
+
+				std::vector<Resource::Pass::Commands::CommandPassDesc> end_pass{};
 
 				/* -- DrawObject -- */
 
@@ -46,6 +50,39 @@ namespace DirectX {
 
 
 				/* ========== Publicメンバー関数 ========== */
+
+				void emplace_begin_pass(
+					std::string name,
+					const std::vector<std::function<void(ClassModule::FrameContext&)>>& vector,
+					bool flag
+				) {
+
+					begin_pass.push_back({ name,vector,flag });
+				}
+
+				void emplace_begin_pass(
+					const Resource::Pass::Commands::CommandPassDesc& desc_
+				) {
+
+					begin_pass.push_back(desc_);
+				}
+
+
+				void emplace_end_pass(
+					std::string name,
+					const std::vector<std::function<void(ClassModule::FrameContext&)>>& vector,
+					bool flag
+				) {
+
+					end_pass.push_back({ name,vector,flag });
+				}
+
+				void emplace_end_pass(
+					const Resource::Pass::Commands::CommandPassDesc& desc_
+				) {
+
+					end_pass.push_back(desc_);
+				}
 
 				/// <summary>
 				/// コマンドパス作成構造体補助関数
@@ -144,6 +181,25 @@ namespace DirectX {
 
 				std::vector<std::string> pass_list{};
 
+				/* ===== Begin ===== */
+
+				for (auto& [name, vec, flag] : desc.begin_pass) {
+
+					auto pass = std::make_unique<ClassModule::CommandPass>();
+					pass->add_commands(vec);
+
+					if (context->pass_container->add_pass(
+						Container::PassKey{ name.c_str() },
+						std::move(pass)
+					)) {
+						if (flag) {
+							pass_list.push_back(name);
+						}
+					}
+				}
+
+				/* ===== Command ===== */
+
 				for (auto& [name, vec, flag] : desc.command_pass) {
 
 					auto pass = std::make_unique<ClassModule::CommandPass>();
@@ -159,6 +215,8 @@ namespace DirectX {
 					}
 				}
 
+				/* ===== DrawObject ===== */
+
 				for (auto& [name, ref, flag] : desc.draw_object_pass) {
 
 					auto pass = Resource::Pass::DrawObject::make_draw_object_pass(context, ref);
@@ -173,10 +231,28 @@ namespace DirectX {
 					}
 				}
 
+				/* ===== Pipline ===== */
 
 				for (auto& [name, ref, flag] : desc.pipline_pass) {
 
 					auto pass = Resource::Pass::Piplines::make_pipline_pass(context, ref);
+
+					if (context->pass_container->add_pass(
+						Container::PassKey{ name.c_str() },
+						std::move(pass)
+					)) {
+						if (flag) {
+							pass_list.push_back(name);
+						}
+					}
+				}
+
+				/* ===== End ===== */
+
+				for (auto& [name, vec, flag] : desc.end_pass) {
+
+					auto pass = std::make_unique<ClassModule::CommandPass>();
+					pass->add_commands(vec);
 
 					if (context->pass_container->add_pass(
 						Container::PassKey{ name.c_str() },

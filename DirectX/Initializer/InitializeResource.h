@@ -137,11 +137,6 @@ namespace DirectX {
 				//	シグナルを送って配列に保存
 				context_->frame_resources[2]->end_frame_signal(context_->graphic_queue->get());
 
-				const auto wait = context_->frame_resources[2]->get_frame_value();
-
-				//	使えるまで待機
-				context_->fence_->wait_to_completed_value(wait);
-
 				return S_OK;
 			}
 

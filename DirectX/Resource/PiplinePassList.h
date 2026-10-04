@@ -32,11 +32,8 @@ namespace DirectX {
 						.root_state = ClassModule::RootState::Graphics,
 						.pipline_name = "Normal",
 						.command_pass_names{
-							"Begin",
-							"Clear",
 							"SetView",
-							"DrawNormalObject",
-							"End"
+							"DrawNormalObject"
 						}
 					},
 					true
@@ -48,11 +45,8 @@ namespace DirectX {
 						.root_state = ClassModule::RootState::Graphics,
 						.pipline_name = "Color",
 						.command_pass_names{
-							"Begin",
-							"Clear",
 							"SetView",
-							"DrawColorObject",
-							"End"
+							"DrawColorObject"
 						}
 					},
 					true

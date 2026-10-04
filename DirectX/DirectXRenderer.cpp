@@ -82,6 +82,9 @@ DirectXRenderer::~DirectXRenderer() = default;
     desc_.core_ = Initialize::desc::CoreDesc{ hwnd_ ,width,height };
 
     /* ===== Shader ===== */
+
+    /* -- Normal -- */
+
     desc_.shader_.emplace(
         make_shader_desc(
             Resource::Shaders::NormalVertex
@@ -90,6 +93,9 @@ DirectXRenderer::~DirectXRenderer() = default;
         make_shader_desc(
             Resource::Shaders::NormalPixel
         ));
+
+    /* -- Color -- */
+
     desc_.shader_.emplace(
         make_shader_desc(
             Resource::Shaders::ColorVertex
@@ -100,6 +106,9 @@ DirectXRenderer::~DirectXRenderer() = default;
         ));
 
     /* ===== Pipline ===== */
+
+    /* -- Root -- */
+
     desc_.pipline_.emplace_root(
         make_root_desc(
             Resource::RootSignatures::Normal
@@ -108,6 +117,8 @@ DirectXRenderer::~DirectXRenderer() = default;
         make_root_desc(
             Resource::RootSignatures::Color
         ));
+
+    /* -- PiplineState -- */
 
     desc_.pipline_.emplace_pipline(
         make_pipline_desc(
@@ -119,6 +130,9 @@ DirectXRenderer::~DirectXRenderer() = default;
         ));
 
     /* ===== Resources ===== */
+
+    /* -- Mesh -- */
+
     desc_.resource_.emplace_mesh_desc(
         std::move(Resource::DrawObject::Mesh::NormalMesh)
     );
@@ -141,9 +155,13 @@ DirectXRenderer::~DirectXRenderer() = default;
     /* ===== Pass ===== */
     Initialize::desc::PassDesc passDesc{};
 
-    passDesc.emplace_command_pass(
+    /* -- Begin -- */
+
+    passDesc.emplace_begin_pass(
         Resource::Pass::Commands::Begin
     );
+
+    /* -- Command -- */
 
     passDesc.emplace_command_pass(
         Resource::Pass::Commands::Clear
@@ -153,6 +171,8 @@ DirectXRenderer::~DirectXRenderer() = default;
         Resource::Pass::Commands::SetView
     );
 
+    /* -- DrawObject -- */
+
     passDesc.emplace_draw_object_pass(
         Resource::Pass::DrawObject::NormalTest
     );
@@ -160,13 +180,18 @@ DirectXRenderer::~DirectXRenderer() = default;
         Resource::Pass::DrawObject::ColorTest
     );
 
+    /* -- Pipline -- */
 
+    passDesc.emplace_pipline_pass(
+        Resource::Pass::Piplines::NormalTest
+    );
     passDesc.emplace_pipline_pass(
         Resource::Pass::Piplines::ColorTest
     );
 
+    /* -- End -- */
 
-    passDesc.emplace_command_pass(
+    passDesc.emplace_end_pass(
         Resource::Pass::Commands::End
     );
 
