@@ -15,14 +15,10 @@ namespace DirectX {
 	/// </summary>
 	namespace ClassModule {
 
+		/// <summary>
+		/// 現在フレーム使用可能リソース集約構造体
+		/// </summary>
 		struct FrameContext final : HandyItems::others::NonCopyableMovableBase {
-
-			template<typename T>
-			using UniquePtr = HandyItems::others::UniquePtr<T>;
-
-			template<typename T>
-			using WeakPtr = HandyItems::others::UniqueWeakPtr<T>;
-
 
 			/* ========== Publicメンバー変数 ========== */
 

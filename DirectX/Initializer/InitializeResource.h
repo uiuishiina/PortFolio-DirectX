@@ -31,15 +31,26 @@ namespace DirectX {
 		/// </summary>
 		namespace desc {
 
+			/// <summary>
+			/// 描画リソース設定構造体
+			/// </summary>
 			struct ResourceDesc {
 
 				/* ========== Publicメンバー変数 ========== */
 
+				/// <summary>
+				/// メッシュ作成補助基底構造体配列
+				/// </summary>
 				std::vector<Resource::DrawObject::Mesh::MeshResourceDesc> mesh_desc{};
 
 
 				/* ========== Publicメンバー関数 ========== */
 
+				/// <summary>
+				/// メッシュ作成補助基底構造体追加関数
+				/// </summary>
+				/// <param name="name">追加するメッシュ名称</param>
+				/// <param name="desc">追加するメッシュ作成補助基底構造体</param>
 				void emplace_mesh_desc(
 					std::string name,
 					std::unique_ptr<Resource::DrawObject::Mesh::MeshCreateDescBase> desc
@@ -51,6 +62,11 @@ namespace DirectX {
 							std::move(desc)
 						));
 				}
+
+				/// <summary>
+				/// メッシュ作成補助基底構造体追加関数オーバーロード
+				/// </summary>
+				/// <param name="desc">事前作成した要素</param>
 				void emplace_mesh_desc(
 					Resource::DrawObject::Mesh::MeshResourceDesc desc
 				) {
@@ -61,6 +77,9 @@ namespace DirectX {
 			};
 		}
 
+		/// <summary>
+		/// 描画リソース初期化クラス
+		/// </summary>
 		class InitializeResource
 		{
 		public:
@@ -68,6 +87,12 @@ namespace DirectX {
 
 			/* ===== 初期化関数 ===== */
 
+			/// <summary>
+			/// リソース初期化関数
+			/// </summary>
+			/// <param name="context_">DirectXオブジェクトインスタンス構造体参照</param>
+			/// <param name="desc">描画リソース設定構造体参照</param>
+			/// <returns>初期化の成否</returns>
 			[[nodiscard]] static HRESULT initialize_resource(
 				DirectXContext* context_,
 				const desc::ResourceDesc& desc

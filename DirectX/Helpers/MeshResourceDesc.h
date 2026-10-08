@@ -27,15 +27,34 @@ namespace DirectX {
 			/// </summary>
 			namespace Mesh {
 
-
+				/// <summary>
+				/// メッシュ作成補助基底構造体
+				/// </summary>
 				struct MeshCreateDescBase {
 				protected:
 					using Resource = Microsoft::WRL::ComPtr<ID3D12Resource>;
 				public:
+					/* ========== Publicメンバー関数 ========== */
 
+					/// <summary>
+					/// コンストラクタ
+					/// </summary>
 					MeshCreateDescBase() = default;
+
+					/// <summary>
+					/// デストラクタ
+					/// </summary>
 					virtual ~MeshCreateDescBase() = default;
 
+					/* ===== 実行関数 ===== */
+
+					/// <summary>
+					/// メッシュ作成仮想関数
+					/// </summary>
+					/// <param name="device_">Device参照</param>
+					/// <param name="list_">コマンドリスト参照</param>
+					/// <param name="upload_resources">Upload用Resource参照配列</param>
+					/// <returns>作成したメッシュ</returns>
 					[[nodiscard]] virtual std::unique_ptr<ClassModule::DrawObjectBase> make_mesh_object(
 						ID3D12Device* device_,
 						ID3D12GraphicsCommandList* list_,
@@ -46,17 +65,46 @@ namespace DirectX {
 					};
 				};
 
+				/// <summary>
+				/// メッシュ作成補助型派生構造体
+				/// </summary>
+				/// <typeparam name="T">派生型</typeparam>
 				template<typename T>
 				struct MeshCreateDesc : public MeshCreateDescBase {
 
-					MeshCreateDesc() = delete;
-					MeshCreateDesc(ClassModule::desc::MeshDesc<T> desc) :
-						desc_{ std::move(desc)} { }
-
-					~MeshCreateDesc() = default;
+					/* ========== Publicメンバー変数 ========== */
 
 					ClassModule::desc::MeshDesc<T> desc_{};
 
+					/* ========== Publicメンバー関数 ========== */
+
+					//	コンストラクタ削除
+					MeshCreateDesc() = delete;
+
+					/// <summary>
+					/// 引数付きコンストラクタ
+					/// </summary>
+					/// <param name="desc">メッシュ設定構造体</param>
+					MeshCreateDesc(
+						ClassModule::desc::MeshDesc<T> desc
+					) :
+						desc_{ std::move(desc)} { }
+
+					/// <summary>
+					/// デストラクタ
+					/// </summary>
+					~MeshCreateDesc() = default;
+
+
+					/* ===== 実行関数 ===== */
+
+					/// <summary>
+					/// メッシュ作成関数
+					/// </summary>
+					/// <param name="device_">Device参照</param>
+					/// <param name="list_">コマンドリスト参照</param>
+					/// <param name="upload_resources">Upload用Resource参照配列</param>
+					/// <returns>作成したメッシュ</returns>
 					[[nodiscard]] std::unique_ptr<ClassModule::DrawObjectBase> make_mesh_object(
 						ID3D12Device* device_,
 						ID3D12GraphicsCommandList* list_,

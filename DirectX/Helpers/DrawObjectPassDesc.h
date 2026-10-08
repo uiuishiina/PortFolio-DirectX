@@ -26,6 +26,9 @@ namespace DirectX {
 			/// </summary>
 			namespace DrawObject {
 
+				/// <summary>
+				/// 描画オブジェクトパス外部参照補助構造体
+				/// </summary>
 				struct DrawObjectPassReference {
 
 					/// <summary>
@@ -34,6 +37,12 @@ namespace DirectX {
 					std::vector<std::string> draw_object_names{};
 				};
 
+				/// <summary>
+				/// 描画オブジェクトパス作成補助関数
+				/// </summary>
+				/// <param name="context_">DirectXオブジェクトインスタンス構造体参照</param>
+				/// <param name="ref">描画オブジェクトパス外部参照補助構造体参照</param>
+				/// <returns>作成した描画オブジェクトパス</returns>
 				[[nodiscard]] inline std::unique_ptr<ClassModule::DrawObjectPass> make_draw_object_pass(
 					DirectXContext* context_,
 					DrawObjectPassReference& ref

@@ -29,12 +29,6 @@ namespace DirectX {
 		/// </summary>
 		class FrameResource final : HandyItems::others::NonCopyableMovableBase 
 		{
-			template<typename T>
-			using UniquePtr = HandyItems::others::UniquePtr<T>;
-
-			template<typename T>
-			using WeakPtr = HandyItems::others::UniqueWeakPtr<T>;
-
 		public:
 			/* ========== Publicメンバー関数 ========== */
 

@@ -80,6 +80,9 @@ namespace DirectX {
 		private:
 			/* ========== Privateメンバー変数 ========== */
 
+			/// <summary>
+			/// 描画オブジェクト参照配列
+			/// </summary>
 			std::vector<DrawObjectBase*> draw_objects{};
 
 		};
