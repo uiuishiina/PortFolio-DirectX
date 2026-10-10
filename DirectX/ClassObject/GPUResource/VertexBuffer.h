@@ -114,7 +114,9 @@ namespace DirectX {
 			/// 派生先別リソース作成関数
 			/// </summary>
 			/// <returns>作成の成否</returns>
-			[[nodiscard]] HRESULT create_resource_object() override {
+			[[nodiscard]] HRESULT create_resource_object(
+				ID3D12Device* device_
+			) override {
 
 				//	VertexBufferViweを作成
 				vertex_buffer_view.BufferLocation = get_GPU_address();

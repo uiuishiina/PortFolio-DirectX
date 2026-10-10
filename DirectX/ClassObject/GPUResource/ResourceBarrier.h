@@ -67,6 +67,17 @@ namespace DirectX {
 			current_state = next_state;
 		}
 
+		/// <summary>
+		/// リソースバリアリセット関数
+		/// </summary>
+		/// <param name="reset_state">遷移先バリアステート</param>
+		void reset_barrier(
+			D3D12_RESOURCE_STATES reset_state
+		) {
+
+			current_state = reset_state;
+		}
+
 	private:
 		/* ========== Privateメンバー変数 ========== */
 

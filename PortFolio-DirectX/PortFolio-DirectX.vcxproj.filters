@@ -518,6 +518,18 @@
     <ClInclude Include="..\DirectX\Resource\DrawObjectList.h">
       <Filter>ヘッダー ファイル\DirectX\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\ConstantBuffer.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\UploadResourceBase.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject\GPUResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Helpers\DescriptorHeapHandles.h">
+      <Filter>ヘッダー ファイル\DirectX\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Container\DescriptorHeapContainer.h">
+      <Filter>ヘッダー ファイル\DirectX\Container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\DirectX\Resource\HLSL\StructHeader.hlsli">

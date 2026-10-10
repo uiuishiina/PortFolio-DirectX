@@ -5,6 +5,9 @@
 //	DirectX
 #include"../DirectXContext.h"
 
+//	その他
+#include<utility>
+
 /// <summary>
 /// DirectX名前空間
 /// </summary>
@@ -24,7 +27,7 @@ namespace DirectX {
 			/// コア機能設定構造体
 			/// </summary>
 			struct CoreDesc {
-				
+
 				/* ========== Publicメンバー変数 ========== */
 
 				/// <summary>
@@ -42,6 +45,35 @@ namespace DirectX {
 				/// </summary>
 				std::uint32_t height;
 				
+				/// <summary>
+				/// 静的ディスクリプターヒープ設定
+				/// </summary>
+				std::vector<
+					std::pair<
+					std::string, 
+					ClassObject::desc::DescriptorHeapDesc
+					>
+				> heap_descs{
+					{
+						"BackBufferRTV",
+					{ D3D12_DESCRIPTOR_HEAP_TYPE_RTV ,2,D3D12_DESCRIPTOR_HEAP_FLAG_NONE }
+					}
+				};
+
+				/* ========== Publicメンバー関数 ========== */
+
+				/// <summary>
+				/// 静的ディスクリプターヒープ設定追加関数
+				/// </summary>
+				/// <param name="desc"></param>
+				void emplace_heap_desc(
+					std::string name,
+					const ClassObject::desc::DescriptorHeapDesc& desc
+				) {
+
+					heap_descs.push_back(std::make_pair(name, desc));
+				}
+
 			};
 		}
 

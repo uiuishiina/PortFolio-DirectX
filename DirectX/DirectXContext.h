@@ -33,6 +33,7 @@ namespace DirectX {
 
 	namespace Container {
 
+		class DescriptorHeapContainer;
 		class PassContainer;
 		class ShaderContainer;
 		class RootSignatureContainer;
@@ -111,17 +112,17 @@ namespace DirectX {
 		UniquePtr<ClassObject::SwapChain> swapchain_{};
 
 		/// <summary>
-		/// ディスクリプタヒープインスタンス
-		/// </summary>
-		UniquePtr<ClassObject::DescriptorHeap> heap_{};
-		
-		/// <summary>
 		/// バックバッファインスタンス配列
 		/// </summary>
 		std::vector<UniquePtr<ClassObject::BackBuffer>> back_buffers{};
 
 
 		/* -- Container -- */
+
+		/// <summary>
+		/// 静的ディスクリプタヒープコンテナインスタンス
+		/// </summary>
+		UniquePtr<Container::DescriptorHeapContainer> static_heap_container{};
 
 		/// <summary>
 		/// 描画パスコンテナインスタンス

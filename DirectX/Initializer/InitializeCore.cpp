@@ -84,23 +84,43 @@ using namespace DirectX;
 		return hr;
 	}
 
-	//	ディスクリプタヒープ作成
-	hr = context->heap_->create_descriptor_heap(
-		context->device_->get(),
-		{ D3D12_DESCRIPTOR_HEAP_TYPE_RTV ,2,D3D12_DESCRIPTOR_HEAP_FLAG_NONE }
-	);
-	if (FAILED(hr)) {
-		return hr;
+	
+	//	静的ディスクリプタヒープ作成
+	for (auto& [name, heap_desc] : desc.heap_descs) {
+
+		
+		auto heap = std::make_unique<ClassObject::DescriptorHeap>();
+
+		hr = heap->create_descriptor_heap(
+			context->device_->get(),
+			heap_desc
+		);
+		if (FAILED(hr)) {
+			return hr;
+		}
+
+		//	静的コンテナに追加
+		if (!context->static_heap_container->add_descriptor_heap(
+			Container::DescriptorHeapKey{ name.c_str()},
+			std::move(heap)
+		)) {
+
+			return E_FAIL;
+		}
+
 	}
 
 	//	バックバッファ作成
 	auto& buffers = context->back_buffers;
+	auto rtv_heap = context->static_heap_container->get_descriptor_heap(
+		Container::DescriptorHeapKey{ "BackBufferRTV" }
+	);
 	for (std::size_t i = 0; i < buffers.size(); ++i) {
 
 		hr = buffers[i]->create_back_buffer(
 			context->device_->get(),
 			context->swapchain_->get(),
-			context->heap_->get_CPU_handle(static_cast<UINT>(i)),
+			rtv_heap->get_CPU_handle(static_cast<UINT>(i)),
 			static_cast<UINT>(i)
 		);
 		if (FAILED(hr)) {

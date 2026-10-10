@@ -8,6 +8,7 @@
 //	DirectX
 #include<d3d12.h>
 #include<wrl/client.h>
+#include"../Helpers/DescriptorHeapHandles.h"
 
 //	その他
 #include<utility>
@@ -222,10 +223,7 @@ namespace DirectX {
 			/// </summary>
 			/// <param name="index">取得したいインデックス</param>
 			/// <returns>[ CPU ][ GPU ] の構造化束縛</returns>
-			[[nodiscard]] std::pair<
-				D3D12_CPU_DESCRIPTOR_HANDLE, 
-				D3D12_GPU_DESCRIPTOR_HANDLE
-			> get_handles(
+			[[nodiscard]] Helper::DescriptorHeapHandles get_handles(
 				UINT index
 			) const noexcept {
 
@@ -240,16 +238,12 @@ namespace DirectX {
 			/// </summary>
 			/// <param name="index">取得したいインデックス</param>
 			/// <returns>[ CPU ][ GPU ] の構造化束縛</returns>
-			[[nodiscard]] std::pair<
-				D3D12_CPU_DESCRIPTOR_HANDLE, 
-				D3D12_GPU_DESCRIPTOR_HANDLE
-			> operator [] (
+			[[nodiscard]] Helper::DescriptorHeapHandles operator [] (
 				std::size_t index
 				) const noexcept {
 
 				return get_handles(static_cast<UINT>(index));
 			}
-
 
 		private:
 			/* ========== Privateメンバー変数 ========== */

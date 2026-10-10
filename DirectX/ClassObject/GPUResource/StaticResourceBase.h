@@ -175,6 +175,7 @@ namespace DirectX {
 					desc
 				);
 				if (FAILED(hr)) {
+					rollback_resource(upload_resource);
 					return hr;
 				}
 
@@ -193,6 +194,7 @@ namespace DirectX {
 					upload_resource
 				);
 				if (FAILED(hr)) {
+					rollback_resource(upload_resource);
 					return hr;
 				}
 
@@ -217,7 +219,13 @@ namespace DirectX {
 				);
 
 				//	派生クラス固有処理
-				return create_resource_object();
+
+				hr = create_resource_object(device_);
+				if (FAILED(hr)) {
+					rollback_resource(upload_resource);
+				}
+
+				return hr;
 			}
 
 			/* ===== 初期化補助関数 ===== */
@@ -229,7 +237,9 @@ namespace DirectX {
 			/// 基底クラスではS_OKを返す
 			/// </details>
 			/// <returns>作成の成否</returns>
-			[[nodiscard]] virtual HRESULT create_resource_object() { return S_OK; };
+			[[nodiscard]] virtual HRESULT create_resource_object(
+				ID3D12Device* device_
+			) { return S_OK; };
 
 		private:
 			/* ========== Privateメンバー関数 ========== */
@@ -303,6 +313,21 @@ namespace DirectX {
 					resource_.Get(),
 					next_state
 				);
+			}
+
+			/// <summary>
+			/// ロールバック関数
+			/// </summary>
+			/// <param name="upload_resource">Upload用GPU_Resource参照</param>
+			void rollback_resource(
+				Microsoft::WRL::ComPtr<ID3D12Resource>& upload_resource
+			) noexcept {
+
+				upload_resource.Reset();
+
+				resource_.Reset();
+
+				barrier_.reset_barrier(D3D12_RESOURCE_STATE_COPY_DEST);
 			}
 
 		};

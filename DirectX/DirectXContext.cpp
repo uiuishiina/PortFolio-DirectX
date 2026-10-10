@@ -3,6 +3,7 @@
 
 #include"DirectXContext.h"
 
+#include"Container/DescriptorHeapContainer.h"
 #include"Container/PassContainer.h"
 #include"Container/ShaderContainer.h"
 #include"Container/RootSignatureContainer.h"
@@ -28,8 +29,7 @@ DirectXContext::DirectXContext(std::uint32_t back_buffer_size, std::uint32_t fra
 		}
 
 		swapchain_ = std::make_unique<ClassObject::SwapChain>();
-		heap_ = std::make_unique<ClassObject::DescriptorHeap>();
-
+		
 		back_buffers.resize(back_buffer_size);
 
 		for (auto& back_buffer : back_buffers) {
@@ -39,6 +39,7 @@ DirectXContext::DirectXContext(std::uint32_t back_buffer_size, std::uint32_t fra
 
 		/* -- Container -- */
 
+		static_heap_container = std::make_unique<Container::DescriptorHeapContainer>();
 		pass_container = std::make_unique<Container::PassContainer>();
 		shader_container = std::make_unique<Container::ShaderContainer>();
 		root_signature_container = std::make_unique<Container::RootSignatureContainer>();

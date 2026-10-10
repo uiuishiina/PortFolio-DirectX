@@ -11,6 +11,7 @@
 
 #include"../ClassModule/UploadResources.h"
 
+#include"../Container/DescriptorHeapContainer.h"
 
 #include"../ClassObject/Fence.h"
 
@@ -46,6 +47,7 @@ namespace DirectX {
 
 				graphic_allocatpor = std::make_unique<ClassObject::CommandAllocator>();
 				upload_resources = std::make_unique<ClassModule::UploadResources>();
+				frame_heap_container = std::make_unique<Container::DescriptorHeapContainer>();
 			}
 
 			/// <summary>
@@ -103,6 +105,15 @@ namespace DirectX {
 				return upload_resources.get();
 			}
 
+			/// <summary>
+			/// ディスクリプターヒープコンテナ参照取得関数
+			/// </summary>
+			/// <returns>ディスクリプターヒープコンテナ参照</returns>
+			[[nodiscard]] Container::DescriptorHeapContainer* get_heap_contaienr() const noexcept {
+
+				return frame_heap_container.get();
+			}
+
 		private:
 			/* ========== Privateメンバー変数 ========== */
 
@@ -125,6 +136,11 @@ namespace DirectX {
 			/// UploadResourcesインスタンス
 			/// </summary>
 			std::unique_ptr<ClassModule::UploadResources> upload_resources{};
+
+			/// <summary>
+			/// ディスクリプターヒープコンテナインスタンス
+			/// </summary>
+			std::unique_ptr<Container::DescriptorHeapContainer> frame_heap_container{};
 
 		};
 	}

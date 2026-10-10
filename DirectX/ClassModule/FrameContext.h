@@ -60,14 +60,15 @@ namespace DirectX {
 			ClassObject::SwapChain* swapchain_;
 
 			/// <summary>
-			/// ディスクリプタヒープインスタンス
-			/// </summary>
-			ClassObject::DescriptorHeap* heap_;
-
-			/// <summary>
 			/// バックバッファインスタンス配列
 			/// </summary>
 			ClassObject::BackBuffer* back_buffer;
+
+			/// <summary>
+			/// ディスクリプターヒープコンテナインスタンス
+			/// </summary>
+			/// <returns></returns>
+			Container::DescriptorHeapContainer* static_heap_container;
 
 			/* ========== Publicメンバー関数 ========== */
 
@@ -92,7 +93,7 @@ namespace DirectX {
 				fence_{ context_->fence_.get() },
 				frame_resource{ context_->frame_resources[current_resource].get() },
 				swapchain_{ context_->swapchain_.get() },
-				heap_{ context_->heap_.get() },
+				static_heap_container{ context_->static_heap_container.get() },
 				back_buffer{ context_->back_buffers[current_back_buffer].get() }{}
 
 			/// <summary>
