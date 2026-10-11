@@ -5,6 +5,8 @@
 //	DirectX
 #include"../DirectXContext.h"
 
+#include"../ClassModule/HeapIndexManager.h"
+
 //	その他
 #include<utility>
 
@@ -48,16 +50,8 @@ namespace DirectX {
 				/// <summary>
 				/// 静的ディスクリプターヒープ設定
 				/// </summary>
-				std::vector<
-					std::pair<
-					std::string, 
-					ClassObject::desc::DescriptorHeapDesc
-					>
-				> heap_descs{
-					{
-						"BackBufferRTV",
-					{ D3D12_DESCRIPTOR_HEAP_TYPE_RTV ,2,D3D12_DESCRIPTOR_HEAP_FLAG_NONE }
-					}
+				std::vector<ClassModule::desc::HeapIndexManagerDesc> heap_descs{
+					{ 2,0,D3D12_DESCRIPTOR_HEAP_TYPE_RTV,D3D12_DESCRIPTOR_HEAP_FLAG_NONE }
 				};
 
 				/* ========== Publicメンバー関数 ========== */
@@ -65,13 +59,12 @@ namespace DirectX {
 				/// <summary>
 				/// 静的ディスクリプターヒープ設定追加関数
 				/// </summary>
-				/// <param name="desc"></param>
+				/// <param name="desc">追加する設定</param>
 				void emplace_heap_desc(
-					std::string name,
-					const ClassObject::desc::DescriptorHeapDesc& desc
+					const ClassModule::desc::HeapIndexManagerDesc& desc
 				) {
 
-					heap_descs.push_back(std::make_pair(name, desc));
+					heap_descs.push_back(desc);
 				}
 
 			};

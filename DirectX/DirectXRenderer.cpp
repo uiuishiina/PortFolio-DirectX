@@ -74,12 +74,17 @@ DirectXRenderer::~DirectXRenderer() = default;
 
     desc::InitializeDesc desc_{};
 
-    /* ===== Core ===== */
+    /* ===== Main ===== */
     desc_.context_ = context_.get();
     desc_.share_p = shera_p;
     desc_.back_buffer_size = back_buffer_size;
     desc_.frame_resource_size = frame_resource_size;
+
+    /* ===== Core ===== */
     desc_.core_ = Initialize::desc::CoreDesc{ hwnd_ ,width,height };
+    desc_.core_.emplace_heap_desc(
+        { 5,3,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE }
+    );
 
     /* ===== Shader ===== */
 

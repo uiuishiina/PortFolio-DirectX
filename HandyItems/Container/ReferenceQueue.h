@@ -1,6 +1,7 @@
 #pragma once
-#include<queue>
-#include<optional>
+
+#include"Queue.h"
+
 #include<functional>
 #include<ranges>
 #include<concepts>
@@ -70,19 +71,11 @@ namespace HandyItems {
 			/// <returns>キューから取得した参照...ないなら [ std::nullopt ]</returns>
 			[[nodiscard]] std::optional<std::reference_wrapper<T>> get_reference() {
 
-				//	キューがあるか
-				if (reference_queue.empty()) {
-					return std::nullopt;
-				}
-
-				auto value = reference_queue.front();
-				reference_queue.pop();
-
-				return value;
+				return reference_queue.pop();
 			}
 
 			void clear() {
-				reference_queue = {};
+				reference_queue.clear();
 			}
 
 		private:
@@ -91,7 +84,7 @@ namespace HandyItems {
 			/// <summary>
 			/// 参照保存キュー
 			/// </summary>
-			std::queue<std::reference_wrapper<T>> reference_queue{};
+			Queue<std::reference_wrapper<T>> reference_queue{};
 
 		};
 	}

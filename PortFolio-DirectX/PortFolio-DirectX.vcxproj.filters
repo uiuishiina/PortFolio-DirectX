@@ -530,6 +530,15 @@
     <ClInclude Include="..\DirectX\Container\DescriptorHeapContainer.h">
       <Filter>ヘッダー ファイル\DirectX\Container</Filter>
     </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\TransformBuffer.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\HeapIndexManager.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HandyItems\Container\Queue.h">
+      <Filter>ヘッダー ファイル\HandyItems\Container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\DirectX\Resource\HLSL\StructHeader.hlsli">

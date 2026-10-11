@@ -27,7 +27,7 @@ namespace HandyItems {
 			/// <typeparam name="T">IDを取得したい型</typeparam>
 			/// <returns>型から取得したID</returns>
 			template<typename T>
-			[[nodiscard]] constexpr std::uintptr_t get_type_id() noexcept {
+			[[nodiscard]] inline std::uintptr_t get_type_id() noexcept {
 
 				static const char value{};
 				return reinterpret_cast<std::uintptr_t>(&value);
@@ -44,7 +44,7 @@ namespace HandyItems {
 			/// <param name="value">IDを取得したい名前</param>
 			/// <returns>名前から取得したID</returns>
 			template<typename T>
-			[[nodiscard]] constexpr std::uintptr_t get_name_id(const char* value) noexcept {
+			[[nodiscard]] inline std::uintptr_t get_name_id(const char* value) noexcept {
 
 				std::uintptr_t hash = get_type_id<T>();
 

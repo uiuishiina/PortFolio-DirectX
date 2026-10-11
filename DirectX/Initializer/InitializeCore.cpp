@@ -1,7 +1,9 @@
 
 /* ========== Includeファイル ========== */
 
-#include "InitializeCore.h"
+#include"InitializeCore.h"
+
+#include"../Container/DescriptorHeapContainer.h"
 
 using namespace DirectX;
 
@@ -41,9 +43,10 @@ using namespace DirectX;
 		return hr;
 	}
 
-	//	描画用コマンドアロケーター作成
+	//	フレームリソース作成
 	for (auto& resource : context->frame_resources) {
 
+		//	描画用コマンドアロケーター作成
 		hr = resource->get_allocator()->create_allocator(
 			context->device_->get(),
 			D3D12_COMMAND_LIST_TYPE_DIRECT
@@ -84,37 +87,38 @@ using namespace DirectX;
 		return hr;
 	}
 
-	
-	//	静的ディスクリプタヒープ作成
-	for (auto& [name, heap_desc] : desc.heap_descs) {
+	const auto frame_size = context->frame_resources.size();
 
-		
-		auto heap = std::make_unique<ClassObject::DescriptorHeap>();
+	//	ディスクリプタヒープ作成
+	for (auto& heap_desc : desc.heap_descs) {
 
-		hr = heap->create_descriptor_heap(
+		auto heap_manager = std::make_unique<ClassModule::HeapIndexManager>();
+
+		hr = heap_manager->create_heap(
 			context->device_->get(),
-			heap_desc
+			heap_desc,
+			frame_size
 		);
 		if (FAILED(hr)) {
 			return hr;
 		}
 
-		//	静的コンテナに追加
-		if (!context->static_heap_container->add_descriptor_heap(
-			Container::DescriptorHeapKey{ name.c_str()},
-			std::move(heap)
+		//	コンテナに追加
+		if (!context->heap_container->add_heap_manager(
+			Container::DescriptorHeapKey{ heap_desc.type_ },
+			std::move(heap_manager)
 		)) {
 
 			return E_FAIL;
 		}
-
 	}
 
 	//	バックバッファ作成
 	auto& buffers = context->back_buffers;
-	auto rtv_heap = context->static_heap_container->get_descriptor_heap(
-		Container::DescriptorHeapKey{ "BackBufferRTV" }
-	);
+	auto rtv_heap = context->heap_container->get_heap_manager(
+		Container::DescriptorHeapKey{ D3D12_DESCRIPTOR_HEAP_TYPE_RTV }
+	)->get_heap();
+
 	for (std::size_t i = 0; i < buffers.size(); ++i) {
 
 		hr = buffers[i]->create_back_buffer(

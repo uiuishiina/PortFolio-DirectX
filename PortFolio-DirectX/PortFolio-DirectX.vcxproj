@@ -42,6 +42,7 @@
     <ClInclude Include="..\Application\Application.h" />
     <ClInclude Include="..\Application\ApplicationDataShare.h" />
     <ClInclude Include="..\DirectX\ClassModule\CommandPass.h" />
+    <ClInclude Include="..\DirectX\ClassModule\HeapIndexManager.h" />
     <ClInclude Include="..\DirectX\ClassModule\DrawObjectPass.h" />
     <ClInclude Include="..\DirectX\ClassModule\DrawObject\DrawObjectBase.h" />
     <ClInclude Include="..\DirectX\ClassModule\DrawObject\Mesh.h" />
@@ -49,6 +50,7 @@
     <ClInclude Include="..\DirectX\ClassModule\FrameResource.h" />
     <ClInclude Include="..\DirectX\ClassModule\PassBase.h" />
     <ClInclude Include="..\DirectX\ClassModule\PiplinePass.h" />
+    <ClInclude Include="..\DirectX\ClassModule\TransformBuffer.h" />
     <ClInclude Include="..\DirectX\ClassModule\UploadResources.h" />
     <ClInclude Include="..\DirectX\ClassObject\CommandAllocator.h" />
     <ClInclude Include="..\DirectX\ClassObject\CommandList.h" />
@@ -116,6 +118,7 @@
     <ClInclude Include="..\HandyItems\Bit\BitFlag.h" />
     <ClInclude Include="..\HandyItems\Container\KeyMap.h" />
     <ClInclude Include="..\HandyItems\Container\KeyMapBase.h" />
+    <ClInclude Include="..\HandyItems\Container\Queue.h" />
     <ClInclude Include="..\HandyItems\Container\ReferenceContainerBase.h" />
     <ClInclude Include="..\HandyItems\Container\ReferenceQueue.h" />
     <ClInclude Include="..\HandyItems\Container\ReferenceVector.h" />

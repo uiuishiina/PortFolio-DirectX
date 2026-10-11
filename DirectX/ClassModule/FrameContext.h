@@ -93,7 +93,7 @@ namespace DirectX {
 				fence_{ context_->fence_.get() },
 				frame_resource{ context_->frame_resources[current_resource].get() },
 				swapchain_{ context_->swapchain_.get() },
-				static_heap_container{ context_->static_heap_container.get() },
+				static_heap_container{ context_->heap_container.get() },
 				back_buffer{ context_->back_buffers[current_back_buffer].get() }{}
 
 			/// <summary>

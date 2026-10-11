@@ -12,7 +12,6 @@
 #include"ClassObject/CommandList.h"
 #include"ClassObject/Fence.h"
 #include"ClassObject/SwapChain.h"
-#include"ClassObject/DescriptorHeap.h"
 #include"ClassObject/GPUResource/RenderTarget/BackBuffer.h"
 
 #include"ClassModule/FrameResource.h"
@@ -120,9 +119,9 @@ namespace DirectX {
 		/* -- Container -- */
 
 		/// <summary>
-		/// 静的ディスクリプタヒープコンテナインスタンス
+		/// ディスクリプタヒープコンテナインスタンス
 		/// </summary>
-		UniquePtr<Container::DescriptorHeapContainer> static_heap_container{};
+		UniquePtr<Container::DescriptorHeapContainer> heap_container{};
 
 		/// <summary>
 		/// 描画パスコンテナインスタンス

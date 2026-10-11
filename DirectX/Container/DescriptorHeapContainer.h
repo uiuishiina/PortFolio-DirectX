@@ -6,7 +6,7 @@
 #include"Container/UniqueptrKeyMap.h"
 
 //	DirectX
-#include"../ClassObject/DescriptorHeap.h"
+#include"../ClassModule/HeapIndexManager.h"
 
 /// <summary>
 /// DirectX名前空間
@@ -18,6 +18,13 @@ namespace DirectX {
 	/// </summary>
 	namespace Container {
 
+		[[nodiscard]] inline std::uintptr_t get_heap_type_id(
+			D3D12_DESCRIPTOR_HEAP_TYPE heap_type
+		) noexcept {
+
+			return static_cast<std::uintptr_t>(heap_type);
+		}
+
 		/* ========== ハッシュキー ========== */
 
 		/// <summary>
@@ -27,11 +34,11 @@ namespace DirectX {
 
 			DescriptorHeapKey() = default;
 
-			explicit DescriptorHeapKey(const char* key_name) :
+			explicit DescriptorHeapKey(D3D12_DESCRIPTOR_HEAP_TYPE key_type) :
 
 				HandyItems::container::handle::LogicalKey{
 				static_cast<std::uint32_t>(
-					HandyItems::id::get_id::get_name_id<DescriptorHeapKey>(key_name)
+					get_heap_type_id(key_type)
 					)
 			} {}
 		};
@@ -45,13 +52,13 @@ namespace DirectX {
 		/* ========== コンテナ ========== */
 
 		/// <summary>
-		/// ディスクリプターヒープコンテナ
+		/// ディスクリプターヒープインデックスマネージャーコンテナ
 		/// </summary>
 		class DescriptorHeapContainer : HandyItems::container::UniqueptrKeyMap
 			<
 			DescriptorHeapKey,
 			DescriptorHeapKeyEncodeKey,
-			ClassObject::DescriptorHeap
+			ClassModule::HeapIndexManager
 			>
 		{
 		public:
@@ -73,11 +80,11 @@ namespace DirectX {
 			/// ディスクリプターヒープ追加関数
 			/// </summary>
 			/// <param name="key">紐づけるディスクリプターヒープ倫理キー</param>
-			/// <param name="heap">追加するディスクリプターヒープインスタンス</param>
+			/// <param name="heap">追加するディスクリプターヒープインデックスマネージャーインスタンス</param>
 			/// <returns>追加の成否</returns>
-			[[nodiscard]] bool add_descriptor_heap(
+			[[nodiscard]] bool add_heap_manager(
 				DescriptorHeapKey key,
-				std::unique_ptr<ClassObject::DescriptorHeap>&& heap
+				std::unique_ptr<ClassModule::HeapIndexManager>&& heap
 			) {
 
 				return add_value(key, std::move(heap));
@@ -90,7 +97,7 @@ namespace DirectX {
 			/// </summary>
 			/// <param name="key">紐づいたディスクリプターヒープ倫理キー</param>
 			/// <returns>ディスクリプターヒープ参照</returns>
-			[[nodiscard]] ClassObject::DescriptorHeap* get_descriptor_heap(
+			[[nodiscard]] ClassModule::HeapIndexManager* get_heap_manager(
 				const DescriptorHeapKey& key
 			) const noexcept {
 
