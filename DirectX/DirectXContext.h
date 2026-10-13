@@ -13,6 +13,7 @@
 #include"ClassObject/Fence.h"
 #include"ClassObject/SwapChain.h"
 #include"ClassObject/GPUResource/RenderTarget/BackBuffer.h"
+#include"ClassObject/GPUResource/DepthBuffer.h"
 
 #include"ClassModule/FrameResource.h"
 
@@ -115,6 +116,10 @@ namespace DirectX {
 		/// </summary>
 		std::vector<UniquePtr<ClassObject::BackBuffer>> back_buffers{};
 
+		/// <summary>
+		/// デプスバッファインスタンス配列
+		/// </summary>
+		std::vector<UniquePtr<ClassObject::DepthBuffer>> depth_buffers{};
 
 		/* -- Container -- */
 

@@ -539,6 +539,9 @@
     <ClInclude Include="..\HandyItems\Container\Queue.h">
       <Filter>ヘッダー ファイル\HandyItems\Container</Filter>
     </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\DepthBuffer.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject\GPUResource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\DirectX\Resource\HLSL\StructHeader.hlsli">

@@ -101,6 +101,17 @@ namespace DirectX {
 							nullptr
 						); };
 
+					const Command ClearDepth = [](ClassModule::FrameContext& frame) {
+
+						frame.graphic_list->get()->ClearDepthStencilView(
+							frame.depth_buffer->get_DSV_handle(),
+							D3D12_CLEAR_FLAG_DEPTH,
+							1.0f, 
+							0, 
+							0, 
+							nullptr
+						);};
+
 
 					/* ===== セット ===== */
 
@@ -108,11 +119,13 @@ namespace DirectX {
 
 						D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle[] = { frame.back_buffer->get_RTV_handle() };
 
+						D3D12_CPU_DESCRIPTOR_HANDLE dsv_handle = frame.depth_buffer->get_DSV_handle();
+
 						frame.graphic_list->get()->OMSetRenderTargets(
 							1,
 							rtv_handle,
 							false,
-							nullptr
+							&dsv_handle
 						); };
 
 				}
@@ -160,7 +173,8 @@ namespace DirectX {
 				const CommandPassDesc Clear{
 					"Clear",
 					{
-						BackBuffer::ClearBlack
+						BackBuffer::ClearBlack,
+						BackBuffer::ClearDepth
 					},
 					true
 				};

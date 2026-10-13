@@ -83,16 +83,24 @@ namespace DirectX {
 					.ps_name = "NormalPixel"
 				},
 				{
+					//	シェーダ入力設定
 					.input_elements = {
 						{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 					},
+
+					//	ラスタライザ設定
 					.rasterizer_desc = Override(
 						Helper::PiplineStateHelper::default_rasterizer(),
 						[](auto& desc) {
 							desc.FillMode = static_cast<D3D12_FILL_MODE>(3);
 						}),
+
+					//	ブレンド設定
 					.blend_desc = Helper::PiplineStateHelper::default_blend(),
-					.depth_stencil_desc = Helper::PiplineStateHelper::default_depth()
+
+					//	デプス設定
+					.depth_stencil_desc = Helper::PiplineStateHelper::enable_depth(),
+					.dsv_format = DXGI_FORMAT_D32_FLOAT
 				}
 			};
 
@@ -104,17 +112,25 @@ namespace DirectX {
 					.ps_name = "ColorPixel"
 				},
 				{
+					//	シェーダ入力設定
 					.input_elements = {
 						{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 						{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 					},
+
+					//	ラスタライザ設定
 					.rasterizer_desc = Override(
 						Helper::PiplineStateHelper::default_rasterizer(),
 						[](auto& desc) {
 							desc.FillMode = static_cast<D3D12_FILL_MODE>(3);
 						}),
+
+					//	ブレンド設定
 					.blend_desc = Helper::PiplineStateHelper::enable_blend(),
-					.depth_stencil_desc = Helper::PiplineStateHelper::default_depth()
+
+					//	デプス設定
+					.depth_stencil_desc = Helper::PiplineStateHelper::enable_depth(),
+					.dsv_format = DXGI_FORMAT_D32_FLOAT
 				}
 			};
 

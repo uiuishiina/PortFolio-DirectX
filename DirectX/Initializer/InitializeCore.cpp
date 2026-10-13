@@ -113,22 +113,49 @@ using namespace DirectX;
 		}
 	}
 
-	//	バックバッファ作成
-	auto& buffers = context->back_buffers;
-	auto rtv_heap = context->heap_container->get_heap_manager(
-		Container::DescriptorHeapKey{ D3D12_DESCRIPTOR_HEAP_TYPE_RTV }
-	)->get_heap();
+	{
+		//	バックバッファ作成
+		auto& back_buffers = context->back_buffers;
+		auto rtv_heap = context->heap_container->get_heap_manager(
+			Container::DescriptorHeapKey{ D3D12_DESCRIPTOR_HEAP_TYPE_RTV }
+		)->get_heap();
 
-	for (std::size_t i = 0; i < buffers.size(); ++i) {
+		for (std::size_t i = 0; i < back_buffers.size(); ++i) {
 
-		hr = buffers[i]->create_back_buffer(
-			context->device_->get(),
-			context->swapchain_->get(),
-			rtv_heap->get_CPU_handle(static_cast<UINT>(i)),
-			static_cast<UINT>(i)
-		);
-		if (FAILED(hr)) {
-			return hr;
+			hr = back_buffers[i]->create_back_buffer(
+				context->device_->get(),
+				context->swapchain_->get(),
+				rtv_heap->get_CPU_handle(static_cast<UINT>(i)),
+				static_cast<UINT>(i)
+			);
+			if (FAILED(hr)) {
+				return hr;
+			}
+		}
+	}
+	{
+
+		//	デプスバッファ作成
+		auto& depth_buffers = context->depth_buffers;
+		auto dsv_heap = context->heap_container->get_heap_manager(
+			Container::DescriptorHeapKey{ D3D12_DESCRIPTOR_HEAP_TYPE_DSV }
+		)->get_heap();
+
+		ClassObject::desc::DepthBufferDesc depth_desc{};
+
+		depth_desc.width = desc.width;
+		depth_desc.height = desc.height;
+
+		for (std::size_t i = 0; i < depth_buffers.size(); ++i) {
+
+			hr = depth_buffers[i]->creata_depth_buffer(
+				context->device_->get(),
+				dsv_heap->get_CPU_handle(static_cast<UINT>(i)),
+				depth_desc
+			);
+			if (FAILED(hr)) {
+				return hr;
+			}
 		}
 	}
 

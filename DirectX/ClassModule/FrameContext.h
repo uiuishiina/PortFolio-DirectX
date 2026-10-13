@@ -50,7 +50,7 @@ namespace DirectX {
 			ClassObject::Fence* fence_;
 
 			/// <summary>
-			/// フレームリソースインスタンス配列
+			/// フレームリソースインスタンス
 			/// </summary>
 			ClassModule::FrameResource* frame_resource;
 
@@ -60,9 +60,14 @@ namespace DirectX {
 			ClassObject::SwapChain* swapchain_;
 
 			/// <summary>
-			/// バックバッファインスタンス配列
+			/// バックバッファインスタンス
 			/// </summary>
 			ClassObject::BackBuffer* back_buffer;
+
+			/// <summary>
+			/// デプスバッファインスタンス
+			/// </summary>
+			ClassObject::DepthBuffer* depth_buffer;
 
 			/// <summary>
 			/// ディスクリプターヒープコンテナインスタンス
@@ -94,7 +99,8 @@ namespace DirectX {
 				frame_resource{ context_->frame_resources[current_resource].get() },
 				swapchain_{ context_->swapchain_.get() },
 				static_heap_container{ context_->heap_container.get() },
-				back_buffer{ context_->back_buffers[current_back_buffer].get() }{}
+				back_buffer{ context_->back_buffers[current_back_buffer].get() },
+				depth_buffer{ context_->depth_buffers[current_back_buffer].get() } {}
 
 			/// <summary>
 			/// デストラクタ

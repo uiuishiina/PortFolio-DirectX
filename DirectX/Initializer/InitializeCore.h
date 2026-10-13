@@ -51,7 +51,8 @@ namespace DirectX {
 				/// 静的ディスクリプターヒープ設定
 				/// </summary>
 				std::vector<ClassModule::desc::HeapIndexManagerDesc> heap_descs{
-					{ 2,0,D3D12_DESCRIPTOR_HEAP_TYPE_RTV,D3D12_DESCRIPTOR_HEAP_FLAG_NONE }
+					{ 2,0,D3D12_DESCRIPTOR_HEAP_TYPE_RTV,D3D12_DESCRIPTOR_HEAP_FLAG_NONE },
+					{ 2,0,D3D12_DESCRIPTOR_HEAP_TYPE_DSV,D3D12_DESCRIPTOR_HEAP_FLAG_NONE }
 				};
 
 				/* ========== Publicメンバー関数 ========== */

@@ -60,6 +60,7 @@
     <ClInclude Include="..\DirectX\ClassObject\DXGI.h" />
     <ClInclude Include="..\DirectX\ClassObject\Fence.h" />
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\ConstantBuffer.h" />
+    <ClInclude Include="..\DirectX\ClassObject\GPUResource\DepthBuffer.h" />
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\GPUResourceBase.h" />
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\IndexBuffer.h" />
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\RenderTarget.h" />

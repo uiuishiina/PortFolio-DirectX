@@ -82,9 +82,11 @@ DirectXRenderer::~DirectXRenderer() = default;
 
     /* ===== Core ===== */
     desc_.core_ = Initialize::desc::CoreDesc{ hwnd_ ,width,height };
+
     desc_.core_.emplace_heap_desc(
         { 5,3,D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE }
     );
+    
 
     /* ===== Shader ===== */
 
