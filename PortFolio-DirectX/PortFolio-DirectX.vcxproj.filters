@@ -542,6 +542,9 @@
     <ClInclude Include="..\DirectX\ClassObject\GPUResource\DepthBuffer.h">
       <Filter>ヘッダー ファイル\DirectX\ClassObject\GPUResource</Filter>
     </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\DrawObject\MeshObject.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule\DrawObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\DirectX\Resource\HLSL\StructHeader.hlsli">

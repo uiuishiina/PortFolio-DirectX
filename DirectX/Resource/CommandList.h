@@ -161,6 +161,14 @@ namespace DirectX {
 
 				/* ===== コマンド配列 ===== */
 
+				/*
+					パス名称
+					{
+						コマンド
+					}
+					PassOrder追加フラグ
+				*/
+
 				const CommandPassDesc Begin{
 					"Begin",
 					{

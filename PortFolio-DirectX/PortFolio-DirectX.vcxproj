@@ -42,6 +42,7 @@
     <ClInclude Include="..\Application\Application.h" />
     <ClInclude Include="..\Application\ApplicationDataShare.h" />
     <ClInclude Include="..\DirectX\ClassModule\CommandPass.h" />
+    <ClInclude Include="..\DirectX\ClassModule\DrawObject\MeshObject.h" />
     <ClInclude Include="..\DirectX\ClassModule\HeapIndexManager.h" />
     <ClInclude Include="..\DirectX\ClassModule\DrawObjectPass.h" />
     <ClInclude Include="..\DirectX\ClassModule\DrawObject\DrawObjectBase.h" />

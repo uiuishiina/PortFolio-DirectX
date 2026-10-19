@@ -90,15 +90,31 @@ namespace DirectX {
 				return upload(data);
 			}
 
+			/// <summary>
+			/// コンスタントバッファセット関数
+			/// </summary>
+			/// <param name="register_index">セットするレジスター番号</param>
+			/// <param name="list_">コマンドリスト参照</param>
+			void set_constant_buffer(
+				UINT register_index,
+				ID3D12GraphicsCommandList* list_
+			) {
+
+				list_->SetGraphicsRootDescriptorTable(
+					register_index,
+					handles_.gpu_handle
+				);
+			}
+
 			/* ===== 取得関数 ===== */
 
 			/// <summary>
-			/// [ GPU ] Handle取得関数
+			/// ディスクリプターハンドル補助構造体取得関数
 			/// </summary>
-			/// <returns>取得した [ GPU ] Handle</returns>
-			[[nodiscard]] D3D12_GPU_DESCRIPTOR_HANDLE get_gpu_handle() const noexcept {
+			/// <returns>取得したいディスクリプターハンドル補助構造体</returns>
+			[[nodiscard]] Helper::DescriptorHeapHandles get_handles() const noexcept {
 
-				return handles_.gpu_handle;
+				return handles_;
 			}
 
 		private:

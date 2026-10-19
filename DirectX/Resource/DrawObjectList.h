@@ -24,6 +24,14 @@ namespace DirectX {
 			/// </summary>
 			namespace DrawObject {
 
+				/*
+					パス名称
+					{
+						描画オブジェクト名
+					}
+					PassOrder追加フラグ
+				*/
+
 				const DrwObjectPassDesc NormalTest = {
 					"DrawNormalObject",
 					{

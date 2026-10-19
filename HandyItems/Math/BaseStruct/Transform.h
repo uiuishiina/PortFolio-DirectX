@@ -1,4 +1,6 @@
 #pragma once
+
+#include"../Function/MathFFloat3.h"
 #include"../Function/MathFQuaternion.h"
 #include"../Function/MathFMatrix.h"
 
