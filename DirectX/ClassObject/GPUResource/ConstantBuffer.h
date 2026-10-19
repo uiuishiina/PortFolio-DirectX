@@ -58,7 +58,6 @@ namespace DirectX {
 				desc.resource_size = (sizeof(T) + 255) & ~255;
 				desc.read_range = { 0,0 };
 				desc.subresource_index = 0;
-				desc.final_state = D3D12_RESOURCE_STATE_GENERIC_READ;
 
 				const auto hr = create_upload_resource(
 					device_,
@@ -83,7 +82,7 @@ namespace DirectX {
 			/// </summary>
 			/// <param name="data">Uploadするデータ</param>
 			/// <returns>Uploadの成否</returns>
-			[[nodiscard]] bool upload_buffer(
+			bool upload_buffer(
 				const T& data
 			) {
 

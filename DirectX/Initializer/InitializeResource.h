@@ -122,7 +122,7 @@ namespace DirectX {
 					auto ref_vec = upload->allocate_references(2);
 
 					//	作成
-					auto mesh = mesh_desc->make_mesh_object(
+					auto mesh = mesh_desc->make_mesh(
 						context_->device_->get(),
 						context_->graphic_list->get(),
 						ref_vec

@@ -27,7 +27,7 @@ namespace HandyItems {
 			/// 単位クォータニオン作成関数
 			/// </summary>
 			/// <returns>作成した単位クォータニオン</returns>
-			[[nodiscard]] Quaternion quaternion_identity() {
+			[[nodiscard]] inline Quaternion quaternion_identity() {
 
 				return {
 					0.0f,
@@ -46,7 +46,7 @@ namespace HandyItems {
 			/// <param name="axis">回転軸</param>
 			/// <param name="angle">回転角度（ラジアン）</param>
 			/// <returns>作成したクォータニオン</returns>
-			[[nodiscard]] Quaternion from_axis_angle(
+			[[nodiscard]] inline Quaternion from_axis_angle(
 				Float3 axis,
 				float angle
 			) {
@@ -79,7 +79,7 @@ namespace HandyItems {
 			/// </details>
 			/// <param name="euler">オイラー角（X、Y、Z / ラジアン）</param>
 			/// <returns>作成したクォータニオン</returns>
-			[[nodiscard]] Quaternion from_euler(
+			[[nodiscard]] inline Quaternion from_euler(
 				const Float3& euler
 			) {
 
@@ -318,7 +318,7 @@ namespace HandyItems {
 			/// <param name="from">回転前の方向</param>
 			/// <param name="to">回転後の方向</param>
 			/// <returns>回転クォータニオン</returns>
-			[[nodiscard]] Quaternion from_to(
+			[[nodiscard]] inline Quaternion from_to(
 				Float3 from,
 				Float3 to
 			) {

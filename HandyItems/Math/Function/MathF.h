@@ -1,6 +1,7 @@
 #pragma once
 #define NOMINMAX
 #include<cmath>
+#include<cstddef>
 
 /// <summary>
 /// 便利アイテム名前空間
@@ -149,7 +150,7 @@ namespace HandyItems {
 			/// <param name="left">比較する左辺値</param>
 			/// <param name="right">比較する右辺値</param>
 			/// <returns>[ 小さい方 ] の値</returns>
-			[[nodiscard]] inline float min(
+			[[nodiscard]] inline float min_value(
 				float left,
 				float right
 			) {
@@ -163,7 +164,7 @@ namespace HandyItems {
 			/// <param name="left">比較する左辺値</param>
 			/// <param name="right">比較する右辺値</param>
 			/// <returns>[ 大きい方 ] の値</returns>
-			[[nodiscard]] inline float max(
+			[[nodiscard]] inline float max_value(
 				float left, 
 				float right
 			) {

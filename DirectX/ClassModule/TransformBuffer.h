@@ -2,11 +2,12 @@
 
 /* ========== Includeファイル ========== */
 
+//	HandyItems
+#include"../../HandyItems/Math/BaseStruct/Transform.h"
+
 //	DirectX
 #include"../ClassObject/GPUResource/ConstantBuffer.h"
 
-//	HandyItems
-#include"../../HandyItems/Math/BaseStruct/Transform.h"
 
 #include<memory>
 

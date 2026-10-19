@@ -45,9 +45,9 @@ namespace DirectX {
 					"NormalMesh",
 					make_create_mesh_desc<NVer>({
 						.vertex_ = {
-							{	-0.5f,	-0.5f,	0.1},
-							{		0,	 0.5f,	0.1},
-							{	 0.5f,	-0.5f,	0.1}
+							{	-0.5f,	-0.5f,	0.1f},
+							{		0,	 0.5f,	0.1f},
+							{	 0.5f,	-0.5f,	0.1f}
 						},
 						.index_ = {
 							0,1,2
@@ -60,9 +60,9 @@ namespace DirectX {
 					"ColorMesh",
 					make_create_mesh_desc<CVer>({
 						.vertex_ = {
-							{{	 0.5f,		0,	0.2},{	1,	0,	0,	1}},
-							{{		0,	-0.5f,	0.2},{	0,	1,	0,	1}},
-							{{	-0.5f,		0,	0.2},{	0,	0,	1,	1}}
+							{{	 0.5f,		0,	0.2f},{	1,	0,	0,	1}},
+							{{		0,	-0.5f,	0.2f},{	0,	1,	0,	1}},
+							{{	-0.5f,		0,	0.2f},{	0,	0,	1,	1}}
 						},
 						.index_ = {
 							0,1,2
