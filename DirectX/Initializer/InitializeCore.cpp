@@ -97,7 +97,7 @@ using namespace DirectX;
 		hr = heap_manager->create_heap(
 			context->device_->get(),
 			heap_desc,
-			frame_size
+			static_cast<UINT>(frame_size)
 		);
 		if (FAILED(hr)) {
 			return hr;

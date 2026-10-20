@@ -174,8 +174,7 @@ namespace DirectX {
 					{
 						BackBuffer::TransitionTarget,
 						BackBuffer::Set
-					},
-					true
+					}
 				};
 
 				const CommandPassDesc Clear{
@@ -183,8 +182,7 @@ namespace DirectX {
 					{
 						BackBuffer::ClearBlack,
 						BackBuffer::ClearDepth
-					},
-					true
+					}
 				};
 
 				const CommandPassDesc SetView{
@@ -192,16 +190,14 @@ namespace DirectX {
 					{
 						View::ViewPort,
 						View::ScissorRect
-					},
-					false
+					}
 				};
 
 				const CommandPassDesc End{
 					"End",
 					{
 						BackBuffer::TransitionPresent
-					},
-					true
+					}
 				};
 
 			}

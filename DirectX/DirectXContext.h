@@ -39,6 +39,7 @@ namespace DirectX {
 		class RootSignatureContainer;
 		class PiplineStateContainer;
 		class DrawObjectContainer;
+		class CameraObjectContainer;
 	}
 
 
@@ -152,6 +153,11 @@ namespace DirectX {
 		/// 描画オブジェクトコンテナインスタンス
 		/// </summary>
 		UniquePtr<Container::DrawObjectContainer> draw_object_container{};
+
+		/// <summary>
+		/// カメラオブジェクトコンテナインスタンス
+		/// </summary>
+		UniquePtr<Container::CameraObjectContainer> camera_object_container{};
 
 	};
 }

@@ -23,6 +23,27 @@
 
 using namespace DirectX;
 
+
+/* ========== 無名空間 ========== */
+
+namespace {
+
+    template<typename... Args>
+    std::vector<std::string> get_pass_name(const Args&... args) {
+
+        std::vector<std::string> pass_names{};
+
+        auto func = [&pass_names](const std::string& name) {
+                pass_names.push_back(name);
+            };
+
+        (func(args._Myfirst._Val), ...);
+
+        return pass_names;
+    }
+
+}
+
 /* ========== Publicメンバー関数 ========== */
 
 /// <summary>
@@ -148,19 +169,9 @@ DirectXRenderer::~DirectXRenderer() = default;
     );
 
 
-    /* ===== 機能初期化 ===== */
-
-    if (!initializer.initialize(
-        desc_
-    )) {
-        return false;
-    }
-
-
     /* ========== 描画パス初期化 ========== */
 
-    /* ===== Pass ===== */
-    Initialize::desc::PassDesc passDesc{};
+    auto& passDesc = desc_.pass_;
 
     /* -- Begin -- */
 
@@ -202,23 +213,38 @@ DirectXRenderer::~DirectXRenderer() = default;
         Resource::Pass::Commands::End
     );
 
-    /* ===== パス初期化 ===== */
-
-    initializer.initialize_pass(
-        desc_.context_,
-        passDesc
-    );
+    if (!initializer.initialize(
+        desc_
+    )) {
+        return false;
+    }
 
 
     /* ========== 描画パス設定 ========== */
 
+
+    const auto pass_names = get_pass_name(
+        Resource::Pass::Commands::Begin,
+
+        Resource::Pass::Commands::Clear,
+        Resource::Pass::Commands::SetView,
+
+        //Resource::Pass::Piplines::NormalTest,
+        //Resource::Pass::DrawObject::NormalTest,
+
+        Resource::Pass::Piplines::ColorTest,
+        Resource::Pass::DrawObject::ColorTest,
+
+        Resource::Pass::Commands::End
+    );
+
     DEBUG_LOG(
         HandyItems::Debug::const_str::LineBreak, 
-        "========== PassName =========="
+        "========== UsePassName =========="
     );
     auto passCount = 0;
 
-    for (auto& name : initializer.pass_list) {
+    for (auto& name : pass_names) {
         updator_->set_pass(context_->pass_container->get_pass(
             Container::PassKey(name.c_str())
         ));

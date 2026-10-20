@@ -59,17 +59,6 @@ namespace DirectX {
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>
-			/// コマンドパス追加関数
-			/// </summary>
-			/// <param name="command">追加するコマンドパス</param>
-			void add_command_pass(
-				PassBase* pass
-			) {
-
-				command_passes.push_back(pass);
-			}
-
-			/// <summary>
 			/// コマンドパス配列追加関数
 			/// </summary>
 			/// <typeparam name="R">追加するコマンドパス配列型</typeparam>
@@ -78,8 +67,8 @@ namespace DirectX {
 				const std::span<PassBase*> passes
 			) {
 
-				for (auto& v : passes) {
-					add_command_pass(v);
+				for (auto& pass : passes) {
+					command_passes.push_back(pass);
 				}
 			}
 

@@ -87,6 +87,10 @@ namespace DirectX {
 				mesh_->draw(list_);
 			}
 
+			/// <summary>
+			/// トランスフォームバッファ参照取得関数
+			/// </summary>
+			/// <returns>取得したトランスフォームバッファ参照</returns>
 			[[nodiscard]] TransformBuffer* get_transform_buffer() const noexcept {
 				return transform_.get();
 			}
@@ -94,10 +98,19 @@ namespace DirectX {
 		private:
 			/* ========== Privateメンバー変数 ========== */
 
+			/// <summary>
+			/// メッシュ
+			/// </summary>
 			std::unique_ptr<Mesh> mesh_{};
 
+			/// <summary>
+			/// トランスフォームバッファ
+			/// </summary>
 			std::unique_ptr<TransformBuffer> transform_{};
 
+			/// <summary>
+			/// コンスタントバッファレジスターインデックス
+			/// </summary>
 			UINT register_index{};
 
 		};

@@ -41,17 +41,6 @@ namespace DirectX {
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>
-			/// コマンド追加関数
-			/// </summary>
-			/// <param name="command">追加するコマンド</param>
-			void add_command(
-				const Command& command
-			) {
-
-				commands_.push_back(command);
-			}
-
-			/// <summary>
 			/// コマンド配列追加関数
 			/// </summary>
 			/// <typeparam name="R">追加するコマンド配列型</typeparam>
@@ -60,8 +49,8 @@ namespace DirectX {
 				std::span<const Command> commands
 			) {
 
-				for (auto& v : commands) {
-					add_command(v);
+				for (auto& command : commands) {
+					commands_.push_back(command);
 				}
 			}
 

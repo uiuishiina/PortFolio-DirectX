@@ -37,19 +37,6 @@ namespace DirectX {
 			/* ===== 追加関数 ===== */
 
 			/// <summary>
-			/// 描画オブジェクト追加関数
-			/// </summary>
-			/// <param name="object">追加するオブジェクト</param>
-			void add_object(
-				DrawObjectBase* object
-			) {
-
-				if (object) {
-					draw_objects.push_back(object);
-				}
-			}
-
-			/// <summary>
 			/// 描画オブジェクト配列追加関数
 			/// </summary>
 			/// <param name="objects">追加する描画オブジェクト配列</param>
@@ -58,7 +45,9 @@ namespace DirectX {
 			) {
 
 				for (auto& obj : objects) {
-					add_object(obj);
+					if (obj) {
+						draw_objects.push_back(obj);
+					}
 				}
 			}
 

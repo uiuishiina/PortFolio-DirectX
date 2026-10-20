@@ -35,8 +35,7 @@ namespace DirectX {
 				/// </summary>
 				using CommandPassDesc = std::tuple<
 					std::string,
-					std::vector<Command>,
-					bool
+					std::vector<Command>
 				>;
 
 			}

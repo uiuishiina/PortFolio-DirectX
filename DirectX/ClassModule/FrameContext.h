@@ -73,7 +73,7 @@ namespace DirectX {
 			/// ディスクリプターヒープコンテナインスタンス
 			/// </summary>
 			/// <returns></returns>
-			Container::DescriptorHeapContainer* static_heap_container;
+			Container::DescriptorHeapContainer* heap_container;
 
 			/* ========== Publicメンバー関数 ========== */
 
@@ -98,7 +98,7 @@ namespace DirectX {
 				fence_{ context_->fence_.get() },
 				frame_resource{ context_->frame_resources[current_resource].get() },
 				swapchain_{ context_->swapchain_.get() },
-				static_heap_container{ context_->heap_container.get() },
+				heap_container{ context_->heap_container.get() },
 				back_buffer{ context_->back_buffers[current_back_buffer].get() },
 				depth_buffer{ context_->depth_buffers[current_back_buffer].get() } {}
 

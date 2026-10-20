@@ -545,6 +545,15 @@
     <ClInclude Include="..\DirectX\ClassModule\DrawObject\MeshObject.h">
       <Filter>ヘッダー ファイル\DirectX\ClassModule\DrawObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\DrawObject\CameraObject.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule\DrawObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Container\CameraObjectContainer.h">
+      <Filter>ヘッダー ファイル\DirectX\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\Helpers\CameraObjectPassDesc.h">
+      <Filter>ヘッダー ファイル\DirectX\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\DirectX\Resource\HLSL\StructHeader.hlsli">
@@ -562,6 +571,9 @@
       <Filter>ヘッダー ファイル\DirectX\Resource\HLSL</Filter>
     </FxCompile>
     <FxCompile Include="..\DirectX\Resource\HLSL\ColorPixel.hlsl">
+      <Filter>ヘッダー ファイル\DirectX\Resource\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="..\DirectX\Resource\HLSL\ConstantVertex.hlsl">
       <Filter>ヘッダー ファイル\DirectX\Resource\HLSL</Filter>
     </FxCompile>
   </ItemGroup>

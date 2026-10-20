@@ -141,7 +141,7 @@ namespace DirectX {
 
 				D3D12_CONSTANT_BUFFER_VIEW_DESC Desc{};
 				Desc.BufferLocation = resource_->GetGPUVirtualAddress();
-				Desc.SizeInBytes = resource_size;
+				Desc.SizeInBytes = static_cast<UINT>(resource_size);
 
 				device_->CreateConstantBufferView(
 					&Desc, 

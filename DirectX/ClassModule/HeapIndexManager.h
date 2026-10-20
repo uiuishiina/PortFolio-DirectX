@@ -82,18 +82,20 @@ namespace DirectX {
 			/// </summary>
 			/// <param name="device_">Device参照</param>
 			/// <param name="desc">ヒープインデックスマネージャー設定構造体参照</param>
-			/// <param name="frame_resource_size">フレームリソースサイズ</param>
+			/// <param name="resource_size">フレームリソースサイズ</param>
 			/// <returns>作成の成否</returns>
 			[[nodiscard]] HRESULT create_heap(
 				ID3D12Device* device_,
 				const desc::HeapIndexManagerDesc& desc,
-				UINT frame_resource_size
+				UINT resource_size
 			) {
 
 				//	フレームリソースサイズチェック
-				if (frame_resource_size == 0) {
+				if (resource_size == 0) {
 					return E_INVALIDARG;
 				}
+
+				frame_resource_size = resource_size;
 
 				//	ディスクリプターヒープサイズ取得
 				const auto heap_size = desc.static_range + (
@@ -231,6 +233,11 @@ namespace DirectX {
 			/// 全体ヒープサイズ
 			/// </summary>
 			UINT max_heap_size{};
+
+			/// <summary>
+			/// フレームリソースサイズ
+			/// </summary>
+			UINT frame_resource_size{};
 
 		};
 	}

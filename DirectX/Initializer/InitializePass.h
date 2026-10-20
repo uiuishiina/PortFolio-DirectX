@@ -53,11 +53,10 @@ namespace DirectX {
 
 				void emplace_begin_pass(
 					std::string name,
-					const std::vector<std::function<void(ClassModule::FrameContext&)>>& vector,
-					bool flag
+					const std::vector<std::function<void(ClassModule::FrameContext&)>>& vector
 				) {
 
-					begin_pass.push_back({ name,vector,flag });
+					begin_pass.push_back({ name,vector });
 				}
 
 				void emplace_begin_pass(
@@ -70,11 +69,10 @@ namespace DirectX {
 
 				void emplace_end_pass(
 					std::string name,
-					const std::vector<std::function<void(ClassModule::FrameContext&)>>& vector,
-					bool flag
+					const std::vector<std::function<void(ClassModule::FrameContext&)>>& vector
 				) {
 
-					end_pass.push_back({ name,vector,flag });
+					end_pass.push_back({ name,vector });
 				}
 
 				void emplace_end_pass(
@@ -92,11 +90,10 @@ namespace DirectX {
 				/// <param name="flag">描画パス呼び出しフラグ</param>
 				void emplace_command_pass(
 					std::string name,
-					const std::vector<std::function<void(ClassModule::FrameContext&)>>& vector,
-					bool flag
+					const std::vector<std::function<void(ClassModule::FrameContext&)>>& vector
 				) {
 
-					command_pass.push_back({ name,vector,flag });
+					command_pass.push_back({ name,vector });
 				}
 
 				/// <summary>
@@ -114,11 +111,10 @@ namespace DirectX {
 
 				void emplace_draw_object_pass(
 					std::string name,
-					Resource::Pass::DrawObject::DrawObjectPassReference desc,
-					bool flag
+					Resource::Pass::DrawObject::DrawObjectPassReference desc
 				) {
 
-					draw_object_pass.push_back({ name,desc,flag });
+					draw_object_pass.push_back({ name,desc });
 				}
 
 				void emplace_draw_object_pass(
@@ -137,11 +133,10 @@ namespace DirectX {
 				/// <param name="flag">描画パス呼び出しフラグ</param>
 				void emplace_pipline_pass(
 					std::string name,
-					Resource::Pass::Piplines::PiplinePassReference desc,
-					bool flag
+					Resource::Pass::Piplines::PiplinePassReference desc
 				) {
 
-					pipline_pass.push_back({ name,desc,flag });
+					pipline_pass.push_back({ name,desc });
 				}
 
 				/// <summary>
@@ -173,8 +168,7 @@ namespace DirectX {
 			/// </summary>
 			/// <param name="context">DirectXオブジェクトインスタンス構造体参照</param>
 			/// <param name="desc">描画パス設定構造体参照</param>
-			/// <returns>呼び出せる描画パスリスト</returns>
-			[[nodiscard]] static std::vector<std::string> initialize_pass(
+			static void initialize_pass(
 				DirectXContext* context, 
 				desc::PassDesc& desc
 			) {
@@ -183,88 +177,150 @@ namespace DirectX {
 
 				/* ===== Begin ===== */
 
-				for (auto& [name, vec, flag] : desc.begin_pass) {
+				for (auto& [name, vec] : desc.begin_pass) {
 
+					//	インスタンス作成
 					auto pass = std::make_unique<ClassModule::CommandPass>();
+
+					//	コマンド追加
 					pass->add_commands(vec);
 
+					//	コンテナに追加
 					if (context->pass_container->add_pass(
 						Container::PassKey{ name.c_str() },
 						std::move(pass)
 					)) {
-						if (flag) {
-							pass_list.push_back(name);
-						}
+						pass_list.push_back(name);
 					}
 				}
 
 				/* ===== Command ===== */
 
-				for (auto& [name, vec, flag] : desc.command_pass) {
+				for (auto& [name, vec] : desc.command_pass) {
 
+					//	インスタンス作成
 					auto pass = std::make_unique<ClassModule::CommandPass>();
+
+					//	コマンド追加
 					pass->add_commands(vec);
 
+					//	コンテナに追加
 					if (context->pass_container->add_pass(
 						Container::PassKey{ name.c_str() },
 						std::move(pass)
 					)) {
-						if (flag) {
-							pass_list.push_back(name);
-						}
+						pass_list.push_back(name);
 					}
 				}
 
 				/* ===== DrawObject ===== */
 
-				for (auto& [name, ref, flag] : desc.draw_object_pass) {
+				for (auto& [name, ref] : desc.draw_object_pass) {
 
-					auto pass = Resource::Pass::DrawObject::make_draw_object_pass(context, ref);
+					//	インスタンス作成
+					auto pass = std::make_unique<ClassModule::DrawObjectPass>();
 
+					//	描画オブジェクト参照配列
+					std::vector<ClassModule::DrawObjectBase*> objs{};
+
+					//	配列にオブジェクトを追加
+					for (auto& obj_name : ref.draw_object_names) {
+
+						if (auto obj = context->draw_object_container->get_draw_object(
+							Container::DrawObjectKey{ obj_name.c_str() }
+						); obj) {
+
+							objs.push_back(obj);
+						}
+					}
+
+					//	配列設定
+					pass->add_objects(objs);
+
+					//	コンテナに追加
 					if (context->pass_container->add_pass(
 						Container::PassKey{ name.c_str() },
 						std::move(pass)
 					)) {
-						if (flag) {
-							pass_list.push_back(name);
-						}
+						pass_list.push_back(name);
 					}
 				}
 
 				/* ===== Pipline ===== */
 
-				for (auto& [name, ref, flag] : desc.pipline_pass) {
+				for (auto& [name, ref] : desc.pipline_pass) {
 
-					auto pass = Resource::Pass::Piplines::make_pipline_pass(context, ref);
+					//	各インスタンス参照取得
+					const auto root = context->root_signature_container->get_root_signature(
+						Container::RootSignatureKey{ ref.root_name.c_str() }
+					);
+					const auto pipline = context->pipline_state_container->get_pipline_state(
+						Container::PiplineStateKey{ ref.pipline_name.c_str() }
+					);
 
+					//	インスタンス作成
+					auto pass = std::make_unique<ClassModule::PiplinePass>(
+						root,
+						ref.root_state,
+						pipline
+					);
+
+					//	パス参照配列作成
+					std::vector<ClassModule::PassBase*> passes{};
+
+					//	配列にパスを追加
+					for (auto& pass_name : ref.pass_names) {
+
+						if (auto command = context->pass_container->get_pass(
+							Container::PassKey{ pass_name.c_str() }
+						); command) {
+
+							passes.push_back(command);
+						}
+					}
+
+					//	設定追加
+					pass->add_command_passes(passes);
+
+					//	コンテナに追加
 					if (context->pass_container->add_pass(
 						Container::PassKey{ name.c_str() },
 						std::move(pass)
 					)) {
-						if (flag) {
-							pass_list.push_back(name);
-						}
+						pass_list.push_back(name);
 					}
 				}
 
 				/* ===== End ===== */
 
-				for (auto& [name, vec, flag] : desc.end_pass) {
+				for (auto& [name, vec] : desc.end_pass) {
 
+					//	インスタンス作成
 					auto pass = std::make_unique<ClassModule::CommandPass>();
+
+					//	コマンド追加
 					pass->add_commands(vec);
 
+					//	コンテナに追加
 					if (context->pass_container->add_pass(
 						Container::PassKey{ name.c_str() },
 						std::move(pass)
 					)) {
-						if (flag) {
-							pass_list.push_back(name);
-						}
+						pass_list.push_back(name);
 					}
 				}
 
-				return pass_list;
+				DEBUG_LOG(
+					HandyItems::Debug::const_str::LineBreak,
+					"========== CreatePassName =========="
+				);
+				auto passCount = 0;
+
+				for (auto& name : pass_list) {
+					
+					DEBUG_LOG(++passCount, " = ", name);
+				}
+
 			}
 
 		private:

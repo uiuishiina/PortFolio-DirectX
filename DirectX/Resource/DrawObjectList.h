@@ -29,7 +29,6 @@ namespace DirectX {
 					{
 						描画オブジェクト名
 					}
-					PassOrder追加フラグ
 				*/
 
 				const DrwObjectPassDesc NormalTest = {
@@ -38,8 +37,7 @@ namespace DirectX {
 						{
 							"NormalMesh"
 						}
-					},
-					false
+					}
 				};
 
 				const DrwObjectPassDesc ColorTest = {
@@ -48,8 +46,7 @@ namespace DirectX {
 						{
 							"ColorMesh"
 						}
-					},
-					false
+					}
 				};
 
 			}

@@ -99,6 +99,10 @@ namespace DirectX {
 
 			Initialize::desc::ResourceDesc resource_{};
 
+
+			/* -- Passes -- */
+
+			Initialize::desc::PassDesc pass_{};
 		};
 	}
 
@@ -118,9 +122,6 @@ namespace DirectX {
 	class DirectXInitializer final : HandyItems::others::NonCopyableMovableBase 
 	{
 	public:
-
-		std::vector<std::string> pass_list{};
-
 		/* ========== Publicメンバー関数 ========== */
 
 		/// <summary>
@@ -200,19 +201,12 @@ namespace DirectX {
 				return false;
 			}
 
-			return true;
-		}
-
-		void initialize_pass(
-			DirectXContext* context_,
-			Initialize::desc::PassDesc& pass_
-		) {
-
-			//	パス初期化
-			pass_list = Initialize::InitializePass::initialize_pass(
-				context_,
-				pass_
+			Initialize::InitializePass::initialize_pass(
+				desc.context_,
+				desc.pass_
 			);
+
+			return true;
 		}
 
 	};

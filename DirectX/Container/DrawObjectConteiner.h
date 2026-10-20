@@ -73,14 +73,14 @@ namespace DirectX {
 			/// 描画オブジェクト追加関数
 			/// </summary>
 			/// <param name="key">紐づける描画オブジェクト倫理キー</param>
-			/// <param name="pass">追加する描画オブジェクトインスタンス</param>
+			/// <param name="obj">追加する描画オブジェクトインスタンス</param>
 			/// <returns>追加の成否</returns>
 			[[nodiscard]] bool add_draw_object(
 				DrawObjectKey key,
-				std::unique_ptr<ClassModule::DrawObjectBase>&& pass
+				std::unique_ptr<ClassModule::DrawObjectBase>&& obj
 			) {
 
-				return add_value(key, std::move(pass));
+				return add_value(key, std::move(obj));
 			}
 
 			/* ===== 取得関数 ===== */

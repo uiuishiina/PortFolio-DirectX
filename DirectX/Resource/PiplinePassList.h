@@ -31,12 +31,11 @@ namespace DirectX {
 						.root_name = "Normal",
 						.root_state = ClassModule::RootState::Graphics,
 						.pipline_name = "Normal",
-						.command_pass_names{
+						.pass_names{
 							"SetView",
 							"DrawNormalObject"
 						}
-					},
-					true
+					}
 				};
 				const PiplinePassDesc ColorTest{
 					"Pipline_ColorTest",
@@ -44,12 +43,11 @@ namespace DirectX {
 						.root_name = "Color",
 						.root_state = ClassModule::RootState::Graphics,
 						.pipline_name = "Color",
-						.command_pass_names{
+						.pass_names{
 							"SetView",
 							"DrawColorObject"
 						}
-					},
-					true
+					}
 				};
 
 			}

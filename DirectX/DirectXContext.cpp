@@ -9,10 +9,14 @@
 #include"Container/RootSignatureContainer.h"
 #include"Container/PiplineStateContainer.h"
 #include"Container/DrawObjectConteiner.h"
+#include"Container/CameraObjectContainer.h"
 
 using namespace DirectX;
 
-DirectXContext::DirectXContext(std::uint32_t back_buffer_size, std::uint32_t frame_resource_size) {
+DirectXContext::DirectXContext(
+	std::uint32_t back_buffer_size, 
+	std::uint32_t frame_resource_size
+) {
 
 		/* -- Core -- */
 
@@ -49,6 +53,7 @@ DirectXContext::DirectXContext(std::uint32_t back_buffer_size, std::uint32_t fra
 		root_signature_container = std::make_unique<Container::RootSignatureContainer>();
 		pipline_state_container = std::make_unique<Container::PiplineStateContainer>();
 		draw_object_container = std::make_unique<Container::DrawObjectContainer>();
+		camera_object_container = std::make_unique<Container::CameraObjectContainer>();
 }
 
 DirectXContext::~DirectXContext() = default;
