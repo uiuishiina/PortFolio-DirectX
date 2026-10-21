@@ -15,26 +15,26 @@
 namespace DirectX {
 
 	/// <summary>
-	/// オブジェクト機能統合名前空間
+	/// DirectXオブジェクト名前空間
 	/// </summary>
-	namespace ClassModule {
+	namespace ClassObject {
 
 		namespace desc {
 
 			/// <summary>
-			/// ヒープインデックスマネージャー設定構造体
+			/// ディスクリプターヒープアロケーター設定構造体
 			/// </summary>
-			struct HeapIndexManagerDesc {
+			struct DescriptorHeapAllocatorDesc {
 
 				/// <summary>
 				/// 静的ヒープサイズ
 				/// </summary>
-				UINT static_range{};
+				std::size_t static_range{};
 
 				/// <summary>
 				/// 単体フレームヒープサイズ
 				/// </summary>
-				UINT one_frame_range{};
+				std::size_t one_frame_range{};
 
 				/// <summary>
 				/// ディスクリプターヒープタイプ設定
@@ -55,9 +55,9 @@ namespace DirectX {
 		}
 
 		/// <summary>
-		/// ヒープインデックスマネージャー
+		/// ディスクリプターヒープアロケーター
 		/// </summary>
-		class HeapIndexManager final : HandyItems::others::NonCopyableBase
+		class DescriptorHeapAllocator final : HandyItems::others::NonCopyableBase
 		{
 		public:
 			/* ========== Publicメンバー関数 ========== */
@@ -65,7 +65,7 @@ namespace DirectX {
 			/// <summary>
 			/// コンストラクタ
 			/// </summary>
-			HeapIndexManager() {
+			DescriptorHeapAllocator() {
 
 				heap_ = std::make_unique<ClassObject::DescriptorHeap>();
 			}
@@ -73,7 +73,7 @@ namespace DirectX {
 			/// <summary>
 			/// デストラクタ
 			/// </summary>
-			~HeapIndexManager() = default;
+			~DescriptorHeapAllocator() = default;
 
 			/* ===== 初期化関数 ===== */
 
@@ -86,7 +86,7 @@ namespace DirectX {
 			/// <returns>作成の成否</returns>
 			[[nodiscard]] HRESULT create_heap(
 				ID3D12Device* device_,
-				const desc::HeapIndexManagerDesc& desc,
+				const desc::DescriptorHeapAllocatorDesc& desc,
 				UINT resource_size
 			) {
 
@@ -98,8 +98,9 @@ namespace DirectX {
 				frame_resource_size = resource_size;
 
 				//	ディスクリプターヒープサイズ取得
-				const auto heap_size = desc.static_range + (
-					desc.one_frame_range * frame_resource_size
+				const UINT heap_size = static_cast<UINT>(
+					desc.static_range +
+					(desc.one_frame_range * frame_resource_size)
 					);
 				if (heap_size == 0) {
 					return E_INVALIDARG;
@@ -126,6 +127,8 @@ namespace DirectX {
 				static_range = desc.static_range;
 				one_frame_range = desc.one_frame_range;
 				max_heap_size = heap_size;
+
+				handle_memorry_size = device_->GetDescriptorHandleIncrementSize(desc.type_);
 
 				//	キュー初期化
 				for (std::size_t i = 0; i < static_range; i++) {
@@ -167,6 +170,38 @@ namespace DirectX {
 				return free_frame_index.pop();
 			}
 
+			/// <summary>
+			/// 静的ヒープサイズ取得関数
+			/// </summary>
+			/// <returns>静的ヒープサイズ</returns>
+			[[nodiscard]] std::size_t get_static_range() const noexcept {
+				return static_range;
+			}
+
+			/// <summary>
+			/// 1フレームヒープ取得関数
+			/// </summary>
+			/// <returns>iフレームヒープサイズ</returns>
+			[[nodiscard]] std::size_t get_frame_range() const noexcept {
+				return one_frame_range;
+			}
+
+			/// <summary>
+			/// フレームリソースサイズ取得関数
+			/// </summary>
+			/// <returns>フレームリソースサイズ</returns>
+			[[nodiscard]] std::size_t get_frame_resource_size() const noexcept {
+				return frame_resource_size;
+			}
+
+			/// <summary>
+			/// ディスクリプターヒープハンドルメモリサイズ取得関数
+			/// </summary>
+			/// <returns>ディスクリプターヒープハンドルメモリサイズ</returns>
+			[[nodiscard]] UINT get_handle_memorry_size() const noexcept {
+				return handle_memorry_size;
+			}
+
 			/* ===== 追加関数 ===== */
 
 			/// <summary>
@@ -183,6 +218,8 @@ namespace DirectX {
 				}
 
 				free_static_index.push(index);
+
+				return true;
 			}
 
 			/// <summary>
@@ -199,6 +236,8 @@ namespace DirectX {
 				}
 
 				free_frame_index.push(index);
+
+				return true;
 			}
 
 		private:
@@ -222,12 +261,12 @@ namespace DirectX {
 			/// <summary>
 			/// 静的ヒープサイズ
 			/// </summary>
-			UINT static_range{};
+			std::size_t static_range{};
 
 			/// <summary>
 			/// 単体フレームヒープサイズ
 			/// </summary>
-			UINT one_frame_range{};
+			std::size_t one_frame_range{};
 
 			/// <summary>
 			/// 全体ヒープサイズ
@@ -238,6 +277,11 @@ namespace DirectX {
 			/// フレームリソースサイズ
 			/// </summary>
 			UINT frame_resource_size{};
+
+			/// <summary>
+			/// ハンドルメモリサイズ
+			/// </summary>
+			UINT handle_memorry_size{};
 
 		};
 	}

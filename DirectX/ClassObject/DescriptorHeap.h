@@ -180,7 +180,7 @@ namespace DirectX {
 			/// <param name="index">取得したいインデックス</param>
 			/// <returns>取得した [ CPU ] ディスクリプタハンドル</returns>
 			[[nodiscard]] D3D12_CPU_DESCRIPTOR_HANDLE get_CPU_handle(
-				UINT index
+				std::size_t index
 			) const noexcept {
 
 				if (max_size <= index) {
@@ -190,7 +190,7 @@ namespace DirectX {
 				D3D12_CPU_DESCRIPTOR_HANDLE handle{};
 				handle.ptr = (
 					heap_.Get()->GetCPUDescriptorHandleForHeapStart().ptr + 
-					index * descriptor_size
+					static_cast<UINT>(index) * descriptor_size
 					);
 
 				return handle;
@@ -202,7 +202,7 @@ namespace DirectX {
 			/// <param name="index">取得したいインデックス</param>
 			/// <returns>取得した [ GPU ] ディスクリプタハンドル</returns>
 			[[nodiscard]] D3D12_GPU_DESCRIPTOR_HANDLE get_GPU_handle(
-				UINT index
+				std::size_t index
 			) const noexcept {
 
 				if (max_size <= index) {
@@ -212,7 +212,7 @@ namespace DirectX {
 				D3D12_GPU_DESCRIPTOR_HANDLE handle{};
 				handle.ptr = (
 					heap_.Get()->GetGPUDescriptorHandleForHeapStart().ptr +
-					index * descriptor_size
+					static_cast<UINT>(index) * descriptor_size
 					);
 
 				return handle;
@@ -224,7 +224,7 @@ namespace DirectX {
 			/// <param name="index">取得したいインデックス</param>
 			/// <returns>[ CPU ][ GPU ] の構造化束縛</returns>
 			[[nodiscard]] Helper::DescriptorHeapHandles get_handles(
-				UINT index
+				std::size_t index
 			) const noexcept {
 
 				return { 
@@ -242,7 +242,7 @@ namespace DirectX {
 				std::size_t index
 				) const noexcept {
 
-				return get_handles(static_cast<UINT>(index));
+				return get_handles(index);
 			}
 
 		private:

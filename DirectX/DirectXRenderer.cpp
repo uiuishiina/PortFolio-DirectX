@@ -229,8 +229,8 @@ DirectXRenderer::~DirectXRenderer() = default;
         Resource::Pass::Commands::Clear,
         Resource::Pass::Commands::SetView,
 
-        //Resource::Pass::Piplines::NormalTest,
-        //Resource::Pass::DrawObject::NormalTest,
+        Resource::Pass::Piplines::NormalTest,
+        Resource::Pass::DrawObject::NormalTest,
 
         Resource::Pass::Piplines::ColorTest,
         Resource::Pass::DrawObject::ColorTest,

@@ -92,7 +92,7 @@ using namespace DirectX;
 	//	ディスクリプタヒープ作成
 	for (auto& heap_desc : desc.heap_descs) {
 
-		auto heap_manager = std::make_unique<ClassModule::HeapIndexManager>();
+		auto heap_manager = std::make_unique<ClassObject::DescriptorHeapAllocator>();
 
 		hr = heap_manager->create_heap(
 			context->device_->get(),

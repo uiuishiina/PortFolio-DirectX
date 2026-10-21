@@ -6,7 +6,7 @@
 #include"Container/UniqueptrKeyMap.h"
 
 //	DirectX
-#include"../ClassModule/HeapIndexManager.h"
+#include"../ClassObject/DescriptorHeapAllocator.h"
 
 /// <summary>
 /// DirectX名前空間
@@ -58,7 +58,7 @@ namespace DirectX {
 			<
 			DescriptorHeapKey,
 			DescriptorHeapKeyEncodeKey,
-			ClassModule::HeapIndexManager
+			ClassObject::DescriptorHeapAllocator
 			>
 		{
 		public:
@@ -84,7 +84,7 @@ namespace DirectX {
 			/// <returns>追加の成否</returns>
 			[[nodiscard]] bool add_heap_manager(
 				DescriptorHeapKey key,
-				std::unique_ptr<ClassModule::HeapIndexManager>&& heap
+				std::unique_ptr<ClassObject::DescriptorHeapAllocator>&& heap
 			) {
 
 				return add_value(key, std::move(heap));
@@ -97,7 +97,7 @@ namespace DirectX {
 			/// </summary>
 			/// <param name="key">紐づいたディスクリプターヒープ倫理キー</param>
 			/// <returns>ディスクリプターヒープ参照</returns>
-			[[nodiscard]] ClassModule::HeapIndexManager* get_heap_manager(
+			[[nodiscard]] ClassObject::DescriptorHeapAllocator* get_heap_manager(
 				const DescriptorHeapKey& key
 			) const noexcept {
 

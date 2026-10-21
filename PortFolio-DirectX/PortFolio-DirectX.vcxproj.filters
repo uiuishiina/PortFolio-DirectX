@@ -533,9 +533,6 @@
     <ClInclude Include="..\DirectX\ClassModule\TransformBuffer.h">
       <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX\ClassModule\HeapIndexManager.h">
-      <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
-    </ClInclude>
     <ClInclude Include="..\HandyItems\Container\Queue.h">
       <Filter>ヘッダー ファイル\HandyItems\Container</Filter>
     </ClInclude>
@@ -553,6 +550,12 @@
     </ClInclude>
     <ClInclude Include="..\DirectX\Helpers\CameraObjectPassDesc.h">
       <Filter>ヘッダー ファイル\DirectX\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\DescriptorHeapAllocator.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassObject\DescriptorResource.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
