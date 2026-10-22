@@ -104,7 +104,7 @@ using namespace DirectX;
 		}
 
 		//	コンテナに追加
-		if (!context->heap_container->add_heap_manager(
+		if (!context->heap_container->add_heap_allocator(
 			Container::DescriptorHeapKey{ heap_desc.type_ },
 			std::move(heap_manager)
 		)) {
@@ -116,7 +116,7 @@ using namespace DirectX;
 	{
 		//	バックバッファ作成
 		auto& back_buffers = context->back_buffers;
-		auto rtv_heap = context->heap_container->get_heap_manager(
+		auto rtv_heap = context->heap_container->get_heap_allocator(
 			Container::DescriptorHeapKey{ D3D12_DESCRIPTOR_HEAP_TYPE_RTV }
 		)->get_heap();
 
@@ -137,20 +137,20 @@ using namespace DirectX;
 
 		//	デプスバッファ作成
 		auto& depth_buffers = context->depth_buffers;
-		auto dsv_heap = context->heap_container->get_heap_manager(
+		auto dsv_heap_allocator = context->heap_container->get_heap_allocator(
 			Container::DescriptorHeapKey{ D3D12_DESCRIPTOR_HEAP_TYPE_DSV }
-		)->get_heap();
+		);
 
 		ClassObject::desc::DepthBufferDesc depth_desc{};
 
 		depth_desc.width = desc.width;
 		depth_desc.height = desc.height;
 
-		for (std::size_t i = 0; i < depth_buffers.size(); ++i) {
+		for (auto& depth : depth_buffers) {
 
-			hr = depth_buffers[i]->creata_depth_buffer(
+			hr = depth->creata_depth_buffer(
 				context->device_->get(),
-				dsv_heap->get_CPU_handle(static_cast<UINT>(i)),
+				dsv_heap_allocator,
 				depth_desc
 			);
 			if (FAILED(hr)) {

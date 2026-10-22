@@ -17,8 +17,19 @@ DirectXContext::DirectXContext(
 	std::uint32_t back_buffer_size, 
 	std::uint32_t frame_resource_size
 ) {
+	
 
-		/* -- Core -- */
+	/* -- Container -- */
+
+	heap_container = std::make_unique<Container::DescriptorHeapContainer>();
+	pass_container = std::make_unique<Container::PassContainer>();
+	shader_container = std::make_unique<Container::ShaderContainer>();
+	root_signature_container = std::make_unique<Container::RootSignatureContainer>();
+	pipline_state_container = std::make_unique<Container::PiplineStateContainer>();
+	draw_object_container = std::make_unique<Container::DrawObjectContainer>();
+	camera_object_container = std::make_unique<Container::CameraObjectContainer>();
+
+	/* -- Core -- */
 
 		dxgi_ = std::make_unique<ClassObject::DXGI>();
 		device_ = std::make_unique<ClassObject::Device>();
@@ -45,15 +56,6 @@ DirectXContext::DirectXContext(
 		}
 
 
-		/* -- Container -- */
-
-		heap_container = std::make_unique<Container::DescriptorHeapContainer>();
-		pass_container = std::make_unique<Container::PassContainer>();
-		shader_container = std::make_unique<Container::ShaderContainer>();
-		root_signature_container = std::make_unique<Container::RootSignatureContainer>();
-		pipline_state_container = std::make_unique<Container::PiplineStateContainer>();
-		draw_object_container = std::make_unique<Container::DrawObjectContainer>();
-		camera_object_container = std::make_unique<Container::CameraObjectContainer>();
 }
 
 DirectXContext::~DirectXContext() = default;

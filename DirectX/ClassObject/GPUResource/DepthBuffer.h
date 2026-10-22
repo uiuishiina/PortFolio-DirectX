@@ -4,9 +4,11 @@
 
 //	DirectX
 #include"GPUResourceBase.h"
+#include"../DescriptorResource.h"
 
 #include"../../Helpers/GPUResourceHelper.h"
 #include"../../Helpers/GPUResourceDescHelper.h"
+
 
 
 /// <summary>
@@ -67,7 +69,7 @@ namespace DirectX {
 		/// <summary>
 		/// デプスバッファクラス
 		/// </summary>
-		class DepthBuffer final : public GPUResourceBase
+		class DepthBuffer final : public GPUResourceBase,protected DescriptorResource
 		{
 		public:
 			/* ========== Publicメンバー関数 ========== */
@@ -75,7 +77,9 @@ namespace DirectX {
 			/// <summary>
 			/// コンストラクタ
 			/// </summary>
-			DepthBuffer() = default;
+			DepthBuffer() :
+				GPUResourceBase(),
+				DescriptorResource(State::HeapState::Static) {}
 
 			/// <summary>
 			/// デストラクタ
@@ -93,9 +97,17 @@ namespace DirectX {
 			/// <returns>作成の成否</returns>
 			[[nodiscard]] HRESULT creata_depth_buffer(
 				ID3D12Device* device,
-				D3D12_CPU_DESCRIPTOR_HANDLE handle,
+				DescriptorHeapAllocator* allocator,
 				desc::DepthBufferDesc desc
 			) {
+
+				
+				{
+					const auto hr = initialize_resource(allocator);
+					if (FAILED(hr)) {
+						return hr;
+					}
+				}
 
 				//	リソース設定
 				desc::GPUResourceDesc resource_desc{};
@@ -139,9 +151,8 @@ namespace DirectX {
 				dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 				dsvDesc.Flags = D3D12_DSV_FLAG_NONE;
 
-				device->CreateDepthStencilView(resource_.Get(), &dsvDesc, handle);
-
-				dsv_handle = handle;
+				
+				device->CreateDepthStencilView(resource_.Get(), &dsvDesc, get_handles_vec()[0].cpu_handle);
 
 				return hr;
 			}
@@ -154,16 +165,8 @@ namespace DirectX {
 			/// <returns>DSV CPUハンドル</returns>
 			[[nodiscard]] D3D12_CPU_DESCRIPTOR_HANDLE get_DSV_handle() const noexcept {
 
-				return dsv_handle;
+				return get_handles_vec()[0].cpu_handle;
 			}
-
-		private:
-			/* ========== Privateメンバー変数 ========== */
-
-			/// <summary>
-			/// デプスバッファディスクリプタピープハンドル
-			/// </summary>
-			D3D12_CPU_DESCRIPTOR_HANDLE	dsv_handle{};
 
 		};
 	}

@@ -82,7 +82,7 @@ namespace DirectX {
 			/// <param name="key">紐づけるディスクリプターヒープ倫理キー</param>
 			/// <param name="heap">追加するディスクリプターヒープインデックスマネージャーインスタンス</param>
 			/// <returns>追加の成否</returns>
-			[[nodiscard]] bool add_heap_manager(
+			[[nodiscard]] bool add_heap_allocator(
 				DescriptorHeapKey key,
 				std::unique_ptr<ClassObject::DescriptorHeapAllocator>&& heap
 			) {
@@ -97,7 +97,7 @@ namespace DirectX {
 			/// </summary>
 			/// <param name="key">紐づいたディスクリプターヒープ倫理キー</param>
 			/// <returns>ディスクリプターヒープ参照</returns>
-			[[nodiscard]] ClassObject::DescriptorHeapAllocator* get_heap_manager(
+			[[nodiscard]] ClassObject::DescriptorHeapAllocator* get_heap_allocator(
 				const DescriptorHeapKey& key
 			) const noexcept {
 

@@ -75,6 +75,44 @@ namespace DirectX {
 
 		/* ========== Publicメンバー変数 ========== */
 
+
+		/* -- Container -- */
+
+		/// <summary>
+		/// ディスクリプタヒープコンテナインスタンス
+		/// </summary>
+		UniquePtr<Container::DescriptorHeapContainer> heap_container{};
+
+		/// <summary>
+		/// 描画パスコンテナインスタンス
+		/// </summary>
+		UniquePtr<Container::PassContainer> pass_container{};
+
+		/// <summary>
+		/// HLSLシェーダーコンテナインスタンス
+		/// </summary>
+		UniquePtr<Container::ShaderContainer> shader_container{};
+
+		/// <summary>
+		/// ルートシグネチャーコンテナインスタンス
+		/// </summary>
+		UniquePtr<Container::RootSignatureContainer> root_signature_container{};
+
+		/// <summary>
+		/// パイプラインステートコンテナインスタンス
+		/// </summary>
+		UniquePtr<Container::PiplineStateContainer> pipline_state_container{};
+
+		/// <summary>
+		/// 描画オブジェクトコンテナインスタンス
+		/// </summary>
+		UniquePtr<Container::DrawObjectContainer> draw_object_container{};
+
+		/// <summary>
+		/// カメラオブジェクトコンテナインスタンス
+		/// </summary>
+		UniquePtr<Container::CameraObjectContainer> camera_object_container{};
+
 		/* -- Core -- */
 
 		/// <summary>
@@ -122,42 +160,6 @@ namespace DirectX {
 		/// </summary>
 		std::vector<UniquePtr<ClassObject::DepthBuffer>> depth_buffers{};
 
-		/* -- Container -- */
-
-		/// <summary>
-		/// ディスクリプタヒープコンテナインスタンス
-		/// </summary>
-		UniquePtr<Container::DescriptorHeapContainer> heap_container{};
-
-		/// <summary>
-		/// 描画パスコンテナインスタンス
-		/// </summary>
-		UniquePtr<Container::PassContainer> pass_container{};
-
-		/// <summary>
-		/// HLSLシェーダーコンテナインスタンス
-		/// </summary>
-		UniquePtr<Container::ShaderContainer> shader_container{};
-		
-		/// <summary>
-		/// ルートシグネチャーコンテナインスタンス
-		/// </summary>
-		UniquePtr<Container::RootSignatureContainer> root_signature_container{};
-
-		/// <summary>
-		/// パイプラインステートコンテナインスタンス
-		/// </summary>
-		UniquePtr<Container::PiplineStateContainer> pipline_state_container{};
-
-		/// <summary>
-		/// 描画オブジェクトコンテナインスタンス
-		/// </summary>
-		UniquePtr<Container::DrawObjectContainer> draw_object_container{};
-
-		/// <summary>
-		/// カメラオブジェクトコンテナインスタンス
-		/// </summary>
-		UniquePtr<Container::CameraObjectContainer> camera_object_container{};
 
 	};
 }
