@@ -87,17 +87,19 @@ using namespace DirectX;
 		return hr;
 	}
 
-	const auto frame_size = context->frame_resources.size();
+	const auto frame_size = context->frame_resource_size;
+	const auto buffer_size = context->back_buffer_size;
 
 	//	ディスクリプタヒープ作成
 	for (auto& heap_desc : desc.heap_descs) {
 
-		auto heap_manager = std::make_unique<ClassObject::DescriptorHeapAllocator>();
+		auto heap_manager = std::make_unique<ClassModule::DescriptorHeapAllocator>();
 
 		hr = heap_manager->create_heap(
 			context->device_->get(),
 			heap_desc,
-			static_cast<UINT>(frame_size)
+			buffer_size,
+			frame_size
 		);
 		if (FAILED(hr)) {
 			return hr;
@@ -136,7 +138,6 @@ using namespace DirectX;
 	{
 
 		//	デプスバッファ作成
-		auto& depth_buffers = context->depth_buffers;
 		auto dsv_heap_allocator = context->heap_container->get_heap_allocator(
 			Container::DescriptorHeapKey{ D3D12_DESCRIPTOR_HEAP_TYPE_DSV }
 		);
@@ -146,16 +147,13 @@ using namespace DirectX;
 		depth_desc.width = desc.width;
 		depth_desc.height = desc.height;
 
-		for (auto& depth : depth_buffers) {
-
-			hr = depth->creata_depth_buffer(
-				context->device_->get(),
-				dsv_heap_allocator,
-				depth_desc
-			);
-			if (FAILED(hr)) {
-				return hr;
-			}
+		hr = context->depth_buffer_group->create_depth_buffer_group(
+			context->device_->get(),
+			dsv_heap_allocator,
+			depth_desc
+		);
+		if (FAILED(hr)) {
+			return hr;
 		}
 	}
 

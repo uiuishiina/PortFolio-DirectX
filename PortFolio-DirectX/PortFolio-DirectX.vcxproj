@@ -42,6 +42,9 @@
     <ClInclude Include="..\Application\Application.h" />
     <ClInclude Include="..\Application\ApplicationDataShare.h" />
     <ClInclude Include="..\DirectX\ClassModule\CommandPass.h" />
+    <ClInclude Include="..\DirectX\ClassModule\DescriptorGroup\DepthBufferGroup.h" />
+    <ClInclude Include="..\DirectX\ClassModule\DescriptorHeapAllocator.h" />
+    <ClInclude Include="..\DirectX\ClassModule\DescriptorResource.h" />
     <ClInclude Include="..\DirectX\ClassModule\DrawObject\CameraObject.h" />
     <ClInclude Include="..\DirectX\ClassModule\DrawObject\MeshObject.h" />
     <ClInclude Include="..\DirectX\ClassModule\DrawObjectPass.h" />
@@ -57,8 +60,6 @@
     <ClInclude Include="..\DirectX\ClassObject\CommandList.h" />
     <ClInclude Include="..\DirectX\ClassObject\CommandQueue.h" />
     <ClInclude Include="..\DirectX\ClassObject\DescriptorHeap.h" />
-    <ClInclude Include="..\DirectX\ClassObject\DescriptorHeapAllocator.h" />
-    <ClInclude Include="..\DirectX\ClassObject\DescriptorResource.h" />
     <ClInclude Include="..\DirectX\ClassObject\Device.h" />
     <ClInclude Include="..\DirectX\ClassObject\DXGI.h" />
     <ClInclude Include="..\DirectX\ClassObject\Fence.h" />

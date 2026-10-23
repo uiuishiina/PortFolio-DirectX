@@ -13,7 +13,7 @@
 #include"ClassObject/Fence.h"
 #include"ClassObject/SwapChain.h"
 #include"ClassObject/GPUResource/RenderTarget/BackBuffer.h"
-#include"ClassObject/GPUResource/DepthBuffer.h"
+#include"ClassModule/DescriptorGroup/DepthBufferGroup.h"
 
 #include"ClassModule/FrameResource.h"
 
@@ -61,11 +61,11 @@ namespace DirectX {
 		/// <summary>
 		/// 引数付きコンストラクタ
 		/// </summary>
-		/// <param name="back_buffer_size">バックバッファサイズ</param>
-		/// <param name="frame_resource_size">フレームリソースサイズ</param>
+		/// <param name="back_size">バックバッファサイズ</param>
+		/// <param name="frame_size">フレームリソースサイズ</param>
 		DirectXContext(
-			std::uint32_t back_buffer_size,
-			std::uint32_t frame_resource_size
+			std::uint32_t back_size,
+			std::uint32_t frame_size
 		);
 
 		/// <summary>
@@ -75,6 +75,8 @@ namespace DirectX {
 
 		/* ========== Publicメンバー変数 ========== */
 
+		UINT back_buffer_size{};
+		UINT frame_resource_size{};
 
 		/* -- Container -- */
 
@@ -156,10 +158,9 @@ namespace DirectX {
 		std::vector<UniquePtr<ClassObject::BackBuffer>> back_buffers{};
 
 		/// <summary>
-		/// デプスバッファインスタンス配列
+		/// デプスバッファグループインスタンス
 		/// </summary>
-		std::vector<UniquePtr<ClassObject::DepthBuffer>> depth_buffers{};
-
+		UniquePtr<ClassModule::DescriptorGroup::DepthBufferGroup> depth_buffer_group{};
 
 	};
 }

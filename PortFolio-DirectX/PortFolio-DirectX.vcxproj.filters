@@ -124,6 +124,9 @@
     <Filter Include="ヘッダー ファイル\HandyItems\Container">
       <UniqueIdentifier>{8bce5276-2b30-4e32-83f6-3131217de00b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\DirectX\ClassModule\DescriptorGroup">
+      <UniqueIdentifier>{e51c8f4f-a0f4-4180-89bb-f85ebfc207d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Entry\Entry.cpp">
@@ -551,11 +554,14 @@
     <ClInclude Include="..\DirectX\Helpers\CameraObjectPassDesc.h">
       <Filter>ヘッダー ファイル\DirectX\Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX\ClassObject\DescriptorHeapAllocator.h">
-      <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
+    <ClInclude Include="..\DirectX\ClassModule\DescriptorHeapAllocator.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
     </ClInclude>
-    <ClInclude Include="..\DirectX\ClassObject\DescriptorResource.h">
-      <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
+    <ClInclude Include="..\DirectX\ClassModule\DescriptorResource.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\DescriptorGroup\DepthBufferGroup.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule\DescriptorGroup</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

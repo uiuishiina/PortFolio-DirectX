@@ -100,7 +100,7 @@ namespace DirectX {
 				swapchain_{ context_->swapchain_.get() },
 				heap_container{ context_->heap_container.get() },
 				back_buffer{ context_->back_buffers[current_back_buffer].get() },
-				depth_buffer{ context_->depth_buffers[current_back_buffer].get() } {}
+				depth_buffer{ context_->depth_buffer_group->operator[](current_back_buffer)} {}
 
 			/// <summary>
 			/// デストラクタ

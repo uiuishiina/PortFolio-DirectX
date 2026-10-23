@@ -145,6 +145,7 @@ namespace DirectX {
 				//	ディスクリプタヒープのメモリサイズを取得
 				descriptor_size = device->GetDescriptorHandleIncrementSize(desc.type_);
 
+				type_ = desc.type_;
 				max_size = desc.numDescriptors_;
 
 				return hr;
@@ -208,6 +209,9 @@ namespace DirectX {
 				if (max_size <= index) {
 					return {};
 				}
+				if (type_ == D3D12_DESCRIPTOR_HEAP_TYPE_RTV || type_ == D3D12_DESCRIPTOR_HEAP_TYPE_DSV) {
+					return {};
+				}
 
 				D3D12_GPU_DESCRIPTOR_HANDLE handle{};
 				handle.ptr = (
@@ -258,6 +262,11 @@ namespace DirectX {
 			/// </summary>
 			UINT max_size{};
 
+			/// <summary>
+			/// ディスクリプタヒープタイプ
+			/// </summary>
+			D3D12_DESCRIPTOR_HEAP_TYPE type_{};
+	
 			/// <summary>
 			/// ディスクリプタヒープインスタンス
 			/// </summary>

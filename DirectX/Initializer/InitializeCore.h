@@ -5,7 +5,7 @@
 //	DirectX
 #include"../DirectXContext.h"
 
-#include"../ClassObject/DescriptorHeapAllocator.h"
+#include"../ClassModule/DescriptorHeapAllocator.h"
 
 //	その他
 #include<utility>
@@ -50,10 +50,7 @@ namespace DirectX {
 				/// <summary>
 				/// 静的ディスクリプターヒープ設定
 				/// </summary>
-				std::vector< ClassObject::desc::DescriptorHeapAllocatorDesc> heap_descs{
-					{ 2,0,D3D12_DESCRIPTOR_HEAP_TYPE_RTV,D3D12_DESCRIPTOR_HEAP_FLAG_NONE },
-					{ 2,0,D3D12_DESCRIPTOR_HEAP_TYPE_DSV,D3D12_DESCRIPTOR_HEAP_FLAG_NONE }
-				};
+				std::vector<ClassModule::desc::DescriptorHeapAllocatorDesc> heap_descs{};
 
 				/* ========== Publicメンバー関数 ========== */
 
@@ -62,7 +59,7 @@ namespace DirectX {
 				/// </summary>
 				/// <param name="desc">追加する設定</param>
 				void emplace_heap_desc(
-					const ClassObject::desc::DescriptorHeapAllocatorDesc& desc
+					const ClassModule::desc::DescriptorHeapAllocatorDesc& desc
 				) {
 
 					heap_descs.push_back(desc);
