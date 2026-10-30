@@ -47,14 +47,8 @@ DirectXContext::DirectXContext(
 
 	swapchain_ = std::make_unique<ClassObject::SwapChain>();
 		
-	back_buffers.resize(back_buffer_size);
-
-	for (auto& back_buffer : back_buffers) {
-		back_buffer = std::make_unique<ClassObject::BackBuffer>();
-	}
-
+	back_buffer_group = std::make_unique<ClassModule::DescriptorGroup::BackBufferGroup>();
 	depth_buffer_group = std::make_unique<ClassModule::DescriptorGroup::DepthBufferGroup>();
-
 
 }
 

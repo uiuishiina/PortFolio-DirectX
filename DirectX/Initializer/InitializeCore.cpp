@@ -117,22 +117,17 @@ using namespace DirectX;
 
 	{
 		//	バックバッファ作成
-		auto& back_buffers = context->back_buffers;
-		auto rtv_heap = context->heap_container->get_heap_allocator(
+		auto rtv_heap__allocator = context->heap_container->get_heap_allocator(
 			Container::DescriptorHeapKey{ D3D12_DESCRIPTOR_HEAP_TYPE_RTV }
-		)->get_heap();
+		);
 
-		for (std::size_t i = 0; i < back_buffers.size(); ++i) {
-
-			hr = back_buffers[i]->create_back_buffer(
-				context->device_->get(),
-				context->swapchain_->get(),
-				rtv_heap->get_CPU_handle(static_cast<UINT>(i)),
-				static_cast<UINT>(i)
-			);
-			if (FAILED(hr)) {
-				return hr;
-			}
+		hr = context->back_buffer_group->create_back_buffer_group(
+			context->device_->get(),
+			context->swapchain_->get(),
+			rtv_heap__allocator
+		);
+		if (FAILED(hr)) {
+			return hr;
 		}
 	}
 	{

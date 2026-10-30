@@ -45,9 +45,9 @@ namespace DirectX {
 					"NormalMesh",
 					make_create_mesh_desc<NVer>({
 						.vertex_ = {
-							{	-0.5f,	-0.5f,	0.1f},
-							{		0,	 0.5f,	0.1f},
-							{	 0.5f,	-0.5f,	0.1f}
+							{	-0.5f,	-0.5f,	0.0f},
+							{		0,	 0.5f,	0.0f},
+							{	 0.5f,	-0.5f,	0.0f}
 						},
 						.index_ = {
 							0,1,2

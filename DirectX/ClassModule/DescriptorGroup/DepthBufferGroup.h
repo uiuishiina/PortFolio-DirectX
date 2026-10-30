@@ -36,6 +36,8 @@ namespace DirectX {
 				/// </summary>
 				~DepthBufferGroup() = default;
 
+				/* ===== 初期化関数 ===== */
+
 				/// <summary>
 				/// デプスバッファグループ作成関数
 				/// </summary>
@@ -84,6 +86,8 @@ namespace DirectX {
 					return S_OK;
 				}
 
+				/* ===== 取得関数 ===== */
+
 				/// <summary>
 				/// デプスバッファクラス参照取得関数
 				/// </summary>
@@ -92,6 +96,7 @@ namespace DirectX {
 				[[nodiscard]] ClassObject::DepthBuffer* get_depth_buffer(
 					std::size_t index
 				) const noexcept {
+
 					if (index >= depth_vec.size()) {
 						return nullptr;
 					}

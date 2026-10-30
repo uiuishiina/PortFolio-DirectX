@@ -81,6 +81,9 @@ namespace DirectX {
 				else if (state_ == State::HeapState::Frame) {
 					return initialize_frame(allocator);
 				}
+				else {
+					return E_FAIL;
+				}
 			}
 			
 			/* ===== 取得関数 ===== */
@@ -157,6 +160,7 @@ namespace DirectX {
 
 				const auto index = allocator->allocate_static_index();
 				if (!index.has_value()) {
+
 					return E_OUTOFMEMORY;
 				}
 

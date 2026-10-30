@@ -105,10 +105,10 @@ DirectXRenderer::~DirectXRenderer() = default;
     desc_.core_ = Initialize::desc::CoreDesc{ hwnd_ ,width,height };
     
     desc_.core_.emplace_heap_desc(
-        { 2, 0, 0, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, D3D12_DESCRIPTOR_HEAP_FLAG_NONE }
+        { 0, 1, 0, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, D3D12_DESCRIPTOR_HEAP_FLAG_NONE }
     );
     desc_.core_.emplace_heap_desc(
-        { 0, 2, 0, D3D12_DESCRIPTOR_HEAP_TYPE_DSV, D3D12_DESCRIPTOR_HEAP_FLAG_NONE }
+        { 0, 1, 0, D3D12_DESCRIPTOR_HEAP_TYPE_DSV, D3D12_DESCRIPTOR_HEAP_FLAG_NONE }
     );
     desc_.core_.emplace_heap_desc(
         { 5, 0, 3, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE }

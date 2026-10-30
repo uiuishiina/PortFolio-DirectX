@@ -12,7 +12,7 @@
 #include"ClassObject/CommandList.h"
 #include"ClassObject/Fence.h"
 #include"ClassObject/SwapChain.h"
-#include"ClassObject/GPUResource/RenderTarget/BackBuffer.h"
+#include"ClassModule/DescriptorGroup/BackBufferGroup.h"
 #include"ClassModule/DescriptorGroup/DepthBufferGroup.h"
 
 #include"ClassModule/FrameResource.h"
@@ -153,9 +153,9 @@ namespace DirectX {
 		UniquePtr<ClassObject::SwapChain> swapchain_{};
 
 		/// <summary>
-		/// バックバッファインスタンス配列
+		/// バックバッファグループインスタンス
 		/// </summary>
-		std::vector<UniquePtr<ClassObject::BackBuffer>> back_buffers{};
+		UniquePtr<ClassModule::DescriptorGroup::BackBufferGroup> back_buffer_group{};
 
 		/// <summary>
 		/// デプスバッファグループインスタンス

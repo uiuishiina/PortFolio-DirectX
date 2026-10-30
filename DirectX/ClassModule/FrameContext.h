@@ -99,7 +99,7 @@ namespace DirectX {
 				frame_resource{ context_->frame_resources[current_resource].get() },
 				swapchain_{ context_->swapchain_.get() },
 				heap_container{ context_->heap_container.get() },
-				back_buffer{ context_->back_buffers[current_back_buffer].get() },
+				back_buffer{ context_->back_buffer_group->operator[](current_back_buffer) },
 				depth_buffer{ context_->depth_buffer_group->operator[](current_back_buffer)} {}
 
 			/// <summary>
