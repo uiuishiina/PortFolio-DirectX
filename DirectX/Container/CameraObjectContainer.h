@@ -52,7 +52,7 @@ namespace DirectX {
 			<
 			CameraObjectKey,
 			CameraObjectEncodeKey,
-			ClassModule::CameraObject
+			ClassModule::DescriptorGroup::CameraObject
 			>
 		{
 		public:
@@ -78,7 +78,7 @@ namespace DirectX {
 			/// <returns>追加の成否</returns>
 			[[nodiscard]] bool add_camera_object(
 				CameraObjectKey key,
-				std::unique_ptr<ClassModule::CameraObject>&& obj
+				std::unique_ptr<ClassModule::DescriptorGroup::CameraObject>&& obj
 			) {
 
 				return add_value(key, std::move(obj));
@@ -91,7 +91,7 @@ namespace DirectX {
 			/// </summary>
 			/// <param name="key">紐づいたカメラオブジェクト倫理キー</param>
 			/// <returns>カメラオブジェクト参照</returns>
-			[[nodiscard]] ClassModule::CameraObject* get_camera_object(
+			[[nodiscard]] ClassModule::DescriptorGroup::CameraObject* get_camera_object(
 				const CameraObjectKey& key
 			) const noexcept {
 

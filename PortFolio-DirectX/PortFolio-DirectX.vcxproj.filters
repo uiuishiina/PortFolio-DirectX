@@ -566,6 +566,15 @@
     <ClInclude Include="..\DirectX\ClassModule\DescriptorGroup\BackBufferGroup.h">
       <Filter>ヘッダー ファイル\DirectX\ClassModule\DescriptorGroup</Filter>
     </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\DescriptorGroup\ConstantBufferGroup.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule\DescriptorGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\DescriptorGroup\TransformBufferGroup.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule\DescriptorGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ClassModule\DescriptorGroup\DescriptorGroupBase.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassModule\DescriptorGroup</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\DirectX\Resource\HLSL\StructHeader.hlsli">

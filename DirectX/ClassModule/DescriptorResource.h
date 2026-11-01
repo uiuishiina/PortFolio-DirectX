@@ -53,6 +53,34 @@ namespace DirectX {
 				return_index();
 			}
 
+			/* ===== 取得関数 ===== */
+
+			/// <summary>
+			/// ディスクリプターヒープ参照取得関数
+			/// </summary>
+			/// <returns>取得したディスクリプターヒープ参照</returns>
+			[[nodiscard]] ID3D12DescriptorHeap* get_heap() const noexcept {
+				return allocator_->get_heap()->get();
+			}
+
+			/// <summary>
+			/// ディスクリプターハンドル補助構造体取得関数
+			/// </summary>
+			/// <param name="index">取得するインデックス</param>
+			/// <returns>取得したディスクリプターハンドル補助構造体... ないなら[ std::nullopt ]</returns>
+			[[nodiscard]] std::optional<Helper::DescriptorHeapHandles> get_handles(std::size_t index) const noexcept {
+
+				if (vec_size <= index) {
+					return std::nullopt;
+				}
+
+				return handles_vec[index];
+			}
+
+			[[nodiscard]] std::size_t get_handles_vec_size() const noexcept {
+				return vec_size;
+			}
+
 		protected:
 			/* ========== Protectedメンバー関数 ========== */
 
@@ -84,34 +112,6 @@ namespace DirectX {
 				else {
 					return E_FAIL;
 				}
-			}
-			
-			/* ===== 取得関数 ===== */
-
-			/// <summary>
-			/// ディスクリプターヒープ参照取得関数
-			/// </summary>
-			/// <returns>取得したディスクリプターヒープ参照</returns>
-			[[nodiscard]] ID3D12DescriptorHeap* get_heap() const noexcept {
-				return allocator_->get_heap()->get();
-			}
-
-			/// <summary>
-			/// ディスクリプターハンドル補助構造体取得関数
-			/// </summary>
-			/// <param name="index">取得するインデックス</param>
-			/// <returns>取得したディスクリプターハンドル補助構造体... ないなら[ std::nullopt ]</returns>
-			[[nodiscard]] std::optional<Helper::DescriptorHeapHandles> get_handles(std::size_t index) const noexcept {
-
-				if (vec_size <= index) {
-					return std::nullopt;
-				}
-
-				return handles_vec[index];
-			}
-
-			[[nodiscard]] std::size_t get_handles_vec_size() const noexcept {
-				return vec_size;
 			}
 
 		private:

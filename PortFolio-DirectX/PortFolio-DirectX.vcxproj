@@ -43,7 +43,10 @@
     <ClInclude Include="..\Application\ApplicationDataShare.h" />
     <ClInclude Include="..\DirectX\ClassModule\CommandPass.h" />
     <ClInclude Include="..\DirectX\ClassModule\DescriptorGroup\BackBufferGroup.h" />
+    <ClInclude Include="..\DirectX\ClassModule\DescriptorGroup\ConstantBufferGroup.h" />
     <ClInclude Include="..\DirectX\ClassModule\DescriptorGroup\DepthBufferGroup.h" />
+    <ClInclude Include="..\DirectX\ClassModule\DescriptorGroup\DescriptorGroupBase.h" />
+    <ClInclude Include="..\DirectX\ClassModule\DescriptorGroup\TransformBufferGroup.h" />
     <ClInclude Include="..\DirectX\ClassModule\DescriptorHeapAllocator.h" />
     <ClInclude Include="..\DirectX\ClassModule\DescriptorResource.h" />
     <ClInclude Include="..\DirectX\ClassModule\DrawObject\CameraObject.h" />

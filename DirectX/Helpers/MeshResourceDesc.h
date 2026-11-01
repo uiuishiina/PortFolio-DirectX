@@ -4,7 +4,6 @@
 
 //	DirectX
 #include"../ClassModule/DrawObject/Mesh.h"
-#include"../ClassModule/DrawObject/MeshObject.h"
 
 #include<string>
 
@@ -65,21 +64,6 @@ namespace DirectX {
 						return nullptr;
 					};
 
-					/// <summary>
-					/// メッシュ作成仮想関数
-					/// </summary>
-					/// <param name="device_">Device参照</param>
-					/// <param name="list_">コマンドリスト参照</param>
-					/// <param name="upload_resources">Upload用Resource参照配列</param>
-					/// <returns>作成したメッシュ</returns>
-					[[nodiscard]] virtual std::unique_ptr<ClassModule::DrawObjectBase> make_mesh_object(
-						ID3D12Device* device_,
-						ID3D12GraphicsCommandList* list_,
-						std::span<std::reference_wrapper<Resource>> upload_resources
-					) {
-
-						return nullptr;
-					};
 				};
 
 				/// <summary>
@@ -144,39 +128,6 @@ namespace DirectX {
 						return mesh;
 					}
 
-
-					/// <summary>
-					/// メッシュオブジェクト作成関数
-					/// </summary>
-					/// <param name="device_">Device参照</param>
-					/// <param name="list_">コマンドリスト参照</param>
-					/// <param name="upload_resources">Upload用Resource参照配列</param>
-					/// <returns>作成したメッシュオブジェクト</returns>
-					[[nodiscard]] virtual std::unique_ptr<ClassModule::DrawObjectBase> make_mesh_object(
-						ID3D12Device* device_,
-						ID3D12GraphicsCommandList* list_,
-						Helper::DescriptorHeapHandles handles,
-						UINT index,
-						std::span<std::reference_wrapper<Resource>> upload_resources
-					) {
-
-						auto mesh = std::make_unique<ClassModule::MeshObject>();
-
-						const auto hr = mesh->create_mesh_object(
-							device_,
-							list_,
-							handles,
-							index,
-							upload_resources,
-							desc_
-						);
-
-						if (FAILED(hr)) {
-							return nullptr;
-						}
-
-						return mesh;
-					};
 				};
 
 				/// <summary>

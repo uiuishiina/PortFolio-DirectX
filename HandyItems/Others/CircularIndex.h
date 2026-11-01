@@ -101,6 +101,14 @@ namespace HandyItems {
 				return circle_index;
 			}
 
+			/// <summary>
+			/// サイズ取得関数
+			/// </summary>
+			/// <returns>循環するサイズ</returns>
+			[[nodiscard]] size_t size() const noexcept {
+				return circle_size;
+			}
+
 		private:
 			/* ===== メンバー変数 ===== */
 

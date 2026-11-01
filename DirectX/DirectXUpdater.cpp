@@ -12,6 +12,8 @@ using namespace DirectX;
 
 [[nodiscard]] bool DirectXUpdator::begin_update() {
 
+	
+
 	return true;
 }
 
@@ -37,14 +39,14 @@ void DirectXUpdator::reset_frame_resource() {
 
 void DirectXUpdator::update() {
 
-
+	
 }
 
 void DirectXUpdator::apply_pass() {
 
 	auto buffer_index = context_->swapchain_->get()->GetCurrentBackBufferIndex();
-
-	auto frame = ClassModule::FrameContext{ context_, buffer_index, current_index };
+	auto size = context_->back_buffer_group->get_current_index();
+	auto frame = ClassModule::FrameContext{ context_, static_cast<UINT>(size), current_index};
 
 	for (auto& pass : pass_order) {
 		pass->apply_pass(frame);
@@ -70,6 +72,9 @@ void DirectXUpdator::present() {
 }
 
 void DirectXUpdator::end_update() {
+
+	context_->back_buffer_group->update_index();
+	context_->depth_buffer_group->update_index();
 
 	current_index++;
 }

@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 
 /* ========== Includeファイル ========== */
 
@@ -26,6 +26,7 @@ namespace DirectX {
 		/// </summary>
 		class TransformBuffer final : public HandyItems::others::NonCopyableBase
 		{
+			using Transform = HandyItems::Math::Transform;
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
@@ -33,15 +34,6 @@ namespace DirectX {
 			/// コンストラクタ
 			/// </summary>
 			TransformBuffer() = default;
-
-			/// <summary>
-			/// 引数付きコンストラクタ
-			/// </summary>
-			/// <param name="trans">初期設定するトランスフォーム</param>
-			TransformBuffer(
-				HandyItems::Math::Transform trans
-			) :
-				transform_{ trans } {}
 
 			/// <summary>
 			/// デストラクタ
@@ -64,7 +56,7 @@ namespace DirectX {
 				return constant_buffer->create_constant_buffer(
 					device_, 
 					handles, 
-					transform_
+					Transform{}
 				);
 			}
 
@@ -73,9 +65,9 @@ namespace DirectX {
 			/// <summary>
 			/// トランスフォームアップロード関数
 			/// </summary>
-			void update_buffer() {
+			void update_buffer(const Transform& transform) {
 
-				constant_buffer->upload_buffer(transform_);
+				constant_buffer->upload_buffer(transform);
 			}
 
 			/// <summary>
@@ -97,21 +89,10 @@ namespace DirectX {
 			/* ===== 取得関数 ===== */
 
 			/// <summary>
-			/// Transform参照取得関数
-			/// </summary>
-			/// <returns>取得したTransform参照</returns>
-			[[nodiscard]] HandyItems::Math::Transform& get_transform() noexcept {
-
-				return transform_;
-			}
-
-			/// <summary>
-			/// コンスタントバッファ作成関数
+			/// コンスタントバッファ取得関数
 			/// </summary>
 			/// <returns></returns>
-			[[nodiscard]] ClassObject::ConstantBuffer<
-				HandyItems::Math::Transform
-			>* get_buffer()const noexcept {
+			[[nodiscard]] ClassObject::ConstantBuffer<Transform>* get_buffer() const noexcept {
 
 				return constant_buffer.get();
 			}
@@ -120,15 +101,10 @@ namespace DirectX {
 			/* ========== Privateメンバー変数 ========== */
 
 			/// <summary>
-			/// TransForm変数
-			/// </summary>
-			HandyItems::Math::Transform transform_{};
-
-			/// <summary>
 			/// ConstantBufferインスタンス
 			/// </summary>
 			std::unique_ptr<
-				ClassObject::ConstantBuffer<HandyItems::Math::Transform>
+				ClassObject::ConstantBuffer<Transform>
 			> constant_buffer{};
 
 		};

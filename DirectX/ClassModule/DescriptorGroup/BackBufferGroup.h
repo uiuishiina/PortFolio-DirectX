@@ -4,7 +4,7 @@
 
 //	DirectX
 #include"../../ClassObject/GPUResource/RenderTarget/BackBuffer.h"
-#include"../DescriptorResource.h"
+#include"DescriptorGroupBase.h"
 
 /// <summary>
 /// DirectX名前空間
@@ -22,7 +22,7 @@ namespace DirectX {
 		namespace DescriptorGroup {
 
 
-			class BackBufferGroup final : protected DescriptorResource
+			class BackBufferGroup final : public DesctirptorGroupBase<ClassObject::BackBuffer>
 			{
 			public:
 				/* ========== Publicメンバー関数 ========== */
@@ -31,7 +31,7 @@ namespace DirectX {
 				/// コンストラクタ
 				/// </summary>
 				BackBufferGroup():
-					DescriptorResource(State::HeapState::Buffering) {}
+					DesctirptorGroupBase(State::HeapState::Buffering) {}
 
 				/// <summary>
 				/// デストラクタ
@@ -48,7 +48,7 @@ namespace DirectX {
 
 					//	DescriptorResource初期化
 					{
-						const auto hr = initialize_resource(allocator);
+						const auto hr = initialize_resource_group(allocator);
 						if (FAILED(hr)) {
 							return hr;
 						}
@@ -56,19 +56,16 @@ namespace DirectX {
 
 					//	BackBuffer初期化
 					{
-						const auto size = get_handles_vec_size();
-						back_vec.resize(size);
+						for (std::size_t i = 0; i < group_instances.size(); i++) {
 
-						for (std::size_t i = 0; i < size; i++) {
-
-							back_vec[i] = std::make_unique<ClassObject::BackBuffer>();
+							group_instances[i] = std::make_unique<ClassObject::BackBuffer>();
 
 							auto handles = get_handles(i);
 							if (!handles.has_value()) {
 								return E_OUTOFMEMORY;
 							}
 
-							const auto hr = back_vec[i]->create_back_buffer(
+							const auto hr = group_instances[i]->create_back_buffer(
 								device_,
 								swapchain_,
 								handles->cpu_handle,
@@ -81,28 +78,6 @@ namespace DirectX {
 					}
 					return S_OK;
 				}
-
-				/* ===== 取得関数 ===== */
-
-				[[nodiscard]] ClassObject::BackBuffer* get_back_buffer(
-					std::size_t index
-				) const noexcept {
-
-					if (index >= back_vec.size()) {
-						return nullptr;
-					}
-
-					return back_vec[index].get();
-				}
-
-				[[nodiscard]] ClassObject::BackBuffer* operator [] (UINT index) const noexcept {
-					return get_back_buffer(static_cast<std::size_t>(index));
-				}
-
-			private:
-				/* ========== Privateメンバー変数 ========== */
-
-				std::vector<std::unique_ptr<ClassObject::BackBuffer>> back_vec{};
 
 			};
 		}

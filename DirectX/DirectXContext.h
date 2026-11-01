@@ -17,6 +17,7 @@
 
 #include"ClassModule/FrameResource.h"
 
+#include"ClassModule/DrawObject/MeshObject.h"
 
 //	その他
 #include<vector>
@@ -161,6 +162,8 @@ namespace DirectX {
 		/// デプスバッファグループインスタンス
 		/// </summary>
 		UniquePtr<ClassModule::DescriptorGroup::DepthBufferGroup> depth_buffer_group{};
+
+		
 
 	};
 }

@@ -3,7 +3,7 @@
 /* ========== Includeファイル ========== */
 
 #include"Mesh.h"
-#include"../TransformBuffer.h"
+#include"../DescriptorGroup/TransformBufferGroup.h"
 
 /// <summary>
 /// DirectX名前空間
@@ -15,7 +15,7 @@ namespace DirectX {
 	/// </summary>
 	namespace ClassModule {
 
-		class MeshObject : public DrawObjectBase
+		class MeshObject : HandyItems::others::NonCopyableBase
 		{
 		public:
 			/* ========== Publicメンバー関数 ========== */
@@ -23,11 +23,9 @@ namespace DirectX {
 			/// <summary>
 			/// コンストラクタ
 			/// </summary>
-			MeshObject() {
-
-				mesh_ = std::make_unique<Mesh>();
-				transform_ = std::make_unique<TransformBuffer>();
-			}
+			MeshObject() :
+				transform_{},
+				transform_buffers{ std::make_unique<DescriptorGroup::TransformBufferGroup>() } {}
 
 			/// <summary>
 			/// デストラクタ
@@ -40,26 +38,20 @@ namespace DirectX {
 			[[nodiscard]] HRESULT create_mesh_object(
 				ID3D12Device* device_,
 				ID3D12GraphicsCommandList* list_,
-				Helper::DescriptorHeapHandles handles,
+				DescriptorHeapAllocator* allocator,
 				UINT index,
-				std::span<std::reference_wrapper<Microsoft::WRL::ComPtr<ID3D12Resource>>>& upload_resources,
-				const desc::MeshDesc<T>& desc
+				Mesh* mesh
 			) {
 
-
-				auto hr = mesh_->create_mesh(
-					device_, 
-					list_, 
-					upload_resources, 
-					desc
-				);
-				if (FAILED(hr)) {
-					return hr;
+				if (!mesh) {
+					return E_FAIL;
 				}
+				mesh_ = mesh;
 
-				hr = transform_->create_transform_buffer(
+				const auto hr = transform_buffers->create_constant_buffer_group(
 					device_,
-					handles
+					allocator,
+					transform_
 				);
 				if (FAILED(hr)) {
 					return hr;
@@ -77,9 +69,9 @@ namespace DirectX {
 			/// <param name="list_">コマンドリスト参照</param>
 			void draw(
 				ID3D12GraphicsCommandList* list_
-			) const noexcept override {
+			) const noexcept {
 
-				transform_->set_buffer(
+				transform_buffers->get_current_instance()->set_buffer(
 					register_index, 
 					list_
 				);
@@ -87,31 +79,44 @@ namespace DirectX {
 				mesh_->draw(list_);
 			}
 
+			void update_mesh_object() {
+
+				transform_buffers->update_index();
+			}
+
 			/// <summary>
-			/// トランスフォームバッファ参照取得関数
+			/// トランスフォームバッファグループ参照取得関数
 			/// </summary>
-			/// <returns>取得したトランスフォームバッファ参照</returns>
-			[[nodiscard]] TransformBuffer* get_transform_buffer() const noexcept {
-				return transform_.get();
+			/// <returns>取得したトランスフォームバッファグループ参照</returns>
+			[[nodiscard]] DescriptorGroup::TransformBufferGroup* get_transform_buffer_group() const noexcept {
+				return transform_buffers.get();
+			}
+
+			[[nodiscard]] HandyItems::Math::Transform& get_transform() {
+				return transform_;
 			}
 
 		private:
 			/* ========== Privateメンバー変数 ========== */
 
+			HandyItems::Math::Transform transform_{};
+
 			/// <summary>
 			/// メッシュ
 			/// </summary>
-			std::unique_ptr<Mesh> mesh_{};
+			Mesh* mesh_{};
 
 			/// <summary>
 			/// トランスフォームバッファ
 			/// </summary>
-			std::unique_ptr<TransformBuffer> transform_{};
+			std::unique_ptr<DescriptorGroup::TransformBufferGroup> transform_buffers{};
 
 			/// <summary>
 			/// コンスタントバッファレジスターインデックス
 			/// </summary>
 			UINT register_index{};
+
+			UINT current_index{};
 
 		};
 	}

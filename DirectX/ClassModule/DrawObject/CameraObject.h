@@ -2,7 +2,7 @@
 
 /* ========== Includeファイル ========== */
 
-#include"../../ClassObject/GPUResource/ConstantBuffer.h"
+#include"../DescriptorGroup/ConstantBufferGroup.h"
 #include"Math/Function/MathFMatrix.h"
 
 #include<memory>
@@ -34,161 +34,138 @@ namespace DirectX {
 
 		};
 
-		/// <summary>
-		/// カメラオブジェクト
-		/// </summary>
-		class CameraObject : HandyItems::others::NonCopyableBase
-		{
-		public:
-			/* ========== Publicメンバー関数 ========== */
+		namespace DescriptorGroup {
 
 			/// <summary>
-			/// コンストラクタ
+			/// カメラオブジェクト
 			/// </summary>
-			CameraObject() {
-				camera_buffer = std::make_unique<ClassObject::ConstantBuffer<CameraData>>();
-			}
+			class CameraObject : protected ConstantBufferGroup<CameraData>
+			{
+			public:
+				/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~CameraObject() = default;
+				/// <summary>
+				/// コンストラクタ
+				/// </summary>
+				CameraObject() = default;
 
-			/* ===== 初期化関数 ===== */
+				/// <summary>
+				/// デストラクタ
+				/// </summary>
+				~CameraObject() = default;
 
-			/// <summary>
-			/// カメラオブジェクト作成関数
-			/// </summary>
-			/// <param name="device_">Device参照</param>
-			/// <param name="handles">ディスクリプターハンドル補助構造体</param>
-			/// <param name="index">レジスターインデックス</param>
-			/// <param name="view_">ビューポート設定</param>
-			/// <param name="rect_">シザー短径設定</param>
-			/// <returns>作成の成否</returns>
-			[[nodiscard]] HRESULT create_camera_object(
-				ID3D12Device* device_,
-				Helper::DescriptorHeapHandles handles,
-				UINT index,
-				D3D12_VIEWPORT view_,
-				D3D12_RECT rect_
-			) {
+				/* ===== 初期化関数 ===== */
 
-				const auto hr = camera_buffer->create_constant_buffer(
-					device_,
-					handles,
-					data_
-				);
-				if (FAILED(hr)) {
+				/// <summary>
+				/// カメラオブジェクト作成関数
+				/// </summary>
+				/// <param name="device_">Device参照</param>
+				/// <param name="handles">ディスクリプターハンドル補助構造体</param>
+				/// <param name="index">レジスターインデックス</param>
+				/// <param name="view_">ビューポート設定</param>
+				/// <param name="rect_">シザー短径設定</param>
+				/// <returns>作成の成否</returns>
+				[[nodiscard]] HRESULT create_camera_object(
+					ID3D12Device* device_,
+					DescriptorHeapAllocator* allocator,
+					UINT index,
+					D3D12_VIEWPORT view_,
+					D3D12_RECT rect_
+				) {
+					
+					const auto hr = create_constant_buffer_group(
+						device_,
+						allocator,
+						CameraData{}
+					);
+					if (FAILED(hr)) {
+						return hr;
+					}
+
+					view_port = view_;
+					scissor_rect = rect_;
+
 					return hr;
 				}
 
-				register_index = index;
+				/* ===== 実行関数 ===== */
 
-				view_port = view_;
-				scissor_rect = rect_;
+				using ConstantBufferGroup<CameraData>::update_index;
 
-				return hr;
-			}
+				/// <summary>
+				/// トランスフォームアップロード関数
+				/// </summary>
+				void update_buffer(CameraData data) {
 
-			/* ===== 実行関数 ===== */
+					get_current_instance()->upload_buffer(data);
+				}
 
-			/// <summary>
-			/// トランスフォームアップロード関数
-			/// </summary>
-			void update_buffer() {
+				/// <summary>
+				/// ビューポートアップロード関数
+				/// </summary>
+				/// <param name="view_">ビューポート設定</param>
+				/// <param name="rect_">シザー短径設定</param>
+				void update_view_port(
+					D3D12_VIEWPORT view_,
+					D3D12_RECT rect_
+				) noexcept {
 
-				camera_buffer->upload_buffer(data_);
-			}
+					view_port = view_;
+					scissor_rect = rect_;
+				}
 
-			/// <summary>
-			/// ビューポートアップロード関数
-			/// </summary>
-			/// <param name="view_">ビューポート設定</param>
-			/// <param name="rect_">シザー短径設定</param>
-			void update_view_port(
-				D3D12_VIEWPORT view_,
-				D3D12_RECT rect_
-			) noexcept {
+				/// <summary>
+				/// カメラバッファ設定関数
+				/// </summary>
+				/// <param name="register_index">Register番号</param>
+				/// <param name="list_">コマンドリスト参照</param>
+				void set_buffer(
+					UINT register_index,
+					ID3D12GraphicsCommandList* list_
+				) {
 
-				view_port = view_;
-				scissor_rect = rect_;
-			}
+					get_current_instance()->set_constant_buffer(
+						register_index,
+						list_
+					);
+				}
 
-			/// <summary>
-			/// カメラバッファ設定関数
-			/// </summary>
-			/// <param name="register_index">Register番号</param>
-			/// <param name="list_">コマンドリスト参照</param>
-			void set_buffer(
-				UINT register_index,
-				ID3D12GraphicsCommandList* list_
-			) {
+				/// <summary>
+				/// ビューポート設定関数
+				/// </summary>
+				/// <param name="list_">コマンドリスト参照</param>
+				void set_view_port(
+					ID3D12GraphicsCommandList* list_
+				) const noexcept {
 
-				camera_buffer->set_constant_buffer(
-					register_index,
-					list_
-				);
-			}
+					list_->RSSetViewports(1, &view_port);
+					list_->RSSetScissorRects(1, &scissor_rect);
+				}
 
-			/// <summary>
-			/// ビューポート設定関数
-			/// </summary>
-			/// <param name="list_">コマンドリスト参照</param>
-			void set_view_port(
-				ID3D12GraphicsCommandList* list_
-			) const noexcept {
+			private:
+				/* ========== Privateメンバー変数 ========== */
 
-				list_->RSSetViewports(1, &view_port);
-				list_->RSSetScissorRects(1, &scissor_rect);
-			}
+				/// <summary>
+				/// カメラデータ
+				/// </summary>
+				CameraData data_{};
 
-			/* ===== 取得関数 ===== */
+				/// <summary>
+				/// コンスタントバッファレジスターインデックス
+				/// </summary>
+				UINT register_index{};
 
-			/// <summary>
-			/// CameraData参照取得関数
-			/// </summary>
-			/// <returns>取得したCameraData参照</returns>
-			[[nodiscard]] CameraData& get_camera_data() noexcept {
+				/// <summary>
+				/// ビューポート設定
+				/// </summary>
+				D3D12_VIEWPORT view_port{};
 
-				return data_;
-			}
+				/// <summary>
+				/// シザー短径設定
+				/// </summary>
+				D3D12_RECT scissor_rect{};
 
-			/// <summary>
-			/// カメラバッファ参照取得関数
-			/// </summary>
-			/// <returns>取得したカメラバッファ参照</returns>
-			[[nodiscard]] ClassObject::ConstantBuffer<CameraData>* get_camera_buffer() const noexcept {
-				return camera_buffer.get();
-			}
-
-		private:
-			/* ========== Privateメンバー変数 ========== */
-
-			/// <summary>
-			/// カメラデータ
-			/// </summary>
-			CameraData data_{};
-
-			/// <summary>
-			/// カメラコンスタントバッファ
-			/// </summary>
-			std::unique_ptr<ClassObject::ConstantBuffer<CameraData>> camera_buffer{};
-
-			/// <summary>
-			/// コンスタントバッファレジスターインデックス
-			/// </summary>
-			UINT register_index{};
-
-			/// <summary>
-			/// ビューポート設定
-			/// </summary>
-			D3D12_VIEWPORT view_port{};
-
-			/// <summary>
-			/// シザー短径設定
-			/// </summary>
-			D3D12_RECT scissor_rect{};
-
-		};
+			};
+		}
 	}
 }
