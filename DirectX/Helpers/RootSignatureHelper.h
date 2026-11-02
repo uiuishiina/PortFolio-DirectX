@@ -31,11 +31,11 @@ namespace DirectX {
 			/// <summary>
 			/// ディスクリプタテーブル追加関数
 			/// </summary>
-			/// <param name="ranges">追加するテーブル配列</param>
+			/// <param name="range">追加するテーブル</param>
 			/// <param name="visibility">シェーダー可視フラグ</param>
 			/// <returns>追加するルートパラメーター</returns>
 			[[nodiscard]] static D3D12_ROOT_PARAMETER add_table(
-				std::span<const D3D12_DESCRIPTOR_RANGE> ranges,
+				const D3D12_DESCRIPTOR_RANGE& range,
 				D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY_ALL
 			) {
 
@@ -44,8 +44,8 @@ namespace DirectX {
 					visibility
 				);
 
-				root.DescriptorTable.NumDescriptorRanges = static_cast<UINT>(ranges.size());
-				root.DescriptorTable.pDescriptorRanges = ranges.data();
+				root.DescriptorTable.NumDescriptorRanges = UINT{ 1 };
+				root.DescriptorTable.pDescriptorRanges = &range;
 
 				return root;
 			}

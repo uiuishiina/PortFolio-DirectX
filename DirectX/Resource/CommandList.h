@@ -159,6 +159,18 @@ namespace DirectX {
 
 				}
 
+				const Command SetDescriptor = [](ClassModule::FrameContext& frame) {
+
+					ID3D12DescriptorHeap* p[] = {
+						frame.heap_container->get_heap_allocator(
+							Container::DescriptorHeapKey{ D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV }
+						)->get_heap()->get()
+					};
+
+					frame.graphic_list->get()->SetDescriptorHeaps(1, p);
+
+					};
+
 				/* ===== コマンド配列 ===== */
 
 				/*
@@ -173,7 +185,8 @@ namespace DirectX {
 					"Begin",
 					{
 						BackBuffer::TransitionTarget,
-						BackBuffer::Set
+						BackBuffer::Set,
+						SetDescriptor
 					}
 				};
 

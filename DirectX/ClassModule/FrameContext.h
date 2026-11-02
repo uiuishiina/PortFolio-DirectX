@@ -74,6 +74,8 @@ namespace DirectX {
 			/// </summary>
 			/// <returns></returns>
 			Container::DescriptorHeapContainer* heap_container;
+			Container::CameraObjectContainer* camera_container;
+			ClassModule::MeshObject* player_;
 
 			/* ========== Publicメンバー関数 ========== */
 
@@ -98,9 +100,12 @@ namespace DirectX {
 				fence_{ context_->fence_.get() },
 				frame_resource{ context_->frame_resources[current_resource].get() },
 				swapchain_{ context_->swapchain_.get() },
-				heap_container{ context_->heap_container.get() },
 				back_buffer{ context_->back_buffer_group->get_current_instance() },
-				depth_buffer{ context_->depth_buffer_group->get_current_instance() } {}
+				depth_buffer{ context_->depth_buffer_group->get_current_instance() },
+				heap_container{ context_->heap_container.get() },
+				camera_container{ context_->camera_object_container.get() },
+				player_{ context_ ->player.get()}
+			{}
 
 			/// <summary>
 			/// デストラクタ

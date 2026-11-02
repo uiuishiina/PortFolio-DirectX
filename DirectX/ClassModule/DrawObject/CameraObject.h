@@ -68,7 +68,6 @@ namespace DirectX {
 				[[nodiscard]] HRESULT create_camera_object(
 					ID3D12Device* device_,
 					DescriptorHeapAllocator* allocator,
-					UINT index,
 					D3D12_VIEWPORT view_,
 					D3D12_RECT rect_
 				) {
@@ -91,14 +90,7 @@ namespace DirectX {
 				/* ===== 実行関数 ===== */
 
 				using ConstantBufferGroup<CameraData>::update_index;
-
-				/// <summary>
-				/// トランスフォームアップロード関数
-				/// </summary>
-				void update_buffer(CameraData data) {
-
-					get_current_instance()->upload_buffer(data);
-				}
+				using ConstantBufferGroup<CameraData>::update_buffer;
 
 				/// <summary>
 				/// ビューポートアップロード関数

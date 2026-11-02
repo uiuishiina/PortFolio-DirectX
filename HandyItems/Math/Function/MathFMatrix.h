@@ -104,6 +104,51 @@ namespace HandyItems {
 				};
 			}
 
+			[[nodiscard]] inline Matrix look_at(
+				const Float3& eye,
+				const Float3& target,
+				const Float3& up
+			) {
+				// カメラの前方向
+				Float3 forward = target - eye;
+				forward.normalize();
+
+				// カメラの右方向
+				Float3 right = cross(up, forward);
+				right.normalize();
+
+				// カメラの上方向
+				Float3 actual_up = cross(forward, right);
+				actual_up.normalize();
+
+				return Matrix{
+					Float4{
+						right.x_,
+						right.y_,
+						right.z_,
+						-dot(right, eye)
+					},
+					Float4{
+						actual_up.x_,
+						actual_up.y_,
+						actual_up.z_,
+						-dot(actual_up, eye)
+					},
+					Float4{
+						forward.x_,
+						forward.y_,
+						forward.z_,
+						-dot(forward, eye)
+					},
+					Float4{
+						0.0f,
+						0.0f,
+						0.0f,
+						1.0f
+					}
+				};
+			}
+
 			/// <summary>
 			/// X軸回転行列作成関数
 			/// </summary>

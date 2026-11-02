@@ -33,6 +33,14 @@ namespace DirectX {
 				ClassObject::desc::RootSignatureDesc
 			>;
 
+			const D3D12_DESCRIPTOR_RANGE B0{
+				D3D12_DESCRIPTOR_RANGE_TYPE_CBV ,1,0,0,D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND
+			};
+
+			const D3D12_DESCRIPTOR_RANGE B1{
+				D3D12_DESCRIPTOR_RANGE_TYPE_CBV ,1,1,0,D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND
+			};
+
 			const UsingRootSignature Normal{
 				"Normal",
 				{
@@ -43,6 +51,26 @@ namespace DirectX {
 			const UsingRootSignature Color{
 				"Color",
 				{
+					.flags_ = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT
+				}
+			};
+
+			const UsingRootSignature Constant{
+				"Constant",
+				{
+					.parameters_ = {
+						{
+							Helper::RootSignatureHelper::add_table(
+								B0,
+								D3D12_SHADER_VISIBILITY_VERTEX
+							)
+						},{
+							Helper::RootSignatureHelper::add_table(
+								B1,
+								D3D12_SHADER_VISIBILITY_VERTEX
+							)
+						}
+					},
 					.flags_ = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT
 				}
 			};
@@ -134,6 +162,34 @@ namespace DirectX {
 				}
 			};
 
+			const UsingPiplineState Constant{
+				"Constant",
+				{
+					.root_name = "Constant",
+					.vs_name = "ConstantVertex",
+					.ps_name = "NormalPixel"
+				},
+				{
+					//	シェーダ入力設定
+					.input_elements = {
+						{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+					},
+
+				//	ラスタライザ設定
+				.rasterizer_desc = Override(
+					Helper::PiplineStateHelper::default_rasterizer(),
+					[](auto& desc) {
+						desc.FillMode = static_cast<D3D12_FILL_MODE>(3);
+					}),
+
+				//	ブレンド設定
+				.blend_desc = Helper::PiplineStateHelper::default_blend(),
+
+				//	デプス設定
+				.depth_stencil_desc = Helper::PiplineStateHelper::enable_depth(),
+				.dsv_format = DXGI_FORMAT_D32_FLOAT
+			}
+			};
 		}
 	}
 

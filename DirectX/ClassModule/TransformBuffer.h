@@ -27,13 +27,15 @@ namespace DirectX {
 		class TransformBuffer final : public HandyItems::others::NonCopyableBase
 		{
 			using Transform = HandyItems::Math::Transform;
+			using Matrix = HandyItems::Math::Matrix;
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
 			/// <summary>
 			/// コンストラクタ
 			/// </summary>
-			TransformBuffer() = default;
+			TransformBuffer() :
+				constant_buffer{ std::make_unique<ClassObject::ConstantBuffer<Matrix>>() } {}
 
 			/// <summary>
 			/// デストラクタ
@@ -56,7 +58,7 @@ namespace DirectX {
 				return constant_buffer->create_constant_buffer(
 					device_, 
 					handles, 
-					Transform{}
+					Matrix{}
 				);
 			}
 
@@ -67,7 +69,13 @@ namespace DirectX {
 			/// </summary>
 			void update_buffer(const Transform& transform) {
 
-				constant_buffer->upload_buffer(transform);
+				constant_buffer->upload_buffer(
+					HandyItems::Math::MathF::transform_to_matrix(
+						transform.translation_,
+						transform.rotation_,
+						transform.scale_
+						)
+				);
 			}
 
 			/// <summary>
@@ -92,7 +100,7 @@ namespace DirectX {
 			/// コンスタントバッファ取得関数
 			/// </summary>
 			/// <returns></returns>
-			[[nodiscard]] ClassObject::ConstantBuffer<Transform>* get_buffer() const noexcept {
+			[[nodiscard]] ClassObject::ConstantBuffer<Matrix>* get_buffer() const noexcept {
 
 				return constant_buffer.get();
 			}
@@ -104,7 +112,7 @@ namespace DirectX {
 			/// ConstantBufferインスタンス
 			/// </summary>
 			std::unique_ptr<
-				ClassObject::ConstantBuffer<Transform>
+				ClassObject::ConstantBuffer<Matrix>
 			> constant_buffer{};
 
 		};

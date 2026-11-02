@@ -34,13 +34,13 @@ namespace DirectX {
 
 
 			/* ===== 初期化関数 ===== */
-			template<typename T>
+
 			[[nodiscard]] HRESULT create_mesh_object(
 				ID3D12Device* device_,
 				ID3D12GraphicsCommandList* list_,
 				DescriptorHeapAllocator* allocator,
 				UINT index,
-				Mesh* mesh
+				DrawObjectBase* mesh
 			) {
 
 				if (!mesh) {
@@ -82,6 +82,7 @@ namespace DirectX {
 			void update_mesh_object() {
 
 				transform_buffers->update_index();
+				transform_buffers->get_current_instance()->update_buffer(transform_);
 			}
 
 			/// <summary>
@@ -104,7 +105,7 @@ namespace DirectX {
 			/// <summary>
 			/// メッシュ
 			/// </summary>
-			Mesh* mesh_{};
+			DrawObjectBase* mesh_{};
 
 			/// <summary>
 			/// トランスフォームバッファ

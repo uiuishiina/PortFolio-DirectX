@@ -31,7 +31,7 @@ namespace DirectX {
 				/// コンストラクタ
 				/// </summary>
 				ConstantBufferGroup():
-					DescriptorResource(State::HeapState::Frame) {}
+					DesctirptorGroupBase<ClassObject::ConstantBuffer<T>>(State::HeapState::Frame) {}
 
 				/// <summary>
 				/// デストラクタ
@@ -83,6 +83,10 @@ namespace DirectX {
 						}
 					}
 					return S_OK;
+				}
+
+				bool update_buffer(const T& data) {
+					this->get_current_instance()->upload_buffer(data);
 				}
 
 			};

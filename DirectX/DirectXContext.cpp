@@ -50,6 +50,7 @@ DirectXContext::DirectXContext(
 	back_buffer_group = std::make_unique<ClassModule::DescriptorGroup::BackBufferGroup>();
 	depth_buffer_group = std::make_unique<ClassModule::DescriptorGroup::DepthBufferGroup>();
 
+	player = std::make_unique<ClassModule::MeshObject>();
 }
 
 DirectXContext::~DirectXContext() = default;

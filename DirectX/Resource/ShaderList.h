@@ -62,6 +62,15 @@ namespace DirectX {
 				}
 			};
 
+			const UsingShader ConstantVertex{
+				"ConstantVertex",
+				{
+					L"../DirectX/Resource/HLSL/ConstantVertex.hlsl",
+					"main",
+					"vs_5_0"
+				}
+			};
+
 		}
 	}
 

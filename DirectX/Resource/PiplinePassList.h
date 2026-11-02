@@ -48,6 +48,17 @@ namespace DirectX {
 					}
 				};
 
+				const PiplinePassDesc ConstantTest{
+					"Pipline_ConstantTest",
+					{
+						.root_name = "Constant",
+						.root_state = ClassModule::RootState::Graphics,
+						.pipline_name = "Constant",
+						.pass_names{
+							"SetCamera"
+						}
+					}
+				};
 			}
 		}
 	}

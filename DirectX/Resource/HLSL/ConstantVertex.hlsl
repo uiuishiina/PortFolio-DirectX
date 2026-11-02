@@ -6,10 +6,10 @@ VS_OutPutNormal main(VS_InputNormal input)
    
     float4 pos = float4(input.pos, 1.0f);
     
-    pos = mul(pos, transpose(obj_transform));
-    pos = mul(pos, transpose(view_));
-    pos = mul(pos, transpose(projection_));
-    
+    pos = mul(obj_transform, pos);
+    pos = mul(view_, pos);
+    pos = mul(projection_, pos);
+
     output.pos = pos;
     
     return output;

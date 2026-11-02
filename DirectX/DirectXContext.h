@@ -163,6 +163,8 @@ namespace DirectX {
 		/// </summary>
 		UniquePtr<ClassModule::DescriptorGroup::DepthBufferGroup> depth_buffer_group{};
 
+		UniquePtr<ClassModule::MeshObject> player{};
+
 		
 
 	};

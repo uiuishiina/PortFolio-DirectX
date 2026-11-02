@@ -11,6 +11,11 @@
 
 #include"../Container/DrawObjectConteiner.h"
 
+
+#include"../Container/CameraObjectContainer.h"
+#include"../Container/DescriptorHeapContainer.h"
+
+
 //	その他
 #include<vector>
 #include<utility>
@@ -151,6 +156,61 @@ namespace DirectX {
 					}
 				}
 
+
+				{
+					D3D12_VIEWPORT viewport{};
+					viewport.TopLeftX = 0;
+					viewport.TopLeftY = 0;
+					viewport.Width = 1280;
+					viewport.Height = 720;
+					viewport.MinDepth = 0;
+					viewport.MaxDepth = 1;
+					D3D12_RECT scissorRect{};
+					scissorRect.left = 0;
+					scissorRect.top = 0;
+					scissorRect.right = 1280;
+					scissorRect.bottom = 720;
+
+					auto camera = std::make_unique<ClassModule::DescriptorGroup::CameraObject>();
+					auto hr = camera->create_camera_object(
+						context_->device_->get(),
+						context_->heap_container->get_heap_allocator(
+							Container::DescriptorHeapKey{ D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV }
+						),
+						viewport,
+						scissorRect
+					);
+					if (FAILED(hr)) {
+						return hr;
+					}
+					camera->update_buffer({
+						HandyItems::Math::MathF::look_at({ 0,0,-5 },{0,0,0},{0,1,0}),
+						{}
+						});
+
+					context_->camera_object_container->add_camera_object(
+						Container::CameraObjectKey{ "MainCamera" },
+						std::move(camera)
+					);
+
+					hr = context_->player->create_mesh_object(
+						context_->device_->get(),
+						context_->graphic_list->get(),
+						context_->heap_container->get_heap_allocator(
+							Container::DescriptorHeapKey{ D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV }
+						),
+						1,
+						context_->draw_object_container->get_draw_object(
+							Container::DrawObjectKey{ "NormalMesh" }
+						)
+					);
+					if (FAILED(hr)) {
+						return hr;
+					}
+
+					context_->player->get_transform().scale_ *= 0.5;
+					context_->player->update_mesh_object();
+				}
 
 				//	コマンドリストをクローズ
 				context_->graphic_list->get()->Close();

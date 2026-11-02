@@ -139,6 +139,11 @@ DirectXRenderer::~DirectXRenderer() = default;
             Resource::Shaders::ColorPixel
         ));
 
+    desc_.shader_.emplace(
+        make_shader_desc(
+            Resource::Shaders::ConstantVertex
+        ));
+
     /* ===== Pipline ===== */
 
     /* -- Root -- */
@@ -152,6 +157,11 @@ DirectXRenderer::~DirectXRenderer() = default;
             Resource::RootSignatures::Color
         ));
 
+    desc_.pipline_.emplace_root(
+        make_root_desc(
+            Resource::RootSignatures::Constant
+        ));
+
     /* -- PiplineState -- */
 
     desc_.pipline_.emplace_pipline(
@@ -161,6 +171,11 @@ DirectXRenderer::~DirectXRenderer() = default;
     desc_.pipline_.emplace_pipline(
         make_pipline_desc(
             Resource::PiplineStates::Color
+        ));
+
+    desc_.pipline_.emplace_pipline(
+        make_pipline_desc(
+            Resource::PiplineStates::Constant
         ));
 
     /* ===== Resources ===== */
@@ -195,6 +210,27 @@ DirectXRenderer::~DirectXRenderer() = default;
         Resource::Pass::Commands::SetView
     );
 
+    passDesc.emplace_command_pass(
+        "SetCamera",
+        {
+            [](ClassModule::FrameContext& frame) {
+                auto camera = frame.camera_container->get_camera_object(
+                    Container::CameraObjectKey{ "MainCamera" }
+                );
+                camera->set_buffer(
+                    0,
+                    frame.graphic_list->get()
+                );
+                camera->set_view_port(
+                    frame.graphic_list->get()
+                );
+
+                frame.player_->draw(frame.graphic_list->get());
+            }
+        }
+    );
+    
+
     /* -- DrawObject -- */
 
     passDesc.emplace_draw_object_pass(
@@ -211,6 +247,10 @@ DirectXRenderer::~DirectXRenderer() = default;
     );
     passDesc.emplace_pipline_pass(
         Resource::Pass::Piplines::ColorTest
+    );
+
+    passDesc.emplace_pipline_pass(
+        Resource::Pass::Piplines::ConstantTest
     );
 
     /* -- End -- */
@@ -240,6 +280,8 @@ DirectXRenderer::~DirectXRenderer() = default;
 
         Resource::Pass::Piplines::ColorTest,
         //Resource::Pass::DrawObject::ColorTest,
+
+        Resource::Pass::Piplines::ConstantTest,
 
         Resource::Pass::Commands::End
     );
