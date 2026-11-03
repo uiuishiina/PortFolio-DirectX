@@ -41,6 +41,8 @@ namespace DirectX {
 			/// </summary>
 			class CameraObject : protected ConstantBufferGroup<CameraData>
 			{
+				using Transform = HandyItems::Math::Transform;
+				using Matrix = HandyItems::Math::Matrix;
 			public:
 				/* ========== Publicメンバー関数 ========== */
 
@@ -81,16 +83,24 @@ namespace DirectX {
 						return hr;
 					}
 
-					view_port = view_;
-					scissor_rect = rect_;
+					update_view_port(view_, rect_);
 
 					return hr;
 				}
 
 				/* ===== 実行関数 ===== */
 
-				using ConstantBufferGroup<CameraData>::update_index;
-				using ConstantBufferGroup<CameraData>::update_buffer;
+				void update_camera_object() {
+					update_index();
+
+					auto view = view_.get_matrix().inverse();
+
+					update_buffer(
+						CameraData{
+							view.has_value() ? view.value().transpose() : Matrix{},
+							projection_.transpose()
+						});
+				}
 
 				/// <summary>
 				/// ビューポートアップロード関数
@@ -104,6 +114,13 @@ namespace DirectX {
 
 					view_port = view_;
 					scissor_rect = rect_;
+
+					projection_ = HandyItems::Math::MathF::perspective(
+						HandyItems::Math::MathF::deg_to_rad(60),
+						view_port.Width / view_port.Height,
+						0.1f,
+						1000
+					);
 				}
 
 				/// <summary>
@@ -134,13 +151,17 @@ namespace DirectX {
 					list_->RSSetScissorRects(1, &scissor_rect);
 				}
 
-			private:
+				[[nodiscard]] Transform& get_camera_transform() {
+					return view_;
+				}
+				[[nodiscard]] Matrix& get_camera_projection() {
+					return projection_;
+				}
+			private:  
 				/* ========== Privateメンバー変数 ========== */
 
-				/// <summary>
-				/// カメラデータ
-				/// </summary>
-				CameraData data_{};
+				Transform view_{};
+				Matrix projection_{};
 
 				/// <summary>
 				/// コンスタントバッファレジスターインデックス

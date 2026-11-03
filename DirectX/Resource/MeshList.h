@@ -55,6 +55,30 @@ namespace DirectX {
 					})
 
 				};
+				inline MeshResourceDesc NormalBox{
+					"NormalBox",
+					make_create_mesh_desc<NVer>({
+						.vertex_ = {
+							{	-0.5f,	-0.5f,	-0.5f},
+							{	-0.5f,	 0.5f,	-0.5f},
+							{	 0.5f,	 0.5f,	-0.5f},
+							{	 0.5f,	-0.5f,	-0.5f},
+
+							{	-0.5f,	-0.5f,	 0.5f},
+							{	-0.5f,	 0.5f,	 0.5f},
+
+							{	 0.5f,	-0.5f,	 0.5f},
+							{	 0.5f,	 0.5f,	 0.5f}
+						},
+						.index_ = {
+							0,1,2,0,2,3,
+							4,5,1,4,1,0,
+							6,7,5,6,5,4,
+							3,2,7,3,7,6
+						}
+					})
+
+				};
 
 				inline MeshResourceDesc ColorMesh{
 					"ColorMesh",

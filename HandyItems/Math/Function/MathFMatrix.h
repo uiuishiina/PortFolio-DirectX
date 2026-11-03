@@ -423,6 +423,30 @@ namespace HandyItems {
 				);
 			}
 
+			[[nodiscard]] inline Matrix perspective(
+				float fovY,
+				float aspectRatio,
+				float nearClip,
+				float farClip
+			) {
+				const float tanHalfFov = tan(fovY * 0.5f);
+
+				const float yScale = 1.0f / tanHalfFov;
+				const float xScale = yScale / aspectRatio;
+
+				return Matrix{
+					Float4{ xScale, 0.0f, 0.0f, 0.0f },
+					Float4{ 0.0f, yScale, 0.0f, 0.0f },
+					Float4{
+						0.0f,
+						0.0f,
+						farClip / (farClip - nearClip),
+						-(nearClip * farClip) / (farClip - nearClip)
+					},
+					Float4{ 0.0f, 0.0f, 1.0f, 0.0f }
+				};
+			}
+
 		}
 	}
 }

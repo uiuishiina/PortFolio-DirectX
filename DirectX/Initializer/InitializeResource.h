@@ -183,15 +183,15 @@ namespace DirectX {
 					if (FAILED(hr)) {
 						return hr;
 					}
-					camera->update_buffer({
-						HandyItems::Math::MathF::look_at({ 0,0,-5 },{0,0,0},{0,1,0}),
-						{}
-						});
+					camera->get_camera_transform().translation_ = { 0,0,-3 };
+					camera->update_camera_object();
 
-					context_->camera_object_container->add_camera_object(
+					if (!context_->camera_object_container->add_camera_object(
 						Container::CameraObjectKey{ "MainCamera" },
 						std::move(camera)
-					);
+					)) {
+						return E_FAIL;
+					}
 
 					hr = context_->player->create_mesh_object(
 						context_->device_->get(),
@@ -201,7 +201,7 @@ namespace DirectX {
 						),
 						1,
 						context_->draw_object_container->get_draw_object(
-							Container::DrawObjectKey{ "NormalMesh" }
+							Container::DrawObjectKey{ "NormalBox" }
 						)
 					);
 					if (FAILED(hr)) {

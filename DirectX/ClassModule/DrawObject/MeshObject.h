@@ -82,7 +82,7 @@ namespace DirectX {
 			void update_mesh_object() {
 
 				transform_buffers->update_index();
-				transform_buffers->get_current_instance()->update_buffer(transform_);
+				transform_buffers->update_buffer(transform_);
 			}
 
 			/// <summary>

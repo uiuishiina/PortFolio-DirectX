@@ -67,14 +67,10 @@ namespace DirectX {
 			/// <summary>
 			/// トランスフォームアップロード関数
 			/// </summary>
-			void update_buffer(const Transform& transform) {
+			bool update_buffer(const Transform& transform) {
 
-				constant_buffer->upload_buffer(
-					HandyItems::Math::MathF::transform_to_matrix(
-						transform.translation_,
-						transform.rotation_,
-						transform.scale_
-						)
+				return constant_buffer->upload_buffer(
+					transform.get_matrix().transpose()
 				);
 			}
 

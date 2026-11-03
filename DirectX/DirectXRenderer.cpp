@@ -188,6 +188,9 @@ DirectXRenderer::~DirectXRenderer() = default;
     desc_.resource_.emplace_mesh_desc(
         std::move(Resource::DrawObject::Mesh::ColorMesh)
     );
+    desc_.resource_.emplace_mesh_desc(
+        std::move(Resource::DrawObject::Mesh::NormalBox)
+    );
 
 
     /* ========== 描画パス初期化 ========== */
@@ -214,9 +217,16 @@ DirectXRenderer::~DirectXRenderer() = default;
         "SetCamera",
         {
             [](ClassModule::FrameContext& frame) {
+                
+
                 auto camera = frame.camera_container->get_camera_object(
                     Container::CameraObjectKey{ "MainCamera" }
                 );
+
+                //camera->get_camera_transform().rotate({ 0,0.001f,0 });
+                camera->update_camera_object();
+
+
                 camera->set_buffer(
                     0,
                     frame.graphic_list->get()
@@ -224,6 +234,11 @@ DirectXRenderer::~DirectXRenderer() = default;
                 camera->set_view_port(
                     frame.graphic_list->get()
                 );
+
+                frame.player_->get_transform().translation_.x_ += 0.001f;
+                frame.player_->get_transform().rotate({ 0,0.01f,0 });
+
+                frame.player_->update_mesh_object();
 
                 frame.player_->draw(frame.graphic_list->get());
             }

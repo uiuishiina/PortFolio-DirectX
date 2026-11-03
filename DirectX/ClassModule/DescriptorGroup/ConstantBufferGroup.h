@@ -86,7 +86,7 @@ namespace DirectX {
 				}
 
 				bool update_buffer(const T& data) {
-					this->get_current_instance()->upload_buffer(data);
+					return this->get_current_instance()->upload_buffer(data);
 				}
 
 			};

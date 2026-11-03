@@ -80,8 +80,9 @@ namespace DirectX {
 				}
 
 				bool update_buffer(const Transform& data) {
-					get_current_instance()->update_buffer(data);
+					return get_current_instance()->update_buffer(data);
 				}
+
 			};
 		}
 	}
