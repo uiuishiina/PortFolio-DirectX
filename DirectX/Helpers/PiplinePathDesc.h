@@ -3,7 +3,7 @@
 /* ========== Includeファイル ========== */
 
 //	DirectX
-#include"../ClassModule/PiplinePass.h"
+#include"../ClassModule/DrawPath/PiplinePath.h"
 
 #include"../Container/RootSignatureContainer.h"
 #include"../Container/PiplineStateContainer.h"
@@ -22,7 +22,7 @@ namespace DirectX {
 		/// <summary>
 		/// パス名前空間
 		/// </summary>
-		namespace Pass {
+		namespace Path {
 
 			/// <summary>
 			/// パイプライン名前空間
@@ -32,7 +32,7 @@ namespace DirectX {
 				/// <summary>
 				/// パイプラインパス外部参照補助構造体
 				/// </summary>
-				struct PiplinePassReference {
+				struct PiplinePathReference {
 
 					/* ========== Publicメンバー変数 ========== */
 
@@ -61,9 +61,9 @@ namespace DirectX {
 				/// <summary>
 				/// パイプラインパス設定定義
 				/// </summary>
-				using PiplinePassDesc = std::tuple<
+				using PiplinePathDesc = std::tuple<
 					std::string,
-					PiplinePassReference
+					PiplinePathReference
 				>;
 			}
 		}

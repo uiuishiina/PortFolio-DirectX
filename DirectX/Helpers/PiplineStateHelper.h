@@ -67,11 +67,6 @@ namespace DirectX {
 			/// </summary>
 			PiplineStateHelper() = default;
 
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~PiplineStateHelper() = default;
-
 		};
 	}
 }

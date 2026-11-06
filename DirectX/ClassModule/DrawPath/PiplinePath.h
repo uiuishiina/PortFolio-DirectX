@@ -3,9 +3,9 @@
 /* ========== Includeファイル ========== */
 
 //	DirectX
-#include"../ClassObject/PiplineState.h"
-#include"../ClassObject/RootSignature.h"
-#include"CommandPass.h"
+#include"../../ClassObject/PiplineState.h"
+#include"../../ClassObject/RootSignature.h"
+#include"CommandPath.h"
 
 /// <summary>
 /// DirectX名前空間
@@ -28,21 +28,18 @@ namespace DirectX {
 		/// <summary>
 		/// パイプラインパスクラス
 		/// </summary>
-		class PiplinePass : public PassBase
+		class PiplinePath : public PathBase
 		{
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			//	コンストラクタ削除
-			PiplinePass() = delete;
-			
 			/// <summary>
 			/// 引数付きコンストラクタ
 			/// </summary>
 			/// <param name="root">ルートシグネチャー参照</param>
 			/// <param name="state">ルートシグネチャー設定列挙体</param>
 			/// <param name="pipline">パイプラインステート参照</param>
-			PiplinePass(
+			explicit PiplinePath(
 				ClassObject::RootSignature* root,
 				RootState state,
 				ClassObject::PiplineState* pipline
@@ -51,11 +48,6 @@ namespace DirectX {
 				root_state{ state },
 				pipline_state{ pipline } {}
 
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~PiplinePass() = default;
-
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>
@@ -63,11 +55,11 @@ namespace DirectX {
 			/// </summary>
 			/// <typeparam name="R">追加するコマンドパス配列型</typeparam>
 			/// <param name="value">追加するコマンドパス配列</param>
-			void add_command_passes(
-				const std::span<PassBase*> passes
+			void add_command_paths(
+				const std::span<PathBase*> paths
 			) {
 
-				for (auto& pass : passes) {
+				for (auto& pass : paths) {
 					command_passes.push_back(pass);
 				}
 			}
@@ -87,14 +79,14 @@ namespace DirectX {
 			/// 描画パス呼び出し関数
 			/// </summary>
 			/// <param name="context">DirectXオブジェクトインスタンス構造体参照</param>
-			void apply_pass(
+			void apply_path(
 				FrameContext& context
 			) override {
 
 				set_state(context);
 
 				for (auto& pass : command_passes) {
-					pass->apply_pass(context);
+					pass->apply_path(context);
 				}
 			}
 
@@ -119,7 +111,7 @@ namespace DirectX {
 			/// <summary>
 			///	呼び出しコマンド配列
 			/// </summary>
-			std::vector<PassBase*> command_passes{};
+			std::vector<PathBase*> command_passes{};
 
 			/* ========== Privateメンバー関数 ========== */
 

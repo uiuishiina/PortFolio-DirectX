@@ -26,11 +26,6 @@ namespace DirectX {
 			/* ========== Publicメンバー関数 ========== */
 
 			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			DrawObjectBase() = default;
-
-			/// <summary>
 			/// デストラクタ
 			/// </summary>
 			virtual ~DrawObjectBase() = default;

@@ -67,6 +67,11 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
+			/// <summary>
+			/// デストラクタ
+			/// </summary>
+			virtual ~GPUResourceBase() = default;
+
 			/* ===== 取得関数 ===== */
 
 			/// <summary>
@@ -96,16 +101,11 @@ namespace DirectX {
 			Microsoft::WRL::ComPtr<ID3D12Resource> resource_{};
 
 			/* ========== Protectedメンバー関数 ========== */
-
+			
 			/// <summary>
 			/// コンストラクタ
 			/// </summary>
 			GPUResourceBase() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			virtual ~GPUResourceBase() = default;
 
 			/* ===== 初期化関数 ===== */
 

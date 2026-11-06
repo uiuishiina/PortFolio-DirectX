@@ -71,20 +71,36 @@ namespace DirectX {
 		/// <summary>
 		/// コア機能初期化クラス
 		/// </summary>
-		class InitializeCore
+		class InitializeCoreBase
 		{
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			InitializeCore() = default;
+			virtual ~InitializeCoreBase() = default;
+
+			/* ===== 初期化関数 ===== */
 
 			/// <summary>
-			/// デストラクタ
+			/// コア機能初期化関数
 			/// </summary>
-			~InitializeCore() = default;
+			/// <param name="context">DirectXオブジェクトインスタンス構造体参照</param>
+			/// <returns>初期化の成否</returns>
+			[[nodiscard]] virtual HRESULT initialize_core(
+				DirectXContext* context,
+				std::uint32_t back_buffer_size,
+				std::uint32_t frame_resource_size,
+				const desc::CoreDesc& desc
+			) = 0;
+
+		};
+
+		/// <summary>
+		/// コア機能初期化クラス
+		/// </summary>
+		class InitializeCore : public InitializeCoreBase
+		{
+		public:
+			/* ========== Publicメンバー関数 ========== */
 
 			/* ===== 初期化関数 ===== */
 
@@ -96,8 +112,9 @@ namespace DirectX {
 			[[nodiscard]] HRESULT initialize_core(
 				DirectXContext* context,
 				std::uint32_t back_buffer_size,
-				desc::CoreDesc& desc
-			);
+				std::uint32_t frame_resource_size,
+				const desc::CoreDesc& desc
+			) override;
 
 		};
 	}

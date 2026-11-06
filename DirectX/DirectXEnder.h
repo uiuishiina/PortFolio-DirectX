@@ -22,16 +22,16 @@ namespace DirectX {
 		/// <summary>
 		/// 描画機能終了関数
 		/// </summary>
-		/// <param name="context">DirectXオブジェクトインスタンスまとめクラス参照</param>
+		/// <param name="context_">DirectXオブジェクトインスタンスまとめクラス参照</param>
 		static void end(
-			DirectXContext* context
+			DirectXContext* context_
 		) {
 
 			//	GPUに投入済みのすべてのコマンドが完了するまで待機
 			//	アプリケーション終了時は次フレームが存在しないため通常のフレーム同期ではなく終了用のFenceを使用する
 
-			const auto signal = context->fence_->signal(context->graphic_queue->get());
-			context->fence_->wait_to_completed_value(signal);
+			const auto signal = context_->fence_.signal(context_->graphic_queue.get());
+			context_->fence_.wait_to_completed_value(signal);
 		}
 
 	private:
@@ -41,11 +41,6 @@ namespace DirectX {
 		/// コンストラクタ
 		/// </summary>
 		DirectXEnder() = default;
-
-		/// <summary>
-		/// デストラクタ
-		/// </summary>
-		~DirectXEnder() = default;
 
 	};
 }

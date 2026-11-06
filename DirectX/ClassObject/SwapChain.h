@@ -31,16 +31,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			SwapChain() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~SwapChain() = default;
-			
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>

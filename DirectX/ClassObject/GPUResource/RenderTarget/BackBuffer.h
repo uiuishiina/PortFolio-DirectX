@@ -30,11 +30,6 @@ namespace DirectX {
 			BackBuffer() :
 				RenderTarget{ D3D12_RESOURCE_STATE_PRESENT } {}
 
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~BackBuffer() = default;
-
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>

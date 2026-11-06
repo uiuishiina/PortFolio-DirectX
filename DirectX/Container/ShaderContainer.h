@@ -57,16 +57,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			ShaderContainer() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~ShaderContainer() = default;
-
 			/* ===== 追加関数 ===== */
 
 			/// <summary>

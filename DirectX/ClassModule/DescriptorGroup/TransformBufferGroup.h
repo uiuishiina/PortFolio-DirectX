@@ -26,27 +26,17 @@ namespace DirectX {
 				using Transform = HandyItems::Math::Transform;
 			public:
 
-				/// <summary>
-				/// コンストラクタ
-				/// </summary>
-				TransformBufferGroup():
-					DesctirptorGroupBase(State::HeapState::Frame) {}
-
-				/// <summary>
-				/// デストラクタ
-				/// </summary>
-				~TransformBufferGroup() = default;
-
 				/* ===== 初期化関数 ===== */
 
 				[[nodiscard]] HRESULT create_constant_buffer_group(
 					ID3D12Device* device_,
 					DescriptorHeapAllocator* allocator,
+					const CurrentIndexBase* index,
 					const Transform& data
 				) {
 					//	DesctirptorGroupBase初期化
 					{
-						const auto hr = initialize_resource_group(allocator);
+						const auto hr = initialize_resource_group(allocator, index);
 						if (FAILED(hr)) {
 							return hr;
 						}

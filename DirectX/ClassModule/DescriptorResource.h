@@ -4,6 +4,7 @@
 
 //	DirectX
 #include"DescriptorHeapAllocator.h"
+#include"CurrentIndexBase.h"
 
 /// <summary>
 /// DirectX名前空間
@@ -15,15 +16,6 @@ namespace DirectX {
 	/// </summary>
 	namespace ClassModule {
 
-		namespace State {
-
-			enum class HeapState {
-				Static,
-				Buffering,
-				Frame
-			};
-		}
-
 		/// <summary>
 		/// ディスクリプターヒープ活用クラス
 		/// </summary>
@@ -31,20 +23,6 @@ namespace DirectX {
 		{
 		public:
 			/* ========== Publicメンバー関数 ========== */
-
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			DescriptorResource() = delete;
-
-			/// <summary>
-			/// 引数付きコンストラクタ
-			/// </summary>
-			/// <param name="state">HeapState設定</param>
-			DescriptorResource(
-				State::HeapState state
-			) :
-				state_{ state } {}
 
 			/// <summary>
 			/// デストラクタ
@@ -70,7 +48,7 @@ namespace DirectX {
 			/// <returns>取得したディスクリプターハンドル補助構造体... ないなら[ std::nullopt ]</returns>
 			[[nodiscard]] std::optional<Helper::DescriptorHeapHandles> get_handles(std::size_t index) const noexcept {
 
-				if (vec_size <= index) {
+				if (handles_vec.size() <= index) {
 					return std::nullopt;
 				}
 
@@ -78,7 +56,7 @@ namespace DirectX {
 			}
 
 			[[nodiscard]] std::size_t get_handles_vec_size() const noexcept {
-				return vec_size;
+				return handles_vec.size();
 			}
 
 		protected:
@@ -90,7 +68,8 @@ namespace DirectX {
 			/// <param name="allocator">ディスクリプターヒープアロケーター参照</param>
 			/// <returns>初期化の成否</returns>
 			[[nodiscard]] HRESULT initialize_resource(
-				DescriptorHeapAllocator* allocator
+				DescriptorHeapAllocator* allocator,
+				const CurrentIndexBase* index
 			) {
 
 				if (allocator == nullptr) {
@@ -100,37 +79,34 @@ namespace DirectX {
 				return_index();
 				handles_vec.clear();
 
-				if (state_ == State::HeapState::Static) {
-					return initialize_static(allocator);
+				allocator_ = allocator;
+
+				for (std::size_t i = 0; i < index->get_size(); ++i) {
+
+					const auto index = allocator->allocate_index();
+					if (!index.has_value()) {
+
+						return_index();
+						return E_OUTOFMEMORY;
+					}
+
+					index_vec.push_back(index.value());
+				
+					handles_vec.push_back(
+						allocator_->get_heap()->get_handles(index.value())
+					);
 				}
-				else if (state_ == State::HeapState::Buffering) {
-					return initialize_buffering(allocator);
-				}
-				else if (state_ == State::HeapState::Frame) {
-					return initialize_frame(allocator);
-				}
-				else {
-					return E_FAIL;
-				}
+
+				return S_OK;
 			}
 
 		private:
 			/* ========== Privateメンバー変数 ========== */
 
 			/// <summary>
-			/// ステート設定
-			/// </summary>
-			State::HeapState state_{};
-
-			/// <summary>
 			/// 確保したインデックス
 			/// </summary>
-			std::size_t index_{};
-
-			/// <summary>
-			/// 初期化フラグ
-			/// </summary>
-			bool is_initialized = false;
+			std::vector<std::size_t> index_vec{};
 
 			/// <summary>
 			/// アロケーター参照
@@ -143,125 +119,12 @@ namespace DirectX {
 			std::vector<Helper::DescriptorHeapHandles> handles_vec{};
 
 			/// <summary>
-			/// 配列サイズキャッシュ
-			/// </summary>
-			std::size_t vec_size{};
-
-			/* ========== Privateメンバー関数 ========== */
-
-			/// <summary>
-			/// 静的ヒープ初期化関数
-			/// </summary>
-			/// <param name="allocator"></param>
-			/// <returns></returns>
-			[[nodiscard]] HRESULT initialize_static(
-				DescriptorHeapAllocator* allocator
-			) {
-
-				const auto index = allocator->allocate_static_index();
-				if (!index.has_value()) {
-
-					return E_OUTOFMEMORY;
-				}
-
-				index_ = index.value();
-				allocator_ = allocator;
-
-				handles_vec.push_back(
-					allocator_->get_heap()->get_handles(index_)
-				);
-
-				vec_size = handles_vec.size();
-				is_initialized = true;
-
-				return S_OK;
-			}
-
-			/// <summary>
-			/// バッファリング別ヒープ初期化関数
-			/// </summary>
-			/// <param name="allocator"></param>
-			/// <returns></returns>
-			[[nodiscard]] HRESULT initialize_buffering(
-				DescriptorHeapAllocator* allocator
-			) {
-
-				const auto index = allocator->allocate_buffering_index();
-				if (!index.has_value()) {
-					return E_OUTOFMEMORY;
-				}
-
-				index_ = index.value();
-				allocator_ = allocator;
-
-				const auto static_range = allocator_->get_static_range();
-
-				for (UINT i = 0; i < allocator_->get_back_buffer_size(); ++i) {
-
-					handles_vec.push_back(
-						allocator_->get_heap()->get_handles(
-							static_range + (i * allocator_->get_one_buffering_range()) + index_
-						));
-				}
-
-				vec_size = handles_vec.size();
-				is_initialized = true;
-
-				return S_OK;
-			}
-
-
-			/// <summary>
-			/// フレーム別ヒープ初期化関数
-			/// </summary>
-			/// <param name="allocator"></param>
-			/// <returns></returns>
-			[[nodiscard]] HRESULT initialize_frame(
-				DescriptorHeapAllocator* allocator
-			) {
-
-				const auto index = allocator->allocate_frame_index();
-				if (!index.has_value()) {
-					return E_OUTOFMEMORY;
-				}
-
-				index_ = index.value();
-				allocator_ = allocator;
-
-				const auto static_range = allocator_->get_static_range();
-				const auto buffering_range = allocator_->get_one_buffering_range() * allocator_->get_back_buffer_size();
-
-				for (UINT i = 0; i < allocator_->get_frame_resource_size(); ++i) {
-
-					handles_vec.push_back(
-						allocator_->get_heap()->get_handles(
-							static_range + buffering_range + (i * allocator_->get_one_frame_range()) + index_
-						));
-				}
-
-				vec_size = handles_vec.size();
-				is_initialized = true;
-
-				return S_OK;
-			}
-
-			/// <summary>
 			/// インデックス返還関数
 			/// </summary>
 			void return_index() {
 
-				if (is_initialized) {
-					if (state_ == State::HeapState::Static) {
-						allocator_->return_static_index(index_);
-					}
-					else if (state_ == State::HeapState::Buffering) {
-						allocator_->return_buffering_index(index_);
-					}
-					else if (state_ == State::HeapState::Frame) {
-						allocator_->return_frame_index(index_);
-					}
-
-					is_initialized = false;
+				for (auto& index : index_vec) {
+					allocator_->return_index(index);
 				}
 			}
 		};

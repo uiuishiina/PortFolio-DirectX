@@ -7,6 +7,7 @@
 
 //	DirectX
 #include"../DirectXContext.h"
+#include"InitializeLog.h"
 #include"../Helpers/MeshResourceDesc.h"
 
 #include"../Container/DrawObjectConteiner.h"
@@ -98,19 +99,19 @@ namespace DirectX {
 			/// <param name="context_">DirectXオブジェクトインスタンス構造体参照</param>
 			/// <param name="desc">描画リソース設定構造体参照</param>
 			/// <returns>初期化の成否</returns>
-			[[nodiscard]] static HRESULT initialize_resource(
+			static void initialize_resource(
 				DirectXContext* context_,
 				const desc::ResourceDesc& desc
 			) {
 
 				//	コマンドアロケーター取得
-				auto allocator = context_->frame_resources[2]->get_allocator();
+				auto& allocator = context_->frame_resources[2]->get_allocator();
 
 				//	コマンドアロケータリセット
-				allocator->reset_allocator();
+				allocator.reset_allocator();
 
 				//	コマンドリストリセット
-				context_->graphic_list->reset_list(allocator->get());
+				context_->graphic_list.reset_list(allocator.get());
 
 
 				/*
@@ -118,18 +119,18 @@ namespace DirectX {
 					パスコマンドを流用して、リソース作成コマンドを作ってもいいかもしれない。
 				*/
 
-				auto* upload = context_->frame_resources[0]->get_upload_resources();
+				auto& upload = context_->frame_resources[0]->get_upload_resources();
 
-				upload->add_upload(desc.mesh_desc.size() * 2);
+				upload.add_upload(desc.mesh_desc.size() * 2);
 
 				for (auto& [name, mesh_desc] : desc.mesh_desc) {
 
-					auto ref_vec = upload->allocate_references(2);
+					auto ref_vec = upload.allocate_references(2);
 
 					//	作成
 					auto mesh = mesh_desc->make_mesh(
-						context_->device_->get(),
-						context_->graphic_list->get(),
+						context_->device_,
+						context_->graphic_list.get(),
 						ref_vec
 					);
 					if (mesh) {
@@ -143,7 +144,6 @@ namespace DirectX {
 								"add_draw_object = false",
 								"name = ", name
 							);
-							return E_FAIL;
 						}
 
 					}
@@ -152,11 +152,12 @@ namespace DirectX {
 							"make_mesh_object = false",
 							"name = ", name
 						);
-						return E_FAIL;
 					}
 				}
 
-
+				/*
+					ここから　別initializerに分けることを検討
+				*/
 				{
 					D3D12_VIEWPORT viewport{};
 					viewport.TopLeftX = 0;
@@ -173,56 +174,67 @@ namespace DirectX {
 
 					auto camera = std::make_unique<ClassModule::DescriptorGroup::CameraObject>();
 					auto hr = camera->create_camera_object(
-						context_->device_->get(),
+						context_->device_,
 						context_->heap_container->get_heap_allocator(
 							Container::DescriptorHeapKey{ D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV }
 						),
+						context_->frame_resource_index.get(),
 						viewport,
 						scissorRect
 					);
 					if (FAILED(hr)) {
-						return hr;
+						InitializeLog::hresult_error_log(hr);
 					}
-					camera->get_camera_transform().translation_ = { 0,0,-3 };
-					camera->update_camera_object();
+					else {
 
-					if (!context_->camera_object_container->add_camera_object(
-						Container::CameraObjectKey{ "MainCamera" },
-						std::move(camera)
-					)) {
-						return E_FAIL;
+						camera->get_camera_transform().translation_ = { 0,0,-3 };
+						camera->update_camera_object();
+
+						if (!context_->camera_object_container->add_camera_object(
+							Container::CameraObjectKey{ "MainCamera" },
+							std::move(camera)
+						)) {
+							DEBUG_ERROR_LOG(
+								"add_camera_object = false",
+								"name = MainCamera"
+							);
+						}
 					}
 
 					hr = context_->player->create_mesh_object(
-						context_->device_->get(),
-						context_->graphic_list->get(),
+						context_->device_,
+						context_->graphic_list.get(),
 						context_->heap_container->get_heap_allocator(
 							Container::DescriptorHeapKey{ D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV }
 						),
+						context_->back_buffer_index.get(),
 						1,
 						context_->draw_object_container->get_draw_object(
 							Container::DrawObjectKey{ "NormalBox" }
 						)
 					);
 					if (FAILED(hr)) {
-						return hr;
+						InitializeLog::hresult_error_log(hr);
 					}
-
-					context_->player->get_transform().scale_ *= 0.5;
-					context_->player->update_mesh_object();
+					else {
+						context_->player->get_transform().rotate_local(
+							{ HandyItems::Math::MathF::HALF_PI / 2,HandyItems::Math::MathF::HALF_PI / 2,0 }
+						);
+						context_->player->update_mesh_object();
+					}
+					
 				}
 
 				//	コマンドリストをクローズ
-				context_->graphic_list->get()->Close();
+				context_->graphic_list->Close();
 
 				//	コマンドキューにコマンドリストを送信
-				ID3D12CommandList* ppCommandLists[] = { context_->graphic_list->get() };
-				context_->graphic_queue->get()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+				ID3D12CommandList* ppCommandLists[] = { context_->graphic_list.get() };
+				context_->graphic_queue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
 				//	シグナルを送って配列に保存
-				context_->frame_resources[2]->end_frame_signal(context_->graphic_queue->get());
+				context_->frame_resources[2]->end_frame_signal(context_->graphic_queue.get());
 
-				return S_OK;
 			}
 
 
@@ -233,11 +245,6 @@ namespace DirectX {
 			/// コンストラクタ
 			/// </summary>
 			InitializeResource() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~InitializeResource() = default;
 
 		};
 	}

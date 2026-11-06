@@ -31,16 +31,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			Device() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~Device() = default;
-
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>
@@ -68,6 +58,15 @@ namespace DirectX {
 			/// </summary>
 			/// <returns>デバイス参照</returns>
 			[[nodiscard]] ID3D12Device* operator -> () const noexcept {
+
+				return get();
+			}
+
+			/// <summary>
+			/// デバイス間接参照演算子オーバーロード
+			/// </summary>
+			/// <returns>デバイス参照</returns>
+			[[nodiscard]] operator ID3D12Device* () const noexcept {
 
 				return get();
 			}

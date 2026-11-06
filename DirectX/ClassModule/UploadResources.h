@@ -39,17 +39,12 @@ namespace DirectX {
 			/// 引数付きコンストラクタ
 			/// </summary>
 			/// <param name="size">初期確保サイズ</param>
-			UploadResources(
+			explicit UploadResources(
 				std::size_t size
 			) {
 				add_upload(size);
 				reference_.add_references(upload_);
 			}
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~UploadResources() = default;
 
 			/* ===== 取得関数 ===== */
 

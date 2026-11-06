@@ -74,16 +74,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 			
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			DepthBuffer() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~DepthBuffer() = default;
-
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>
@@ -96,7 +86,7 @@ namespace DirectX {
 			[[nodiscard]] HRESULT creata_depth_buffer(
 				ID3D12Device* device_,
 				D3D12_CPU_DESCRIPTOR_HANDLE handle,
-				desc::DepthBufferDesc desc
+				const desc::DepthBufferDesc& desc
 			) {
 
 				//	リソース設定
@@ -155,7 +145,7 @@ namespace DirectX {
 			/// DSVハンドル取得関数
 			/// </summary>
 			/// <returns>DSV CPUハンドル</returns>
-			[[nodiscard]] D3D12_CPU_DESCRIPTOR_HANDLE get_DSV_handle() const noexcept {
+			[[nodiscard]] const D3D12_CPU_DESCRIPTOR_HANDLE& get_DSV_handle() const noexcept {
 
 				return dsv_handle;
 			}

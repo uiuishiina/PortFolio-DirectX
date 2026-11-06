@@ -11,6 +11,8 @@
 #include"../Container/PiplineStateContainer.h"
 #include"../Helpers/PiplineStateReference.h"
 
+#include"InitializeLog.h"
+
 //	その他
 #include<vector>
 #include<utility>
@@ -95,23 +97,23 @@ namespace DirectX {
 			/// <summary>
 			/// 描画パイプライン初期化関数
 			/// </summary>
-			/// <param name="context">DirectXオブジェクトインスタンス構造体参照</param>
+			/// <param name="context_">DirectXオブジェクトインスタンス構造体参照</param>
 			/// <param name="desc_">描画パイプライン設定構造体</param>
 			/// <returns>初期化の成否</returns>
-			[[nodiscard]] static HRESULT initialize_pipline(
-				DirectXContext* context,
-				desc::PiplineDesc& desc_
+			static void initialize_pipline(
+				DirectXContext* context_,
+				const desc::PiplineDesc& desc_
 			) {
 
 				/* ===== RootSignature作成 ===== */
 				{
 					std::vector<std::string> root_list{};
 
-					for (auto& [name, desc] : desc_.root_) {
+					for (const auto& [name, desc] : desc_.root_) {
 
 						auto root = std::make_unique<ClassObject::RootSignature>();
 						const auto hr = root->create_root_signature(
-							context->device_->get(),
+							context_->device_,
 							desc
 						);
 						if (FAILED(hr)) {
@@ -119,21 +121,21 @@ namespace DirectX {
 								"create_root_signature FAILED = ",
 								name
 							);
-							return hr;
-						}
-
-						if (!context->root_signature_container->add_root_signature(
-							Container::RootSignatureKey{ name.c_str() },
-							std::move(root)
-						)) {
-							DEBUG_ERROR_LOG(
-								"add_root_signature = false",
-								"name = ", name
-							);
-							return E_FAIL;
+							Initialize::InitializeLog::hresult_error_log(hr);
 						}
 						else {
-							root_list.push_back(name);
+							if (!context_->root_signature_container->add_root_signature(
+								Container::RootSignatureKey{ name.c_str() },
+								std::move(root)
+							)) {
+								DEBUG_ERROR_LOG(
+									"add_root_signature = false",
+									"name = ", name
+								);
+							}
+							else {
+								root_list.push_back(name);
+							}
 						}
 					}
 					DEBUG_LOG(
@@ -149,37 +151,40 @@ namespace DirectX {
 				{
 					std::vector<std::string> pipline_list{};
 
-					for (auto& [name, ref, desc] : desc_.pipline_) {
+					for (const auto& [name, ref, desc] : desc_.pipline_) {
 
 						auto pipline = std::make_unique<ClassObject::PiplineState>();
 
-						//	参照設定
-						ref.set(context, desc);
+						const auto copy_desc = ClassObject::desc::Factory::PipelineStateDescFactory::create_desc(
+							context_,
+							desc,
+							ref
+						);
 
 						const auto hr = pipline->create_pipline(
-							context->device_->get(),
-							desc
+							context_->device_,
+							copy_desc
 						);
 						if (FAILED(hr)) {
 							DEBUG_ERROR_LOG(
 								"create_pipline FAILED = ",
 								name
 							);
-							return hr;
-						}
-
-						if (!context->pipline_state_container->add_pipline_state(
-							Container::PiplineStateKey{ name.c_str() },
-							std::move(pipline)
-						)) {
-							DEBUG_ERROR_LOG(
-								"add_pipline_state = false",
-								"name = ", name
-							);
-							return E_FAIL;
+							Initialize::InitializeLog::hresult_error_log(hr);
 						}
 						else {
-							pipline_list.push_back(name);
+							if (!context_->pipline_state_container->add_pipline_state(
+								Container::PiplineStateKey{ name.c_str() },
+								std::move(pipline)
+							)) {
+								DEBUG_ERROR_LOG(
+									"add_pipline_state = false",
+									"name = ", name
+								);
+							}
+							else {
+								pipline_list.push_back(name);
+							}
 						}
 					}
 					DEBUG_LOG(
@@ -190,8 +195,6 @@ namespace DirectX {
 						DEBUG_LOG(name);
 					}
 				}
-
-				return S_OK;
 			}
 
 		private:
@@ -201,11 +204,6 @@ namespace DirectX {
 			/// コンストラクタ
 			/// </summary>
 			InitializePipline() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~InitializePipline() = default;
 
 		};
 	}

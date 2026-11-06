@@ -76,7 +76,7 @@ namespace DirectX {
 			/// <summary>
 			/// デストラクタ
 			/// </summary>
-			virtual ~UploadResourceBase() {
+			~UploadResourceBase() override {
 				unmap_resource();
 			}
 

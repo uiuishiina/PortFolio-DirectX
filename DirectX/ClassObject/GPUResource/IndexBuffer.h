@@ -23,17 +23,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			IndexBuffer() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~IndexBuffer() = default;
-
-
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>
@@ -124,7 +113,6 @@ namespace DirectX {
 
 				return S_OK;
 			}
-
 
 			/* ===== 取得関数 ===== */
 

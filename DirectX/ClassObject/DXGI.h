@@ -28,16 +28,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			DXGI() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~DXGI() = default;
-
 			/* ===== 初期化関数 ===== */
 			
 			/// <summary>

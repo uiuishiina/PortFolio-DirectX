@@ -2,7 +2,7 @@
 
 /* ========== Includeファイル ========== */
 
-#include"../Helpers/CommandPassDesc.h"
+#include"../Helpers/CommandPathDesc.h"
 
 #include<vector>
 
@@ -19,7 +19,7 @@ namespace DirectX {
 		/// <summary>
 		/// パス名前空間
 		/// </summary>
-		namespace Pass {
+		namespace Path {
 
 			/// <summary>
 			/// コマンド名前空間
@@ -181,7 +181,7 @@ namespace DirectX {
 					PassOrder追加フラグ
 				*/
 
-				const CommandPassDesc Begin{
+				const CommandPathDesc Begin{
 					"Begin",
 					{
 						BackBuffer::TransitionTarget,
@@ -190,7 +190,7 @@ namespace DirectX {
 					}
 				};
 
-				const CommandPassDesc Clear{
+				const CommandPathDesc Clear{
 					"Clear",
 					{
 						BackBuffer::ClearBlack,
@@ -198,7 +198,7 @@ namespace DirectX {
 					}
 				};
 
-				const CommandPassDesc SetView{
+				const CommandPathDesc SetView{
 					"SetView",
 					{
 						View::ViewPort,
@@ -206,7 +206,7 @@ namespace DirectX {
 					}
 				};
 
-				const CommandPassDesc End{
+				const CommandPathDesc End{
 					"End",
 					{
 						BackBuffer::TransitionPresent

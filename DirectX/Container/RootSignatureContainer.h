@@ -57,16 +57,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			RootSignatureContainer() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~RootSignatureContainer() = default;
-
 			/* ===== 追加関数 ===== */
 
 			/// <summary>

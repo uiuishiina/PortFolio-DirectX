@@ -3,7 +3,8 @@
 /* ========== Includeファイル ========== */
 
 #include"Mesh.h"
-#include"../DescriptorGroup/TransformBufferGroup.h"
+#include"Math/BaseStruct/Transform.h"
+#include"../DescriptorGroup/ConstantBufferGroup.h"
 
 /// <summary>
 /// DirectX名前空間
@@ -20,26 +21,14 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			MeshObject() :
-				transform_{},
-				transform_buffers{ std::make_unique<DescriptorGroup::TransformBufferGroup>() } {}
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~MeshObject() = default;
-
-
 			/* ===== 初期化関数 ===== */
 
 			[[nodiscard]] HRESULT create_mesh_object(
 				ID3D12Device* device_,
 				ID3D12GraphicsCommandList* list_,
 				DescriptorHeapAllocator* allocator,
-				UINT index,
+				const CurrentIndexBase* index,
+				UINT register_,
 				DrawObjectBase* mesh
 			) {
 
@@ -48,15 +37,16 @@ namespace DirectX {
 				}
 				mesh_ = mesh;
 
-				const auto hr = transform_buffers->create_constant_buffer_group(
+				const auto hr = transform_buffers.create_constant_buffer_group(
 					device_,
 					allocator,
-					transform_
+					index,
+					transform_.get_matrix()
 				);
 				if (FAILED(hr)) {
 					return hr;
 				}
-				register_index = index;
+				register_index = register_;
 
 				return hr;
 			}
@@ -71,7 +61,7 @@ namespace DirectX {
 				ID3D12GraphicsCommandList* list_
 			) const noexcept {
 
-				transform_buffers->get_current_instance()->set_buffer(
+				transform_buffers.get_current_instance()->set_constant_buffer(
 					register_index, 
 					list_
 				);
@@ -81,16 +71,15 @@ namespace DirectX {
 
 			void update_mesh_object() {
 
-				transform_buffers->update_index();
-				transform_buffers->update_buffer(transform_);
+				transform_buffers.update_buffer(transform_.get_matrix());
 			}
 
 			/// <summary>
 			/// トランスフォームバッファグループ参照取得関数
 			/// </summary>
 			/// <returns>取得したトランスフォームバッファグループ参照</returns>
-			[[nodiscard]] DescriptorGroup::TransformBufferGroup* get_transform_buffer_group() const noexcept {
-				return transform_buffers.get();
+			[[nodiscard]] DescriptorGroup::ConstantBufferGroup<HandyItems::Math::Matrix>& get_constant_buffer_group() {
+				return transform_buffers;
 			}
 
 			[[nodiscard]] HandyItems::Math::Transform& get_transform() {
@@ -110,7 +99,7 @@ namespace DirectX {
 			/// <summary>
 			/// トランスフォームバッファ
 			/// </summary>
-			std::unique_ptr<DescriptorGroup::TransformBufferGroup> transform_buffers{};
+			DescriptorGroup::ConstantBufferGroup<HandyItems::Math::Matrix> transform_buffers{};
 
 			/// <summary>
 			/// コンスタントバッファレジスターインデックス

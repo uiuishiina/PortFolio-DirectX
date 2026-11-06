@@ -151,16 +151,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			PiplineState() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~PiplineState() = default;
-
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>
@@ -170,8 +160,8 @@ namespace DirectX {
 			/// <param name="desc">パイプラインステート設定構造体</param>
 			/// <returns>作成の成否</returns>
 			[[nodiscard]] HRESULT create_pipline(
-				ID3D12Device* device,
-				desc::PipelineStateDesc& desc
+				ID3D12Device* device_,
+				const desc::PipelineStateDesc& desc
 			);
 
 			/* ===== 追加関数 ===== */

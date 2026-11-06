@@ -20,7 +20,7 @@ using namespace DirectX::ClassObject;
 /// <param name="desc">HLSLシェーダー設定構造体参照</param>
 /// <returns>コンパイルの成否</returns>
 [[nodiscard]] HRESULT ShaderCompiler::compile_shader(
-	desc::ShaderDesc& desc
+	const desc::ShaderDesc& desc
 ) {
 
 	//	デバッグ設定

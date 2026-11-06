@@ -64,17 +64,22 @@ namespace HandyItems {
 				scale_{ scale } {
 			}
 
+			[[nodiscard]] Matrix get_local_matrix() const {
+
+				return MathF::transform_to_matrix(
+					translation_,
+					rotation_,
+					scale_
+				);
+			}
+
 			/// <summary>
 			/// 行列取得関数
 			/// </summary>
 			/// <returns>取得した行列</returns>
 			[[nodiscard]] Matrix get_matrix() const {
 
-				const auto mat = MathF::transform_to_matrix(
-					translation_,
-					rotation_,
-					scale_
-				);
+				const auto mat = get_local_matrix();
 
 				return parent_ ? parent_->get_matrix() * mat : mat;
 			}
@@ -83,18 +88,37 @@ namespace HandyItems {
 			/// 平行移動適用関数
 			/// </summary>
 			/// <param name="move">適用する移動ベクトル</param>
-			void translate(
+			void translate_local(
 				const Float3& move
 			) {
 
 				translation_ += move;
+			}
+			/// <summary>
+			/// 平行移動適用関数
+			/// </summary>
+			/// <param name="move">適用する移動ベクトル</param>
+			void translate_world(
+				const Float3& move
+			) {
+				if (parent_) {
+
+					const auto inverse = parent_->get_matrix().inverse();
+					if (inverse.has_value()) {
+						translation_ +=
+							MathF::transform_direction(inverse.value(), move);
+						return;
+					}
+				}
+
+				translate_local(move);
 			}
 			
 			/// <summary>
 			/// 回転適用関数
 			/// </summary>
 			/// <param name="rotation">適用するクオータニオン</param>
-			void rotate(
+			void rotate_local(
 				const Quaternion& delta
 			) {
 
@@ -107,11 +131,36 @@ namespace HandyItems {
 			/// 回転適用関数
 			/// </summary>
 			/// <param name="euler">適用するオイラー角</param>
-			void rotate(
+			void rotate_local(
 				const Float3& euler
 			) {
 
-				rotate(
+				rotate_local(
+					MathF::from_euler(euler)
+				);
+			}
+
+			/// <summary>
+			/// 回転適用関数
+			/// </summary>
+			/// <param name="rotation">適用するクオータニオン</param>
+			void rotate_world(
+				const Quaternion& delta
+			) {
+
+				rotation_ = (
+					delta * rotation_
+					).normalized();
+			}
+			/// <summary>
+			/// 回転適用関数
+			/// </summary>
+			/// <param name="rotation">適用するクオータニオン</param>
+			void rotate_world(
+				const Float3& euler
+			) {
+
+				rotate_world(
 					MathF::from_euler(euler)
 				);
 			}

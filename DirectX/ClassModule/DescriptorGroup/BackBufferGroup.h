@@ -27,28 +27,18 @@ namespace DirectX {
 			public:
 				/* ========== Publicメンバー関数 ========== */
 
-				/// <summary>
-				/// コンストラクタ
-				/// </summary>
-				BackBufferGroup():
-					DesctirptorGroupBase(State::HeapState::Buffering) {}
-
-				/// <summary>
-				/// デストラクタ
-				/// </summary>
-				~BackBufferGroup() = default;
-
 				/* ===== 初期化関数 ===== */
 
 				[[nodiscard]] HRESULT create_back_buffer_group(
 					ID3D12Device* device_,
 					IDXGISwapChain4* swapchain_,
-					DescriptorHeapAllocator* allocator
+					DescriptorHeapAllocator* allocator_,
+					const CurrentIndexBase* index_
 				) {
 
 					//	DescriptorResource初期化
 					{
-						const auto hr = initialize_resource_group(allocator);
+						const auto hr = initialize_resource_group(allocator_, index_);
 						if (FAILED(hr)) {
 							return hr;
 						}

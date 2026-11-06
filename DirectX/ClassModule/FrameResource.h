@@ -31,27 +31,21 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			//	コンストラクタ削除
-			FrameResource() = delete;
-
-			/// <summary>
-			/// 引数付きコンストラクタ
-			/// </summary>
-			/// <param name="fence">フェンスインスタンスWeak参照</param>
-			FrameResource(
+			[[nodiscard]] HRESULT initialize_resources(
+				ID3D12Device* device_,
 				ClassObject::Fence* fence
-			):
-				fence_{ fence } {
+			) {
+				auto hr = graphic_allocatpor.create_allocator(
+					device_,
+					D3D12_COMMAND_LIST_TYPE_DIRECT
+				);
+				if (FAILED(hr)) {
+					return hr;
+				}
 
-				graphic_allocatpor = std::make_unique<ClassObject::CommandAllocator>();
-				upload_resources = std::make_unique<ClassModule::UploadResources>();
-
+				fence_ = fence;
+				return hr;
 			}
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~FrameResource() = default;
 
 			/* ===== 実行関数 ===== */
 
@@ -71,7 +65,8 @@ namespace DirectX {
 			/// </summary>
 			void reset_frame_resource() {
 
-				upload_resources->clear();
+				graphic_allocatpor.reset_allocator();
+				upload_resources.clear();
 			}
 
 			/* ===== 取得関数 ===== */
@@ -89,18 +84,18 @@ namespace DirectX {
 			/// コマンドアロケーター参照取得関数
 			/// </summary>
 			/// <returns>コマンドアロケーター参照</returns>
-			[[nodiscard]] ClassObject::CommandAllocator* get_allocator() const noexcept {
+			[[nodiscard]] ClassObject::CommandAllocator& get_allocator() {
 
-				return graphic_allocatpor.get();
+				return graphic_allocatpor;
 			}
 
 			/// <summary>
 			/// UploadResources参照取得関数
 			/// </summary>
 			/// <returns>UploadResources参照</returns>
-			[[nodiscard]] ClassModule::UploadResources* get_upload_resources() const noexcept {
+			[[nodiscard]] ClassModule::UploadResources& get_upload_resources() {
 
-				return upload_resources.get();
+				return upload_resources;
 			}
 
 		private:
@@ -114,17 +109,17 @@ namespace DirectX {
 			/// <summary>
 			/// フェンスインスタンスWeak参照
 			/// </summary>
-			ClassObject::Fence* fence_;
+			ClassObject::Fence* fence_{};
 
 			/// <summary>
 			/// 描画用コマンドアロケーターインスタンス
 			/// </summary>
-			std::unique_ptr<ClassObject::CommandAllocator> graphic_allocatpor{};
+			ClassObject::CommandAllocator graphic_allocatpor{};
 
 			/// <summary>
 			/// UploadResourcesインスタンス
 			/// </summary>
-			std::unique_ptr<ClassModule::UploadResources> upload_resources{};
+			ClassModule::UploadResources upload_resources{};
 
 		};
 	}

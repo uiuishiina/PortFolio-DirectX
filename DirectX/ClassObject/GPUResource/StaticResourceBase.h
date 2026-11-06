@@ -132,11 +132,6 @@ namespace DirectX {
 			/// </summary>
 			StaticResourceBase() = default;
 
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			virtual ~StaticResourceBase() = default;
-
 		protected:
 			/* ========== Protectedメンバー変数 ========== */
 

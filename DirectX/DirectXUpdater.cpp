@@ -12,69 +12,71 @@ using namespace DirectX;
 
 [[nodiscard]] bool DirectXUpdator::begin_update() {
 
-	
+	++frame_count;
+
+	//	このUpdateで利用するインデックスに変更する
+	context_->back_buffer_index->update_index();
+	context_->frame_resource_index->update_index();
 
 	return true;
 }
 
 void DirectXUpdator::sync_frame_resource() {
 
-	const auto wait = context_->frame_resources[current_index]->get_frame_value();
+	//	利用するインデックスから参照
+	const auto wait = context_->frame_resources[context_->frame_resource_index->get_current_index()]
+		->get_frame_value();
 
 	//	使えるまで待機
-	context_->fence_->wait_to_completed_value(wait);
+	context_->fence_.wait_to_completed_value(wait);
 }
 
 void DirectXUpdator::reset_frame_resource() {
 
-	//	コマンドアロケーター取得
-	auto allocator = context_->frame_resources[current_index]->get_allocator();
+	//	フレームリソースリセット
+	context_->frame_resources[context_->frame_resource_index->get_current_index()]->reset_frame_resource();
 
-	//	コマンドアロケータリセット
-	allocator->reset_allocator();
+	//	コマンドアロケーター取得
+	auto& allocator = context_->frame_resources[context_->frame_resource_index->get_current_index()]
+		->get_allocator();
 
 	//	コマンドリストリセット
-	context_->graphic_list->reset_list(allocator->get());
+	context_->graphic_list.reset_list(allocator.get());
+
 }
 
-void DirectXUpdator::update() {
+void DirectXUpdator::update_resource() {
 
-	
 }
 
-void DirectXUpdator::apply_pass() {
+void DirectXUpdator::apply_path() {
 
-	auto buffer_index = context_->swapchain_->get()->GetCurrentBackBufferIndex();
-	auto size = context_->back_buffer_group->get_current_index();
-	auto frame = ClassModule::FrameContext{ context_, static_cast<UINT>(size), current_index};
+	auto frame = ClassModule::FrameContext{ context_,frame_count };
 
 	for (auto& pass : pass_order) {
-		pass->apply_pass(frame);
+		pass->apply_path(frame);
 	}
 }
 
 void DirectXUpdator::execute_command_lists() {
 
 	//	コマンドリストをクローズ
-	context_->graphic_list->get()->Close();
+	context_->graphic_list->Close();
 
 	//	コマンドキューにコマンドリストを送信
-	ID3D12CommandList* ppCommandLists[] = { context_->graphic_list->get() };
-	context_->graphic_queue->get()->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+	ID3D12CommandList* ppCommandLists[] = { context_->graphic_list.get() };
+	context_->graphic_queue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
 	//	シグナルを送って配列に保存
-	context_->frame_resources[current_index]->end_frame_signal(context_->graphic_queue->get());
+	context_->frame_resources[context_->frame_resource_index->get_current_index()]
+		->end_frame_signal(context_->graphic_queue.get());
 }
 
 void DirectXUpdator::present() {
 
-	context_->swapchain_->get()->Present(1, 0);
+	context_->swapchain_->Present(1, 0);
 }
 
 void DirectXUpdator::end_update() {
 
-	context_->back_buffer_group->update_index();
-	context_->depth_buffer_group->update_index();
-
-	current_index++;
 }

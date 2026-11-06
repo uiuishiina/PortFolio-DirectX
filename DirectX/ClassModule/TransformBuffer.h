@@ -3,7 +3,7 @@
 /* ========== Includeファイル ========== */
 
 //	HandyItems
-#include"../../HandyItems/Math/BaseStruct/Transform.h"
+#include"Math/BaseStruct/Transform.h"
 
 //	DirectX
 #include"../ClassObject/GPUResource/ConstantBuffer.h"
@@ -37,11 +37,6 @@ namespace DirectX {
 			TransformBuffer() :
 				constant_buffer{ std::make_unique<ClassObject::ConstantBuffer<Matrix>>() } {}
 
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~TransformBuffer() = default;
-
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>
@@ -70,7 +65,7 @@ namespace DirectX {
 			bool update_buffer(const Transform& transform) {
 
 				return constant_buffer->upload_buffer(
-					transform.get_matrix().transpose()
+					transform.get_matrix()
 				);
 			}
 

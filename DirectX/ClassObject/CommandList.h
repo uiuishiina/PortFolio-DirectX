@@ -27,16 +27,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			CommandList() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~CommandList() = default;
-
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>

@@ -3,8 +3,8 @@
 /* ========== Includeファイル ========== */
 
 //	DirectX
-#include"DrawObject/DrawObjectBase.h"
-#include"PassBase.h"
+#include"../DrawObject/DrawObjectBase.h"
+#include"PathBase.h"
 
 /// <summary>
 /// DirectX名前空間
@@ -19,20 +19,10 @@ namespace DirectX {
 		/// <summary>
 		/// オブジェクト描画パス
 		/// </summary>
-		class DrawObjectPass : public PassBase
+		class DrawObjectPath : public PathBase
 		{
 		public:
 			/* ========== Publicメンバー関数 ========== */
-
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			DrawObjectPass() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~DrawObjectPass() = default;
 
 			/* ===== 追加関数 ===== */
 
@@ -57,7 +47,7 @@ namespace DirectX {
 			/// 描画パス呼び出し純粋仮想関数
 			/// </summary>
 			/// <param name="context"></param>
-			void apply_pass(
+			void apply_path(
 				FrameContext& context_
 			) override {
 

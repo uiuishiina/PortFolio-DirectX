@@ -22,12 +22,12 @@ namespace {
     const wchar_t* window_name = L"MainWindow";
 
     /// <summary>
-   /// ウィンドウプロシージャ関数
-   /// </summary>
-   /// <param name="hwnd">ウィンドウハンドル</param>
-   /// <param name="msg">ウィンドウメッセージ</param>
-   /// <param name="wParam">wParam</param>
-   /// <param name="lParam">lParam</param>
+    /// ウィンドウプロシージャ関数
+    /// </summary>
+    /// <param name="hwnd">ウィンドウハンドル</param>
+    /// <param name="msg">ウィンドウメッセージ</param>
+    /// <param name="wParam">wParam</param>
+    /// <param name="lParam">lParam</param>
     static LRESULT CALLBACK static_window_proc(
         HWND hwnd,
         UINT msg,

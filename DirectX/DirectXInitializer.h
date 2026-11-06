@@ -10,8 +10,10 @@
 
 //	DirectX
 #include"DirectXContext.h"
+
+#include"Initializer/InitializeLog.h"
 #include"Initializer/InitializeCore.h"
-#include"Initializer/InitializePass.h"
+#include"Initializer/InitializePath.h"
 #include"Initializer/InitializeShader.h"
 #include"Initializer/InitializePipline.h"
 #include"Initializer/InitializeResource.h"
@@ -25,53 +27,15 @@
 /// </summary>
 namespace DirectX {
 
-	/// <summary>
-	/// 初期作成時ログ出力クラス
-	/// </summary>
-	class InitializeLog final
-	{
-	public:
-		/* ========== Publicメンバー関数 ========== */
-
-		/* ===== 実行関数 ===== */
-
-		/// <summary>
-		/// HRESULTログ出力関数
-		/// </summary>
-		/// <param name="hr">ログに出力するHRESULT</param>
-		static void hresult_log(
-			HRESULT hr
-		);
-
-		/// <summary>
-		/// HRESULTエラーログ出力関数
-		/// </summary>
-		/// <param name="hr">ログに出力するHRESULT</param>
-		static void hresult_error_log(
-			HRESULT hr
-		);
-
-	private:
-		/* ========== Privateメンバー関数 ========== */
-
-		/// <summary>
-		/// コンストラクタ
-		/// </summary>
-		InitializeLog() = default;
-
-		/// <summary>
-		/// デストラクタ
-		/// </summary>
-		~InitializeLog() = default;
-
-	};
-
 
 	/// <summary>
 	/// 
 	/// </summary>
 	namespace desc {
 
+		/// <summary>
+		/// 初期化設定構造体
+		/// </summary>
 		struct InitializeDesc {
 
 			/* ========== メンバー変数 ========== */
@@ -102,7 +66,7 @@ namespace DirectX {
 
 			/* -- Passes -- */
 
-			Initialize::desc::PassDesc pass_{};
+			Initialize::desc::PathDesc pass_{};
 		};
 	}
 
@@ -118,37 +82,21 @@ namespace DirectX {
 	typename Core = Initialize::InitializeCore
 	>
 	requires
-	std::derived_from<Core, Initialize::InitializeCore>
+	std::derived_from<Core, Initialize::InitializeCoreBase>
 	class DirectXInitializer final : HandyItems::others::NonCopyableMovableBase 
 	{
 	public:
 		/* ========== Publicメンバー関数 ========== */
-
-		/// <summary>
-		/// コンストラクタ
-		/// </summary>
-		DirectXInitializer() = default;
-
-		/// <summary>
-		/// デストラクタ
-		/// </summary>
-		~DirectXInitializer() = default;
 
 		/* ===== 初期化関数 ===== */
 
 		/// <summary>
 		/// DirectX初期化フロー呼び出し関数
 		/// </summary>
-		/// <param name="context">DirectXオブジェクトインスタンスまとめクラス参照</param>
-		/// <param name="share">アプリケーションデータシェアクラス参照</param>
-		/// <param name="hwnd">ウィンドウハンドル</param>
-		/// <param name="width">ウィンドウの横幅</param>
-		/// <param name="height">ウィンドウの縦幅</param>
-		/// <param name="back_buffer_size">描画バッファリングサイズ</param>
-		/// <param name="frame_resource_size">リソースバッファリングサイズ</param>
+		/// <param name="desc">初期化設定構造体参照</param>
 		/// <returns>初期化の成否</returns>
 		[[nodiscard]] bool initialize(
-			desc::InitializeDesc& desc
+			const desc::InitializeDesc& desc
 		) {
 
 			//	コア機能初期化
@@ -157,51 +105,39 @@ namespace DirectX {
 			auto hr = core.initialize_core(
 				desc.context_,
 				desc.back_buffer_size,
+				desc.frame_resource_size,
 				desc.core_
 			);
 			if (FAILED(hr)) {
-
-				InitializeLog::hresult_error_log(hr);
+				Initialize::InitializeLog::hresult_error_log(hr);
 				return false;
 			}
 
 
 			//	シェーダー初期化
 
-			hr = Initialize::InitializeShader::initialize_shader(
+			Initialize::InitializeShader::initialize_shader(
 				desc.context_,
 				desc.shader_
 			);
-			if (FAILED(hr)) {
-
-				InitializeLog::hresult_error_log(hr);
-				return false;
-			}
-
 
 			//	描画パイプライン初期化
 
-			hr = Initialize::InitializePipline::initialize_pipline(
+			Initialize::InitializePipline::initialize_pipline(
 				desc.context_,
 				desc.pipline_
 			);
-			if (FAILED(hr)) {
 
-				InitializeLog::hresult_error_log(hr);
-				return false;
-			}
+			//	描画リソース初期化
 
-			hr = Initialize::InitializeResource::initialize_resource(
+			Initialize::InitializeResource::initialize_resource(
 				desc.context_,
 				desc.resource_
 			);
-			if (FAILED(hr)) {
 
-				InitializeLog::hresult_error_log(hr);
-				return false;
-			}
+			//	描画パス初期化
 
-			Initialize::InitializePass::initialize_pass(
+			Initialize::InitializePath::initialize_path(
 				desc.context_,
 				desc.pass_
 			);

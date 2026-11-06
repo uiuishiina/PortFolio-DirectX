@@ -58,18 +58,13 @@ namespace DirectX {
 				/* ========== メンバー関数 ========== */
 
 				/// <summary>
-				/// コンストラクタ
-				/// </summary>
-				DescriptorHeapDesc() = default;
-
-				/// <summary>
 				/// 引数付きコンストラクタ
 				/// </summary>
 				/// <param name="type">ディスクリプターヒープタイプ設定</param>
 				/// <param name="size">ディスクリプターヒープサイズ設定</param>
 				/// <param name="flags">シェーダー可視設定</param>
 				/// <param name="node">ノードマスク... 初期設定[ 0 ]</param>
-				DescriptorHeapDesc(
+				explicit DescriptorHeapDesc(
 					D3D12_DESCRIPTOR_HEAP_TYPE type,
 					UINT size,
 					D3D12_DESCRIPTOR_HEAP_FLAGS flags,
@@ -111,16 +106,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			DescriptorHeap() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~DescriptorHeap() = default;
-			
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>
@@ -130,20 +115,20 @@ namespace DirectX {
 			/// <param name="desc">ディスクリプタヒープ設定ラッパー構造体</param>
 			/// <returns>作成の成否</returns>
 			[[nodiscard]] HRESULT create_descriptor_heap(
-				ID3D12Device* device,
+				ID3D12Device* device_,
 				const desc::DescriptorHeapDesc& desc
 			) {
 
 				const auto desc_ = desc.get();
 
 				//	ディスクリプタヒープ作成
-				const auto hr = device->CreateDescriptorHeap(&desc_, IID_PPV_ARGS(&heap_));
+				const auto hr = device_->CreateDescriptorHeap(&desc_, IID_PPV_ARGS(&heap_));
 				if (FAILED(hr)) {
 					return hr;
 				}
 
 				//	ディスクリプタヒープのメモリサイズを取得
-				descriptor_size = device->GetDescriptorHandleIncrementSize(desc.type_);
+				descriptor_size = device_->GetDescriptorHandleIncrementSize(desc.type_);
 
 				type_ = desc.type_;
 				max_size = desc.numDescriptors_;

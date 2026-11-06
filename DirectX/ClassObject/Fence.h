@@ -27,16 +27,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			Fence() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~Fence() = default;
-
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>

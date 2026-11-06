@@ -3,7 +3,7 @@
 /* ========== Includeファイル ========== */
 
 //	DirectX
-#include"PassBase.h"
+#include"PathBase.h"
 
 #include<functional>
 #include<vector>
@@ -22,21 +22,11 @@ namespace DirectX {
 		/// <summary>
 		/// 描画コマンドクラス
 		/// </summary>
-		class CommandPass : public PassBase
+		class CommandPath : public PathBase
 		{
 			using Command = std::function<void(FrameContext&)>;
 		public:
 			/* ========== Publicメンバー関数 ========== */
-
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			CommandPass() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~CommandPass() = default;
 
 			/* ===== 初期化関数 ===== */
 
@@ -68,7 +58,7 @@ namespace DirectX {
 			/// 描画パス呼び出し関数
 			/// </summary>
 			/// <param name="context">DirectXオブジェクトインスタンス構造体参照</param>
-			void apply_pass(
+			void apply_path(
 				FrameContext& context
 			) override {
 

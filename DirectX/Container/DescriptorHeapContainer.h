@@ -64,16 +64,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			DescriptorHeapContainer() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~DescriptorHeapContainer() = default;
-
 			/* ===== 追加関数 ===== */
 
 			/// <summary>

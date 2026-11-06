@@ -13,14 +13,11 @@
 
 using namespace DirectX;
 
-DirectXContext::DirectXContext(
-	std::uint32_t back_size, 
-	std::uint32_t frame_size
-) {
+/// <summary>
+/// コンストラクタ
+/// </summary>
+DirectXContext::DirectXContext() {
 	
-	back_buffer_size = back_size;
-	frame_resource_size = frame_size;
-
 	/* -- Container -- */
 
 	heap_container = std::make_unique<Container::DescriptorHeapContainer>();
@@ -33,24 +30,13 @@ DirectXContext::DirectXContext(
 
 	/* -- Core -- */
 
-	dxgi_ = std::make_unique<ClassObject::DXGI>();
-	device_ = std::make_unique<ClassObject::Device>();
-	graphic_queue = std::make_unique<ClassObject::CommandQueue>();
-	graphic_list = std::make_unique<ClassObject::CommandList>();
-	fence_ = std::make_unique<ClassObject::Fence>();
-
-	frame_resources.resize(frame_resource_size);
-
-	for (auto& resource : frame_resources) {
-		resource = std::make_unique<ClassModule::FrameResource>(fence_.get());
-	}
-
-	swapchain_ = std::make_unique<ClassObject::SwapChain>();
-		
-	back_buffer_group = std::make_unique<ClassModule::DescriptorGroup::BackBufferGroup>();
-	depth_buffer_group = std::make_unique<ClassModule::DescriptorGroup::DepthBufferGroup>();
+	back_buffer_index = std::make_unique<ClassModule::BackBufferIndex>();
+	frame_resource_index = std::make_unique<ClassModule::FrameResourceIndex>();
 
 	player = std::make_unique<ClassModule::MeshObject>();
 }
 
+/// <summary>
+/// デストラクタ
+/// </summary>
 DirectXContext::~DirectXContext() = default;

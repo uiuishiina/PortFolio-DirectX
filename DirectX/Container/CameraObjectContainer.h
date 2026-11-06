@@ -58,16 +58,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			CameraObjectContainer() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~CameraObjectContainer() = default;
-
 			/* ===== 追加関数 ===== */
 
 			/// <summary>

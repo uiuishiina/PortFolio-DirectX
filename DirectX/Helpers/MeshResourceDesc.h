@@ -37,11 +37,6 @@ namespace DirectX {
 					/* ========== Publicメンバー関数 ========== */
 
 					/// <summary>
-					/// コンストラクタ
-					/// </summary>
-					MeshCreateDescBase() = default;
-
-					/// <summary>
 					/// デストラクタ
 					/// </summary>
 					virtual ~MeshCreateDescBase() = default;
@@ -79,14 +74,11 @@ namespace DirectX {
 
 					/* ========== Publicメンバー関数 ========== */
 
-					//	コンストラクタ削除
-					MeshCreateDesc() = delete;
-
 					/// <summary>
 					/// 引数付きコンストラクタ
 					/// </summary>
 					/// <param name="desc">メッシュ設定構造体</param>
-					MeshCreateDesc(
+					explicit MeshCreateDesc(
 						ClassModule::desc::MeshDesc<T> desc
 					) :
 						desc_{ std::move(desc)} { }

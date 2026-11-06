@@ -32,13 +32,13 @@ struct VS_OutPutColor
 
 cbuffer CameraBuffer : register(b0)
 {
-    matrix view_;
-    matrix projection_;
+    row_major matrix view_;
+    row_major matrix projection_;
 };
 
 cbuffer ObjectTransform : register(b1)
 {
-    matrix obj_transform;
+    row_major matrix obj_transform;
 };
 
 /*

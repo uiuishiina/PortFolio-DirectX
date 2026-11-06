@@ -70,13 +70,10 @@ namespace Windows {
 			height_{ h } {}
 
 		/// <summary>
-		/// 関数呼び出し演算子オーバーロード
+		/// 演算子オーバーロード
 		/// </summary>
 		/// <returns>[ 横幅 ][ 縦幅 ] の構造化束縛</returns>
-		[[nodiscard]] std::pair<
-			std::uint32_t, 
-			std::uint32_t
-		> operator () () const {
+		operator std::pair<std::uint32_t, std::uint32_t> () const {
 			return { width_, height_ };
 		}
 	};
@@ -89,16 +86,6 @@ namespace Windows {
 	{
 	public:
 		/* ========== Publicメンバー関数 ========== */
-
-		/// <summary>
-		/// コンストラクタ
-		/// </summary>
-		Window() = default;
-
-		/// <summary>
-		/// デストラクタ
-		/// </summary>
-		~Window() = default;
 
 		/* ===== 初期化関数 ===== */
 
@@ -223,8 +210,6 @@ namespace Windows {
 		/// ウィンドウ破棄完了フラグ
 		/// </summary>
 		bool complete_destroy = false;
-
-		/* ========== Privateメンバー関数 ========== */
 
 	};
 }

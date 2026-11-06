@@ -3,7 +3,7 @@
 /* ========== Includeファイル ========== */
 
 //	DirectX
-#include"../ClassModule/DrawObjectPass.h"
+#include"../ClassModule/DrawPath/DrawObjectPath.h"
 #include"../Container/DrawObjectConteiner.h"
 
 /// <summary>
@@ -19,7 +19,7 @@ namespace DirectX {
 		/// <summary>
 		/// パス名前空間
 		/// </summary>
-		namespace Pass {
+		namespace Path {
 
 			/// <summary>
 			/// カメラオブジェクト名前空間

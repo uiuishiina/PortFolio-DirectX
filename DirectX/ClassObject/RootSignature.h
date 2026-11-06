@@ -61,16 +61,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			RootSignature() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~RootSignature() = default;
-
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>
@@ -80,8 +70,8 @@ namespace DirectX {
 			/// <param name="desc">ルートシグネチャー設定構造体参照</param>
 			/// <returns>作成の成否</returns>
 			[[nodiscard]] HRESULT create_root_signature(
-				ID3D12Device* device,
-				desc::RootSignatureDesc& desc
+				ID3D12Device* device_,
+				const desc::RootSignatureDesc& desc
 			) {
 
 				//	ルートシグネチャー設定
@@ -116,7 +106,7 @@ namespace DirectX {
 				}
 
 				//	ID3D12RootSignatureの作成
-				return device->CreateRootSignature(
+				return device_->CreateRootSignature(
 					0,
 					serialized->GetBufferPointer(),
 					serialized->GetBufferSize(), 

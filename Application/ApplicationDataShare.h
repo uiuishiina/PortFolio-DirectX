@@ -18,16 +18,6 @@ namespace App {
 	public:
 		/* ========== Publicメンバー関数 ========== */
 
-		/// <summary>
-		/// コンストラクタ削除
-		/// </summary>
-		ApplicationDataShare() = default;
-
-		/// <summary>
-		/// デストラクタ
-		/// </summary>
-		~ApplicationDataShare() = default;
-
 		/* ===== 取得関数 ===== */
 
 		/// <summary>

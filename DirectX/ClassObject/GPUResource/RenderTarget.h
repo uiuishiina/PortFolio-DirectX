@@ -29,15 +29,15 @@ namespace DirectX {
 			/// <summary>
 			/// リソースバリア遷移関数
 			/// </summary>
-			/// <param name="list">コマンドリスト参照</param>
+			/// <param name="list_">コマンドリスト参照</param>
 			/// <param name="next_state">遷移先バリアステート</param>
 			void barrier_transition(
-				ID3D12GraphicsCommandList* list,
+				ID3D12GraphicsCommandList* list_,
 				D3D12_RESOURCE_STATES next_state
 			) {
 
 				barrier_.barrier_transition(
-					list, 
+					list_, 
 					resource_.Get(), 
 					next_state
 				);
@@ -49,7 +49,7 @@ namespace DirectX {
 			/// RTVハンドル取得関数
 			/// </summary>
 			/// <returns>RTV CPUハンドル</returns>
-			[[nodiscard]] D3D12_CPU_DESCRIPTOR_HANDLE get_RTV_handle() const noexcept {
+			[[nodiscard]] const D3D12_CPU_DESCRIPTOR_HANDLE& get_RTV_handle() const noexcept {
 
 				return rtv_handle;
 			}
@@ -57,22 +57,14 @@ namespace DirectX {
 		protected:
 			/* ========== Protectedメンバー関数 ========== */
 
-			//	コンストラクタ削除
-			RenderTarget() = delete;
-
 			/// <summary>
 			/// リソースステート設定コンストラクタ
 			/// </summary>
 			/// <param name="state">初期設定リソースステート</param>
-			RenderTarget(
+			explicit RenderTarget(
 				D3D12_RESOURCE_STATES state
 			) :
 				barrier_{ state } {}
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			virtual ~RenderTarget() = default;
 
 			/* ========== Protectedメンバー変数 ========== */
 

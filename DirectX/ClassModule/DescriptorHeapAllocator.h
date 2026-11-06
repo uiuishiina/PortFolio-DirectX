@@ -70,15 +70,8 @@ namespace DirectX {
 			/// <summary>
 			/// コンストラクタ
 			/// </summary>
-			DescriptorHeapAllocator() {
-
-				heap_ = std::make_unique<ClassObject::DescriptorHeap>();
-			}
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~DescriptorHeapAllocator() = default;
+			DescriptorHeapAllocator() :
+				heap_{ std::make_unique<ClassObject::DescriptorHeap>() } {}
 
 			/* ===== 初期化関数 ===== */
 
@@ -101,14 +94,11 @@ namespace DirectX {
 					return E_INVALIDARG;
 				}
 
-				back_buffer_size = buffer_size;
-				frame_resource_size = resource_size;
-
 				//	ディスクリプターヒープサイズ取得
 				const UINT heap_size = static_cast<UINT>(
 					desc.static_range +
-					(desc.one_buffering_range * back_buffer_size) +
-					(desc.one_frame_range * frame_resource_size)
+					(desc.one_buffering_range * buffer_size) +
+					(desc.one_frame_range * resource_size)
 					);
 				if (heap_size == 0) {
 					return E_INVALIDARG;
@@ -132,20 +122,11 @@ namespace DirectX {
 				}
 
 				//	変数設定
-				static_range = desc.static_range;
-				one_buffering_range = desc.one_buffering_range;
-				one_frame_range = desc.one_frame_range;
 				max_heap_size = heap_size;
 
 				//	キュー初期化
-				for (std::size_t i = 0; i < static_range; i++) {
-					free_static_index.push(i);
-				}
-				for (std::size_t i = 0; i < one_buffering_range; i++) {
-					free_buffering_index.push(i);
-				}
-				for (std::size_t i = 0; i < one_frame_range; i++) {
-					free_frame_index.push(i);
+				for (UINT i = 0; i < heap_size; i++) {
+					free_index.push(static_cast<std::size_t>(i));
 				}
 
 				return hr;
@@ -164,130 +145,31 @@ namespace DirectX {
 				return heap_.get();
 			}
 
-
-			/* -- インデックス -- */
-
 			/// <summary>
-			/// 静的ヒープインデックス取得関数
+			/// ヒープインデックス取得関数
 			/// </summary>
 			/// <returns>取得したインデックス... ないなら [ std::nullopt ]</returns>
-			[[nodiscard]] std::optional<std::size_t> allocate_static_index() {
+			[[nodiscard]] std::optional<std::size_t> allocate_index() {
 
-				return free_static_index.pop();
+				return free_index.pop();
 			}
-
-			/// <summary>
-			/// バッファリング別ヒープインデックス取得関数
-			/// </summary>
-			/// <returns>取得したインデックス... ないなら [ std::nullopt ]</returns>
-			[[nodiscard]] std::optional<std::size_t> allocate_buffering_index() {
-
-				return free_buffering_index.pop();
-			}
-
-			/// <summary>
-			/// フレームリソース別ヒープインデックス取得関数
-			/// </summary>
-			/// <returns>取得したインデックス... ないなら [ std::nullopt ]</returns>
-			[[nodiscard]] std::optional<std::size_t> allocate_frame_index() {
-
-				return free_frame_index.pop();
-			}
-			
-
-			/* -- サイズ設定 -- */
-
-			/// <summary>
-			/// 静的ヒープサイズ取得関数
-			/// </summary>
-			/// <returns>静的ヒープサイズ</returns>
-			[[nodiscard]] std::size_t get_static_range() const noexcept {
-				return static_range;
-			}
-
-			/// <summary>
-			/// バッファリング別ヒープサイズ取得関数
-			/// </summary>
-			/// <returns>バッファリング別ヒープサイズ</returns>
-			[[nodiscard]] std::size_t get_one_buffering_range() const noexcept {
-				return one_buffering_range;
-			}
-
-			/// <summary>
-			/// フレームリソース別ヒープサイズ取得関数
-			/// </summary>
-			/// <returns>フレームリソース別ヒープサイズ</returns>
-			[[nodiscard]] std::size_t get_one_frame_range() const noexcept {
-				return one_frame_range;
-			}
-
-			/// <summary>
-			/// バッファリングサイズ取得関数
-			/// </summary>
-			/// <returns>バッファリングサイズ</returns>
-			[[nodiscard]] std::size_t get_back_buffer_size() const noexcept {
-				return back_buffer_size;
-			}
-			/// <summary>
-			/// フレームリソースサイズ取得関数
-			/// </summary>
-			/// <returns>フレームリソースサイズ</returns>
-			[[nodiscard]] std::size_t get_frame_resource_size() const noexcept {
-				return frame_resource_size;
-			}
-
 
 			/* ===== 追加関数 ===== */
 
 			/// <summary>
-			/// 静的ヒープインデックス返還関数
+			/// ヒープインデックス返還関数
 			/// </summary>
 			/// <param name="index">返還するインデックス</param>
 			/// <returns>返還の成否</returns>
-			bool return_static_index(
+			bool return_index(
 				std::size_t index
 			) {
 
-				if (index >= static_range) {
+				if (index >= static_cast<std::size_t>(max_heap_size)) {
 					return false;
 				}
 
-				free_static_index.push(index);
-
-				return true;
-			}
-
-			/// <summary>
-			/// バッファリング別ヒープインデックス返還関数
-			/// </summary>
-			/// <param name="index">返還するインデックス</param>
-			/// <returns>返還の成否</returns>
-			bool return_buffering_index(
-				std::size_t index
-			) {
-
-				if (index >= one_buffering_range) {
-					return false;
-				}
-
-				free_buffering_index.push(index);
-
-				return true;
-			}
-			/// <summary>
-			/// フレームリソース別ヒープインデックス返還関数
-			/// </summary>
-			/// <param name="index">返還するインデックス</param>
-			/// <returns>返還の成否</returns>
-			bool return_frame_index(
-				std::size_t index
-			) {
-
-				if (index >= one_frame_range) {
-					return false;
-				}
-
-				free_frame_index.push(index);
+				free_index.push(index);
 
 				return true;
 			}
@@ -303,49 +185,12 @@ namespace DirectX {
 			/// <summary>
 			/// 静的ヒープフリーインデックスキュー
 			/// </summary>
-			HandyItems::container::Queue<std::size_t> free_static_index{};
-
-			/// <summary>
-			/// バッファリング別ヒープフリーインデックスキュー
-			/// </summary>
-			HandyItems::container::Queue<std::size_t> free_buffering_index{};
-
-			/// <summary>
-			/// フレームリソース別ヒープフリーインデックスキュー
-			/// </summary>
-			HandyItems::container::Queue<std::size_t> free_frame_index{};
-
-
-			/// <summary>
-			/// 静的ヒープサイズ
-			/// </summary>
-			std::size_t static_range{};
-
-			/// <summary>
-			/// バッファリング別ヒープサイズ
-			/// </summary>
-			std::size_t one_buffering_range{};
-
-			/// <summary>
-			/// フレームリソース別ヒープサイズ
-			/// </summary>
-			std::size_t one_frame_range{};
+			HandyItems::container::Queue<std::size_t> free_index{};
 
 			/// <summary>
 			/// 全体ヒープサイズ
 			/// </summary>
 			UINT max_heap_size{};
-
-
-			/// <summary>
-			/// バッファリングサイズ
-			/// </summary>
-			UINT back_buffer_size{};
-
-			/// <summary>
-			/// フレームリソースサイズ
-			/// </summary>
-			UINT frame_resource_size{};
 
 		};
 	}

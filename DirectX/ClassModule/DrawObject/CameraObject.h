@@ -46,16 +46,6 @@ namespace DirectX {
 			public:
 				/* ========== Publicメンバー関数 ========== */
 
-				/// <summary>
-				/// コンストラクタ
-				/// </summary>
-				CameraObject() = default;
-
-				/// <summary>
-				/// デストラクタ
-				/// </summary>
-				~CameraObject() = default;
-
 				/* ===== 初期化関数 ===== */
 
 				/// <summary>
@@ -70,6 +60,7 @@ namespace DirectX {
 				[[nodiscard]] HRESULT create_camera_object(
 					ID3D12Device* device_,
 					DescriptorHeapAllocator* allocator,
+					const CurrentIndexBase* index,
 					D3D12_VIEWPORT view_,
 					D3D12_RECT rect_
 				) {
@@ -77,6 +68,7 @@ namespace DirectX {
 					const auto hr = create_constant_buffer_group(
 						device_,
 						allocator,
+						index,
 						CameraData{}
 					);
 					if (FAILED(hr)) {
@@ -91,14 +83,13 @@ namespace DirectX {
 				/* ===== 実行関数 ===== */
 
 				void update_camera_object() {
-					update_index();
-
+					
 					auto view = view_.get_matrix().inverse();
 
 					update_buffer(
 						CameraData{
-							view.has_value() ? view.value().transpose() : Matrix{},
-							projection_.transpose()
+							view.has_value() ? view.value() : Matrix{},
+							projection_
 						});
 				}
 

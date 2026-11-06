@@ -62,17 +62,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			Mesh() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~Mesh() = default;
-
-
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>

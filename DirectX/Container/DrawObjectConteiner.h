@@ -57,16 +57,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			DrawObjectContainer() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~DrawObjectContainer() = default;
-
 			/* ===== 追加関数 ===== */
 
 			/// <summary>

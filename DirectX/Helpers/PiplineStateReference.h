@@ -74,62 +74,91 @@ namespace DirectX {
 					ClassObject::desc::PipelineStateDesc& desc
 				) const {
 
-					if (!root_name.empty()) {
-
-						if (auto root = context_->root_signature_container->get_root_signature(
-							Container::RootSignatureKey{ root_name.c_str() }
-						); root) {
-							desc.root_ = root->get();
-						}
-					}
-
-					if (!vs_name.empty()) {
-
-						if (auto vs = context_->shader_container->get_shader(
-							Container::ShaderKey{ vs_name.c_str() }
-						); vs) {
-							desc.vs_hlsl = vs->get();
-						}
-					}
-
-					if (!ps_name.empty()) {
-
-						if (auto ps = context_->shader_container->get_shader(
-							Container::ShaderKey{ ps_name.c_str() }
-						); ps) {
-							desc.ps_hlsl = ps->get();
-						}
-					}
-
-					if (!gs_name.empty()) {
-
-						if (auto gs = context_->shader_container->get_shader(
-							Container::ShaderKey{ gs_name.c_str() }
-						); gs) {
-							desc.gs_hlsl = gs->get();
-						}
-					}
-
-					if (!hs_name.empty()) {
-
-						if (auto hs = context_->shader_container->get_shader(
-							Container::ShaderKey{ hs_name.c_str() }
-						); hs) {
-							desc.ps_hlsl = hs->get();
-						}
-					}
-
-					if (!ds_name.empty()) {
-
-						if (auto ds = context_->shader_container->get_shader(
-							Container::ShaderKey{ ds_name.c_str() }
-						); ds) {
-							desc.ps_hlsl = ds->get();
-						}
-					}
 				}
 
 			};
+
+
+			/// <summary>
+			/// ファクトリー名前空間
+			/// </summary>
+			namespace Factory {
+
+				class PipelineStateDescFactory final
+				{
+				public:
+
+					[[nodiscard]] static const PipelineStateDesc create_desc(
+						DirectXContext* context_,
+						const PipelineStateDesc& base_desc,
+						const PiplineStateReferenceName& ref
+					) {
+
+						PipelineStateDesc copy = base_desc;
+
+						if (!ref.root_name.empty()) {
+
+							if (auto root = context_->root_signature_container->get_root_signature(
+								Container::RootSignatureKey{ ref.root_name.c_str() }
+							); root) {
+								copy.root_ = root->get();
+							}
+						}
+
+						if (!ref.vs_name.empty()) {
+
+							if (auto vs = context_->shader_container->get_shader(
+								Container::ShaderKey{ ref.vs_name.c_str() }
+							); vs) {
+								copy.vs_hlsl = vs->get();
+							}
+						}
+
+						if (!ref.ps_name.empty()) {
+
+							if (auto ps = context_->shader_container->get_shader(
+								Container::ShaderKey{ ref.ps_name.c_str() }
+							); ps) {
+								copy.ps_hlsl = ps->get();
+							}
+						}
+
+						if (!ref.gs_name.empty()) {
+
+							if (auto gs = context_->shader_container->get_shader(
+								Container::ShaderKey{ ref.gs_name.c_str() }
+							); gs) {
+								copy.gs_hlsl = gs->get();
+							}
+						}
+
+						if (!ref.hs_name.empty()) {
+
+							if (auto hs = context_->shader_container->get_shader(
+								Container::ShaderKey{ ref.hs_name.c_str() }
+							); hs) {
+								copy.ps_hlsl = hs->get();
+							}
+						}
+
+						if (!ref.ds_name.empty()) {
+
+							if (auto ds = context_->shader_container->get_shader(
+								Container::ShaderKey{ ref.ds_name.c_str() }
+							); ds) {
+								copy.ps_hlsl = ds->get();
+							}
+						}
+
+						return copy;
+					}
+
+				private:
+
+					PipelineStateDescFactory() = default;
+
+				};
+			}
 		}
 	}
 }

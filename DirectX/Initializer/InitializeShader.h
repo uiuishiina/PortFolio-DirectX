@@ -5,6 +5,8 @@
 //	HandyItems
 #include"Debug/DebugLogSystem.h"
 
+#include"InitializeLog.h"
+
 //	DirectX
 #include"../DirectXContext.h"
 #include"../Container/ShaderContainer.h"
@@ -71,14 +73,14 @@ namespace DirectX {
 			/// <param name="context">DirectXオブジェクトインスタンス構造体参照</param>
 			/// <param name="desc">シェーダー設定構造体参照</param>
 			/// <returns>初期化の成否</returns>
-			[[nodiscard]] static HRESULT initialize_shader(
+			static void initialize_shader(
 				DirectXContext* context,
-				desc::ShaderDesc& desc_
+				const desc::ShaderDesc& desc_
 			) {
 
 				std::vector<std::string> shader_list{};
 
-				for (auto& [name,desc] : desc_.shader_) {
+				for (const auto& [name,desc] : desc_.shader_) {
 
 					auto shader = std::make_unique<ClassObject::ShaderCompiler>();
 					const auto hr = shader->compile_shader(desc);
@@ -96,22 +98,21 @@ namespace DirectX {
 
 							desc.target_profile
 							);
-						return hr;
-					}
-
-					if (!context->shader_container->add_shader(
-						Container::ShaderKey{ name.c_str() },
-						std::move(shader)
-					)) {
-
-						DEBUG_ERROR_LOG(
-							"add_shader = false",
-							"name = ", name
-						);
-						return E_FAIL;
+						Initialize::InitializeLog::hresult_error_log(hr);
 					}
 					else {
-						shader_list.push_back(name);
+						if (!context->shader_container->add_shader(
+							Container::ShaderKey{ name.c_str() },
+							std::move(shader)
+						)) {
+							DEBUG_ERROR_LOG(
+								"add_shader = false",
+								"name = ", name
+							);
+						}
+						else {
+							shader_list.push_back(name);
+						}
 					}
 				}
 
@@ -122,8 +123,6 @@ namespace DirectX {
 				for (auto& name : shader_list) {
 					DEBUG_LOG(name);
 				}
-
-				return S_OK;
 			}
 
 		private:

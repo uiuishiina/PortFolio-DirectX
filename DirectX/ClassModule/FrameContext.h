@@ -22,6 +22,8 @@ namespace DirectX {
 
 			/* ========== Publicメンバー変数 ========== */
 
+			UINT64 frame_count{};
+
 			/* -- Core -- */
 
 			/// <summary>
@@ -79,38 +81,27 @@ namespace DirectX {
 
 			/* ========== Publicメンバー関数 ========== */
 
-			//	コンストラクタ削除
-			FrameContext() = delete;
-
 			/// <summary>
 			/// 引数付きコンストラクタ
 			/// </summary>
-			/// <param name="context"></param>
-			/// <param name="current_back_buffer"></param>
-			/// <param name="current_resource"></param>
-			FrameContext(
+			explicit FrameContext(
 				DirectXContext* context_,
-				UINT current_back_buffer,
-				std::size_t current_resource
+				std::uint64_t frame
 			) :
-				dxgi_{ context_->dxgi_.get() },
-				device_{ context_->device_.get() },
-				graphic_queue{ context_->graphic_queue.get() },
-				graphic_list{ context_->graphic_list.get() },
-				fence_{ context_->fence_.get() },
-				frame_resource{ context_->frame_resources[current_resource].get() },
-				swapchain_{ context_->swapchain_.get() },
-				back_buffer{ context_->back_buffer_group->get_current_instance() },
-				depth_buffer{ context_->depth_buffer_group->get_current_instance() },
+				frame_count{ frame },
+				dxgi_{ &context_->dxgi_ },
+				device_{ &context_->device_ },
+				graphic_queue{ &context_->graphic_queue },
+				graphic_list{ &context_->graphic_list },
+				fence_{ &context_->fence_ },
+				frame_resource{ context_->frame_resources[context_->frame_resource_index->get_current_index()].get()},
+				swapchain_{ &context_->swapchain_ },
+				back_buffer{ context_->back_buffer_group.get_current_instance() },
+				depth_buffer{ context_->depth_buffer_group.get_current_instance() },
 				heap_container{ context_->heap_container.get() },
 				camera_container{ context_->camera_object_container.get() },
 				player_{ context_ ->player.get()}
 			{}
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~FrameContext() = default;
 
 		};
 	}

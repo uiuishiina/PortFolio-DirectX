@@ -8,7 +8,7 @@
 
 //	DirectX
 #include"DirectXContext.h"
-#include"ClassModule/PassBase.h"
+#include"ClassModule/DrawPath/PathBase.h"
 
 //	その他
 #include<vector>
@@ -36,39 +36,42 @@ namespace DirectX {
 	public:
 		/* ========== Publicメンバー関数 ========== */
 
-		//	コンストラクタ削除
-		DirectXUpdator() = delete;
-
 		/// <summary>
 		///	引数付きコンストラクタ
 		/// </summary>
 		/// <param name="context">DirectXオブジェクトインスタンスまとめクラスWeak参照</param>
-		DirectXUpdator(
-			std::size_t size,
+		explicit DirectXUpdator(
 			DirectXContext* context,
 			App::ApplicationDataShare* share
 		) :
-			current_index{ size },
 			context_{ context },
 			share_p{ share } {};
 
-		/// <summary>
-		///	デストラクタ
-		/// </summary>
-		~DirectXUpdator() = default;
-
 		/* ===== 実行関数 ===== */
 
+		/// <summary>
+		/// 描画前処理関数
+		/// </summary>
+		/// <details>
+		/// 待機前に処理できることを処理しておく関数
+		/// </details>
+		/// <returns>エラーなどで描画ができない場合に [ false ]</returns>
 		[[nodiscard]] bool begin_update();
 
+		/// <summary>
+		/// フレームリソース待機関数
+		/// </summary>
+		/// <details>
+		/// 次フレームが
+		/// </details>
 		void sync_frame_resource();
 
 		void reset_frame_resource();
 
 
-		void update();
+		void update_resource();
 
-		void apply_pass();
+		void apply_path();
 
 		void execute_command_lists();
 
@@ -76,18 +79,13 @@ namespace DirectX {
 
 		void end_update();
 
-		void set_pass(ClassModule::PassBase* pass) {
+		void set_pass(ClassModule::PathBase* pass) {
 
 			pass_order.push_back(pass);
 		}
 
 	private:
 		/* ========== Privateメンバー変数 ========== */
-
-		/// <summary>
-		/// フレームリソースインデックス循環クラス
-		/// </summary>
-		HandyItems::others::CircularIndex current_index;
 
 		/// <summary>
 		/// DirectXオブジェクトインスタンスまとめクラスWeak参照
@@ -102,7 +100,12 @@ namespace DirectX {
 		/// <summary>
 		/// 描画パス実行順参照配列
 		/// </summary>
-		std::vector<ClassModule::PassBase*> pass_order{};
+		std::vector<ClassModule::PathBase*> pass_order{};
+
+		/// <summary>
+		/// 経過フレーム
+		/// </summary>
+		std::uint64_t frame_count{};
 
 	};
 }

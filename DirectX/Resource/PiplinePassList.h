@@ -2,8 +2,8 @@
 
 /* ========== Includeファイル ========== */
 
-#include"../ClassModule/PiplinePass.h"
-#include"../Helpers/PiplinePassDesc.h"
+#include"../ClassModule/DrawPath/PiplinePath.h"
+#include"../Helpers/PiplinePathDesc.h"
 
 /// <summary>
 /// DirectX名前空間
@@ -18,14 +18,14 @@ namespace DirectX {
 		/// <summary>
 		/// パス名前空間
 		/// </summary>
-		namespace Pass {
+		namespace Path {
 
 			/// <summary>
 			/// パイプライン名前空間
 			/// </summary>
 			namespace Piplines {
 
-				const PiplinePassDesc NormalTest{
+				const PiplinePathDesc NormalTest{
 					"Pipline_NormalTest",
 					{
 						.root_name = "Normal",
@@ -36,7 +36,7 @@ namespace DirectX {
 						}
 					}
 				};
-				const PiplinePassDesc ColorTest{
+				const PiplinePathDesc ColorTest{
 					"Pipline_ColorTest",
 					{
 						.root_name = "Color",
@@ -48,7 +48,7 @@ namespace DirectX {
 					}
 				};
 
-				const PiplinePassDesc ConstantTest{
+				const PiplinePathDesc ConstantTest{
 					"Pipline_ConstantTest",
 					{
 						.root_name = "Constant",

@@ -163,8 +163,8 @@ namespace HandyItems {
 
 				return Matrix{
 					Float4{ 1.0f, 0.0f, 0.0f, 0.0f },
-					Float4{ 0.0f,    c,    s, 0.0f },
-					Float4{ 0.0f,   -s,    c, 0.0f },
+					Float4{ 0.0f,    c,   -s, 0.0f },
+					Float4{ 0.0f,    s,    c, 0.0f },
 					Float4{ 0.0f, 0.0f, 0.0f, 1.0f }
 				};
 			}
@@ -182,9 +182,9 @@ namespace HandyItems {
 				const float s = MathF::sin(radian);
 
 				return Matrix{
-					Float4{    c, 0.0f,   -s, 0.0f },
+					Float4{    c, 0.0f,    s, 0.0f },
 					Float4{ 0.0f, 1.0f, 0.0f, 0.0f },
-					Float4{    s, 0.0f,    c, 0.0f },
+					Float4{   -s, 0.0f,    c, 0.0f },
 					Float4{ 0.0f, 0.0f, 0.0f, 1.0f }
 				};
 			}
@@ -202,8 +202,8 @@ namespace HandyItems {
 				const float s = MathF::sin(radian);
 
 				return Matrix{
-					Float4{    c,    s, 0.0f, 0.0f },
-					Float4{   -s,    c, 0.0f, 0.0f },
+					Float4{    c,   -s, 0.0f, 0.0f },
+					Float4{    s,    c, 0.0f, 0.0f },
 					Float4{ 0.0f, 0.0f, 1.0f, 0.0f },
 					Float4{ 0.0f, 0.0f, 0.0f, 1.0f }
 				};
@@ -445,6 +445,69 @@ namespace HandyItems {
 					},
 					Float4{ 0.0f, 0.0f, 1.0f, 0.0f }
 				};
+			}
+
+			[[nodiscard]] inline Float3 transform_direction(
+				const Matrix& matrix,
+				const Float3& vector
+			) {
+
+				const auto result = matrix * Float4{
+					vector.x_,
+					vector.y_,
+					vector.z_,
+					0.0f
+				};
+
+				return {
+					result.x_,
+					result.y_,
+					result.z_
+				};
+			}
+
+			[[nodiscard]] inline Float3 transform_point(
+				const Matrix& matrix,
+				const Float3& position
+			) {
+
+				const auto result = matrix * Float4{
+					position.x_,
+					position.y_,
+					position.z_,
+					1.0f
+				};
+
+				return {
+					result.x_,
+					result.y_,
+					result.z_
+				};
+			}
+
+			[[nodiscard]] inline std::optional<Float3> transform_projective_point(
+				const Matrix& matrix,
+				const Float3& position
+			) {
+
+				const auto result = matrix * Float4{
+					position.x_,
+					position.y_,
+					position.z_,
+					1.0f
+				};
+
+				constexpr float epsilon = 1.0e-6f;
+
+				if (MathF::abs(result.w_) < epsilon) {
+					return std::nullopt;
+				}
+
+				return Float3{
+					result.x_,
+					result.y_,
+					result.z_
+				} / result.w_;
 			}
 
 		}

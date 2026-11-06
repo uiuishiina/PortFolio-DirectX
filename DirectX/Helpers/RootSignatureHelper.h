@@ -108,11 +108,6 @@ namespace DirectX {
 			/// </summary>
 			RootSignatureHelper() = default;
 
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~RootSignatureHelper() = default;
-
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>

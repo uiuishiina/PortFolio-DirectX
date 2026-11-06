@@ -49,50 +49,50 @@ namespace {
 /// <summary>
 /// コンストラクタ
 /// </summary>
-DirectXRenderer::DirectXRenderer() {
-
-    context_ = std::make_unique<DirectXContext>(
-        back_buffer_size,
-        frame_resource_size
-    );
-
-    updator_ = std::make_unique<DirectXUpdator>(
-        frame_resource_size,
-        context_.get(),
-        shera_p
-    );
-}
+DirectXRenderer::DirectXRenderer() :
+    context_{ std::make_unique<DirectXContext>() },
+    updator_{ std::make_unique<DirectXUpdator>(context_.get(),shera_p) } {};
 
 /// <summary>
 /// デストラクタ
 /// </summary>
-DirectXRenderer::~DirectXRenderer() = default;
+DirectXRenderer::~DirectXRenderer() {
 
+    end_renderer();
+}
 
 /* ===== 初期化関数 ===== */
 
+/// <summary>
+/// 描画機能初期化関数
+/// </summary>
+/// <param name="hwnd">ウィンドウハンドル</param>
+/// <param name="width">ウィンドウの横幅</param>
+/// <param name="height">ウィンドウの縦幅</param>
+/// <param name="shera_">アプリケーションデータシェアクラス参照</param>
+/// <returns>初期化の成否</returns>
 [[nodiscard]] bool DirectXRenderer::initialize_renderer(
     HWND hwnd,
     std::uint32_t width,
     std::uint32_t height,
-    App::ApplicationDataShare* shera
+    App::ApplicationDataShare* shera_
 ) {
 
     //  変数保存
-
     hwnd_ = hwnd;
-    shera_p = shera;
+    shera_p = shera_;
 
     if (!hwnd_ || !shera_p) {
         DEBUG_ERROR_LOG("DirectXRenderer :: initialize_renderer() pointer nullptr");
         return false;
     }
 
-
     /* ========== 描画機能初期化 ========== */
     
+    //  初期化クラス作成
     DirectXInitializer initializer{};
 
+    //  初期化設定作成
     desc::InitializeDesc desc_{};
 
     /* ===== Main ===== */
@@ -199,21 +199,21 @@ DirectXRenderer::~DirectXRenderer() = default;
 
     /* -- Begin -- */
 
-    passDesc.emplace_begin_pass(
-        Resource::Pass::Commands::Begin
+    passDesc.emplace_begin_path(
+        Resource::Path::Commands::Begin
     );
 
     /* -- Command -- */
 
-    passDesc.emplace_command_pass(
-        Resource::Pass::Commands::Clear
+    passDesc.emplace_command_path(
+        Resource::Path::Commands::Clear
     );
 
-    passDesc.emplace_command_pass(
-        Resource::Pass::Commands::SetView
+    passDesc.emplace_command_path(
+        Resource::Path::Commands::SetView
     );
 
-    passDesc.emplace_command_pass(
+    passDesc.emplace_command_path(
         "SetCamera",
         {
             [](ClassModule::FrameContext& frame) {
@@ -235,8 +235,10 @@ DirectXRenderer::~DirectXRenderer() = default;
                     frame.graphic_list->get()
                 );
 
-                frame.player_->get_transform().translation_.x_ += 0.001f;
-                frame.player_->get_transform().rotate({ 0,0.01f,0 });
+                frame.player_->get_transform().translation_.x_ =
+                    3 * HandyItems::Math::MathF::sin(HandyItems::Math::MathF::Double_PI / 288 * frame.frame_count);
+                frame.player_->get_transform().rotation_ *=
+                    HandyItems::Math::MathF::from_axis_angle({ 0,1,0 }, 0.01f);
 
                 frame.player_->update_mesh_object();
 
@@ -248,30 +250,30 @@ DirectXRenderer::~DirectXRenderer() = default;
 
     /* -- DrawObject -- */
 
-    passDesc.emplace_draw_object_pass(
-        Resource::Pass::DrawObject::NormalTest
+    passDesc.emplace_draw_object_path(
+        Resource::Path::DrawObject::NormalTest
     );
-    passDesc.emplace_draw_object_pass(
-        Resource::Pass::DrawObject::ColorTest
+    passDesc.emplace_draw_object_path(
+        Resource::Path::DrawObject::ColorTest
     );
 
     /* -- Pipline -- */
 
-    passDesc.emplace_pipline_pass(
-        Resource::Pass::Piplines::NormalTest
+    passDesc.emplace_pipline_path(
+        Resource::Path::Piplines::NormalTest
     );
-    passDesc.emplace_pipline_pass(
-        Resource::Pass::Piplines::ColorTest
+    passDesc.emplace_pipline_path(
+        Resource::Path::Piplines::ColorTest
     );
 
-    passDesc.emplace_pipline_pass(
-        Resource::Pass::Piplines::ConstantTest
+    passDesc.emplace_pipline_path(
+        Resource::Path::Piplines::ConstantTest
     );
 
     /* -- End -- */
 
-    passDesc.emplace_end_pass(
-        Resource::Pass::Commands::End
+    passDesc.emplace_end_path(
+        Resource::Path::Commands::End
     );
 
     if (!initializer.initialize(
@@ -285,20 +287,20 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 
     const auto pass_names = get_pass_name(
-        Resource::Pass::Commands::Begin,
+        Resource::Path::Commands::Begin,
 
-        Resource::Pass::Commands::Clear,
-        Resource::Pass::Commands::SetView,
+        Resource::Path::Commands::Clear,
+        Resource::Path::Commands::SetView,
 
-        Resource::Pass::Piplines::NormalTest,
-        //Resource::Pass::DrawObject::NormalTest,
+        //Resource::Path::Piplines::NormalTest,
+        //Resource::Path::DrawObject::NormalTest,
 
-        Resource::Pass::Piplines::ColorTest,
-        //Resource::Pass::DrawObject::ColorTest,
+        Resource::Path::Piplines::ColorTest,
+        Resource::Path::DrawObject::ColorTest,
 
-        Resource::Pass::Piplines::ConstantTest,
+        Resource::Path::Piplines::ConstantTest,
 
-        Resource::Pass::Commands::End
+        Resource::Path::Commands::End
     );
 
     DEBUG_LOG(
@@ -309,7 +311,7 @@ DirectXRenderer::~DirectXRenderer() = default;
 
     for (auto& name : pass_names) {
         updator_->set_pass(context_->pass_container->get_pass(
-            Container::PassKey(name.c_str())
+            Container::PathKey(name.c_str())
         ));
 
         DEBUG_LOG(++passCount, " = ", name);
@@ -320,9 +322,10 @@ DirectXRenderer::~DirectXRenderer() = default;
 
 /* ===== 実行関数 ===== */
 
+/// <summary>
+/// 描画機能更新関数
+/// </summary>
 void DirectXRenderer::update_renderer() {
-
-    frame_count++;
 
     if (!updator_->begin_update()) {
         DEBUG_ERROR_LOG("DirectXRenderer :: update_renderer :: begin_update() = false");
@@ -333,9 +336,9 @@ void DirectXRenderer::update_renderer() {
 
     updator_->reset_frame_resource();
 
-    updator_->update();
+    updator_->update_resource();
 
-    updator_->apply_pass();
+    updator_->apply_path();
 
     updator_->execute_command_lists();
 
@@ -347,9 +350,10 @@ void DirectXRenderer::update_renderer() {
 
 /* ===== 終了関数 ===== */
 
+/// <summary>
+/// 描画機能終了時処理関数
+/// </summary>
 void DirectXRenderer::end_renderer() {
 
     DirectXEnder::end(context_.get());
-
-    DEBUG_LOG("Frame_Count = ", frame_count);
 }

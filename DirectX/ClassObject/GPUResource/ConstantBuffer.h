@@ -26,16 +26,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			ConstantBuffer() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~ConstantBuffer() = default;
-
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>

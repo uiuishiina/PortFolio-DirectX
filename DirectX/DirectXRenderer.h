@@ -54,19 +54,33 @@ namespace DirectX {
 
 		/* ===== 初期化関数 ===== */
 
+		/// <summary>
+		/// 描画機能初期化関数
+		/// </summary>
+		/// <param name="hwnd">ウィンドウハンドル</param>
+		/// <param name="width">ウィンドウの横幅</param>
+		/// <param name="height">ウィンドウの縦幅</param>
+		/// <param name="shera_">アプリケーションデータシェアクラス参照</param>
+		/// <returns>初期化の成否</returns>
 		[[nodiscard]] bool initialize_renderer(
 			HWND hwnd,
 			std::uint32_t width,
 			std::uint32_t height,
-			App::ApplicationDataShare* shera
+			App::ApplicationDataShare* shera_
 		);
 
 		/* ===== 実行関数 ===== */
 
+		/// <summary>
+		/// 描画機能更新関数
+		/// </summary>
 		void update_renderer();
 
 		/* ===== 終了関数 ===== */
 
+		/// <summary>
+		/// 描画機能終了時処理関数
+		/// </summary>
 		void end_renderer();
 
 	private:
@@ -85,12 +99,12 @@ namespace DirectX {
 		/// <summary>
 		/// DirectXオブジェクトインスタンスまとめクラス
 		/// </summary>
-		std::unique_ptr<DirectXContext> context_;
+		std::unique_ptr<DirectXContext> context_{};
 
 		/// <summary>
 		/// DirectX描画機能更新クラス
 		/// </summary>
-		std::unique_ptr<DirectXUpdator> updator_;
+		std::unique_ptr<DirectXUpdator> updator_{};
 
 		/// <summary>
 		/// 最終描画先バッファリングサイズ
@@ -101,11 +115,6 @@ namespace DirectX {
 		/// フレームリソースサイズ
 		/// </summary>
 		const std::uint32_t frame_resource_size = 3;
-
-		/// <summary>
-		/// 経過フレーム
-		/// </summary>
-		std::uint64_t frame_count{};
 
 	};
 }

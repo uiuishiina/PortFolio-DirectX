@@ -17,6 +17,9 @@
 
 #include"ClassModule/FrameResource.h"
 
+#include"ClassModule/BackBufferIndex.h"
+#include"ClassModule/FrameResourceIndex.h"
+
 #include"ClassModule/DrawObject/MeshObject.h"
 
 //	その他
@@ -49,25 +52,15 @@ namespace DirectX {
 	/// </summary>
 	struct DirectXContext final : HandyItems::others::NonCopyableMovableBase
 	{
-
 		template<typename T>
 		using UniquePtr = std::unique_ptr<T>;
-
 	public:
 		/* ========== Publicメンバー関数 ========== */
 
-		//	コンストラクタ削除
-		DirectXContext() = delete;
-
 		/// <summary>
-		/// 引数付きコンストラクタ
+		/// コンストラクタ
 		/// </summary>
-		/// <param name="back_size">バックバッファサイズ</param>
-		/// <param name="frame_size">フレームリソースサイズ</param>
-		DirectXContext(
-			std::uint32_t back_size,
-			std::uint32_t frame_size
-		);
+		DirectXContext();
 
 		/// <summary>
 		/// デストラクタ
@@ -75,9 +68,6 @@ namespace DirectX {
 		~DirectXContext();
 
 		/* ========== Publicメンバー変数 ========== */
-
-		UINT back_buffer_size{};
-		UINT frame_resource_size{};
 
 		/* -- Container -- */
 
@@ -121,27 +111,27 @@ namespace DirectX {
 		/// <summary>
 		/// DXGIインスタンス
 		/// </summary>
-		UniquePtr<ClassObject::DXGI> dxgi_{};
+		ClassObject::DXGI dxgi_{};
 
 		/// <summary>
 		/// Deviceインスタンス
 		/// </summary>
-		UniquePtr<ClassObject::Device> device_{};
+		ClassObject::Device device_{};
 
 		/// <summary>
 		/// 描画用コマンドキューインスタンス
 		/// </summary>
-		UniquePtr<ClassObject::CommandQueue> graphic_queue{};
+		ClassObject::CommandQueue graphic_queue{};
 
 		/// <summary>
 		/// 描画用コマンドリストインスタンス
 		/// </summary>
-		UniquePtr<ClassObject::CommandList> graphic_list{};
+		ClassObject::CommandList graphic_list{};
 
 		/// <summary>
 		/// フェンスインスタンス
 		/// </summary>
-		UniquePtr<ClassObject::Fence> fence_{};
+		ClassObject::Fence fence_{};
 
 		/// <summary>
 		/// フレームリソースインスタンス配列
@@ -151,21 +141,31 @@ namespace DirectX {
 		/// <summary>
 		/// スワップチェーンインスタンス
 		/// </summary>
-		UniquePtr<ClassObject::SwapChain> swapchain_{};
+		ClassObject::SwapChain swapchain_{};
+
+		/// <summary>
+		/// バックバッファインデックス管理クラス
+		/// </summary>
+		UniquePtr<ClassModule::BackBufferIndex> back_buffer_index{};
+
+		/// <summary>
+		/// フレームリソースインデックス管理クラス
+		/// </summary>
+		UniquePtr<ClassModule::FrameResourceIndex> frame_resource_index{};
 
 		/// <summary>
 		/// バックバッファグループインスタンス
 		/// </summary>
-		UniquePtr<ClassModule::DescriptorGroup::BackBufferGroup> back_buffer_group{};
+		ClassModule::DescriptorGroup::BackBufferGroup back_buffer_group{};
 
 		/// <summary>
 		/// デプスバッファグループインスタンス
 		/// </summary>
-		UniquePtr<ClassModule::DescriptorGroup::DepthBufferGroup> depth_buffer_group{};
+		ClassModule::DescriptorGroup::DepthBufferGroup depth_buffer_group{};
 
+
+		//疑似的にプレイヤーを生成
 		UniquePtr<ClassModule::MeshObject> player{};
-
-		
 
 	};
 }

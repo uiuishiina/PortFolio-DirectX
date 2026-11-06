@@ -3,7 +3,7 @@
 /* ========== Includeファイル ========== */
 
 //	DirectX
-#include"../ClassModule/CommandPass.h"
+#include"../ClassModule/DrawPath/CommandPath.h"
 
 /// <summary>
 /// DirectX名前空間
@@ -18,7 +18,7 @@ namespace DirectX {
 		/// <summary>
 		/// パス名前空間
 		/// </summary>
-		namespace Pass {
+		namespace Path {
 
 			/// <summary>
 			/// コマンド名前空間
@@ -33,7 +33,7 @@ namespace DirectX {
 				/// <summary>
 				/// コマンドパス設定定義
 				/// </summary>
-				using CommandPassDesc = std::tuple<
+				using CommandPathDesc = std::tuple<
 					std::string,
 					std::vector<Command>
 				>;

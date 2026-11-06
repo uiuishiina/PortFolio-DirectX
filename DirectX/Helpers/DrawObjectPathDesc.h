@@ -3,7 +3,7 @@
 /* ========== Includeファイル ========== */
 
 //	DirectX
-#include"../ClassModule/DrawObjectPass.h"
+#include"../ClassModule/DrawPath/DrawObjectPath.h"
 #include"../Container/DrawObjectConteiner.h"
 
 /// <summary>
@@ -19,7 +19,7 @@ namespace DirectX {
 		/// <summary>
 		/// パス名前空間
 		/// </summary>
-		namespace Pass {
+		namespace Path {
 
 			/// <summary>
 			/// 描画オブジェクト名前空間
@@ -29,7 +29,7 @@ namespace DirectX {
 				/// <summary>
 				/// 描画オブジェクトパス外部参照補助構造体
 				/// </summary>
-				struct DrawObjectPassReference {
+				struct DrawObjectPathReference {
 
 					/// <summary>
 					/// 描画オブジェクト登録名配列
@@ -40,9 +40,9 @@ namespace DirectX {
 				/// <summary>
 				/// 描画オブジェクトパス設定定義
 				/// </summary>
-				using DrwObjectPassDesc = std::tuple<
+				using DrwObjectPathDesc = std::tuple<
 					std::string,
-					DrawObjectPassReference
+					DrawObjectPathReference
 				>;
 			}
 		}

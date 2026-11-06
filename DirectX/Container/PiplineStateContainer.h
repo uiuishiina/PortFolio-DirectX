@@ -57,17 +57,7 @@ namespace DirectX {
 		{
 		public:
 			/* ========== Publicメンバー関数 ========== */
-
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			PiplineStateContainer() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~PiplineStateContainer() = default;
-
+			
 			/* ===== 追加関数 ===== */
 
 			/// <summary>

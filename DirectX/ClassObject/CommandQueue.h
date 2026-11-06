@@ -27,16 +27,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			CommandQueue() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~CommandQueue() = default;
-
 			/* ===== 初期化関数 ===== */
 		
 			/// <summary>
@@ -82,7 +72,7 @@ namespace DirectX {
 			/// <returns>コマンドキュー参照</returns>
 			[[nodiscard]] ID3D12CommandQueue* operator -> () const noexcept {
 
-				return get();
+				return command_queue.Get();
 			}
 
 		private:

@@ -16,8 +16,8 @@ using namespace DirectX::ClassObject;
 /// <param name="desc">パイプラインステート設定構造体</param>
 /// <returns>作成の成否</returns>
 [[nodiscard]] HRESULT PiplineState::create_pipline(
-	ID3D12Device* device,
-	desc::PipelineStateDesc& desc
+	ID3D12Device* device_,
+	const desc::PipelineStateDesc& desc
 ) {
 
     D3D12_GRAPHICS_PIPELINE_STATE_DESC pipeline_desc{};
@@ -77,7 +77,7 @@ using namespace DirectX::ClassObject;
     //  パイプラインステートフラグ設定
     pipeline_desc.Flags = desc.flags;
 
-    return device->CreateGraphicsPipelineState(
+    return device_->CreateGraphicsPipelineState(
         &pipeline_desc, 
         IID_PPV_ARGS(&pipline_)
     );

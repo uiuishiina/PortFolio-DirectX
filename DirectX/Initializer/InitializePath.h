@@ -6,9 +6,9 @@
 #include"../DirectXContext.h"
 #include"../Container/PassContainer.h"
 
-#include"../Helpers/CommandPassDesc.h"
-#include"../Helpers/PiplinePassDesc.h"
-#include"../Helpers/DrawObjectPassDesc.h"
+#include"../Helpers/CommandPathDesc.h"
+#include"../Helpers/PiplinePathDesc.h"
+#include"../Helpers/DrawObjectPathDesc.h"
 
 /// <summary>
 /// DirectX名前空間
@@ -28,30 +28,30 @@ namespace DirectX {
 			/// <summary>
 			/// 描画パス設定構造体
 			/// </summary>
-			struct PassDesc {
+			struct PathDesc {
 
 				/* ========== Publicメンバー変数 ========== */
 
 				/* -- Command -- */
 
-				std::vector<Resource::Pass::Commands::CommandPassDesc> begin_pass{};
+				std::vector<Resource::Path::Commands::CommandPathDesc> begin_pass{};
 
-				std::vector<Resource::Pass::Commands::CommandPassDesc> command_pass{};
+				std::vector<Resource::Path::Commands::CommandPathDesc> command_pass{};
 
-				std::vector<Resource::Pass::Commands::CommandPassDesc> end_pass{};
+				std::vector<Resource::Path::Commands::CommandPathDesc> end_pass{};
 
 				/* -- DrawObject -- */
 
-				std::vector<Resource::Pass::DrawObject::DrwObjectPassDesc> draw_object_pass{};
+				std::vector<Resource::Path::DrawObject::DrwObjectPathDesc> draw_object_pass{};
 
 				/* -- Pipline -- */
 
-				std::vector<Resource::Pass::Piplines::PiplinePassDesc> pipline_pass{};
+				std::vector<Resource::Path::Piplines::PiplinePathDesc> pipline_pass{};
 
 
 				/* ========== Publicメンバー関数 ========== */
 
-				void emplace_begin_pass(
+				void emplace_begin_path(
 					std::string name,
 					const std::vector<std::function<void(ClassModule::FrameContext&)>>& vector
 				) {
@@ -59,15 +59,15 @@ namespace DirectX {
 					begin_pass.push_back({ name,vector });
 				}
 
-				void emplace_begin_pass(
-					const Resource::Pass::Commands::CommandPassDesc& desc_
+				void emplace_begin_path(
+					const Resource::Path::Commands::CommandPathDesc& desc_
 				) {
 
 					begin_pass.push_back(desc_);
 				}
 
 
-				void emplace_end_pass(
+				void emplace_end_path(
 					std::string name,
 					const std::vector<std::function<void(ClassModule::FrameContext&)>>& vector
 				) {
@@ -75,8 +75,8 @@ namespace DirectX {
 					end_pass.push_back({ name,vector });
 				}
 
-				void emplace_end_pass(
-					const Resource::Pass::Commands::CommandPassDesc& desc_
+				void emplace_end_path(
+					const Resource::Path::Commands::CommandPathDesc& desc_
 				) {
 
 					end_pass.push_back(desc_);
@@ -88,7 +88,7 @@ namespace DirectX {
 				/// <param name="name">コマンドパス名称</param>
 				/// <param name="vector">コマンド配列</param>
 				/// <param name="flag">描画パス呼び出しフラグ</param>
-				void emplace_command_pass(
+				void emplace_command_path(
 					std::string name,
 					const std::vector<std::function<void(ClassModule::FrameContext&)>>& vector
 				) {
@@ -100,8 +100,8 @@ namespace DirectX {
 				/// コマンドパス作成構造体補助関数オーバーロード
 				/// </summary>
 				/// <param name="desc_">事前作成した要素</param>
-				void emplace_command_pass(
-					const Resource::Pass::Commands::CommandPassDesc& desc_
+				void emplace_command_path(
+					const Resource::Path::Commands::CommandPathDesc& desc_
 				) {
 
 					command_pass.push_back(desc_);
@@ -109,16 +109,16 @@ namespace DirectX {
 
 
 
-				void emplace_draw_object_pass(
+				void emplace_draw_object_path(
 					std::string name,
-					Resource::Pass::DrawObject::DrawObjectPassReference desc
+					Resource::Path::DrawObject::DrawObjectPathReference desc
 				) {
 
 					draw_object_pass.push_back({ name,desc });
 				}
 
-				void emplace_draw_object_pass(
-					const Resource::Pass::DrawObject::DrwObjectPassDesc& desc_
+				void emplace_draw_object_path(
+					const Resource::Path::DrawObject::DrwObjectPathDesc& desc_
 				) {
 
 					draw_object_pass.push_back(desc_);
@@ -131,9 +131,9 @@ namespace DirectX {
 				/// <param name="name">パイプライン名称</param>
 				/// <param name="desc">パイプラインパス外部参照補助構造体</param>
 				/// <param name="flag">描画パス呼び出しフラグ</param>
-				void emplace_pipline_pass(
+				void emplace_pipline_path(
 					std::string name,
-					Resource::Pass::Piplines::PiplinePassReference desc
+					Resource::Path::Piplines::PiplinePathReference desc
 				) {
 
 					pipline_pass.push_back({ name,desc });
@@ -143,8 +143,8 @@ namespace DirectX {
 				/// コマンドパス作成構造体補助関数オーバーロード
 				/// </summary>
 				/// <param name="desc_">事前作成した要素</param>
-				void emplace_pipline_pass(
-					const Resource::Pass::Piplines::PiplinePassDesc& desc_
+				void emplace_pipline_path(
+					const Resource::Path::Piplines::PiplinePathDesc& desc_
 				) {
 
 					pipline_pass.push_back(desc_);
@@ -156,7 +156,7 @@ namespace DirectX {
 		/// <summary>
 		/// 描画パス初期化クラス
 		/// </summary>
-		class InitializePass
+		class InitializePath
 		{
 		public:
 			/* ========== Publicメンバー関数 ========== */
@@ -168,29 +168,29 @@ namespace DirectX {
 			/// </summary>
 			/// <param name="context">DirectXオブジェクトインスタンス構造体参照</param>
 			/// <param name="desc">描画パス設定構造体参照</param>
-			static void initialize_pass(
+			static void initialize_path(
 				DirectXContext* context, 
-				desc::PassDesc& desc
+				const desc::PathDesc& desc
 			) {
 
-				std::vector<std::string> pass_list{};
+				std::vector<std::string> path_list{};
 
 				/* ===== Begin ===== */
 
 				for (auto& [name, vec] : desc.begin_pass) {
 
 					//	インスタンス作成
-					auto pass = std::make_unique<ClassModule::CommandPass>();
+					auto path = std::make_unique<ClassModule::CommandPath>();
 
 					//	コマンド追加
-					pass->add_commands(vec);
+					path->add_commands(vec);
 
 					//	コンテナに追加
 					if (context->pass_container->add_pass(
-						Container::PassKey{ name.c_str() },
-						std::move(pass)
+						Container::PathKey{ name.c_str() },
+						std::move(path)
 					)) {
-						pass_list.push_back(name);
+						path_list.push_back(name);
 					}
 				}
 
@@ -199,17 +199,17 @@ namespace DirectX {
 				for (auto& [name, vec] : desc.command_pass) {
 
 					//	インスタンス作成
-					auto pass = std::make_unique<ClassModule::CommandPass>();
+					auto path = std::make_unique<ClassModule::CommandPath>();
 
 					//	コマンド追加
-					pass->add_commands(vec);
+					path->add_commands(vec);
 
 					//	コンテナに追加
 					if (context->pass_container->add_pass(
-						Container::PassKey{ name.c_str() },
-						std::move(pass)
+						Container::PathKey{ name.c_str() },
+						std::move(path)
 					)) {
-						pass_list.push_back(name);
+						path_list.push_back(name);
 					}
 				}
 
@@ -218,7 +218,7 @@ namespace DirectX {
 				for (auto& [name, ref] : desc.draw_object_pass) {
 
 					//	インスタンス作成
-					auto pass = std::make_unique<ClassModule::DrawObjectPass>();
+					auto path = std::make_unique<ClassModule::DrawObjectPath>();
 
 					//	描画オブジェクト参照配列
 					std::vector<ClassModule::DrawObjectBase*> objs{};
@@ -235,14 +235,14 @@ namespace DirectX {
 					}
 
 					//	配列設定
-					pass->add_objects(objs);
+					path->add_objects(objs);
 
 					//	コンテナに追加
 					if (context->pass_container->add_pass(
-						Container::PassKey{ name.c_str() },
-						std::move(pass)
+						Container::PathKey{ name.c_str() },
+						std::move(path)
 					)) {
-						pass_list.push_back(name);
+						path_list.push_back(name);
 					}
 				}
 
@@ -259,20 +259,20 @@ namespace DirectX {
 					);
 
 					//	インスタンス作成
-					auto pass = std::make_unique<ClassModule::PiplinePass>(
+					auto path = std::make_unique<ClassModule::PiplinePath>(
 						root,
 						ref.root_state,
 						pipline
 					);
 
 					//	パス参照配列作成
-					std::vector<ClassModule::PassBase*> passes{};
+					std::vector<ClassModule::PathBase*> passes{};
 
 					//	配列にパスを追加
 					for (auto& pass_name : ref.pass_names) {
 
 						if (auto command = context->pass_container->get_pass(
-							Container::PassKey{ pass_name.c_str() }
+							Container::PathKey{ pass_name.c_str() }
 						); command) {
 
 							passes.push_back(command);
@@ -280,14 +280,14 @@ namespace DirectX {
 					}
 
 					//	設定追加
-					pass->add_command_passes(passes);
+					path->add_command_paths(passes);
 
 					//	コンテナに追加
 					if (context->pass_container->add_pass(
-						Container::PassKey{ name.c_str() },
-						std::move(pass)
+						Container::PathKey{ name.c_str() },
+						std::move(path)
 					)) {
-						pass_list.push_back(name);
+						path_list.push_back(name);
 					}
 				}
 
@@ -296,17 +296,17 @@ namespace DirectX {
 				for (auto& [name, vec] : desc.end_pass) {
 
 					//	インスタンス作成
-					auto pass = std::make_unique<ClassModule::CommandPass>();
+					auto path = std::make_unique<ClassModule::CommandPath>();
 
 					//	コマンド追加
-					pass->add_commands(vec);
+					path->add_commands(vec);
 
 					//	コンテナに追加
 					if (context->pass_container->add_pass(
-						Container::PassKey{ name.c_str() },
-						std::move(pass)
+						Container::PathKey{ name.c_str() },
+						std::move(path)
 					)) {
-						pass_list.push_back(name);
+						path_list.push_back(name);
 					}
 				}
 
@@ -316,7 +316,7 @@ namespace DirectX {
 				);
 				auto passCount = 0;
 
-				for (auto& name : pass_list) {
+				for (auto& name : path_list) {
 					
 					DEBUG_LOG(++passCount, " = ", name);
 				}
@@ -329,12 +329,7 @@ namespace DirectX {
 			/// <summary>
 			/// コンストラクタ
 			/// </summary>
-			InitializePass() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~InitializePass() = default;
+			InitializePath() = default;
 
 		};
 	}

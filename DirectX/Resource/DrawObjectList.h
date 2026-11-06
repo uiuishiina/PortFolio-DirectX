@@ -2,7 +2,7 @@
 
 /* ========== Includeファイル ========== */
 
-#include"../Helpers/DrawObjectPassDesc.h"
+#include"../Helpers/DrawObjectPathDesc.h"
 
 /// <summary>
 /// DirectX名前空間
@@ -17,7 +17,7 @@ namespace DirectX {
 		/// <summary>
 		/// パス名前空間
 		/// </summary>
-		namespace Pass {
+		namespace Path {
 
 			/// <summary>
 			/// 描画オブジェクト名前空間
@@ -31,7 +31,7 @@ namespace DirectX {
 					}
 				*/
 
-				const DrwObjectPassDesc NormalTest = {
+				const DrwObjectPathDesc NormalTest = {
 					"DrawNormalObject",
 					{
 						{
@@ -40,7 +40,7 @@ namespace DirectX {
 					}
 				};
 
-				const DrwObjectPassDesc ColorTest = {
+				const DrwObjectPathDesc ColorTest = {
 					"DrawColorObject",
 					{
 						{

@@ -25,17 +25,6 @@ namespace DirectX {
 			public:
 				/* ========== Publicメンバー関数 ========== */
 
-				/// <summary>
-				/// コンストラクタ
-				/// </summary>
-				DepthBufferGroup() :
-					DesctirptorGroupBase(State::HeapState::Buffering) {}
-
-				/// <summary>
-				/// デストラクタ
-				/// </summary>
-				~DepthBufferGroup() = default;
-
 				/* ===== 初期化関数 ===== */
 
 				/// <summary>
@@ -48,12 +37,13 @@ namespace DirectX {
 				[[nodiscard]] HRESULT create_depth_buffer_group(
 					ID3D12Device* device_,
 					DescriptorHeapAllocator* allocator,
+					const CurrentIndexBase* index,
 					ClassObject::desc::DepthBufferDesc desc
 				) {
 
 					//	DescriptorResource初期化
 					{
-						const auto hr = initialize_resource_group(allocator);
+						const auto hr = initialize_resource_group(allocator, index);
 						if (FAILED(hr)) {
 							return hr;
 						}

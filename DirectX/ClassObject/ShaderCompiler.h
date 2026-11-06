@@ -60,16 +60,6 @@ namespace DirectX {
 		public:
 			/* ========== Publicメンバー関数 ========== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			ShaderCompiler() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~ShaderCompiler() = default;
-
 			/* ===== 初期化関数 ===== */
 
 			/// <summary>
@@ -78,7 +68,7 @@ namespace DirectX {
 			/// <param name="desc">HLSLシェーダー設定構造体参照</param>
 			/// <returns>コンパイルの成否</returns>
 			[[nodiscard]] HRESULT compile_shader(
-				desc::ShaderDesc& desc
+				const desc::ShaderDesc& desc
 			);
 
 			/* ===== 取得関数 ===== */

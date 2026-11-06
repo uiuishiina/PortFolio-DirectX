@@ -27,17 +27,6 @@ namespace DirectX {
 			public:
 				/* ========== Publicメンバー関数 ========== */
 
-				/// <summary>
-				/// コンストラクタ
-				/// </summary>
-				ConstantBufferGroup():
-					DesctirptorGroupBase<ClassObject::ConstantBuffer<T>>(State::HeapState::Frame) {}
-
-				/// <summary>
-				/// デストラクタ
-				/// </summary>
-				~ConstantBufferGroup() = default;
-
 				/* ===== 初期化関数 ===== */
 
 				/// <summary>
@@ -50,12 +39,13 @@ namespace DirectX {
 				[[nodiscard]] HRESULT create_constant_buffer_group(
 					ID3D12Device* device_,
 					DescriptorHeapAllocator* allocator,
+					const CurrentIndexBase* index,
 					const T& data
 				) {
 
 					//	DescriptorResource初期化
 					{
-						const auto hr = this->initialize_resource_group(allocator);
+						const auto hr = this->initialize_resource_group(allocator, index);
 						if (FAILED(hr)) {
 							return hr;
 						}
