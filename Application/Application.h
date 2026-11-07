@@ -63,6 +63,8 @@ namespace App {
 		/// </summary>
 		std::unique_ptr<ApplicationClock> clock_{};
 
+		std::uint32_t fps_count{};
+
 		/* ========== Privateメンバー関数 ========== */
 
 		/* ===== 初期化関数 ===== */

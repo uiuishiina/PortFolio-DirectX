@@ -4,6 +4,7 @@
 
 //	HandyItems
 #include"Others/NonCopyableBase.h"
+#include"Debug/DebugLogSystem.h"
 
 //	DirectX
 #include<dxgi1_6.h>
@@ -56,6 +57,16 @@ namespace DirectX {
 				DXGI_SAMPLE_DESC sample = DXGI_SAMPLE_DESC{1,0}
 			) {
 
+				BOOL sampleFlag{};
+				if (SUCCEEDED(factory_->CheckFeatureSupport(
+					DXGI_FEATURE_PRESENT_ALLOW_TEARING,
+					&sampleFlag,
+					sizeof(sampleFlag)))) {
+
+					is_tearing = sampleFlag == TRUE;
+					DEBUG_LOG("Tearing = true");
+				}
+
 				//	スワップチェーンの設定
 				DXGI_SWAP_CHAIN_DESC1 swapchain_desc{};
 				swapchain_desc.Width				= width;
@@ -68,7 +79,7 @@ namespace DirectX {
 				swapchain_desc.Scaling				= DXGI_SCALING_STRETCH;
 				swapchain_desc.SwapEffect			= DXGI_SWAP_EFFECT_FLIP_DISCARD;
 				swapchain_desc.AlphaMode			= DXGI_ALPHA_MODE_UNSPECIFIED;
-				swapchain_desc.Flags				= 0;
+				swapchain_desc.Flags				= is_tearing ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0;
 
 				//	スワップチェーン作成
 				Microsoft::WRL::ComPtr<IDXGISwapChain1> swapchain1{};
@@ -108,6 +119,10 @@ namespace DirectX {
 				return get();
 			}
 
+			[[nodiscard]] HRESULT present()const noexcept {
+				return swapchain_->Present(0, is_tearing ? DXGI_PRESENT_ALLOW_TEARING : 0);
+			}
+
 		private:
 			/* ========== Privateメンバー変数 ========== */
 
@@ -115,6 +130,8 @@ namespace DirectX {
 			/// スワップチェーンインスタンス
 			/// </summary>
 			Microsoft::WRL::ComPtr<IDXGISwapChain4> swapchain_{};
+
+			bool is_tearing = false;
 
 		};
 	}

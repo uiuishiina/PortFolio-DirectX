@@ -109,12 +109,12 @@ namespace DirectX {
 		/// <summary>
 		/// 最終描画先バッファリングサイズ
 		/// </summary>
-		const std::uint32_t back_buffer_size = 2;
+		const std::uint32_t back_buffer_size = 3;
 
 		/// <summary>
 		/// フレームリソースサイズ
 		/// </summary>
-		const std::uint32_t frame_resource_size = 3;
+		const std::uint32_t frame_resource_size = 4;
 
 	};
 }

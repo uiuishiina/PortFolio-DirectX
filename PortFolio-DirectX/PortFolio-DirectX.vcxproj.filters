@@ -168,9 +168,6 @@
     <ClCompile Include="..\DirectX\DirectXContext.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="..\DirectX\ClassObject\PiplineState.cpp">
-      <Filter>ソース ファイル\DirectX\ClassObject</Filter>
-    </ClCompile>
     <ClCompile Include="..\DirectX\Helpers\PiplineStateHelper.cpp">
       <Filter>ソース ファイル\DirectX\Heplers</Filter>
     </ClCompile>

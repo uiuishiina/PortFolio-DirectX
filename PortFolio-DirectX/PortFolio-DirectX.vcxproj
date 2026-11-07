@@ -22,7 +22,6 @@
     <ClCompile Include="..\Application\Application.cpp" />
     <ClCompile Include="..\DirectX\ClassObject\Device.cpp" />
     <ClCompile Include="..\DirectX\ClassObject\DXGI.cpp" />
-    <ClCompile Include="..\DirectX\ClassObject\PiplineState.cpp" />
     <ClCompile Include="..\DirectX\ClassObject\ShaderCompiler.cpp" />
     <ClCompile Include="..\DirectX\DirectXContext.cpp" />
     <ClCompile Include="..\DirectX\DirectXRenderer.cpp" />

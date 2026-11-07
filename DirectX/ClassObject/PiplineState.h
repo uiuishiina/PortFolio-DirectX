@@ -162,7 +162,70 @@ namespace DirectX {
 			[[nodiscard]] HRESULT create_pipline(
 				ID3D12Device* device_,
 				const desc::PipelineStateDesc& desc
-			);
+			) {
+
+				D3D12_GRAPHICS_PIPELINE_STATE_DESC pipeline_desc{};
+
+				// インプットレイアウト配列設定
+				pipeline_desc.InputLayout = { desc.input_elements.data(), static_cast<UINT>(desc.input_elements.size()) };
+
+				// ルートシグネチャー参照設定
+				pipeline_desc.pRootSignature = desc.root_;
+
+				// 各種シェーダー参照設定
+				if (desc.vs_hlsl) {
+					pipeline_desc.VS = { desc.vs_hlsl->GetBufferPointer(),desc.vs_hlsl->GetBufferSize() };
+				}
+
+				if (desc.ps_hlsl) {
+					pipeline_desc.PS = { desc.ps_hlsl->GetBufferPointer(),desc.ps_hlsl->GetBufferSize() };
+				}
+
+				if (desc.gs_hlsl) {
+					pipeline_desc.GS = { desc.gs_hlsl->GetBufferPointer(),desc.gs_hlsl->GetBufferSize() };
+				}
+
+				if (desc.hs_hlsl) {
+					pipeline_desc.HS = { desc.hs_hlsl->GetBufferPointer(),desc.hs_hlsl->GetBufferSize() };
+				}
+
+				if (desc.ds_hlsl) {
+					pipeline_desc.DS = { desc.ds_hlsl->GetBufferPointer(),desc.ds_hlsl->GetBufferSize() };
+				}
+
+				// 各種構造体設定
+				pipeline_desc.RasterizerState = desc.rasterizer_desc;
+				pipeline_desc.BlendState = desc.blend_desc;
+				pipeline_desc.DepthStencilState = desc.depth_stencil_desc;
+
+				// トポロジー設定
+				pipeline_desc.PrimitiveTopologyType = desc.primitive_topology;
+
+				// レンダーターゲット設定
+				pipeline_desc.NumRenderTargets = desc.num_render_targets;
+				for (UINT i = 0; i < desc.num_render_targets; ++i) {
+					pipeline_desc.RTVFormats[i] = desc.rtv_formats[i];
+				}
+
+				//  デプスステート設定
+				pipeline_desc.DSVFormat = desc.dsv_format;
+
+				// 各種サンプラー設定
+				pipeline_desc.SampleDesc.Count = desc.sample_count;
+				pipeline_desc.SampleDesc.Quality = desc.sample_quality;
+
+				// 各種マスク設定
+				pipeline_desc.SampleMask = desc.sample_mask;
+				pipeline_desc.NodeMask = desc.node_mask;
+
+				//  パイプラインステートフラグ設定
+				pipeline_desc.Flags = desc.flags;
+
+				return device_->CreateGraphicsPipelineState(
+					&pipeline_desc,
+					IID_PPV_ARGS(&pipline_)
+				);
+			}
 
 			/* ===== 追加関数 ===== */
 

@@ -127,7 +127,7 @@ namespace HandyItems {
 			) {
 
 				const auto* value = this->get_value_p(key);
-				return value->get();
+				return value ? value->get() : nullptr;
 			}
 
 			[[nodiscard]] Object* get_unique(
@@ -135,7 +135,8 @@ namespace HandyItems {
 			) const {
 
 				const auto* value = this->get_value_p(key);
-				return value->get();
+				
+				return value ? value->get() : nullptr;
 			}
 
 		};

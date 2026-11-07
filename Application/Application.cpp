@@ -15,7 +15,7 @@ using namespace App;
 /// </summary>
 Application::Application() {
 
-    const std::uint32_t FPS = 60;    //  ミリ秒換算
+    const std::uint32_t FPS = 100;    //  ミリ秒換算
     
     clock_ = std::make_unique<ApplicationClock>(1000 / FPS);
 
@@ -145,9 +145,15 @@ void Application::run_app() {
         }
 
         const auto skip = clock_->wait_fixed_to_skip(5);
-        if (skip > 5) {
+        if (skip > 1) {
             DEBUG_LOG("clock_ skip = ", skip);
         }
+        if (clock_->alredy_second()) {
+            main_window.set_text(std::wstring{ L"FPS = " + std::to_wstring(fps_count) }.c_str());
+            fps_count = 0;
+        }
+
+        ++fps_count;
 
         {
             auto foucs = main_window.get_focus();

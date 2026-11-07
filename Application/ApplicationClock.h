@@ -41,7 +41,9 @@ namespace App {
 		/// </summary>
 		void initialize_clock() {
 
-			next_time = std::chrono::steady_clock::now();
+			next_time = get_now();
+			last_time = get_now();
+
 			next_time += period_;
 		}
 
@@ -65,7 +67,7 @@ namespace App {
 		) {
 
 			const auto toler = static_cast<std::chrono::milliseconds>(tolerance);
-			const auto now = std::chrono::steady_clock::now();
+			const auto now = get_now();
 
 			std::uint32_t skip = 1;
 
@@ -84,6 +86,19 @@ namespace App {
 			return skip;
 		}
 
+		bool alredy_second() {
+
+			const auto now = get_now();
+			second_ += std::chrono::duration_cast<std::chrono::milliseconds>(now - last_time);
+			last_time = now;
+
+			if (second_ >= std::chrono::seconds{ 1 }) {
+				second_ -= std::chrono::seconds{ 1 };
+				return true;
+			}
+			return false;
+		}
+
 	private:
 		/* ========== Privateメンバー変数 ========== */
 
@@ -96,5 +111,13 @@ namespace App {
 		/// 次回待機時間設定
 		/// </summary>
 		std::chrono::time_point<std::chrono::steady_clock> next_time{};
+
+		std::chrono::milliseconds second_{};
+		std::chrono::time_point<std::chrono::steady_clock> last_time{};
+
+		const std::chrono::steady_clock::time_point get_now() {
+			return std::chrono::steady_clock::now();
+		}
+
 	};
 }

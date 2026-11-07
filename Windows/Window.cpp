@@ -283,6 +283,10 @@ void Window::process_message(
     }
 }
 
+void Window::set_text(const wchar_t* text) {
+    SetWindowTextW(hwnd_, text);
+}
+
 /* ===== 終了関数 ===== */
 
 /// <summary>

@@ -62,21 +62,41 @@ namespace DirectX {
 		/// フレームリソース待機関数
 		/// </summary>
 		/// <details>
-		/// 次フレームが
+		/// 次フレームに利用するリソースが使えるまで待機
 		/// </details>
 		void sync_frame_resource();
 
+		/// <summary>
+		/// フレームリソースリセット関数
+		/// </summary>
 		void reset_frame_resource();
 
-
+		/// <summary>
+		/// フレームリソース更新関数
+		/// </summary>
+		/// <details>
+		/// 利用するリソースに書き込み
+		/// </details>
 		void update_resource();
 
+		/// <summary>
+		/// 描画パス更新関数
+		/// </summary>
 		void apply_path();
 
+		/// <summary>
+		/// コマンドリスト実行関数
+		/// </summary>
 		void execute_command_lists();
 
+		/// <summary>
+		/// スワップチェーンプレゼント関数
+		/// </summary>
 		void present();
 
+		/// <summary>
+		/// 描画終了時処理関数
+		/// </summary>
 		void end_update();
 
 		void set_pass(ClassModule::PathBase* pass) {
@@ -106,6 +126,8 @@ namespace DirectX {
 		/// 経過フレーム
 		/// </summary>
 		std::uint64_t frame_count{};
+
+		std::size_t current_resource_index{};
 
 	};
 }

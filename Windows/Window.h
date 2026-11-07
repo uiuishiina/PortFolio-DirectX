@@ -124,6 +124,8 @@ namespace Windows {
 			intptr_t lParam
 		);
 
+		void set_text(const wchar_t* text);
+
 		/* ===== 終了関数 ===== */
 
 		/// <summary>

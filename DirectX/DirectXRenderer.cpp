@@ -49,9 +49,7 @@ namespace {
 /// <summary>
 /// コンストラクタ
 /// </summary>
-DirectXRenderer::DirectXRenderer() :
-    context_{ std::make_unique<DirectXContext>() },
-    updator_{ std::make_unique<DirectXUpdator>(context_.get(),shera_p) } {};
+DirectXRenderer::DirectXRenderer() = default;
 
 /// <summary>
 /// デストラクタ
@@ -86,6 +84,9 @@ DirectXRenderer::~DirectXRenderer() {
         DEBUG_ERROR_LOG("DirectXRenderer :: initialize_renderer() pointer nullptr");
         return false;
     }
+
+    context_ = std::make_unique<DirectXContext>();
+    updator_ = std::make_unique<DirectXUpdator>(context_.get(), shera_p);
 
     /* ========== 描画機能初期化 ========== */
     

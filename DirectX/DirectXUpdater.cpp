@@ -4,6 +4,8 @@
 #include"DirectXUpdater.h"
 #include"ClassModule/FrameContext.h"
 
+#include"../Application/ApplicationDataShare.h"
+
 using namespace DirectX;
 
 /* ========== Publicメンバー関数 ========== */
@@ -18,13 +20,15 @@ using namespace DirectX;
 	context_->back_buffer_index->update_index();
 	context_->frame_resource_index->update_index();
 
+	current_resource_index = context_->frame_resource_index->get_current_index();
+
 	return true;
 }
 
 void DirectXUpdator::sync_frame_resource() {
 
 	//	利用するインデックスから参照
-	const auto wait = context_->frame_resources[context_->frame_resource_index->get_current_index()]
+	const auto wait = context_->frame_resources[current_resource_index]
 		->get_frame_value();
 
 	//	使えるまで待機
@@ -34,10 +38,10 @@ void DirectXUpdator::sync_frame_resource() {
 void DirectXUpdator::reset_frame_resource() {
 
 	//	フレームリソースリセット
-	context_->frame_resources[context_->frame_resource_index->get_current_index()]->reset_frame_resource();
+	context_->frame_resources[current_resource_index]->reset_frame_resource();
 
 	//	コマンドアロケーター取得
-	auto& allocator = context_->frame_resources[context_->frame_resource_index->get_current_index()]
+	auto& allocator = context_->frame_resources[current_resource_index]
 		->get_allocator();
 
 	//	コマンドリストリセット
@@ -68,13 +72,18 @@ void DirectXUpdator::execute_command_lists() {
 	context_->graphic_queue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
 	//	シグナルを送って配列に保存
-	context_->frame_resources[context_->frame_resource_index->get_current_index()]
+	context_->frame_resources[current_resource_index]
 		->end_frame_signal(context_->graphic_queue.get());
 }
 
 void DirectXUpdator::present() {
-
-	context_->swapchain_->Present(1, 0);
+	
+	if (share_p->get_input()->is_down(HandyItems::input::InputKeyBoard::One)) {
+		context_->swapchain_.present();
+	}
+	else {
+		context_->swapchain_->Present(1, 0);
+	}
 }
 
 void DirectXUpdator::end_update() {
