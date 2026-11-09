@@ -41,6 +41,13 @@
     <ClInclude Include="..\Application\Application.h" />
     <ClInclude Include="..\Application\ApplicationClock.h" />
     <ClInclude Include="..\Application\ApplicationDataShare.h" />
+    <ClInclude Include="..\Application\Component\ComponentBase.h" />
+    <ClInclude Include="..\Application\Component\ComponentRegistry.h" />
+    <ClInclude Include="..\Application\Component\TransformComponent.h" />
+    <ClInclude Include="..\Application\Entity\Entity.h" />
+    <ClInclude Include="..\Application\Entity\EntityManager.h" />
+    <ClInclude Include="..\Application\Scene\Scene.h" />
+    <ClInclude Include="..\Application\Syetem\SystemBase.h" />
     <ClInclude Include="..\DirectX\ClassModule\BackBufferIndex.h" />
     <ClInclude Include="..\DirectX\ClassModule\CurrentIndexBase.h" />
     <ClInclude Include="..\DirectX\ClassModule\DescriptorGroup\BackBufferGroup.h" />
@@ -82,6 +89,7 @@
     <ClInclude Include="..\DirectX\ClassObject\RootSignature.h" />
     <ClInclude Include="..\DirectX\ClassObject\ShaderCompiler.h" />
     <ClInclude Include="..\DirectX\ClassObject\SwapChain.h" />
+    <ClInclude Include="..\DirectX\ComponentResourceManager.h" />
     <ClInclude Include="..\DirectX\Container\CameraObjectContainer.h" />
     <ClInclude Include="..\DirectX\Container\DescriptorHeapContainer.h" />
     <ClInclude Include="..\DirectX\Container\DrawObjectConteiner.h" />

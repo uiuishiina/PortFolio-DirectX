@@ -53,6 +53,13 @@ namespace HandyItems {
 			/// </summary>
 			virtual ~UniqueptrKeyMap() = default;
 
+			using KeyMapBase<
+				KeyT,
+				EncodeKeyT,
+				handle::HandlePtrBase<Object, EncodeKeyT>,
+				std::unique_ptr<Object>
+			>::add_value;
+
 			/* ===== 取得関数 ===== */
 
 			/// <summary>

@@ -22,7 +22,7 @@ namespace HandyItems {
 			/// タイプ型ID取得関数
 			/// </summary>
 			/// <details>
-			/// 実行毎に値が変わるため注意
+			/// プログラム実行毎に値が変わるため注意
 			/// </details>
 			/// <typeparam name="T">IDを取得したい型</typeparam>
 			/// <returns>型から取得したID</returns>

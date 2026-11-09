@@ -130,6 +130,18 @@
     <Filter Include="ヘッダー ファイル\DirectX\ClassModule\DrawPath">
       <UniqueIdentifier>{f036751c-319f-4cdd-99de-4adfed59e808}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Applicaton\Component">
+      <UniqueIdentifier>{5b70f1f7-579a-418a-9f63-b06f9565efc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Applicaton\Entity">
+      <UniqueIdentifier>{55e83717-2a60-4ab0-9c06-ae122aef9fa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Applicaton\Scene">
+      <UniqueIdentifier>{752776c6-39d8-4889-ac15-e78b855075ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Applicaton\System">
+      <UniqueIdentifier>{3368b45f-4f83-4c32-bb55-8f3aa7d70c57}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Entry\Entry.cpp">
@@ -583,6 +595,30 @@
     </ClInclude>
     <ClInclude Include="..\Application\ApplicationClock.h">
       <Filter>ヘッダー ファイル\Applicaton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Component\ComponentBase.h">
+      <Filter>ヘッダー ファイル\Applicaton\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Component\TransformComponent.h">
+      <Filter>ヘッダー ファイル\Applicaton\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Entity\Entity.h">
+      <Filter>ヘッダー ファイル\Applicaton\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Entity\EntityManager.h">
+      <Filter>ヘッダー ファイル\Applicaton\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Scene\Scene.h">
+      <Filter>ヘッダー ファイル\Applicaton\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Component\ComponentRegistry.h">
+      <Filter>ヘッダー ファイル\Applicaton\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Syetem\SystemBase.h">
+      <Filter>ヘッダー ファイル\Applicaton\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DirectX\ComponentResourceManager.h">
+      <Filter>ヘッダー ファイル\DirectX\ClassObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
