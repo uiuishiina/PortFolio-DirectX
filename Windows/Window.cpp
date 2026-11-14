@@ -112,8 +112,7 @@ namespace {
 /// <param name="share">アプリケーションデータシェアクラス参照</param>
 /// <returns>初期化の成否</returns>
 [[nodiscard]] bool Window::initialize_window(
-    const WindowSize& size,
-    App::ApplicationDataShare* share
+    const WindowSize& size
 ) {
 
     //  すでにインスタンスがあるなら作成せず失敗を返す
@@ -122,8 +121,6 @@ namespace {
     }
 
     size_ = size;
-
-    shera_p = share;
 
     //  ウィンドウインスタンスを [ WindowsOS ] から取得
     hInstance_ = GetModuleHandle(nullptr);
@@ -221,54 +218,6 @@ void Window::process_message(
 
     switch (msg)
     {
-
-        /* ========== キー入力取得 ========== */
-
-    case WM_KEYDOWN: {  // 押されたとき
-        bool repeat = (lParam & (1 << 30)) != 0;
-        if (repeat) {
-            break;
-        }
-        auto& keyboard = shera_p->get_input()->get_current_state().get_input_state<input::InputKeyBoard>();
-
-        switch (wParam)
-        {
-        case VK_ESCAPE:
-            keyboard.set_key(input::InputKeyBoard::Esc, true);
-            break;
-        case VK_LEFT:
-            keyboard.set_key(input::InputKeyBoard::LeftArrow, true);
-            break;
-        case VK_RIGHT:
-            keyboard.set_key(input::InputKeyBoard::RightArrow, true);
-            break;
-        case '1':
-            keyboard.set_key(input::InputKeyBoard::One, true);
-            break;
-        }
-        break;
-    }
-    case WM_KEYUP: {    // 離されたとき
-
-        auto& keyboard = shera_p->get_input()->get_current_state().get_input_state<input::InputKeyBoard>();
-
-        switch (wParam)
-        {
-        case VK_ESCAPE:
-            keyboard.set_key(input::InputKeyBoard::Esc, false);
-            break;
-        case VK_LEFT:
-            keyboard.set_key(input::InputKeyBoard::LeftArrow, false);
-            break;
-        case VK_RIGHT:
-            keyboard.set_key(input::InputKeyBoard::RightArrow, false);
-            break;
-        case '1':
-            keyboard.set_key(input::InputKeyBoard::One, false);
-            break;
-        }
-        break;
-    }
         /* ========== ウィンドウフォーカス取得 ========== */
     case WM_SETFOCUS: {
         is_focus = true;

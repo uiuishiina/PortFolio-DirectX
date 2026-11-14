@@ -5,6 +5,7 @@
 #include"../Windows/Window.h"
 #include"ApplicationDataShare.h"
 #include"../DirectX/DirectXRenderer.h"
+#include"System/System.h"
 
 #include<memory>
 
@@ -43,6 +44,8 @@ namespace App {
 	private:
 		/* ========== Privateメンバー変数 ========== */
 
+		SystemManager system_{};
+
 		/// <summary>
 		/// メインウィンドウ
 		/// </summary>
@@ -58,12 +61,6 @@ namespace App {
 		/// </summary>
 		DirectX::DirectXRenderer main_renderer{};
 
-		/// <summary>
-		/// フレームレート管理
-		/// </summary>
-		std::unique_ptr<ApplicationClock> clock_{};
-
-		std::uint32_t fps_count{};
 
 		/* ========== Privateメンバー関数 ========== */
 

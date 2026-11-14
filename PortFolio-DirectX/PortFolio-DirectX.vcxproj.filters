@@ -130,6 +130,12 @@
     <Filter Include="ヘッダー ファイル\DirectX\ClassModule\DrawPath">
       <UniqueIdentifier>{f036751c-319f-4cdd-99de-4adfed59e808}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Applicaton\System">
+      <UniqueIdentifier>{82ff6654-980a-466d-bf30-126ea0cb14e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Applicaton\Component">
+      <UniqueIdentifier>{a47f6b7c-8e43-4247-b81a-0af390e8b6b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Entry\Entry.cpp">
@@ -182,6 +188,9 @@
     </ClCompile>
     <ClCompile Include="..\DirectX\Initializer\InitializeLog.cpp">
       <Filter>ソース ファイル\DirectX\Initializer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Application\System\InputSystem.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -583,6 +592,30 @@
     </ClInclude>
     <ClInclude Include="..\Application\ApplicationClock.h">
       <Filter>ヘッダー ファイル\Applicaton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\System\Entity.h">
+      <Filter>ヘッダー ファイル\Applicaton\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\System\System.h">
+      <Filter>ヘッダー ファイル\Applicaton\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\System\TransformComponentSystem.h">
+      <Filter>ヘッダー ファイル\Applicaton\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Component\Component.h">
+      <Filter>ヘッダー ファイル\Applicaton\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Component\ComponentManager.h">
+      <Filter>ヘッダー ファイル\Applicaton\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\System\ClockSystem.h">
+      <Filter>ヘッダー ファイル\Applicaton\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\System\InputSystem.h">
+      <Filter>ヘッダー ファイル\Applicaton\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\System\WIndowsSystem.h">
+      <Filter>ヘッダー ファイル\Applicaton\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

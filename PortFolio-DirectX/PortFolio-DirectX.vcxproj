@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\Application.cpp" />
+    <ClCompile Include="..\Application\System\InputSystem.cpp" />
     <ClCompile Include="..\DirectX\ClassObject\Device.cpp" />
     <ClCompile Include="..\DirectX\ClassObject\DXGI.cpp" />
     <ClCompile Include="..\DirectX\ClassObject\ShaderCompiler.cpp" />
@@ -41,6 +42,14 @@
     <ClInclude Include="..\Application\Application.h" />
     <ClInclude Include="..\Application\ApplicationClock.h" />
     <ClInclude Include="..\Application\ApplicationDataShare.h" />
+    <ClInclude Include="..\Application\Component\Component.h" />
+    <ClInclude Include="..\Application\Component\ComponentManager.h" />
+    <ClInclude Include="..\Application\System\ClockSystem.h" />
+    <ClInclude Include="..\Application\System\Entity.h" />
+    <ClInclude Include="..\Application\System\InputSystem.h" />
+    <ClInclude Include="..\Application\System\System.h" />
+    <ClInclude Include="..\Application\System\TransformComponentSystem.h" />
+    <ClInclude Include="..\Application\System\WIndowsSystem.h" />
     <ClInclude Include="..\DirectX\ClassModule\BackBufferIndex.h" />
     <ClInclude Include="..\DirectX\ClassModule\CurrentIndexBase.h" />
     <ClInclude Include="..\DirectX\ClassModule\DescriptorGroup\BackBufferGroup.h" />

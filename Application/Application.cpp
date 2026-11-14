@@ -5,6 +5,8 @@
 #include"Debug/DebugLogSystem.h"
 
 #include"ApplicationClock.h"
+#include"System/ClockSystem.h"
+#include"System/InputSystem.h"
 
 using namespace App;
 
@@ -15,9 +17,11 @@ using namespace App;
 /// </summary>
 Application::Application() {
 
-    const std::uint32_t FPS = 100;    //  ミリ秒換算
-    
-    clock_ = std::make_unique<ApplicationClock>(1000 / FPS);
+    const std::uint32_t FPS = 60;    //  ミリ秒換算
+
+    system_.register_system<ClockSystem>(1000 / FPS);
+    system_.register_system<EntityManager>();
+    system_.register_system<InputSystem>();
 
     DEBUG_LOG("Application :: Application()");
 }
@@ -83,8 +87,7 @@ Application::~Application() {
 ) {
 
     const auto value = main_window.initialize_window(
-        size,
-        &data_share
+        size
     );
     if (!value) {
         DEBUG_LOG("Window :: initialize_window() = false");
@@ -128,32 +131,57 @@ void Application::run_app() {
 
     bool foucs_{};
 
-    clock_->initialize_clock();
+    if (system_.init_systems())
+    {
+        
+    }
+
+    auto* player = system_.get_system<EntityManager>()->create_entity("player");
+    player->add_component(
+        system_.create_component<InputComponent>()
+    );
+    system_.get_system<InputSystem>()->get_action_manager().add_action_bind(
+        InputAction::Esc,
+        InputKeyBoard::Esc
+    );
+
+    auto* clock = system_.get_system<ClockSystem>();
+
+    if (clock) {
+        clock->start_clock();
+    }
+
+    ClockSystem::Milliseconds delta_time{};
+    std::uint32_t fps_count{};
 
     while (true)
     {
-        data_share.get_input()->update_frame();
+        system_.update_system();
 
         main_window.pull_event();
-
-        if (data_share.get_input()->is_down(HandyItems::input::InputKeyBoard::Esc)) {
-            main_window.close_window();
-        }
 
         if (main_window.get_closed()) {
             break;
         }
 
-        const auto skip = clock_->wait_fixed_to_skip(5);
-        if (skip > 1) {
-            DEBUG_LOG("clock_ skip = ", skip);
-        }
-        if (clock_->alredy_second()) {
-            main_window.set_text(std::wstring{ L"FPS = " + std::to_wstring(fps_count) }.c_str());
-            fps_count = 0;
-        }
+        if (clock) {
 
-        ++fps_count;
+            const auto skip = clock->wait_fixed_to_skip(5);
+            if (skip > 5) {
+                DEBUG_LOG("clock_ skip = ", skip);
+            }
+
+            delta_time += clock->get_delta_time();
+            ++fps_count;
+
+            if (delta_time >= ClockSystem::Milliseconds{ 1000 }) {
+
+                delta_time -= ClockSystem::Milliseconds{ 1000 };
+                main_window.set_text(std::wstring{ L"FPS = " + std::to_wstring(fps_count) }.c_str());
+                fps_count = 0;
+            }
+
+        }
 
         {
             auto foucs = main_window.get_focus();
@@ -165,6 +193,15 @@ void Application::run_app() {
                 continue;
             }
         }
+
+        if (player->get_component<InputComponent>()->get_action_state(InputAction::Esc) == ActionState::Down)
+        {
+            main_window.close_window();
+            continue;
+        }
+
+
+
 
         main_renderer.update_renderer();
     }

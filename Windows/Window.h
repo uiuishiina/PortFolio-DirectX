@@ -20,14 +20,6 @@ using HINSTANCE = HINSTANCE__*;
 struct HWND__;
 using HWND = HWND__*;
 
-namespace App {
-
-	/// <summary>
-	/// アプリケーションデータシェアクラス用前方宣言
-	/// </summary>
-	class ApplicationDataShare;
-}
-
 /// <summary>
 /// Windows名前空間
 /// </summary>
@@ -96,8 +88,7 @@ namespace Windows {
 		/// <param name="share">アプリケーションデータシェアクラス参照</param>
 		/// <returns>初期化の成否</returns>
 		[[nodiscard]] bool initialize_window(
-			const WindowSize& size,
-			App::ApplicationDataShare* share
+			const WindowSize& size
 		);
 
 		/* ===== 実行関数 ===== */
@@ -192,11 +183,6 @@ namespace Windows {
 		/// ウィンドウハンドル
 		/// </summary>
 		HWND hwnd_{};
-
-		/// <summary>
-		/// アプリケーションデータシェアクラス参照
-		/// </summary>
-		App::ApplicationDataShare* shera_p{};
 
 		/// <summary>
 		/// ウィンドウフォーカスフラグ

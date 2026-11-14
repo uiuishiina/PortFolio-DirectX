@@ -17,17 +17,6 @@ namespace HandyItems {
 		public:
 			/* ===== メンバー関数 ===== */
 
-			/// <summary>
-			/// コンストラクタ
-			/// </summary>
-			TupleBase() = default;
-
-			/// <summary>
-			/// デストラクタ
-			/// </summary>
-			~TupleBase() = default;
-
-
 			/* ===== 取得関数 ===== */
 
 			/// <summary>

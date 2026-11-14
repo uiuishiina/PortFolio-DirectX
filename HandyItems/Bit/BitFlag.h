@@ -42,7 +42,7 @@ namespace HandyItems {
 				T value
 			) {
 				
-				bit_.set(others::enum_to_index(value));
+				bit_.set(Enum::enum_to_index(value));
 			}
 
 			/// <summary>
@@ -53,7 +53,7 @@ namespace HandyItems {
 				T value
 			) {
 
-				bit_.reset(others::enum_to_index(value));
+				bit_.reset(Enum::enum_to_index(value));
 			}
 
 			/// <summary>
@@ -73,7 +73,7 @@ namespace HandyItems {
 				T value
 			) const {
 
-				return bit_.test(others::enum_to_index(value));
+				return bit_.test(Enum::enum_to_index(value));
 			}
 
 			/// <summary>
@@ -100,7 +100,7 @@ namespace HandyItems {
 			/// <summary>
 			/// ビットフラグ
 			/// </summary>
-			std::bitset<others::enum_to_index(T::Count)> bit_;
+			std::bitset<Enum::enum_to_index(T::Count)> bit_;
 
 		};
 
@@ -180,7 +180,7 @@ namespace HandyItems {
 			/// 全ビット [ false ] 判定関数
 			/// </summary>
 			/// <returns> すべてのビットが立っていないなら [ true ] </returns>
-			[[nodisacrd]] bool none() const {
+			[[nodiscard]] bool none() const {
 
 				return bit_.none();
 			}
