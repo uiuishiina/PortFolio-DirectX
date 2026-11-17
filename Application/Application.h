@@ -6,6 +6,7 @@
 #include"ApplicationDataShare.h"
 #include"../DirectX/DirectXRenderer.h"
 #include"System/System.h"
+#include"System/LoopManager.h"
 
 #include<memory>
 
@@ -45,6 +46,8 @@ namespace App {
 		/* ========== Privateメンバー変数 ========== */
 
 		SystemManager system_{};
+
+		LoopManager loop_{ &system_ };
 
 		/// <summary>
 		/// メインウィンドウ

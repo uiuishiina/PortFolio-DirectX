@@ -36,6 +36,8 @@ namespace App
 			delta_time = std::chrono::duration_cast<Milliseconds>(now - last_time);
 
 			last_time = now;
+
+			fps_count++;
 		}
 
 		void shutdown_system() override
@@ -124,6 +126,8 @@ namespace App
 
 		Milliseconds delta_time{};
 		TimePoint last_time{};
+
+		uint32_t fps_count{};
 
 		const std::chrono::steady_clock::time_point get_now() {
 			return std::chrono::steady_clock::now();

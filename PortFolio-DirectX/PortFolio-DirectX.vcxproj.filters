@@ -192,6 +192,9 @@
     <ClCompile Include="..\Application\System\InputSystem.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="..\Application\System\DebugSystem.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Application\Application.h">
@@ -614,7 +617,13 @@
     <ClInclude Include="..\Application\System\InputSystem.h">
       <Filter>ヘッダー ファイル\Applicaton\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\Application\System\WIndowsSystem.h">
+    <ClInclude Include="..\Application\System\WindowsSystem.h">
+      <Filter>ヘッダー ファイル\Applicaton\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\System\LoopManager.h">
+      <Filter>ヘッダー ファイル\Applicaton\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\System\DebugSystem.h">
       <Filter>ヘッダー ファイル\Applicaton\System</Filter>
     </ClInclude>
   </ItemGroup>

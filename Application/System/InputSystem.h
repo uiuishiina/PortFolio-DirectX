@@ -337,12 +337,6 @@ namespace App
 
 	};
 
-
-	class IInputSystem : public ISystem
-	{
-
-	};
-
 	class InputSystem : public ISystem
 	{
 	public:

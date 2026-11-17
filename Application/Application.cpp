@@ -7,6 +7,8 @@
 #include"ApplicationClock.h"
 #include"System/ClockSystem.h"
 #include"System/InputSystem.h"
+#include"System/WindowsSystem.h"
+#include"System/DebugSystem.h"
 
 using namespace App;
 
@@ -19,9 +21,9 @@ Application::Application() {
 
     const std::uint32_t FPS = 60;    //  ミリ秒換算
 
+    system_.register_systems<EntityManager, InputSystem, DebugSystem>();
     system_.register_system<ClockSystem>(1000 / FPS);
-    system_.register_system<EntityManager>();
-    system_.register_system<InputSystem>();
+    system_.register_system<WindowsSystem>(Windows::WindowSize{ 1280,720 });
 
     DEBUG_LOG("Application :: Application()");
 }
@@ -67,7 +69,11 @@ Application::~Application() {
         "========== initialize =========="
         );
 
-    if (!initialize_window(Windows::WindowSize{ 1280,720 })) {
+    //if (!initialize_window(Windows::WindowSize{ 1280,720 })) {
+    //    return false;
+    //}
+    if (!system_.init_systems())
+    {
         return false;
     }
     if (!initialize_renderer()) {
@@ -102,10 +108,11 @@ Application::~Application() {
 /// <returns>初期化の成否</returns>
 [[nodiscard]] bool Application::initialize_renderer() {
 
-    const auto [w, h] = main_window.get_size();
+    const auto* window = system_.get_system<WindowsSystem>();
+    const auto [w, h] = window->get_window_size();
 
     const auto value = main_renderer.initialize_renderer(
-        main_window.get_hwnd(),
+        window->get_hwnd(),
         w,
         h,
         &data_share
@@ -131,11 +138,6 @@ void Application::run_app() {
 
     bool foucs_{};
 
-    if (system_.init_systems())
-    {
-        
-    }
-
     auto* player = system_.get_system<EntityManager>()->create_entity("player");
     player->add_component(
         system_.create_component<InputComponent>()
@@ -151,60 +153,62 @@ void Application::run_app() {
         clock->start_clock();
     }
 
-    ClockSystem::Milliseconds delta_time{};
-    std::uint32_t fps_count{};
+    loop_.run();
 
-    while (true)
-    {
-        system_.update_system();
+    //ClockSystem::Milliseconds delta_time{};
+    //std::uint32_t fps_count{};
 
-        main_window.pull_event();
+    //while (true)
+    //{
+    //    system_.update_system();
 
-        if (main_window.get_closed()) {
-            break;
-        }
+    //    main_window.pull_event();
 
-        if (clock) {
+    //    if (main_window.get_closed()) {
+    //        break;
+    //    }
 
-            const auto skip = clock->wait_fixed_to_skip(5);
-            if (skip > 5) {
-                DEBUG_LOG("clock_ skip = ", skip);
-            }
+    //    if (clock) {
 
-            delta_time += clock->get_delta_time();
-            ++fps_count;
+    //        const auto skip = clock->wait_fixed_to_skip(5);
+    //        if (skip > 5) {
+    //            DEBUG_LOG("clock_ skip = ", skip);
+    //        }
 
-            if (delta_time >= ClockSystem::Milliseconds{ 1000 }) {
+    //        delta_time += clock->get_delta_time();
+    //        ++fps_count;
 
-                delta_time -= ClockSystem::Milliseconds{ 1000 };
-                main_window.set_text(std::wstring{ L"FPS = " + std::to_wstring(fps_count) }.c_str());
-                fps_count = 0;
-            }
+    //        if (delta_time >= ClockSystem::Milliseconds{ 1000 }) {
 
-        }
+    //            delta_time -= ClockSystem::Milliseconds{ 1000 };
+    //            main_window.set_text(std::wstring{ L"FPS = " + std::to_wstring(fps_count) }.c_str());
+    //            fps_count = 0;
+    //        }
 
-        {
-            auto foucs = main_window.get_focus();
-            if (foucs_ != foucs) {
-                DEBUG_LOG("Window Foucs = ", (foucs ? "ON" : "OFF"));
-                foucs_ = foucs;
-            }
-            if (!foucs) {
-                continue;
-            }
-        }
+    //    }
 
-        if (player->get_component<InputComponent>()->get_action_state(InputAction::Esc) == ActionState::Down)
-        {
-            main_window.close_window();
-            continue;
-        }
+    //    {
+    //        auto foucs = main_window.get_focus();
+    //        if (foucs_ != foucs) {
+    //            DEBUG_LOG("Window Foucs = ", (foucs ? "ON" : "OFF"));
+    //            foucs_ = foucs;
+    //        }
+    //        if (!foucs) {
+    //            continue;
+    //        }
+    //    }
+
+    //    if (player->get_component<InputComponent>()->get_action_state(InputAction::Esc) == ActionState::Down)
+    //    {
+    //        main_window.close_window();
+    //        continue;
+    //    }
 
 
 
 
-        main_renderer.update_renderer();
-    }
+    //    main_renderer.update_renderer();
+    //}
 }
 
 /* ===== 終了時関数 ===== */
@@ -219,9 +223,11 @@ void Application::end_app() {
         "========== end =========="
     );
 
-    do {
-        main_window.pull_event();
-    } while (!main_window.completed_destroy());
+    //do {
+    //    main_window.pull_event();
+    //} while (!main_window.completed_destroy());
+
+    auto* window = system_.get_system<WindowsSystem>();
 
     main_renderer.end_renderer();
 }
