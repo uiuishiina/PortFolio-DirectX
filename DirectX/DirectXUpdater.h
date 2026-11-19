@@ -41,11 +41,9 @@ namespace DirectX {
 		/// </summary>
 		/// <param name="context">DirectXオブジェクトインスタンスまとめクラスWeak参照</param>
 		explicit DirectXUpdator(
-			DirectXContext* context,
-			App::ApplicationDataShare* share
+			DirectXContext* context
 		) :
-			context_{ context },
-			share_p{ share } {};
+			context_{ context } {};
 
 		/* ===== 実行関数 ===== */
 
@@ -111,11 +109,6 @@ namespace DirectX {
 		/// DirectXオブジェクトインスタンスまとめクラスWeak参照
 		/// </summary>
 		DirectXContext* context_;
-
-		/// <summary>
-		/// アプリケーションデータシェアクラス参照
-		/// </summary>
-		App::ApplicationDataShare* share_p;
 
 		/// <summary>
 		/// 描画パス実行順参照配列

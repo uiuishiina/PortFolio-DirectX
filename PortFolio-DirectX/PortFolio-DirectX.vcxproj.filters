@@ -626,6 +626,12 @@
     <ClInclude Include="..\Application\System\DebugSystem.h">
       <Filter>ヘッダー ファイル\Applicaton\System</Filter>
     </ClInclude>
+    <ClInclude Include="..\Application\System\RendererSystem.h">
+      <Filter>ヘッダー ファイル\Applicaton\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\SystemComfig.h">
+      <Filter>ヘッダー ファイル\Applicaton</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\DirectX\Resource\HLSL\StructHeader.hlsli">

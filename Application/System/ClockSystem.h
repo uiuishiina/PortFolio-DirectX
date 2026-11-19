@@ -26,7 +26,8 @@ namespace App
 
 		bool init_system(SystemManager& manager) override
 		{
-			return true;
+			is_init = true;
+			return is_init;
 		}
 
 		void update_system() override

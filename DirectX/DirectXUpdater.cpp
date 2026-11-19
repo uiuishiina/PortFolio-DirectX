@@ -78,12 +78,7 @@ void DirectXUpdator::execute_command_lists() {
 
 void DirectXUpdator::present() {
 	
-	if (share_p->get_input()->is_down(HandyItems::input::InputKeyBoard::One)) {
-		context_->swapchain_.present();
-	}
-	else {
-		context_->swapchain_->Present(1, 0);
-	}
+	context_->swapchain_.present();
 }
 
 void DirectXUpdator::end_update() {

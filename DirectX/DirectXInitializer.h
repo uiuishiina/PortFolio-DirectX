@@ -43,7 +43,6 @@ namespace DirectX {
 			/* -- Common -- */
 
 			DirectXContext* context_;
-			App::ApplicationDataShare* share_p;
 			UINT back_buffer_size;
 			UINT frame_resource_size;
 

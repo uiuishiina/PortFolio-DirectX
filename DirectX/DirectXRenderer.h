@@ -65,8 +65,7 @@ namespace DirectX {
 		[[nodiscard]] bool initialize_renderer(
 			HWND hwnd,
 			std::uint32_t width,
-			std::uint32_t height,
-			App::ApplicationDataShare* shera_
+			std::uint32_t height
 		);
 
 		/* ===== 実行関数 ===== */
@@ -90,11 +89,6 @@ namespace DirectX {
 		/// ウィンドウハンドル
 		/// </summary>
 		HWND hwnd_{};
-
-		/// <summary>
-		/// アプリケーションデータシェアクラス参照
-		/// </summary>
-		App::ApplicationDataShare* shera_p{};
 
 		/// <summary>
 		/// DirectXオブジェクトインスタンスまとめクラス

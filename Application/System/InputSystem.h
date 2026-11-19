@@ -344,7 +344,12 @@ namespace App
 		bool init_system(SystemManager& manager) override
 		{
 			manager_ = manager.get_system<EntityManager>();
-			return manager_;
+
+			if (manager_)
+			{
+				is_init = true;
+			}
+			return is_init;
 		}
 
 		void update_system() override
@@ -374,7 +379,7 @@ namespace App
 
 		void shutdown_system() override
 		{
-			if (manager_)
+			if (manager_ && is_init)
 			{
 				if (manager_->has_entitys())
 				{
@@ -405,5 +410,6 @@ namespace App
 	{
 		using System = InputSystem;
 	};
+
 
 }

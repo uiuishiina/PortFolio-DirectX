@@ -21,7 +21,9 @@ namespace App
 
 		bool init_system(SystemManager& manager) override
 		{
-			return main_window.initialize_window(size_);
+			is_init = main_window.initialize_window(size_);
+
+			return is_init;
 		}
 
 		void update_system() override
@@ -31,7 +33,7 @@ namespace App
 
 		void shutdown_system() override
 		{
-			main_window.close_window();
+			if (is_init) { main_window.close_window(); }
 		}
 
 		void set_window_text(const wchar_t* text)

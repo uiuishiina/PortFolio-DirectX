@@ -3,6 +3,9 @@
 #include"../Component/Component.h"
 #include"Entity.h"
 
+#include<queue>
+#include<algorithm>
+
 namespace App
 {
 
@@ -30,13 +33,56 @@ namespace App
 
 		virtual void shutdown_system() = 0;
 
+		bool is_initialize() const noexcept
+		{
+			return is_init;
+		}
+
+	protected:
+
+		bool is_init = false;
+
 	};
+
+	template<typename... Types>
+	struct TypeList
+	{};
+
+	template<typename Init,typename Update,typename Shutdown>
+	struct SystemDependency
+	{
+		using InitAfter = Init;
+
+		using UpdateAfter = Update;
+
+		using ShutdownAfter = Shutdown;
+	};
+
+	template<typename T>
+	struct SystemTraits : SystemDependency<
+		TypeList<>,
+		TypeList<>,
+		TypeList<>
+		>
+	{};
+
+	struct SystemDependencies
+	{
+		std::vector<SystemID> init_after{};
+		std::vector<SystemID> update_after{};
+		std::vector<SystemID> shutdown_after{};
+	};
+
 
 	class EntityManager final : public ISystem
 	{
 	public:
 
-		bool init_system(SystemManager& manager) override { return true; }
+		bool init_system(SystemManager& manager) override 
+		{ 
+			is_init = true;
+			return is_init;
+		}
 
 		Entity* create_entity(
 			const std::string& name
@@ -123,7 +169,7 @@ namespace App
 
 		void shutdown_system() override
 		{
-			clear_entitys();
+			if (is_init) { clear_entitys(); }
 		}
 
 		bool has_entitys() const noexcept
@@ -154,14 +200,10 @@ namespace App
 
 		~SystemManager()
 		{
-			auto* entity_manager = get_system<EntityManager>();
-			if (entity_manager)
+			for (auto& id : shutdown_order)
 			{
-				entity_manager->shutdown_system();
-			}
+				auto* system = systems_.at(id).get();
 
-			for (auto& [id, system] : systems_)
-			{
 				system->shutdown_system();
 			}
 		}
@@ -181,16 +223,36 @@ namespace App
 
 			const auto id = get_system_id<System>();
 
-			systems_.try_emplace(
+			const auto result = systems_.try_emplace(
 				id,
 				std::move(system)
-			);
+			).second;
+			if (result)
+			{
+				register_order.push_back(id);
+				using Traits = SystemTraits<System>;
+
+				system_dependenies.emplace(
+					id,
+					SystemDependencies{
+						make_system_ids(typename Traits::InitAfter{}),
+						make_system_ids(typename Traits::UpdateAfter{}),
+						make_system_ids(typename Traits::ShutdownAfter{})
+					}
+				);
+			}
 		}
 
 		bool init_systems()
 		{
-			for (auto& [id, system] : systems_)
+			if (!build_system_order()) {
+				return false;
+			}
+
+			for (auto& id : init_order)
 			{
+				auto* system = systems_.at(id).get();
+
 				if (!system->init_system(*this))
 				{
 					return false;
@@ -216,8 +278,10 @@ namespace App
 
 		void update_system()
 		{
-			for (auto& [id, system] : systems_)
+			for (auto& id : update_order)
 			{
+				auto* system = systems_.at(id).get();
+
 				system->update_system();
 			}
 		}
@@ -239,8 +303,152 @@ namespace App
 			return system->create_component<Component>(std::forward<Args>(args)...);
 		}
 
+	private:
+		template<typename... Systems>
+		std::vector<SystemID> make_system_ids(
+			TypeList<Systems...>
+		)
+		{
+			return {
+				get_system_id<Systems>()...
+			};
+		}
+
+		template<typename Member>
+		bool build_order(
+			Member member,
+			std::vector<SystemID>& result
+		) const
+		{
+			result.clear();
+
+			std::unordered_map<SystemID, size_t> indegree{};
+
+			std::unordered_map<
+				SystemID,
+				std::vector<SystemID>
+			> graph{};
+
+			// ノードを登録
+			for (const auto& id : register_order)
+			{
+				indegree.emplace(id, 0);
+			}
+
+			// 依存関係を構築
+			for (const auto& id : register_order)
+			{
+				const auto it = system_dependenies.find(id);
+
+				if (it == system_dependenies.end())
+				{
+					return false;
+				}
+
+				const auto& dependencies = it->second.*member;
+
+				for (const auto& dependency : dependencies)
+				{
+					// 自分自身への依存
+					if (dependency == id)
+					{
+						return false;
+					}
+
+					// 依存先が未登録
+					if (!systems_.contains(dependency))
+					{
+						return false;
+					}
+
+					// dependency -> id
+					graph[dependency].push_back(id);
+
+					++indegree[id];
+				}
+			}
+
+			// 依存先を持たないSystemを登録順に追加
+			std::queue<SystemID> ready{};
+
+			for (const auto& id : register_order)
+			{
+				if (indegree[id] == 0)
+				{
+					ready.push(id);
+				}
+			}
+
+			// トポロジカルソート
+			while (!ready.empty())
+			{
+				const auto id = ready.front();
+				ready.pop();
+
+				result.push_back(id);
+
+				for (const auto& next : graph[id])
+				{
+					if (--indegree[next] == 0)
+					{
+						ready.push(next);
+					}
+				}
+			}
+
+			// 全ノードを処理できなければ循環依存
+			return result.size() == register_order.size();
+		}
+
+		bool build_system_order()
+		{
+			std::vector<SystemID> init{};
+			std::vector<SystemID> update{};
+			std::vector<SystemID> shutdown{};
+
+			if (!build_order(
+				&SystemDependencies::init_after,
+				init
+			))
+			{
+				return false;
+			}
+
+			if (!build_order(
+				&SystemDependencies::update_after,
+				update
+			))
+			{
+				return false;
+			}
+
+			if (!build_order(
+				&SystemDependencies::shutdown_after,
+				shutdown
+			))
+			{
+				return false;
+			}
+
+			//　依存順の反転
+			std::ranges::reverse(shutdown);
+
+			// すべて成功した場合のみ反映
+			init_order = std::move(init);
+			update_order = std::move(update);
+			shutdown_order = std::move(shutdown);
+
+			return true;
+		}
+
 		std::unordered_map<SystemID, std::unique_ptr<ISystem>> systems_{};
+		std::unordered_map<SystemID, SystemDependencies> system_dependenies{};
+
+		std::vector<SystemID> register_order{};
+
+		std::vector<SystemID> init_order{};
+		std::vector<SystemID> update_order{};
+		std::vector<SystemID> shutdown_order{};
 
 	};
-
 }

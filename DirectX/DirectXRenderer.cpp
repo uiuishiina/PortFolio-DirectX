@@ -54,10 +54,7 @@ DirectXRenderer::DirectXRenderer() = default;
 /// <summary>
 /// デストラクタ
 /// </summary>
-DirectXRenderer::~DirectXRenderer() {
-
-    end_renderer();
-}
+DirectXRenderer::~DirectXRenderer() = default;
 
 /* ===== 初期化関数 ===== */
 
@@ -72,21 +69,19 @@ DirectXRenderer::~DirectXRenderer() {
 [[nodiscard]] bool DirectXRenderer::initialize_renderer(
     HWND hwnd,
     std::uint32_t width,
-    std::uint32_t height,
-    App::ApplicationDataShare* shera_
+    std::uint32_t height
 ) {
 
     //  変数保存
     hwnd_ = hwnd;
-    shera_p = shera_;
 
-    if (!hwnd_ || !shera_p) {
+    if (!hwnd_) {
         DEBUG_ERROR_LOG("DirectXRenderer :: initialize_renderer() pointer nullptr");
         return false;
     }
 
     context_ = std::make_unique<DirectXContext>();
-    updator_ = std::make_unique<DirectXUpdator>(context_.get(), shera_p);
+    updator_ = std::make_unique<DirectXUpdator>(context_.get());
 
     /* ========== 描画機能初期化 ========== */
     
@@ -98,7 +93,6 @@ DirectXRenderer::~DirectXRenderer() {
 
     /* ===== Main ===== */
     desc_.context_ = context_.get();
-    desc_.share_p = shera_p;
     desc_.back_buffer_size = back_buffer_size;
     desc_.frame_resource_size = frame_resource_size;
 

@@ -2,9 +2,6 @@
 
 /* ========== Includeファイル ========== */
 
-#include"../Windows/Window.h"
-#include"ApplicationDataShare.h"
-#include"../DirectX/DirectXRenderer.h"
 #include"System/System.h"
 #include"System/LoopManager.h"
 
@@ -49,22 +46,6 @@ namespace App {
 
 		LoopManager loop_{ &system_ };
 
-		/// <summary>
-		/// メインウィンドウ
-		/// </summary>
-		Windows::Window main_window{};
-
-		/// <summary>
-		/// データ共有
-		/// </summary>
-		ApplicationDataShare data_share{};
-
-		/// <summary>
-		/// メインウィンドウ描画機能
-		/// </summary>
-		DirectX::DirectXRenderer main_renderer{};
-
-
 		/* ========== Privateメンバー関数 ========== */
 
 		/* ===== 初期化関数 ===== */
@@ -74,21 +55,6 @@ namespace App {
 		/// </summary>
 		/// <returns>初期化の成否</returns>
 		[[nodiscard]] bool initialize_app();
-
-		/// <summary>
-		/// ウィンドウ初期化関数
-		/// </summary>
-		/// <param name="size">ウィンドウサイズ</param>
-		/// <returns>初期化の成否</returns>
-		[[nodiscard]] bool initialize_window(
-			const Windows::WindowSize& size
-		);
-
-		/// <summary>
-		/// 描画機能初期化関数
-		/// </summary>
-		/// <returns>初期化の成否</returns>
-		[[nodiscard]] bool initialize_renderer();
 
 		/* ===== 実行関数 ===== */
 
