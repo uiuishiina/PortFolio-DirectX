@@ -3,12 +3,7 @@
 
 #include"Application.h"
 #include"Debug/DebugLogSystem.h"
-
-#include"System/ClockSystem.h"
-#include"System/InputSystem.h"
-#include"System/WindowsSystem.h"
-#include"System/DebugSystem.h"
-#include"System/RendererSystem.h"
+#include"SystemComfig.h"
 
 using namespace App;
 
@@ -26,14 +21,13 @@ Application::Application() {
     system_.register_system<WindowsSystem>(Windows::WindowSize{ 1280,720 });
     system_.register_system<RendererSystem>();
 
-    DEBUG_LOG("Application :: Application()");
 }
 
 /// <summary>
 /// デストラクタ
 /// </summary>
 Application::~Application() {
-    DEBUG_LOG("Application :: ~Application()");
+
 }
 
 /* ===== 初期化関数 ===== */
@@ -65,16 +59,27 @@ Application::~Application() {
 /// <returns>初期化の成否</returns>
 [[nodiscard]] bool Application::initialize_app() {
 
-    DEBUG_LOG(
-        HandyItems::Debug::const_str::LineBreak,
-        "========== initialize =========="
-        );
-
     if (!system_.init_systems())
     {
         return false;
     }
 
+    auto* player = system_.get_system<EntityManager>()->create_entity("player");
+    player->add_component(
+        system_.create_component<InputComponent>()
+    );
+
+    if (
+        auto* debug = system_.get_system<DebugSystem>();
+        debug
+        )
+    {
+        debug->debug_log(
+            HandyItems::Debug::const_str::LineBreak,
+            "========== initialize =========="
+        );
+    }
+    
     return true;
 }
 
@@ -89,23 +94,6 @@ void Application::run_app() {
         HandyItems::Debug::const_str::LineBreak,
         "========== run =========="
     );
-
-    bool foucs_{};
-
-    auto* player = system_.get_system<EntityManager>()->create_entity("player");
-    player->add_component(
-        system_.create_component<InputComponent>()
-    );
-    system_.get_system<InputSystem>()->get_action_manager().add_action_bind(
-        InputAction::Esc,
-        InputKeyBoard::Esc
-    );
-
-    auto* clock = system_.get_system<ClockSystem>();
-
-    if (clock) {
-        clock->start_clock();
-    }
 
     loop_.run();
 }

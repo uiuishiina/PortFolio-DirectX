@@ -3,7 +3,8 @@
 #include"System.h"
 #include"InputSystem.h"
 #include"ClockSystem.h"
-#include"WIndowsSystem.h"
+#include"WindowsSystem.h"
+#include"DebugSystem.h"
 
 namespace App
 {
@@ -14,7 +15,9 @@ namespace App
 		explicit LoopManager(
 			SystemManager* system
 		) :
-			system_{ system } {}
+			system_{ system } 
+		{
+		}
 
 		void run()
 		{
@@ -45,6 +48,18 @@ namespace App
 			}
 
 			auto* clock = system_->get_system<ClockSystem>();
+			if (clock)
+			{
+				clock->start_clock();
+			}
+
+			if (
+				auto* debug = system_->get_system<DebugSystem>();
+				debug
+				)
+			{
+				debug->debug_log("LoopManager run_normal()");
+			}
 
 			while (true)
 			{
@@ -80,6 +95,18 @@ namespace App
 
 			auto* input = system_->get_system<InputSystem>();
 			auto* clock = system_->get_system<ClockSystem>();
+			if (clock)
+			{
+				clock->start_clock();
+			}
+
+			if (
+				auto* debug = system_->get_system<DebugSystem>();
+				debug
+				)
+			{
+				debug->debug_log("LoopManager run_window()");
+			}
 
 			while (true)
 			{
