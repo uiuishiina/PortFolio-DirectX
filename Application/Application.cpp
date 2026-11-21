@@ -76,7 +76,7 @@ Application::~Application() {
     {
         debug->debug_log(
             HandyItems::Debug::const_str::LineBreak,
-            "========== initialize =========="
+            "========== initialize_app =========="
         );
     }
     
@@ -90,10 +90,16 @@ Application::~Application() {
 /// </summary>
 void Application::run_app() {
 
-    DEBUG_LOG(
-        HandyItems::Debug::const_str::LineBreak,
-        "========== run =========="
-    );
+    if (
+        auto* debug = system_.get_system<DebugSystem>();
+        debug
+        )
+    {
+        debug->debug_log(
+            HandyItems::Debug::const_str::LineBreak,
+            "========== run_app =========="
+        );
+    }
 
     loop_.run();
 }
@@ -105,8 +111,15 @@ void Application::run_app() {
 /// </summary>
 void Application::end_app() {
 
-    DEBUG_LOG(
-        HandyItems::Debug::const_str::LineBreak,
-        "========== end =========="
-    );
+
+    if (
+        auto* debug = system_.get_system<DebugSystem>();
+        debug
+        )
+    {
+        debug->debug_log(
+            HandyItems::Debug::const_str::LineBreak,
+            "========== end_app =========="
+        );
+    }
 }

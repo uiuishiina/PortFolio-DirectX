@@ -94,6 +94,15 @@ namespace App
 			auto foucs_ = window->get_window_focus();
 
 			auto* input = system_->get_system<InputSystem>();
+			if (input)
+			{
+				//	Escバインド
+				input->get_action_manager().add_action_bind(
+					InputAction::Esc,
+					InputKeyBoard::Esc
+				);
+			}
+
 			auto* clock = system_->get_system<ClockSystem>();
 			if (clock)
 			{
