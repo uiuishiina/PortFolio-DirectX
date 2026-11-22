@@ -102,7 +102,7 @@ using namespace DirectX;
 	}
 
 	//	現在インデックス管理クラス作成
-	if (!context->back_buffer_index->initialize_index(*context->swapchain_.get())) {
+	if (!context->back_buffer_index->initialize_index(context->swapchain_.get())) {
 		DEBUG_ERROR_LOG("back_buffer_index FAILED");
 		return E_FAIL;
 	}

@@ -3,9 +3,6 @@
 
 #include"DirectXRenderer.h"
 
-//  App
-#include"../Application/ApplicationDataShare.h"
-
 //  DirectX
 #include"DirectXContext.h"
 #include"DirectXInitializer.h"
@@ -287,8 +284,8 @@ DirectXRenderer::~DirectXRenderer() = default;
         Resource::Path::Commands::Clear,
         Resource::Path::Commands::SetView,
 
-        //Resource::Path::Piplines::NormalTest,
-        //Resource::Path::DrawObject::NormalTest,
+        Resource::Path::Piplines::NormalTest,
+        Resource::Path::DrawObject::NormalTest,
 
         Resource::Path::Piplines::ColorTest,
         Resource::Path::DrawObject::ColorTest,

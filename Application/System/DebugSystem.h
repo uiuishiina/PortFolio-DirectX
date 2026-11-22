@@ -18,7 +18,9 @@ namespace App
 		bool init_system(SystemManager& manager) override
 		{
 			//	Rendererの移行が完了したらマクロ削除とインスタンスをここで初期化する
-			return true;
+
+			is_init = true;
+			return is_init;
 		}
 
 		void update_system() override

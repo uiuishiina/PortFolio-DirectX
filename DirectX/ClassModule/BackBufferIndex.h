@@ -20,8 +20,8 @@ namespace DirectX {
 		{
 		public:
 
-			[[nodiscard]] bool initialize_index(IDXGISwapChain4& swap) {
-				swap_chain = &swap;
+			[[nodiscard]] bool initialize_index(IDXGISwapChain4* swap) {
+				swap_chain = swap;
 
 				DXGI_SWAP_CHAIN_DESC desc{};
 

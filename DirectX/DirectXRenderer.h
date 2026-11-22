@@ -16,14 +16,6 @@
 struct HWND__;
 using HWND = HWND__*;
 
-namespace App {
-
-	/// <summary>
-	/// アプリケーションデータシェアクラス用前方宣言
-	/// </summary>
-	class ApplicationDataShare;
-}
-
 /// <summary>
 /// DirectX名前空間
 /// </summary>

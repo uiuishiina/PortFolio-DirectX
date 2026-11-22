@@ -1,8 +1,21 @@
 #pragma once
 
 #include"System.h"
+#include"DebugSystem.h"
 #include"WindowsSystem.h"
 #include"../../DirectX/DirectXRenderer.h"
+
+
+/// <summary>
+/// DirectX名前空間
+/// </summary>
+namespace DirectX {
+
+	/* ========== 前方宣言 ========== */
+
+	struct CoreContext;
+	struct ContainerContext;
+}
 
 namespace App
 {
@@ -10,48 +23,24 @@ namespace App
 	{
 	public:
 
+		RendererSystem();
+		~RendererSystem();
 
-		bool init_system(SystemManager& manager) override
-		{
-			auto* window = manager.get_system<WindowsSystem>();
-			if (!window)
-			{
-				return is_init;
-			}
-			if (!window->is_initialize())
-			{
-				return is_init;
-			}
+		bool init_system(SystemManager& manager) override;
 
-			if (!main_renderer.initialize_renderer(
-				window->get_hwnd(),
-				window->get_window_size().width_,
-				window->get_window_size().height_
-			))
-			{
-				return is_init;
-			}
+		void update_system() override;
 
-			is_init = true;
-			return is_init;
-		}
-
-		void update_system() override
-		{
-			main_renderer.update_renderer();
-		}
-
-		void shutdown_system() override
-		{
-			if (is_init)
-			{
-				main_renderer.end_renderer();
-			}
-		}
+		void shutdown_system() override;
 
 	private:
 
 		DirectX::DirectXRenderer main_renderer{};
-	};
 
+		WindowsSystem* main_window{};
+		DebugSystem* debug_{};
+
+		std::unique_ptr<DirectX::ContainerContext> container_context{};
+		std::unique_ptr<DirectX::CoreContext> core_context{};
+
+	};
 }

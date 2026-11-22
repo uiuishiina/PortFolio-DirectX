@@ -22,7 +22,7 @@ namespace App
 	template<>
 	struct SystemTraits<RendererSystem> :
 		SystemDependency<
-		TypeList<WindowsSystem>,
+		TypeList<WindowsSystem,DebugSystem>,
 		TypeList<WindowsSystem>,
 		TypeList<>
 		>
