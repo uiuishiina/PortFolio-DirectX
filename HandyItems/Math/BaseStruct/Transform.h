@@ -64,6 +64,8 @@ namespace HandyItems {
 				scale_{ scale } {
 			}
 
+			bool operator == (const Transform& other) const = default;
+
 			[[nodiscard]] Matrix get_local_matrix() const {
 
 				return MathF::transform_to_matrix(

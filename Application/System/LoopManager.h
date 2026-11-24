@@ -26,6 +26,8 @@ namespace App
 				return;
 			}
 
+			system_->send_update_order();
+
 			if (system_->get_system<WindowsSystem>())
 			{
 				run_window();

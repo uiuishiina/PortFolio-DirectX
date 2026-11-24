@@ -1,7 +1,6 @@
 #pragma once
 
 #include"Container/DescriptorHeapContainer.h"
-#include"Container/PassContainer.h"
 #include"Container/ShaderContainer.h"
 #include"Container/RootSignatureContainer.h"
 #include"Container/PiplineStateContainer.h"
@@ -16,11 +15,6 @@ namespace DirectX {
 		/// ディスクリプタヒープコンテナインスタンス
 		/// </summary>
 		Container::DescriptorHeapContainer heap_container{};
-
-		/// <summary>
-		/// 描画パスコンテナインスタンス
-		/// </summary>
-		Container::PassContainer pass_container{};
 
 		/// <summary>
 		/// HLSLシェーダーコンテナインスタンス

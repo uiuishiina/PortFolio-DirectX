@@ -22,9 +22,9 @@ namespace App
 	template<>
 	struct SystemTraits<RendererSystem> :
 		SystemDependency<
-		TypeList<WindowsSystem,DebugSystem>,
+		TypeList<EntityManager,WindowsSystem,DebugSystem>,
 		TypeList<WindowsSystem>,
-		TypeList<>
+		TypeList<EntityManager>
 		>
 	{};
 
@@ -43,6 +43,24 @@ namespace App
 		TypeList<>,
 		TypeList<>,
 		TypeList<>
+		>
+	{};
+
+	template<>
+	struct SystemTraits<DebugSystem> :
+		SystemDependency<
+		TypeList<>,
+		TypeList<>,
+		TypeList<>
+		>
+	{};
+
+	template<>
+	struct SystemTraits<EntityManager> :
+		SystemDependency<
+		TypeList<DebugSystem>,
+		TypeList<>,
+		TypeList<DebugSystem>
 		>
 	{};
 

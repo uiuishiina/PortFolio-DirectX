@@ -2,8 +2,14 @@
 
 #include"../../DirectX/CoreContext.h"
 #include"../../DirectX/ContainerContext.h"
+#include"../../DirectX/ClassModule/DescriptorGroup/ConstantBufferGroup.h"
 
 using namespace DirectX;
+
+namespace
+{
+	constexpr int transform_register_index = 0;
+}
 
 namespace App
 {
@@ -227,19 +233,24 @@ namespace App
 
 	};
 
-	RendererSystem::RendererSystem() = default;
+	RendererSystem::RendererSystem()
+	{
+		ISystem::name_ = "RendererSystem";
+	}
 	RendererSystem::~RendererSystem() = default;
 
 	bool RendererSystem::init_system(SystemManager& manager)
 	{
+		auto* entity = manager.get_system<EntityManager>();
 		auto* window = manager.get_system<WindowsSystem>();
 		auto* debug = manager.get_system<DebugSystem>();
 
-		if (!window || !debug)
+		if (!entity ||!window || !debug)
 		{
 			return false;
 		}
 		if (
+			!entity->is_initialize() ||
 			!window->is_initialize() ||
 			!debug->is_initialize()
 			)
@@ -247,13 +258,15 @@ namespace App
 			return false;
 		}
 
+		entity_ = entity;
 		main_window = window;
+		debug_ = debug;
 
 		container_context = std::make_unique<ContainerContext>();
 		core_context = std::make_unique<CoreContext>();
 
 		if (!InitializeRendererCore::init_core(
-			debug,
+			debug_,
 			window,
 			core_context.get(),
 			container_context.get(),
@@ -262,21 +275,17 @@ namespace App
 			{
 				{ 0, 1, 0, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, D3D12_DESCRIPTOR_HEAP_FLAG_NONE },
 				{ 0, 1, 0, D3D12_DESCRIPTOR_HEAP_TYPE_DSV, D3D12_DESCRIPTOR_HEAP_FLAG_NONE },
-				{ 0, 1, 0, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE }
+				{ 0, 0, 10, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE }
 			}
 		))
 		{
+			container_context = nullptr;
+			core_context = nullptr;
 			return false;
 		}
 
-		//if (!main_renderer.initialize_renderer(
-		//	window->get_hwnd(),
-		//	window->get_window_size().width_,
-		//	window->get_window_size().height_
-		//))
-		//{
-		//	return is_init;
-		//}
+		//	ここでpipeline初期化
+
 
 		is_init = true;
 		return true;
@@ -308,6 +317,39 @@ namespace App
 		//	コマンドリストリセット
 		core_context->graphic_list.reset_list(allocator.get());
 
+		{
+			auto* list = core_context->graphic_list.get();
+			auto* back_buffer = core_context->back_buffer_group.get_current_instance();
+			auto* depth_buffer = core_context->depth_buffer_group.get_current_instance();
+
+			back_buffer->barrier_transition(
+				list,
+				D3D12_RESOURCE_STATE_RENDER_TARGET
+			);
+
+			float color[4] = { 0,0,1,1 };
+			list->ClearRenderTargetView(
+				back_buffer->get_RTV_handle(),
+				color,
+				0,
+				nullptr
+			);
+			list->ClearDepthStencilView(
+				depth_buffer->get_DSV_handle(),
+				D3D12_CLEAR_FLAG_DEPTH,
+				1.0f,
+				0,
+				0,
+				nullptr
+			);
+
+			//	ここでpipline実行
+
+			back_buffer->barrier_transition(
+				list,
+				D3D12_RESOURCE_STATE_PRESENT
+			);
+		}
 
 		//	コマンドリストをクローズ
 		core_context->graphic_list->Close();
@@ -340,7 +382,65 @@ namespace App
 
 			const auto signal = core_context->fence_.signal(core_context->graphic_queue.get());
 			core_context->fence_.wait_to_completed_value(signal);
+
+
+			entity_->remove_component_to_all<RendererComponent>();
+			entity_->remove_component_to_all<TransformComponent>();
+
 		}
+	}
+
+
+
+	TransformItem::TransformItem()
+	{
+		buffer_ = std::make_unique<TransformItem::transform_buffer>();
+	}
+	TransformItem::~TransformItem() = default;
+
+	bool TransformItem::create_transform_item(
+		DirectX::CoreContext* core,
+		DirectX::ContainerContext* container
+	)
+	{
+		const auto hr = buffer_->create_constant_buffer_group(
+			core->device_.get(),
+			container->heap_container.get_heap_allocator(
+				Container::DescriptorHeapKey{ D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV }
+			),
+			core->frame_resource_index.get(),
+			transform_.get_matrix()
+		);
+
+		previous_transform = transform_;
+		index_size = core->frame_resource_index->get_size();
+
+		return FAILED(hr) ? false : true;
+	}
+
+	TransformItem::transform_buffer* TransformItem::get_buffer() const noexcept
+	{
+		return buffer_.get();
+	}
+
+	void TransformItem::update_buffer()
+	{
+		if (transform_ != previous_transform)
+		{
+			previous_transform = transform_;
+			dirty_size = index_size;
+		}
+
+		if (dirty_size > 0)
+		{
+			return;
+		}
+
+		buffer_->update_buffer(
+			transform_.get_matrix()
+		);
+
+		--dirty_size;
 	}
 
 }

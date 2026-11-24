@@ -23,6 +23,7 @@
     <ClCompile Include="..\Application\System\DebugSystem.cpp" />
     <ClCompile Include="..\Application\System\InputSystem.cpp" />
     <ClCompile Include="..\Application\System\RendererSystem.cpp" />
+    <ClCompile Include="..\Application\System\System.cpp" />
     <ClCompile Include="..\DirectX\ClassObject\Device.cpp" />
     <ClCompile Include="..\DirectX\ClassObject\DXGI.cpp" />
     <ClCompile Include="..\DirectX\ClassObject\ShaderCompiler.cpp" />

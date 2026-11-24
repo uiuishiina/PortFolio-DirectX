@@ -38,9 +38,15 @@ namespace App
 			return is_init;
 		}
 
+		const char* get_name() const noexcept
+		{
+			return name_;
+		}
+
 	protected:
 
 		bool is_init = false;
+		const char* name_{};
 
 	};
 
@@ -77,6 +83,11 @@ namespace App
 	class EntityManager final : public ISystem
 	{
 	public:
+
+		explicit EntityManager()
+		{
+			ISystem::name_ = "EntityManager";
+		}
 
 		bool init_system(SystemManager& manager) override 
 		{ 
@@ -205,6 +216,7 @@ namespace App
 				auto* system = systems_.at(id).get();
 
 				system->shutdown_system();
+				send_log("Shutdown = ", system);
 			}
 		}
 
@@ -253,8 +265,10 @@ namespace App
 			{
 				auto* system = systems_.at(id).get();
 
+				send_log("Init = ", system);
 				if (!system->init_system(*this))
 				{
+					send_error_log("Init Failed = ", system);
 					return false;
 				}
 			}
@@ -283,6 +297,15 @@ namespace App
 				auto* system = systems_.at(id).get();
 
 				system->update_system();
+			}
+		}
+
+		void send_update_order() const noexcept
+		{
+			for (auto& id : update_order)
+			{
+				auto* system = systems_.at(id).get();
+				send_log("Update = ", system);
 			}
 		}
 
@@ -440,6 +463,9 @@ namespace App
 
 			return true;
 		}
+
+		void send_log(const char* text, ISystem* system) const noexcept;
+		void send_error_log(const char* text, ISystem* system) const noexcept;
 
 		std::unordered_map<SystemID, std::unique_ptr<ISystem>> systems_{};
 		std::unordered_map<SystemID, SystemDependencies> system_dependenies{};

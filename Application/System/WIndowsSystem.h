@@ -17,12 +17,14 @@ namespace App
 		explicit WindowsSystem(
 			const Windows::WindowSize& size
 		) :
-			size_{ size } {}
+			size_{ size } 
+		{
+			ISystem::name_ = "WindowsSystem";
+		}
 
 		bool init_system(SystemManager& manager) override
 		{
 			is_init = main_window.initialize_window(size_);
-
 			return is_init;
 		}
 

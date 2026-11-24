@@ -341,6 +341,11 @@ namespace App
 	{
 	public:
 
+		explicit InputSystem()
+		{
+			ISystem::name_ = "InputSystem";
+		}
+
 		bool init_system(SystemManager& manager) override
 		{
 			manager_ = manager.get_system<EntityManager>();

@@ -14,6 +14,10 @@ namespace App
 		using HRESULT = long;
 	public:
 
+		explicit DebugSystem()
+		{
+			ISystem::name_ = "DebugSystem";
+		}
 
 		bool init_system(SystemManager& manager) override
 		{

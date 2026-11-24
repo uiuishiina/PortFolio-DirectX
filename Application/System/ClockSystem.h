@@ -21,6 +21,7 @@ namespace App
 			period_{ Milliseconds{ period_value } }
 		{
 			assert(period_value && "ApplicationClock period must not be zero");
+			ISystem::name_ = "ClockSystem";
 		}
 
 
@@ -107,7 +108,6 @@ namespace App
 
 			return skip;
 		}
-
 
 	private:
 

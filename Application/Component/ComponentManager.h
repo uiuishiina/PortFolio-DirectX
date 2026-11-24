@@ -40,6 +40,27 @@ namespace App
 			}
 		}
 
+		Data* get_data(const ComponentUniqueID& id) const noexcept
+		{
+			const auto it = datas_->find(id);
+			if (it == datas_.end())
+			{
+				return nullptr;
+			}
+			return it->second;
+		}
+
+		std::vector<Data*> get_datas() const noexcept
+		{
+			std::vector<Data*> vec{};
+
+			for (auto& [id, data] : datas_)
+			{
+				vec.push_back(data);
+			}
+			return vec;
+		}
+
 	private:
 
 		ComponentID next_id{};
