@@ -5,6 +5,8 @@
 #include"Debug/DebugLogSystem.h"
 #include"SystemComfig.h"
 #include"System/RendererPipeline/MeshPipeline.h"
+#include"System/CreateResourceFunc/CompileShaderFunc.h"
+#include"System/CreateResourceFunc/CreateMeshFunc.h"
 
 using namespace App;
 
@@ -23,6 +25,29 @@ Application::Application() {
     system_.register_system<RendererSystem>();
     auto* renderer = system_.get_system<RendererSystem>();
     renderer->add_pipeline<NormalMeshPipeline>();
+
+
+    struct NormalVector {
+        float pos[3] = {};
+    };
+
+    renderer->add_resource_func(
+        CreateMeshFunc::create_mesh_func(
+            "NormalMesh",
+            CreateMeshFunc::MeshDesc<NormalVector>
+        {
+            .vertex_ = {
+                {	-0.5f,	-0.5f,	0.5f},
+                {		0,	 0.5f,	0.5f},
+                {	 0.5f,	-0.5f,	0.5f}
+            },
+            .index_ = {
+                    0,1,2
+            }
+        }
+        )
+    );
+
 }
 
 /// <summary>
@@ -76,7 +101,19 @@ Application::~Application() {
             "========== initialize_app =========="
         );
     }
+
+    auto* renderer = system_.get_system<EntityManager>();
+    auto* player = renderer->create_entity("Player");
     
+    if (player->add_component(
+        system_.create_component<RendererComponent>(player)
+    ))
+    {
+        player->add_component(
+            system_.create_component<MeshComponent>("NormalMesh")
+        );
+    }
+
     return true;
 }
 

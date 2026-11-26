@@ -77,7 +77,7 @@ namespace DirectX {
 			[[nodiscard]] HRESULT create_mesh(
 				ID3D12Device* device_,
 				ID3D12GraphicsCommandList* list_,
-				std::span<std::reference_wrapper<Resource>>& upload_resources,
+				std::span<std::reference_wrapper<Resource>> upload_resources,
 				const desc::MeshDesc<T>& desc
 			) {
 

@@ -284,6 +284,34 @@ namespace App
 			return false;
 		}
 
+
+		auto current_resource_index = core_context->frame_resource_index->get_current_index();
+
+
+		//	フレームリソースリセット
+		core_context->frame_resources[current_resource_index]->reset_frame_resource();
+
+		//	コマンドアロケーター取得
+		auto& allocator = core_context->frame_resources[current_resource_index]
+			->get_allocator();
+
+		//	コマンドリストリセット
+		core_context->graphic_list.reset_list(allocator.get());
+
+		//	リソース初期化
+		if (!create_resource_func.empty())
+		{
+			for (auto& func : create_resource_func)
+			{
+				func(
+					core_context.get(),
+					container_context.get(),
+					debug_
+				);
+			}
+			create_resource_func.clear();
+		}
+
 		//	ここでpipeline初期化
 		for (auto& pipeline : pipelines_)
 		{
@@ -293,6 +321,14 @@ namespace App
 				debug_
 			);
 		}
+
+		//	コマンドリストをクローズ
+		core_context->graphic_list->Close();
+
+		//	コマンドキューにコマンドリストを送信
+		ID3D12CommandList* ppCommandLists[] = { core_context->graphic_list.get() };
+		core_context->graphic_queue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+
 
 		is_init = true;
 		return true;
@@ -363,6 +399,38 @@ namespace App
 				nullptr
 			);
 
+			D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle[] = { back_buffer->get_RTV_handle() };
+
+			D3D12_CPU_DESCRIPTOR_HANDLE dsv_handle = depth_buffer->get_DSV_handle();
+
+			list->OMSetRenderTargets(
+				1,
+				rtv_handle,
+				false,
+				&dsv_handle
+			);
+
+			const auto& [w, h] = main_window->get_window_size();
+
+			D3D12_VIEWPORT viewport{};
+			viewport.TopLeftX = 0;
+			viewport.TopLeftY = 0;
+			viewport.Width = w;
+			viewport.Height = h;
+			viewport.MinDepth = 0;
+			viewport.MaxDepth = 1;
+
+			list->RSSetViewports(1, &viewport);
+
+
+			D3D12_RECT scissorRect{};
+			scissorRect.left = 0;
+			scissorRect.top = 0;
+			scissorRect.right = w;
+			scissorRect.bottom = h;
+
+			list->RSSetScissorRects(1, &scissorRect);
+
 			//	ここでpipline実行
 
 			if (!target_chasu.empty())
@@ -414,6 +482,7 @@ namespace App
 
 			entity_->remove_component_to_all<RendererComponent>();
 			entity_->remove_component_to_all<TransformComponent>();
+			entity_->remove_component_to_all<MeshComponent>();
 
 		}
 	}

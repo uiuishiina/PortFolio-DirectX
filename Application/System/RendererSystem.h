@@ -156,6 +156,7 @@ namespace App
 			{
 				auto component = target_components.create_component(std::forward<Args>(args)...);
 				target_chasu = target_components.get_datas();
+				return component;
 			}
 			else if constexpr (std::is_same_v<Component, TransformComponent>)
 			{
@@ -244,6 +245,18 @@ namespace App
 
 	template<>
 	struct ComponentTraits<TransformComponent>
+	{
+		using System = RendererSystem;
+	};
+
+	template<>
+	struct ComponentTraits<RendererComponent>
+	{
+		using System = RendererSystem;
+	};
+
+	template<>
+	struct ComponentTraits<MeshComponent>
 	{
 		using System = RendererSystem;
 	};

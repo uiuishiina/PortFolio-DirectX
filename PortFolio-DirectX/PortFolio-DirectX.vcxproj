@@ -50,6 +50,8 @@
     <ClInclude Include="..\Application\Component\RendererComponent\MeshComponent.h" />
     <ClInclude Include="..\Application\SystemComfig.h" />
     <ClInclude Include="..\Application\System\ClockSystem.h" />
+    <ClInclude Include="..\Application\System\CreateResourceFunc\CompileShaderFunc.h" />
+    <ClInclude Include="..\Application\System\CreateResourceFunc\CreateMeshFunc.h" />
     <ClInclude Include="..\Application\System\DebugSystem.h" />
     <ClInclude Include="..\Application\System\Entity.h" />
     <ClInclude Include="..\Application\System\InputSystem.h" />

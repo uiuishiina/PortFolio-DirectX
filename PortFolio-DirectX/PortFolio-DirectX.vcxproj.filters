@@ -142,6 +142,9 @@
     <Filter Include="ヘッダー ファイル\Applicaton\Component\RendererComponent">
       <UniqueIdentifier>{43296659-2471-433d-88ae-80e5d2c4e5e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Applicaton\System\CreateResourceFunc">
+      <UniqueIdentifier>{abc89930-52e1-4d14-8d99-00d8bf1c1fc1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Entry\Entry.cpp">
@@ -658,6 +661,12 @@
     </ClInclude>
     <ClInclude Include="..\Application\Component\RendererComponent\MeshComponent.h">
       <Filter>ヘッダー ファイル\Applicaton\Component\RendererComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\System\CreateResourceFunc\CompileShaderFunc.h">
+      <Filter>ヘッダー ファイル\Applicaton\System\CreateResourceFunc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\System\CreateResourceFunc\CreateMeshFunc.h">
+      <Filter>ヘッダー ファイル\Applicaton\System\CreateResourceFunc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

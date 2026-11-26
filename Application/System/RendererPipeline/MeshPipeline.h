@@ -55,6 +55,7 @@ namespace App
 						return false;
 					}
 				}
+				return true;
 			};
 
 			if (!func(vertex) || !func(pixel))

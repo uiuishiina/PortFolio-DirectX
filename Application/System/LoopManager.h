@@ -111,8 +111,8 @@ namespace App
 				clock->start_clock();
 			}
 
+			auto* debug = system_->get_system<DebugSystem>();
 			if (
-				auto* debug = system_->get_system<DebugSystem>();
 				debug
 				)
 			{
@@ -167,6 +167,11 @@ namespace App
 
 				++loop_count;
 				++fps_count;
+			}
+
+			if (debug)
+			{
+				debug->debug_log("LoopManager loop_count = ", loop_count);
 			}
 		}
 
