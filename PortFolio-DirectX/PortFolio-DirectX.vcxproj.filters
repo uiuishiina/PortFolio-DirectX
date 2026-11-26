@@ -136,6 +136,12 @@
     <Filter Include="ヘッダー ファイル\Applicaton\Component">
       <UniqueIdentifier>{a47f6b7c-8e43-4247-b81a-0af390e8b6b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Applicaton\System\RendererPipeline">
+      <UniqueIdentifier>{e7f99de3-68cd-4a98-b8a2-14c0c9dad161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Applicaton\Component\RendererComponent">
+      <UniqueIdentifier>{43296659-2471-433d-88ae-80e5d2c4e5e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Entry\Entry.cpp">
@@ -643,6 +649,15 @@
     </ClInclude>
     <ClInclude Include="..\DirectX\ContainerContext.h">
       <Filter>ヘッダー ファイル\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\System\RendererPipeline\IRendererPipeline.h">
+      <Filter>ヘッダー ファイル\Applicaton\System\RendererPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\System\RendererPipeline\MeshPipeline.h">
+      <Filter>ヘッダー ファイル\Applicaton\System\RendererPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Component\RendererComponent\MeshComponent.h">
+      <Filter>ヘッダー ファイル\Applicaton\Component\RendererComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

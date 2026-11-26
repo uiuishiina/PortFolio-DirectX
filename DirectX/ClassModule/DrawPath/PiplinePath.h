@@ -42,7 +42,7 @@ namespace DirectX {
 			explicit PiplinePath(
 				ClassObject::RootSignature* root,
 				RootState state,
-				ClassObject::PiplineState* pipline
+				ClassObject::PipelineState* pipline
 			) :
 				root_{ root },
 				root_state{ state },
@@ -106,7 +106,7 @@ namespace DirectX {
 			/// <summary>
 			/// パイプラインステート参照
 			/// </summary>
-			ClassObject::PiplineState* pipline_state{};
+			ClassObject::PipelineState* pipline_state{};
 
 			/// <summary>
 			///	呼び出しコマンド配列

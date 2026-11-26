@@ -153,10 +153,11 @@ namespace DirectX {
 
 					for (const auto& [name, ref, desc] : desc_.pipline_) {
 
-						auto pipline = std::make_unique<ClassObject::PiplineState>();
+						auto pipline = std::make_unique<ClassObject::PipelineState>();
 
 						const auto copy_desc = ClassObject::desc::Factory::PipelineStateDescFactory::create_desc(
-							context_,
+							context_->root_signature_container.get(),
+							context_->shader_container.get(),
 							desc,
 							ref
 						);

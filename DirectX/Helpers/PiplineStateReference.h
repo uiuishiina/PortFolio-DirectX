@@ -89,7 +89,8 @@ namespace DirectX {
 				public:
 
 					[[nodiscard]] static const PipelineStateDesc create_desc(
-						DirectXContext* context_,
+						Container::RootSignatureContainer* root_container,
+						Container::ShaderContainer* shader_container,
 						const PipelineStateDesc& base_desc,
 						const PiplineStateReferenceName& ref
 					) {
@@ -98,7 +99,7 @@ namespace DirectX {
 
 						if (!ref.root_name.empty()) {
 
-							if (auto root = context_->root_signature_container->get_root_signature(
+							if (auto root = root_container->get_root_signature(
 								Container::RootSignatureKey{ ref.root_name.c_str() }
 							); root) {
 								copy.root_ = root->get();
@@ -107,7 +108,7 @@ namespace DirectX {
 
 						if (!ref.vs_name.empty()) {
 
-							if (auto vs = context_->shader_container->get_shader(
+							if (auto vs = shader_container->get_shader(
 								Container::ShaderKey{ ref.vs_name.c_str() }
 							); vs) {
 								copy.vs_hlsl = vs->get();
@@ -116,7 +117,7 @@ namespace DirectX {
 
 						if (!ref.ps_name.empty()) {
 
-							if (auto ps = context_->shader_container->get_shader(
+							if (auto ps = shader_container->get_shader(
 								Container::ShaderKey{ ref.ps_name.c_str() }
 							); ps) {
 								copy.ps_hlsl = ps->get();
@@ -125,7 +126,7 @@ namespace DirectX {
 
 						if (!ref.gs_name.empty()) {
 
-							if (auto gs = context_->shader_container->get_shader(
+							if (auto gs = shader_container->get_shader(
 								Container::ShaderKey{ ref.gs_name.c_str() }
 							); gs) {
 								copy.gs_hlsl = gs->get();
@@ -134,7 +135,7 @@ namespace DirectX {
 
 						if (!ref.hs_name.empty()) {
 
-							if (auto hs = context_->shader_container->get_shader(
+							if (auto hs = shader_container->get_shader(
 								Container::ShaderKey{ ref.hs_name.c_str() }
 							); hs) {
 								copy.ps_hlsl = hs->get();
@@ -143,7 +144,7 @@ namespace DirectX {
 
 						if (!ref.ds_name.empty()) {
 
-							if (auto ds = context_->shader_container->get_shader(
+							if (auto ds = shader_container->get_shader(
 								Container::ShaderKey{ ref.ds_name.c_str() }
 							); ds) {
 								copy.ps_hlsl = ds->get();

@@ -47,12 +47,15 @@
     <ClInclude Include="..\Application\ApplicationDataShare.h" />
     <ClInclude Include="..\Application\Component\Component.h" />
     <ClInclude Include="..\Application\Component\ComponentManager.h" />
+    <ClInclude Include="..\Application\Component\RendererComponent\MeshComponent.h" />
     <ClInclude Include="..\Application\SystemComfig.h" />
     <ClInclude Include="..\Application\System\ClockSystem.h" />
     <ClInclude Include="..\Application\System\DebugSystem.h" />
     <ClInclude Include="..\Application\System\Entity.h" />
     <ClInclude Include="..\Application\System\InputSystem.h" />
     <ClInclude Include="..\Application\System\LoopManager.h" />
+    <ClInclude Include="..\Application\System\RendererPipeline\IRendererPipeline.h" />
+    <ClInclude Include="..\Application\System\RendererPipeline\MeshPipeline.h" />
     <ClInclude Include="..\Application\System\RendererSystem.h" />
     <ClInclude Include="..\Application\System\System.h" />
     <ClInclude Include="..\Application\System\TransformComponentSystem.h" />

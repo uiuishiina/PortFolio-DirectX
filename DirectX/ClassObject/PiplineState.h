@@ -146,7 +146,7 @@ namespace DirectX {
 		/// <summary>
 		/// パイプラインステートクラス
 		/// </summary>
-		class PiplineState final : HandyItems::others::NonCopyableBase
+		class PipelineState final : HandyItems::others::NonCopyableBase
 		{
 		public:
 			/* ========== Publicメンバー関数 ========== */

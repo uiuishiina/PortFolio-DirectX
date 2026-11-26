@@ -4,6 +4,7 @@
 #include"Application.h"
 #include"Debug/DebugLogSystem.h"
 #include"SystemComfig.h"
+#include"System/RendererPipeline/MeshPipeline.h"
 
 using namespace App;
 
@@ -20,7 +21,8 @@ Application::Application() {
     system_.register_system<ClockSystem>(1000 / FPS);
     system_.register_system<WindowsSystem>(Windows::WindowSize{ 1280,720 });
     system_.register_system<RendererSystem>();
-
+    auto* renderer = system_.get_system<RendererSystem>();
+    renderer->add_pipeline<NormalMeshPipeline>();
 }
 
 /// <summary>
@@ -63,11 +65,6 @@ Application::~Application() {
     {
         return false;
     }
-
-    auto* player = system_.get_system<EntityManager>()->create_entity("player");
-    player->add_component(
-        system_.create_component<InputComponent>()
-    );
 
     if (
         auto* debug = system_.get_system<DebugSystem>();

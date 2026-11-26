@@ -4,6 +4,8 @@
 #include"DebugSystem.h"
 #include"WindowsSystem.h"
 #include"../Component/ComponentManager.h"
+#include"RendererPipeline/IRendererPipeline.h"
+#include"../Component/RendererComponent/MeshComponent.h"
 #include"Math/BaseStruct/Transform.h"
 
 /// <summary>
@@ -18,6 +20,9 @@ namespace DirectX {
 
 	namespace ClassModule
 	{
+		class DrawObjectBase;
+		class Mesh;
+
 		namespace DescriptorGroup
 		{
 			template<typename T>
@@ -28,21 +33,6 @@ namespace DirectX {
 
 namespace App
 {
-	class IRendererPipeline
-	{
-	public:
-
-		virtual ~IRendererPipeline() = default;
-
-		virtual bool init_pipeline(
-			DirectX::CoreContext*,
-			DirectX::ContainerContext*
-		) = 0;
-
-		virtual void execute_pipeline() = 0;
-
-	};
-
 	class RendererComponent final : public IComponent
 	{
 	public:
@@ -134,6 +124,11 @@ namespace App
 	class RendererSystem final : public ISystem
 	{
 	public:
+		using CreateResourceFunc = std::function<void(
+			DirectX::CoreContext*,
+			DirectX::ContainerContext*,
+			DebugSystem*
+			)>;
 
 		RendererSystem();
 		~RendererSystem();
@@ -184,6 +179,10 @@ namespace App
 
 				return component;
 			}
+			else if constexpr (std::is_same_v<Component, MeshComponent>)
+			{
+				return create_mesh_component(std::forward<Args>(args)...);
+			}
 			else
 			{
 				return nullptr;
@@ -206,10 +205,22 @@ namespace App
 					transforms_.erase(id);
 				}
 			}
-			
+			else if constexpr (std::is_same_v<Component, MeshComponent>)
+			{
+				mesh_components.unlink_component(id);
+			}
+		}
+
+		void add_resource_func(
+			const CreateResourceFunc& func
+		)
+		{
+			create_resource_func.push_back(func);
 		}
 
 	private:
+
+		std::unique_ptr<MeshComponent> create_mesh_component(const std::string& mesh_name);
 
 		EntityManager* entity_{};
 		WindowsSystem* main_window{};
@@ -225,6 +236,10 @@ namespace App
 
 		ComponentManager<TransformComponent, TransformItem::Transform> transform_components{};
 		std::unordered_map<ComponentUniqueID, std::unique_ptr<TransformItem>> transforms_{};
+
+		ComponentManager<MeshComponent, MeshComponent::Mesh> mesh_components{};
+
+		std::vector<CreateResourceFunc> create_resource_func{};
 	};
 
 	template<>

@@ -285,7 +285,14 @@ namespace App
 		}
 
 		//	ここでpipeline初期化
-
+		for (auto& pipeline : pipelines_)
+		{
+			pipeline->init_pipeline(
+				core_context.get(),
+				container_context.get(),
+				debug_
+			);
+		}
 
 		is_init = true;
 		return true;
@@ -327,6 +334,19 @@ namespace App
 				D3D12_RESOURCE_STATE_RENDER_TARGET
 			);
 
+			if (!create_resource_func.empty())
+			{
+				for (auto& func : create_resource_func)
+				{
+					func(
+						core_context.get(),
+						container_context.get(),
+						debug_
+					);
+				}
+				create_resource_func.clear();
+			}
+
 			float color[4] = { 0,0,1,1 };
 			list->ClearRenderTargetView(
 				back_buffer->get_RTV_handle(),
@@ -344,6 +364,14 @@ namespace App
 			);
 
 			//	ここでpipline実行
+
+			if (!target_chasu.empty())
+			{
+				for (auto& pipeline : pipelines_)
+				{
+					pipeline->execute_pipeline(target_chasu);
+				}
+			}
 
 			back_buffer->barrier_transition(
 				list,
@@ -390,7 +418,15 @@ namespace App
 		}
 	}
 
-
+	std::unique_ptr<MeshComponent> RendererSystem::create_mesh_component(const std::string& mesh_name)
+	{
+		auto component = mesh_components.create_component(
+			container_context->draw_object_container.get_draw_object(
+				Container::DrawObjectKey{ mesh_name.c_str() }
+			)
+		);
+		return component;
+	}
 
 	TransformItem::TransformItem()
 	{

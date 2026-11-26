@@ -154,7 +154,7 @@ DirectXRenderer::~DirectXRenderer() = default;
             Resource::RootSignatures::Constant
         ));
 
-    /* -- PiplineState -- */
+    /* -- PipelineState -- */
 
     desc_.pipline_.emplace_pipline(
         make_pipline_desc(

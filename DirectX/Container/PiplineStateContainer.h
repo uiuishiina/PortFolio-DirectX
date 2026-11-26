@@ -52,7 +52,7 @@ namespace DirectX {
 			<
 			PiplineStateKey,
 			PiplineStateKeyEncodeKey,
-			ClassObject::PiplineState
+			ClassObject::PipelineState
 			>
 		{
 		public:
@@ -68,7 +68,7 @@ namespace DirectX {
 			/// <returns>追加の成否</returns>
 			[[nodiscard]] bool add_pipline_state(
 				PiplineStateKey key,
-				std::unique_ptr<ClassObject::PiplineState>&& pipline
+				std::unique_ptr<ClassObject::PipelineState>&& pipline
 			) {
 
 				return add_value(key, std::move(pipline));
@@ -81,7 +81,7 @@ namespace DirectX {
 			/// </summary>
 			/// <param name="key">紐づいたパイプラインステート倫理キー</param>
 			/// <returns>パイプラインステート参照</returns>
-			[[nodiscard]] ClassObject::PiplineState* get_pipline_state(
+			[[nodiscard]] ClassObject::PipelineState* get_pipline_state(
 				const PiplineStateKey& key
 			) const noexcept {
 
