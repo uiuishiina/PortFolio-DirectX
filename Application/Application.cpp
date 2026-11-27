@@ -7,6 +7,7 @@
 #include"System/RendererPipeline/MeshPipeline.h"
 #include"System/CreateResourceFunc/CompileShaderFunc.h"
 #include"System/CreateResourceFunc/CreateMeshFunc.h"
+#include"System/CreateResourceFunc/CreateCameraFunc.h"
 
 using namespace App;
 
@@ -26,6 +27,27 @@ Application::Application() {
     auto* renderer = system_.get_system<RendererSystem>();
     renderer->add_pipeline<NormalMeshPipeline>();
 
+    D3D12_VIEWPORT viewport{};
+    viewport.TopLeftX = 0;
+    viewport.TopLeftY = 0;
+    viewport.Width = 1280;
+    viewport.Height = 720;
+    viewport.MinDepth = 0;
+    viewport.MaxDepth = 1;
+
+    D3D12_RECT scissorRect{};
+    scissorRect.left = 0;
+    scissorRect.top = 0;
+    scissorRect.right = 1280;
+    scissorRect.bottom = 720;
+
+    renderer->add_resource_func(
+        CreateCameraFunc::create_camera_func(
+            "MainCamera",
+            viewport,
+            scissorRect
+        )
+    );
 
     struct NormalVector {
         float pos[3] = {};
@@ -102,8 +124,9 @@ Application::~Application() {
         );
     }
 
-    auto* renderer = system_.get_system<EntityManager>();
-    auto* player = renderer->create_entity("Player");
+    auto* entity = system_.get_system<EntityManager>();
+    auto* player = entity->create_entity("Player");
+    auto* camera = entity->create_entity("Camera");
     
     if (player->add_component(
         system_.create_component<RendererComponent>(player)
@@ -111,6 +134,16 @@ Application::~Application() {
     {
         player->add_component(
             system_.create_component<MeshComponent>("NormalMesh")
+        );
+    }
+
+    if (camera->add_component(
+        system_.create_component<CameraComponent>("MainCamera")
+    ))
+    {
+        auto* renderer = system_.get_system<RendererSystem>();
+        renderer->set_main_camera(
+            camera->get_component<CameraComponent>()->get_camera()
         );
     }
 

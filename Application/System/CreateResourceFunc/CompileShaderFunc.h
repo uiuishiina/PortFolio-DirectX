@@ -29,7 +29,10 @@ namespace App
 					{
 						if (debug)
 						{
-							debug->debug_error_log("Compile Shader Failed : Name = ", name);
+							debug->debug_error_log(
+								"Compile Shader Failed : Name = ", name,
+								debug->to_HRESULT(hr)
+							);
 						}
 						return;
 					}
@@ -40,9 +43,17 @@ namespace App
 					)) {
 						if (debug)
 						{
-							debug->debug_error_log("Add Shader Failed : Name = ", name);
+							debug->debug_error_log(
+								"Add Shader Failed : Name = ", name,
+								debug->to_HRESULT(hr)
+							);
 						}
 						return;
+					}
+
+					if (debug)
+					{
+						debug->debug_log("Compile Shader SUCCEEDED : Name = ", name);
 					}
 			};
 		}
@@ -50,10 +61,4 @@ namespace App
 	private:
 		CompileShaderFunc() = default;
 	};
-
-
-	void func()
-	{
-
-	}
 }

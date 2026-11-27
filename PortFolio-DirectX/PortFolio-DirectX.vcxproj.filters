@@ -668,6 +668,12 @@
     <ClInclude Include="..\Application\System\CreateResourceFunc\CreateMeshFunc.h">
       <Filter>ヘッダー ファイル\Applicaton\System\CreateResourceFunc</Filter>
     </ClInclude>
+    <ClInclude Include="..\Application\Component\RendererComponent\CameraComponent.h">
+      <Filter>ヘッダー ファイル\Applicaton\Component\RendererComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\System\CreateResourceFunc\CreateCameraFunc.h">
+      <Filter>ヘッダー ファイル\Applicaton\System\CreateResourceFunc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\DirectX\Resource\HLSL\StructHeader.hlsli">

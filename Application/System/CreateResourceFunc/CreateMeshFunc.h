@@ -1,7 +1,6 @@
 #pragma once
 #include"../RendererSystem.h"
 
-
 #include"../../../DirectX/CoreContext.h"
 #include"../../../DirectX/ContainerContext.h"
 #include"../../../DirectX/ClassModule/DrawObject/Mesh.h"
@@ -79,7 +78,7 @@ namespace App
 					}
 					if (debug)
 					{
-						debug->debug_log("Mesh Create : Name = ", name);
+						debug->debug_log("Create Mesh SUCCEEDED : Name = ", name);
 					}
 			};
 		}

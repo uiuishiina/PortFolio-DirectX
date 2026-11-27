@@ -6,6 +6,7 @@
 #include"../Component/ComponentManager.h"
 #include"RendererPipeline/IRendererPipeline.h"
 #include"../Component/RendererComponent/MeshComponent.h"
+#include"../Component/RendererComponent/CameraComponent.h"
 #include"Math/BaseStruct/Transform.h"
 
 /// <summary>
@@ -184,6 +185,10 @@ namespace App
 			{
 				return create_mesh_component(std::forward<Args>(args)...);
 			}
+			else if constexpr (std::is_same_v<Component, CameraComponent>)
+			{
+				return create_camera_component(std::forward<Args>(args)...);
+			}
 			else
 			{
 				return nullptr;
@@ -210,6 +215,10 @@ namespace App
 			{
 				mesh_components.unlink_component(id);
 			}
+			else if constexpr (std::is_same_v<Component, CameraComponent>)
+			{
+				camera_components.unlink_component(id);
+			}
 		}
 
 		void add_resource_func(
@@ -219,13 +228,22 @@ namespace App
 			create_resource_func.push_back(func);
 		}
 
+		void set_main_camera(CameraComponent::Camera* camera)
+		{
+			main_camera = camera;
+		}
+
 	private:
 
 		std::unique_ptr<MeshComponent> create_mesh_component(const std::string& mesh_name);
 
+		std::unique_ptr<CameraComponent> create_camera_component(const std::string& camera_name);
+
 		EntityManager* entity_{};
 		WindowsSystem* main_window{};
 		DebugSystem* debug_{};
+
+		CameraComponent::Camera* main_camera{};
 
 		std::unique_ptr<DirectX::ContainerContext> container_context{};
 		std::unique_ptr<DirectX::CoreContext> core_context{};
@@ -239,6 +257,7 @@ namespace App
 		std::unordered_map<ComponentUniqueID, std::unique_ptr<TransformItem>> transforms_{};
 
 		ComponentManager<MeshComponent, MeshComponent::Mesh> mesh_components{};
+		ComponentManager<CameraComponent, CameraComponent::Camera> camera_components{};
 
 		std::vector<CreateResourceFunc> create_resource_func{};
 	};
@@ -257,6 +276,12 @@ namespace App
 
 	template<>
 	struct ComponentTraits<MeshComponent>
+	{
+		using System = RendererSystem;
+	};
+
+	template<>
+	struct ComponentTraits<CameraComponent>
 	{
 		using System = RendererSystem;
 	};

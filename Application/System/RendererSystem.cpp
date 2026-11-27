@@ -275,7 +275,7 @@ namespace App
 			{
 				{ 0, 1, 0, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, D3D12_DESCRIPTOR_HEAP_FLAG_NONE },
 				{ 0, 1, 0, D3D12_DESCRIPTOR_HEAP_TYPE_DSV, D3D12_DESCRIPTOR_HEAP_FLAG_NONE },
-				{ 0, 0, 10, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE }
+				{ 0, 0, 20, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE }
 			}
 		))
 		{
@@ -283,7 +283,6 @@ namespace App
 			core_context = nullptr;
 			return false;
 		}
-
 
 		auto current_resource_index = core_context->frame_resource_index->get_current_index();
 
@@ -410,26 +409,24 @@ namespace App
 				&dsv_handle
 			);
 
-			const auto& [w, h] = main_window->get_window_size();
+			ID3D12DescriptorHeap* p[] = {
+				container_context->heap_container.get_heap_allocator(
+					Container::DescriptorHeapKey{ D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV }
+				)->get_heap()->get()
+			};
 
-			D3D12_VIEWPORT viewport{};
-			viewport.TopLeftX = 0;
-			viewport.TopLeftY = 0;
-			viewport.Width = w;
-			viewport.Height = h;
-			viewport.MinDepth = 0;
-			viewport.MaxDepth = 1;
+			list->SetDescriptorHeaps(1, p);
 
-			list->RSSetViewports(1, &viewport);
-
-
-			D3D12_RECT scissorRect{};
-			scissorRect.left = 0;
-			scissorRect.top = 0;
-			scissorRect.right = w;
-			scissorRect.bottom = h;
-
-			list->RSSetScissorRects(1, &scissorRect);
+			if (main_camera)
+			{
+				main_camera->set_view_port(list);
+			}
+			else
+			{
+				debug_->debug_error_log(
+					"Main Camera Not Set"
+				);
+			}
 
 			//	ここでpipline実行
 
@@ -492,6 +489,16 @@ namespace App
 		auto component = mesh_components.create_component(
 			container_context->draw_object_container.get_draw_object(
 				Container::DrawObjectKey{ mesh_name.c_str() }
+			)
+		);
+		return component;
+	}
+
+	std::unique_ptr<CameraComponent> RendererSystem::create_camera_component(const std::string& camera_name)
+	{
+		auto component = camera_components.create_component(
+			container_context->camera_object_container.get_camera_object(
+				Container::CameraObjectKey{ camera_name.c_str() }
 			)
 		);
 		return component;

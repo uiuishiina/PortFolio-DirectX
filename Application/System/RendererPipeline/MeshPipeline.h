@@ -205,7 +205,6 @@ namespace App
 
 		CommandList* list_{};
 
-
 	};
 
 }
