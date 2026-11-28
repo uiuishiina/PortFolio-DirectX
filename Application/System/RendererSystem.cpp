@@ -8,7 +8,8 @@ using namespace DirectX;
 
 namespace
 {
-	constexpr int transform_register_index = 0;
+	constexpr int transform_register_index = 1;
+	constexpr int camera_register_index = 0;
 }
 
 namespace App
@@ -339,6 +340,22 @@ namespace App
 		//	このUpdateで利用するインデックスに変更する
 		core_context->back_buffer_index->update_index();
 		core_context->frame_resource_index->update_index();
+		{
+			auto transforms = transform_components.get_datas();
+
+			for (auto& data : transforms)
+			{
+				data->update_buffer();
+			}
+		}
+		{
+			auto cameras = camera_components.get_datas();
+
+			for (auto& camera : cameras)
+			{
+				camera->update_camera_object();
+			}
+		}
 
 		auto current_resource_index = core_context->frame_resource_index->get_current_index();
 
@@ -382,7 +399,7 @@ namespace App
 				create_resource_func.clear();
 			}
 
-			float color[4] = { 0,0,1,1 };
+			float color[4] = { 0,0,0,1 };
 			list->ClearRenderTargetView(
 				back_buffer->get_RTV_handle(),
 				color,
@@ -419,23 +436,22 @@ namespace App
 
 			if (main_camera)
 			{
-				main_camera->set_view_port(list);
+				if (!target_chasu.empty())
+				{
+					for (auto& pipeline : pipelines_)
+					{
+						pipeline->execute_pipeline(
+							main_camera,
+							target_chasu
+						);
+					}
+				}
 			}
 			else
 			{
 				debug_->debug_error_log(
 					"Main Camera Not Set"
 				);
-			}
-
-			//	ここでpipline実行
-
-			if (!target_chasu.empty())
-			{
-				for (auto& pipeline : pipelines_)
-				{
-					pipeline->execute_pipeline(target_chasu);
-				}
 			}
 
 			back_buffer->barrier_transition(
@@ -543,7 +559,7 @@ namespace App
 			dirty_size = index_size;
 		}
 
-		if (dirty_size > 0)
+		if (dirty_size <= 0)
 		{
 			return;
 		}

@@ -152,11 +152,15 @@ namespace App
 					clock->wait_fixed_to_skip(5);
 
 					fps_time += delta_time;
-					if (fps_time >= ClockSystem::Milliseconds{ 1000 })
+
+					const auto second = ClockSystem::Milliseconds{ 1000 };
+
+					if (fps_time >= second)
 					{
 						window->set_window_text(
 							std::wstring{ L"FPS = " + std::to_wstring(fps_count) }.c_str()
 						);
+						fps_time -= second;
 						fps_count = 0;
 					}
 				}

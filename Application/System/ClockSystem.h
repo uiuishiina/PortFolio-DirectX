@@ -6,6 +6,8 @@
 #include<chrono>
 #include<cassert>
 
+#include"DebugSystem.h"
+
 namespace App
 {
 
@@ -16,11 +18,12 @@ namespace App
 		using Milliseconds = std::chrono::milliseconds;
 
 		explicit ClockSystem(
-			uint32_t period_value
+			uint32_t fps
 		):
-			period_{ Milliseconds{ period_value } }
+			fps_{ fps },
+			period_{ Milliseconds{ 1000 / fps } }
 		{
-			assert(period_value && "ApplicationClock period must not be zero");
+			assert(fps && "ApplicationClock fps must not be zero");
 			ISystem::name_ = "ClockSystem";
 		}
 
@@ -28,6 +31,15 @@ namespace App
 		bool init_system(SystemManager& manager) override
 		{
 			is_init = true;
+
+			auto* debug = manager.get_system<DebugSystem>();
+			if (debug)
+			{
+				debug->debug_log(
+					"ClockSystem FPS : = ", fps_
+				);
+			}
+
 			return is_init;
 		}
 
@@ -113,6 +125,9 @@ namespace App
 
 		bool is_active = false;
 
+
+		uint32_t fps_{};
+
 		/// <summary>
 		/// フレーム間隔設定 (ミリ秒)
 		/// </summary>
@@ -126,6 +141,7 @@ namespace App
 		TimePoint start_time{};
 
 		Milliseconds delta_time{};
+
 		TimePoint last_time{};
 
 		uint32_t fps_count{};

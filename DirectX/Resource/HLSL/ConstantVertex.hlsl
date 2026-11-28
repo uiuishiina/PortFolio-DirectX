@@ -1,8 +1,8 @@
 #include"StructHeader.hlsli"
 
-VS_OutPutNormal main(VS_InputNormal input)
+VS_OutPutColor main(VS_InputColor input)
 {
-    VS_OutPutNormal output;
+    VS_OutPutColor output;
    
     float4 pos = float4(input.pos, 1.0f);
     
@@ -11,6 +11,7 @@ VS_OutPutNormal main(VS_InputNormal input)
     pos = mul(projection_, pos);
 
     output.pos = pos;
+    output.color = input.color;
     
     return output;
 }

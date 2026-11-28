@@ -97,19 +97,24 @@ namespace App
 		
 		explicit TransformComponent(
 			const ComponentUniqueID& id,
-			TransformItem::Transform* transform,
+			TransformItem* transform,
 			RemoveFunc func = {}
 		) :
 			transform_{ transform },
 			IComponent{ id,func }
 		{};
 
-		TransformItem::Transform* get_transform() noexcept
+		TransformItem::Transform& get_transform() noexcept
 		{
-			return transform_;
+			return transform_->get_transform();
 		}
 
-		TransformItem::Transform* operator -> () noexcept
+		TransformItem::Transform&operator -> () noexcept
+		{
+			return transform_->get_transform();
+		}
+
+		TransformItem* get_transform_item() noexcept
 		{
 			return transform_;
 		}
@@ -119,7 +124,7 @@ namespace App
 		using IComponent::get_active;
 		using IComponent::set_active;
 
-		TransformItem::Transform* transform_;
+		TransformItem* transform_;
 	};
 
 	class RendererSystem final : public ISystem
@@ -170,7 +175,7 @@ namespace App
 					return nullptr;
 				}
 
-				auto component = transform_components.create_component(transform->get_transform());
+				auto component = transform_components.create_component(transform.get());
 				if (component)
 				{
 					transforms_.emplace(
@@ -253,7 +258,7 @@ namespace App
 		ComponentManager<RendererComponent, Entity> target_components{};
 		std::vector<Entity*> target_chasu{};
 
-		ComponentManager<TransformComponent, TransformItem::Transform> transform_components{};
+		ComponentManager<TransformComponent, TransformItem> transform_components{};
 		std::unordered_map<ComponentUniqueID, std::unique_ptr<TransformItem>> transforms_{};
 
 		ComponentManager<MeshComponent, MeshComponent::Mesh> mesh_components{};

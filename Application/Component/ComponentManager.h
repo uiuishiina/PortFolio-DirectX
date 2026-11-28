@@ -42,7 +42,7 @@ namespace App
 
 		Data* get_data(const ComponentUniqueID& id) const noexcept
 		{
-			const auto it = datas_->find(id);
+			const auto it = datas_.find(id);
 			if (it == datas_.end())
 			{
 				return nullptr;

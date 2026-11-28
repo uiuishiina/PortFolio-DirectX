@@ -212,6 +212,10 @@ namespace App
 		MoveLeft,
 		MoveDown,
 		MoveRight,
+
+		keyO,
+		keyP,
+
 		Jump,
 		Esc
 	};

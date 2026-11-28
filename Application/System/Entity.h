@@ -79,7 +79,9 @@ namespace App
 			}
 		}
 
+		virtual void start() {}
 		virtual void update() {}
+		virtual void ondestroy() {}
 
 		EntityID get_id() const noexcept
 		{

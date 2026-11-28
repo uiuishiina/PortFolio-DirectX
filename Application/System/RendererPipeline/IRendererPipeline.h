@@ -13,6 +13,14 @@ namespace DirectX {
 
 	struct CoreContext;
 	struct ContainerContext;
+
+	namespace ClassModule
+	{
+		namespace DescriptorGroup
+		{
+			class CameraObject;
+		}
+	}
 }
 
 namespace App
@@ -24,6 +32,7 @@ namespace App
 	class IRendererPipeline
 	{
 	public:
+		using MainCamera = DirectX::ClassModule::DescriptorGroup::CameraObject;
 
 		virtual ~IRendererPipeline() = default;
 
@@ -34,7 +43,8 @@ namespace App
 		) = 0;
 
 		virtual void execute_pipeline(
-			const std::span<Entity*> entitys
+			MainCamera*,
+			const std::span<Entity*>
 		) = 0;
 
 	};

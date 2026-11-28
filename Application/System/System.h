@@ -5,6 +5,7 @@
 
 #include<queue>
 #include<algorithm>
+#include<concepts>
 
 namespace App
 {
@@ -95,12 +96,13 @@ namespace App
 			return is_init;
 		}
 
-		Entity* create_entity(
+		template<typename T = Entity>
+		T* create_entity(
 			const std::string& name
 		)
 		{
 			const auto id = ++next_id;
-			auto entity = std::make_unique<Entity>(
+			auto entity = std::make_unique<T>(
 				id,
 				name
 			);
@@ -114,7 +116,11 @@ namespace App
 					name,
 					id
 				);
-				return entitys_[id].get();
+
+				auto* pEntity = entitys_[id].get();
+				new_entitys.push_back(pEntity);
+
+				return static_cast<T*>(pEntity);
 			}
 
 			return nullptr;
@@ -143,6 +149,10 @@ namespace App
 		{
 			if (entitys_.contains(id))
 			{
+				auto it = entitys_.find(id);
+
+				it->second->ondestroy();
+
 				entitys_.erase(id);
 			}
 		}
@@ -167,6 +177,15 @@ namespace App
 
 		void update_system() override
 		{
+			if (!new_entitys.empty())
+			{
+				for (auto& entity : new_entitys)
+				{
+					entity->start();
+				}
+				new_entitys.clear();
+			}
+
 			for (auto& [id, entity] : entitys_)
 			{
 				entity->update();
@@ -202,6 +221,7 @@ namespace App
 
 		std::unordered_map<EntityName, EntityID> entity_names{};
 		std::unordered_map<EntityID, std::unique_ptr<Entity>> entitys_{};
+		std::vector<Entity*> new_entitys{};
 
 	};
 

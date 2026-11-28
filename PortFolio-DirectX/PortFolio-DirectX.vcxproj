@@ -49,6 +49,7 @@
     <ClInclude Include="..\Application\Component\ComponentManager.h" />
     <ClInclude Include="..\Application\Component\RendererComponent\CameraComponent.h" />
     <ClInclude Include="..\Application\Component\RendererComponent\MeshComponent.h" />
+    <ClInclude Include="..\Application\Player.h" />
     <ClInclude Include="..\Application\SystemComfig.h" />
     <ClInclude Include="..\Application\System\ClockSystem.h" />
     <ClInclude Include="..\Application\System\CreateResourceFunc\CompileShaderFunc.h" />
